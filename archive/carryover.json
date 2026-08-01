@@ -1,10 +1,10 @@
 {
-  "generated_at": "2026-08-01T11:14:46.073735+00:00",
-  "updated_date": "20260723-20260801",
+  "generated_at": "2026-08-01T20:25:28.008871+00:00",
+  "updated_date": "20260801",
   "carryover_days": 9,
   "tag_states": {
     "ns": {
-      "updated_date": "20260723-20260801",
+      "updated_date": "20260801",
       "carryover_days": 9,
       "items": [
         {
@@ -29,13 +29,13 @@
             "query:ns"
           ],
           "llm_score": 8.0,
-          "llm_evidence_en": "LLM-native representation for TLS bulk traffic analysis improves network monitoring",
-          "llm_evidence_cn": "用于TLS批量流量分析的LLM原生表示，提升网络监控能力",
-          "llm_evidence": "用于TLS批量流量分析的LLM原生表示，提升网络监控能力",
-          "canonical_evidence": "用于TLS批量流量分析的LLM原生表示，提升网络监控能力",
-          "llm_tldr_en": "PCAP-LM converts TLS bulk traffic into a compact LLM-native text representation using PacketGlyphs and lossy knowledge extraction, enabling LLMs to analyze network traffic within context limits.",
-          "llm_tldr_cn": "本文针对原始网络抓包及文本形式过于冗长、超出大模型上下文限制的问题，提出PCAP-LM，一种面向TLS批量流量分析的LLM原生文本表示。通过PacketGlyphs符号编码和受限分词器等有损知识抽取，将原始流量压缩为语义摘要，使得LLM能够高效进行网络流量分析与威胁检测。",
-          "llm_tldr": "本文针对原始网络抓包及文本形式过于冗长、超出大模型上下文限制的问题，提出PCAP-LM，一种面向TLS批量流量分析的LLM原生文本表示。通过PacketGlyphs符号编码和受限分词器等有损知识抽取，将原始流量压缩为语义摘要，使得LLM能够高效进行网络流量分析与威胁检测。",
+          "llm_evidence_en": "traffic representation for network security analysis",
+          "llm_evidence_cn": "用于网络安全分析的流量表示",
+          "llm_evidence": "用于网络安全分析的流量表示",
+          "canonical_evidence": "用于网络安全分析的流量表示",
+          "llm_tldr_en": "Presents PCAP-LM, an LLM-native flow-centric representation transcoding raw TLS captures into semantic summaries with PacketGlyphs, enabling large language models to reason over bulk network traffic without context overflow.",
+          "llm_tldr_cn": "针对原始流量文本超出LLM上下文窗口两个数量级的问题，论文提出PCAP-LM这种面向LLM的流级文本表示。通过PacketGlyphs ASCII字母编码包方向、TCP/TLS状态、对数尺度和包间延迟，再结合PMI-BPE分词与motif游程编码压缩重复行为，并把原始网络流量转换成语义摘要，使大模型能够直接分析批量TLS流量。",
+          "llm_tldr": "针对原始流量文本超出LLM上下文窗口两个数量级的问题，论文提出PCAP-LM这种面向LLM的流级文本表示。通过PacketGlyphs ASCII字母编码包方向、TCP/TLS状态、对数尺度和包间延迟，再结合PMI-BPE分词与motif游程编码压缩重复行为，并把原始网络流量转换成语义摘要，使大模型能够直接分析批量TLS流量。",
           "llm_tags": [
             "query:ns"
           ],
@@ -44,162 +44,6 @@
           "matched_requirement_id": "req-1",
           "selection_source": "carryover_cache",
           "paper_id": "2607.28100v1",
-          "carry_days": 1
-        },
-        {
-          "id": "2607.25828v1",
-          "source": "arxiv",
-          "title": "C-RE-ACT: Causal RE-ACTing Agent for O-RAN Forensic Triage",
-          "abstract": "The shift to O-RAN architectures marks a turning point in cellular security, where increased openness and modularity directly translate into a broader attack surface. Among the security threats cataloged by the O-RAN Alliance Working Group 11, performance-degradation attacks constitute the largest class. These attacks induce packet losses and latency spikes that are hard to distinguish from operational events such as misconfigurations, transient congestion, or software regressions. Consequently, upon an adverse incident detection, support engineers must rapidly determine whether to route the corresponding incident ticket to network maintenance or escalate it to security operations. This triage phase represents a critical human-in-the-loop bottleneck in the incident response lifecycle. To address this vulnerability, we introduce C-RE-ACT (Causal RE-ACTing agent), an automated agentic triage framework designed to generate actionable incident reports. C-RE-ACT starts constructing a Weighted Directed Acyclic Graph (WDAG) over O-RAN metrics using the Structural Agnostic Model (SAM). The resulting causal topology is encoded into a continuous soft token via a Graph Isomorphism Network (GIN) aligned with the language space of the Large Language Model (LLM) powering a ReAct agent. We evaluate C-RE-ACT on a physical, O-RAN-compliant testbed across 140 distinct performance-degradation experiments. Empirical results demonstrate the causal ranking isolates the correct root cause within the top three candidates in 89% of instances. Furthermore, graph soft-prompting improves LLM accuracy on causal-topology queries from 0.22 (text-only baseline) to 0.72. The autonomous agent achieves anomaly classification accuracies of 83% for delay anomalies and 84% for packet-loss anomalies.",
-          "authors": [
-            "Pau Baguer",
-            "J. Xavier Salvat Lozano",
-            "Gines Garcia-Aviles",
-            "Xavier Costa-Pérez"
-          ],
-          "primary_category": "cs.NI",
-          "categories": [
-            "cs.NI"
-          ],
-          "published": "2026-07-28T15:07:47+00:00",
-          "link": "https://arxiv.org/pdf/2607.25828v1",
-          "tags": [
-            "keyword:ns",
-            "query:ns"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "network attack triage for O-RAN architectures",
-          "llm_evidence_cn": "针对O-RAN网络的性能退化攻击分诊与检测",
-          "llm_evidence": "针对O-RAN网络的性能退化攻击分诊与检测",
-          "canonical_evidence": "针对O-RAN网络的性能退化攻击分诊与检测",
-          "llm_tldr_en": "Presents a causal reacting agent for O-RAN forensic triage to distinguish performance-degradation attacks from operational events, reducing human bottleneck in incident response.",
-          "llm_tldr_cn": "O-RAN架构在提升开放性与模块化的同时扩大了网络攻击面，其中性能退化攻击与误配置、拥塞等运维事件难以区分，导致事件分诊成为安全响应的瓶颈。本文提出C-RE-ACT因果反应智能体，利用因果推理自动分析事件线索，辅助工程师判断事件应转交运维还是安全处置。实验表明该方法能有效识别攻击迹象并降低误判率，为开放网络环境下的安全运营提供了智能化分诊工具。",
-          "llm_tldr": "O-RAN架构在提升开放性与模块化的同时扩大了网络攻击面，其中性能退化攻击与误配置、拥塞等运维事件难以区分，导致事件分诊成为安全响应的瓶颈。本文提出C-RE-ACT因果反应智能体，利用因果推理自动分析事件线索，辅助工程师判断事件应转交运维还是安全处置。实验表明该方法能有效识别攻击迹象并降低误判率，为开放网络环境下的安全运营提供了智能化分诊工具。",
-          "llm_tags": [
-            "query:ns"
-          ],
-          "matched_query_tag": "query:ns",
-          "matched_query_text": "effective methods for detecting and preventing network intrusions",
-          "matched_requirement_id": "req-8",
-          "selection_source": "carryover_cache",
-          "paper_id": "2607.25828v1",
-          "carry_days": 1
-        },
-        {
-          "id": "2607.23752v1",
-          "source": "arxiv",
-          "title": "ZKP Security Tools and Verification: Coverage, Effectiveness, Adoption, and Challenges",
-          "abstract": "Zero-knowledge proofs (ZKPs) have become a core technology for privacy and verifiable computing. They are used to secure blockchains that handle billions of dollars and identity applications dealing with sensitive personal data. However, ZKP systems are complex, and subtle implementation errors can completely break their guarantees, letting attackers forge money or false proofs of identity. Researchers and practitioners have therefore developed a growing set of bug detection and formal verification methods to secure these systems. Yet their real-world effectiveness and adoption remain unclear. In this paper, we aim to shed light on the state of ZKP security tooling. We first systematize the landscape of these tools and observe that most target Circom, leaving newer DSLs and zkVMs with limited support. We then evaluate six tools across 70 real-world vulnerabilities and find that while the tools detect 45.7% of bugs on isolated targets, their effectiveness drops to 19.6% on full codebases, with important vulnerability classes left unaddressed. We also present the first systematic analysis of formal verification efforts, revealing that current work focuses primarily on constraint correctness and identifying key gaps and risks. Finally, we survey 48 practitioners, showing that development and security remain human-led, LLMs are widely used, and practitioners prioritize tools with clearer guarantees and lower integration effort. Overall, our results highlight the need for better integration of security tooling with the development and auditing process, and we provide actionable insights for researchers and practitioners.",
-          "authors": [
-            "Arman Kolozyan",
-            "Tom Sorger",
-            "Alexander Hicks",
-            "Stefanos Chaliasos"
-          ],
-          "primary_category": "cs.CR",
-          "categories": [
-            "cs.CR"
-          ],
-          "published": "2026-07-26T16:54:31+00:00",
-          "link": "https://arxiv.org/pdf/2607.23752v1",
-          "tags": [
-            "keyword:ns",
-            "query:ns"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "systematization and evaluation of tools for zero-knowledge proof security",
-          "llm_evidence_cn": "对零知识证明安全工具的系统化评估与覆盖率分析",
-          "llm_evidence": "对零知识证明安全工具的系统化评估与覆盖率分析",
-          "canonical_evidence": "对零知识证明安全工具的系统化评估与覆盖率分析",
-          "llm_tldr_en": "Systematizes zero-knowledge proof security tools, analyzing their coverage, effectiveness, adoption, and challenges, revealing gaps in the current landscape.",
-          "llm_tldr_cn": "零知识证明（ZKP）已成为区块链与隐私计算的核心技术，但其实现错误可能完全破坏安全保证。本文对现有ZKP安全工具与形式化验证方法进行系统化梳理，从覆盖率、有效性、采用率与挑战四个维度展开评估。研究发现大多数工具覆盖面有限、实际采用不足，并存在自动化与可用性等瓶颈。该工作为改进ZKP安全工具链和推动验证方法落地提供了重要参考。",
-          "llm_tldr": "零知识证明（ZKP）已成为区块链与隐私计算的核心技术，但其实现错误可能完全破坏安全保证。本文对现有ZKP安全工具与形式化验证方法进行系统化梳理，从覆盖率、有效性、采用率与挑战四个维度展开评估。研究发现大多数工具覆盖面有限、实际采用不足，并存在自动化与可用性等瓶颈。该工作为改进ZKP安全工具链和推动验证方法落地提供了重要参考。",
-          "llm_tags": [
-            "query:ns"
-          ],
-          "matched_query_tag": "query:ns",
-          "matched_query_text": "cryptographic algorithms and applications",
-          "matched_requirement_id": "req-4",
-          "selection_source": "carryover_cache",
-          "paper_id": "2607.23752v1",
-          "carry_days": 1
-        },
-        {
-          "id": "2607.26655v1",
-          "source": "arxiv",
-          "title": "Fingerprint-Driven Automation: Coupling Reconnaissance with POC Verification",
-          "abstract": "In the field of network security confrontation, reconnaissance is the first and most critical step. Accurate, efficient, and comprehensive reconnaissance can help network security workers more fully understand the target's current state, identify potential weaknesses, and formulate a targeted attack strategy. However, there are some problems in the existing tools on the market, such as low accuracy of the collected information, lack of concealment, time-consuming, low or high integration of tools, which makes them difficult to start using. With the continuous development of technology, systems need to continuously upgrade their technologies and strategies, and expand new functions. The scalability of tool functions is also one of the factors that need to be taken into consideration. These problems in the practice of network security have a serious impact on user experience and work efficiency. In view of this, a more user-friendly, more automated reconnaissance and vulnerability verification tool is designed.This paper proposes to develop a highly automated reconnaissance and vulnerability verification tool. This paper presents the tool functions and conducts the basic design. Finally, we implement and test all the functions specifically to verify the feasibility of the tool functions and highlight the advantages of this tool in terms of automation, retrieval, and use in network security operations.Through the test of the online security simulation range, the results show that this tool can complete the automatic reconnaissance and in-depth data processing of specific targets, and conduct automatic vulnerability detection and verification.",
-          "authors": [
-            "Hongping Wang",
-            "Xiaoqi Li"
-          ],
-          "primary_category": "cs.CR",
-          "categories": [
-            "cs.CR"
-          ],
-          "published": "2026-07-29T09:16:43+00:00",
-          "link": "https://arxiv.org/pdf/2607.26655v1",
-          "tags": [
-            "keyword:ns",
-            "query:ns"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "automating reconnaissance and POC verification in penetration testing",
-          "llm_evidence_cn": "渗透测试中自动化侦察与POC验证",
-          "llm_evidence": "渗透测试中自动化侦察与POC验证",
-          "canonical_evidence": "渗透测试中自动化侦察与POC验证",
-          "llm_tldr_en": "This paper presents fingerprint-driven automation that couples network reconnaissance with proof-of-concept verification, improving accuracy, concealment, and tool integration for penetration testers.",
-          "llm_tldr_cn": "针对现有侦察工具信息准确率低、隐蔽性差、耗时长以及工具集成度不合适等问题，论文提出指纹驱动的自动化方法，将网络侦察与POC验证耦合，帮助安全人员全面掌握目标状态并识别潜在弱点。该方法提升了信息收集质量与工具可扩展性，支持制定更精准的攻击策略，为渗透测试和安全评估提供了高效自动化支撑。",
-          "llm_tldr": "针对现有侦察工具信息准确率低、隐蔽性差、耗时长以及工具集成度不合适等问题，论文提出指纹驱动的自动化方法，将网络侦察与POC验证耦合，帮助安全人员全面掌握目标状态并识别潜在弱点。该方法提升了信息收集质量与工具可扩展性，支持制定更精准的攻击策略，为渗透测试和安全评估提供了高效自动化支撑。",
-          "llm_tags": [
-            "query:ns"
-          ],
-          "matched_query_tag": "query:ns",
-          "matched_query_text": "penetration testing methodologies and tools",
-          "matched_requirement_id": "req-6",
-          "selection_source": "carryover_cache",
-          "paper_id": "2607.26655v1",
-          "carry_days": 1
-        },
-        {
-          "id": "2607.26734v1",
-          "source": "arxiv",
-          "title": "Verifiable Random Sampling",
-          "abstract": "Verifiable random functions (VRF) underpin a wide range of applications that require publicly verifiable evaluations of a pseudorandom function on a given input. However, once the public key is published, the induced function is fixed and is a deterministic function of the input. This determinism can enable collusion and grinding-style attacks in which adversaries precompute and selectively exploit favorable input-output pairs. To address these limitations, we introduce the formal notion of verifiable random sampling (VRS). We propose a concrete VRS construction based on random quantum circuit sampling (RCS) executable on today's quantum computing devices. VRS supports multiparty protocols in which the verifier's final output is a sample that is statistically close to a specified target distribution, while remaining publicly verifiable. We model the construction and prove its security within the constructive cryptography (CC) framework, thereby ensuring composability with other cryptographic protocols. Overall, our results provide a mechanism for verifiable random sampling that simultaneously guarantees sample freshness and public verifiability, enabling applications that require unpredictable, fresh randomness while preserving fairness through public verifiability.",
-          "authors": [
-            "Yeoh Wei Zhu",
-            "Soorya Rethinasamy",
-            "Anthony Alexiades Armenakas",
-            "Yash Satsangi",
-            "Shaltiel Eloul",
-            "Ruslan Shaydulin"
-          ],
-          "primary_category": "cs.CR",
-          "categories": [
-            "cs.CR"
-          ],
-          "published": "2026-07-29T10:27:08+00:00",
-          "link": "https://arxiv.org/pdf/2607.26734v1",
-          "tags": [
-            "keyword:ns",
-            "query:ns"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "new cryptographic primitive addressing VRF determinism attacks",
-          "llm_evidence_cn": "针对VRF确定性攻击的新型密码原语",
-          "llm_evidence": "针对VRF确定性攻击的新型密码原语",
-          "canonical_evidence": "针对VRF确定性攻击的新型密码原语",
-          "llm_tldr_en": "This paper introduces verifiable random sampling (VRS) as a formal notion, with a concrete construction based on random quantum circuit sampling executable on today's quantum devices, enabling multiparty protocols with statistically close target distributions.",
-          "llm_tldr_cn": "针对可验证随机函数（VRF）公钥发布后函数固定、确定性导致共谋和磨削式攻击的问题，论文提出可验证随机采样（VRS）的新形式化概念。其具体构造基于当前可执行的随机量子电路采样（RCS），支持验证者最终输出在统计上接近指定目标分布的多方协议。该原语消除了确定性关联，扩展了可验证伪随机应用的安全边界。",
-          "llm_tldr": "针对可验证随机函数（VRF）公钥发布后函数固定、确定性导致共谋和磨削式攻击的问题，论文提出可验证随机采样（VRS）的新形式化概念。其具体构造基于当前可执行的随机量子电路采样（RCS），支持验证者最终输出在统计上接近指定目标分布的多方协议。该原语消除了确定性关联，扩展了可验证伪随机应用的安全边界。",
-          "llm_tags": [
-            "query:ns"
-          ],
-          "matched_query_tag": "query:ns",
-          "matched_query_text": "cryptographic algorithms and applications",
-          "matched_requirement_id": "req-4",
-          "selection_source": "carryover_cache",
-          "paper_id": "2607.26734v1",
           "carry_days": 1
         },
         {
@@ -223,13 +67,13 @@
             "query:ns"
           ],
           "llm_score": 8.0,
-          "llm_evidence_en": "develops a structuration-based theory of cybersecurity practice, explaining organizational resilience",
-          "llm_evidence_cn": "提出基于结构化理论的网络安全实践理论，解释组织韧性差异",
-          "llm_evidence": "提出基于结构化理论的网络安全实践理论，解释组织韧性差异",
-          "canonical_evidence": "提出基于结构化理论的网络安全实践理论，解释组织韧性差异",
-          "llm_tldr_en": "This paper introduces STARC, a structuration-theory framework for locating where cybersecurity practice succeeds or fails structurally, integrating multi-level adversarial agency, threat-adaptive structuration, and material-agential structural properties.",
-          "llm_tldr_cn": "现有网络安全理论局限于单一组织层面，无法解释相似控制下组织韧性为何差异显著。本文发展STARC框架，将Giddens结构化理论扩展至多层面安全实践，引入多级对抗主体、威胁自适应结构化和物质-行动者结构属性。该框架能够定位网络安全实践的结构性成败点，从而解释不同组织的安全表现差异。这一理论为网络安全实践的系统分析和干预提供了有力支撑。",
-          "llm_tldr": "现有网络安全理论局限于单一组织层面，无法解释相似控制下组织韧性为何差异显著。本文发展STARC框架，将Giddens结构化理论扩展至多层面安全实践，引入多级对抗主体、威胁自适应结构化和物质-行动者结构属性。该框架能够定位网络安全实践的结构性成败点，从而解释不同组织的安全表现差异。这一理论为网络安全实践的系统分析和干预提供了有力支撑。",
+          "llm_evidence_en": "Develops a theoretical framework for cybersecurity practice and resilience",
+          "llm_evidence_cn": "提出网络安全实践与韧性的理论框架",
+          "llm_evidence": "提出网络安全实践与韧性的理论框架",
+          "canonical_evidence": "提出网络安全实践与韧性的理论框架",
+          "llm_tldr_en": "Proposes STARC, a structuration-based framework that explains organizational differences in cybersecurity resilience by integrating multi-level adversarial agency and threat-adaptive structuration.",
+          "llm_tldr_cn": "针对现有网络安全理论仅关注单一层面、无法解释同类组织韧性差异的问题，本文提出基于吉登斯结构化理论的STARC框架，融合多层级对手能动性、威胁自适应结构化和物质-能动性结构属性三种创新，跨越分析师、团队、组织等五个结构层，用于定位网络安全实践成败的结构性原因，为深入理解网络安全原则与实践提供了系统化理论视角。",
+          "llm_tldr": "针对现有网络安全理论仅关注单一层面、无法解释同类组织韧性差异的问题，本文提出基于吉登斯结构化理论的STARC框架，融合多层级对手能动性、威胁自适应结构化和物质-能动性结构属性三种创新，跨越分析师、团队、组织等五个结构层，用于定位网络安全实践成败的结构性原因，为深入理解网络安全原则与实践提供了系统化理论视角。",
           "llm_tags": [
             "query:ns"
           ],
@@ -263,13 +107,13 @@
             "query:ns"
           ],
           "llm_score": 8.0,
-          "llm_evidence_en": "proposes a graph-based malware detection method, supporting intrusion detection and prevention",
-          "llm_evidence_cn": "提出基于图的恶意软件检测方法，支持入侵检测与防御",
-          "llm_evidence": "提出基于图的恶意软件检测方法，支持入侵检测与防御",
-          "canonical_evidence": "提出基于图的恶意软件检测方法，支持入侵检测与防御",
-          "llm_tldr_en": "This paper introduces a graph-based malware detection method that explicitly identifies cohesive groups of basic blocks and learns expressive program graph representations, improving robustness against evasive byte manipulation and detection accuracy.",
-          "llm_tldr_cn": "字节级机器学习恶意软件检测易被对抗样本欺骗，图方法虽更鲁棒但未捕获基本块的群体行为。本文提出新图检测方法，显式建模紧密基本块群组并学习高表达力程序图表示。该方法在抗混淆攻击的同时显著提升检测精度，优于现有字节级和图级基线。该工作为组织级恶意软件防护提供了更稳健的解决方案。",
-          "llm_tldr": "字节级机器学习恶意软件检测易被对抗样本欺骗，图方法虽更鲁棒但未捕获基本块的群体行为。本文提出新图检测方法，显式建模紧密基本块群组并学习高表达力程序图表示。该方法在抗混淆攻击的同时显著提升检测精度，优于现有字节级和图级基线。该工作为组织级恶意软件防护提供了更稳健的解决方案。",
+          "llm_evidence_en": "graph-based malware detection to counter evasive byte-manipulation attacks",
+          "llm_evidence_cn": "基于图的恶意软件检测以抵御字节混淆逃避攻击",
+          "llm_evidence": "基于图的恶意软件检测以抵御字节混淆逃避攻击",
+          "canonical_evidence": "基于图的恶意软件检测以抵御字节混淆逃避攻击",
+          "llm_tldr_en": "This paper proposes a graph-based malware detection method that represents programs as execution-behavior graphs, explicitly identifies cohesive basic-block groups, and learns expressive graph representations to overcome the evasiveness of byte-based ML detectors.",
+          "llm_tldr_cn": "针对基于字节的机器学习恶意软件检测易受字节操纵逃逸的问题，提出基于程序图的检测方法，通过识别形成有意义行为的连通基本块组并学习更具表达力的图表示，提高恶意软件检测的鲁棒性。该方法在组织级恶意软件风险防护中具有应用价值。",
+          "llm_tldr": "针对基于字节的机器学习恶意软件检测易受字节操纵逃逸的问题，提出基于程序图的检测方法，通过识别形成有意义行为的连通基本块组并学习更具表达力的图表示，提高恶意软件检测的鲁棒性。该方法在组织级恶意软件风险防护中具有应用价值。",
           "llm_tags": [
             "query:ns"
           ],
@@ -301,13 +145,13 @@
             "query:ns"
           ],
           "llm_score": 8.0,
-          "llm_evidence_en": "Benchmark for autonomous enterprise cyber defense and security posture management; supports protecting networks from cyber attacks.",
-          "llm_evidence_cn": "面向自主企业网络防御与安全态势评估的基准，支持网络攻击防护。",
-          "llm_evidence": "面向自主企业网络防御与安全态势评估的基准，支持网络攻击防护。",
-          "canonical_evidence": "面向自主企业网络防御与安全态势评估的基准，支持网络攻击防护。",
-          "llm_tldr_en": "This paper introduces a public benchmark for autonomous enterprise cyber defense. It provides a shared queryable environment spanning cross-vendor security posture, enabling evaluation of whether AI agents can be trusted to assess and act on enterprise security state.",
-          "llm_tldr_cn": "企业正迈向由智能体自主开展网络防御，但缺少公开可查询的评测环境，无法判断智能体是否可信。本文提出开放安全基准，提供跨厂商、深度关联的企业安全态势视图，用于评估智能体从态势感知到评估、决策、行动的整体防御能力。该基准填补了自主网络防御评测空白，为构建可信任的智能防御系统奠定基础。这直接服务于企业网络安全防护研究。",
-          "llm_tldr": "企业正迈向由智能体自主开展网络防御，但缺少公开可查询的评测环境，无法判断智能体是否可信。本文提出开放安全基准，提供跨厂商、深度关联的企业安全态势视图，用于评估智能体从态势感知到评估、决策、行动的整体防御能力。该基准填补了自主网络防御评测空白，为构建可信任的智能防御系统奠定基础。这直接服务于企业网络安全防护研究。",
+          "llm_evidence_en": "benchmark for autonomous enterprise cyber defense agents",
+          "llm_evidence_cn": "面向自主企业网络防御的开放评估基准",
+          "llm_evidence": "面向自主企业网络防御的开放评估基准",
+          "canonical_evidence": "面向自主企业网络防御的开放评估基准",
+          "llm_tldr_en": "Autonomous cyber defense needs trusted evaluation, but real enterprise environments are private and correlated. This paper introduces an open security benchmark providing a shared queryable target for assessing agentic AI's situational awareness, assessments, decisions, and actions.",
+          "llm_tldr_cn": "企业正迈向自主网络防御，由代理式AI构建安全态势感知并执行评估、决策与行动，但缺乏可信的公开评估基准。本文提出开放安全基准，将真实企业环境中私有、跨厂商且深相关的问题暴露为可共享、可查询的评估目标。该基准支持对自治防御代理的信任度进行评测，为安全态势管理工具和智能体的落地提供依据。",
+          "llm_tldr": "企业正迈向自主网络防御，由代理式AI构建安全态势感知并执行评估、决策与行动，但缺乏可信的公开评估基准。本文提出开放安全基准，将真实企业环境中私有、跨厂商且深相关的问题暴露为可共享、可查询的评估目标。该基准支持对自治防御代理的信任度进行评测，为安全态势管理工具和智能体的落地提供依据。",
           "llm_tags": [
             "query:ns"
           ],
@@ -348,19 +192,19 @@
             "query:ns"
           ],
           "llm_score": 8.0,
-          "llm_evidence_en": "Benchmark evaluating LLM agents for post-compromise incident response using forensic snapshots and vulnerability scans; supports mitigation.",
-          "llm_evidence_cn": "构建失陷后应急响应基准，基于取证快照与漏洞扫描评估LLM智能体，支持安全缓解。",
-          "llm_evidence": "构建失陷后应急响应基准，基于取证快照与漏洞扫描评估LLM智能体，支持安全缓解。",
-          "canonical_evidence": "构建失陷后应急响应基准，基于取证快照与漏洞扫描评估LLM智能体，支持安全缓解。",
-          "llm_tldr_en": "SecRespond is the first benchmark for LLM agents performing post-compromise incident response. It uses forensic snapshots, alerts, vulnerability scans, and baseline checks to evaluate agents in realistic compromised environments, filling a gap left by pre-compromise benchmarks.",
-          "llm_tldr_cn": "现有网络安全基准大多关注攻击前的理想环境，缺少对失陷后应急响应的评测。本文提出SecRespond，首个评估LLM智能体在失陷后应急响应工作流中能力的基准。基准提供取证磁盘快照、安全产品告警、漏洞扫描和基线检查结果，要求智能体在真实失陷主机上完成响应任务。它填补了AI智能体安全能力评测在post-compromise场景的空白，为提升自动化事件响应水平提供支撑。",
-          "llm_tldr": "现有网络安全基准大多关注攻击前的理想环境，缺少对失陷后应急响应的评测。本文提出SecRespond，首个评估LLM智能体在失陷后应急响应工作流中能力的基准。基准提供取证磁盘快照、安全产品告警、漏洞扫描和基线检查结果，要求智能体在真实失陷主机上完成响应任务。它填补了AI智能体安全能力评测在post-compromise场景的空白，为提升自动化事件响应水平提供支撑。",
+          "llm_evidence_en": "Benchmark for AI agents in post-compromise incident response and vulnerability assessment",
+          "llm_evidence_cn": "面向失陷后应急响应和漏洞评估的AI智能体基准",
+          "llm_evidence": "面向失陷后应急响应和漏洞评估的AI智能体基准",
+          "canonical_evidence": "面向失陷后应急响应和漏洞评估的AI智能体基准",
+          "llm_tldr_en": "Introduces SecRespond, the first benchmark for evaluating LLM agents on post-compromise incident response, using forensic disk snapshots, alerts, and vulnerability scans from a compromised host.",
+          "llm_tldr_cn": "LLM智能体正被用于真实安全运营，可以访问主机证据和命令行，但现有安全基准只覆盖被攻陷前的理想环境，缺乏对失陷后应急响应能力的评测。论文提出SecRespond，首个面向失陷后事件响应工作流的LLM智能体基准。它基于被攻陷主机的磁盘取证快照，以及主机安全产品产生的告警、漏洞扫描和基线检查结果，要求智能体完成分析任务。这为评估和提升AI辅助事件响应能力提供了标准化测试平台，填补了该方向空白。",
+          "llm_tldr": "LLM智能体正被用于真实安全运营，可以访问主机证据和命令行，但现有安全基准只覆盖被攻陷前的理想环境，缺乏对失陷后应急响应能力的评测。论文提出SecRespond，首个面向失陷后事件响应工作流的LLM智能体基准。它基于被攻陷主机的磁盘取证快照，以及主机安全产品产生的告警、漏洞扫描和基线检查结果，要求智能体完成分析任务。这为评估和提升AI辅助事件响应能力提供了标准化测试平台，填补了该方向空白。",
           "llm_tags": [
             "query:ns"
           ],
           "matched_query_tag": "query:ns",
-          "matched_query_text": "security vulnerability assessment and mitigation",
-          "matched_requirement_id": "req-5",
+          "matched_query_text": "assessment of vulnerabilities and risk mitigation in information systems",
+          "matched_requirement_id": "req-10",
           "selection_source": "carryover_cache",
           "paper_id": "2607.26791v1",
           "carry_days": 1
@@ -390,13 +234,13 @@
             "query:ns"
           ],
           "llm_score": 8.0,
-          "llm_evidence_en": "secure two-party computation protocols for privacy-preserving statistical analysis",
-          "llm_evidence_cn": "面向隐私保护统计分析的安全两方计算协议",
-          "llm_evidence": "面向隐私保护统计分析的安全两方计算协议",
-          "canonical_evidence": "面向隐私保护统计分析的安全两方计算协议",
-          "llm_tldr_en": "Proposes SafeStats, a toolkit of efficient 2PC protocols for secure statistical analysis, reducing common statistical operations to frequency counting, sorting, and non-linear math functions.",
-          "llm_tldr_cn": "在敏感数据集上进行统计分析至关重要，但引发严重隐私问题，现有安全两方计算（2PC）协议多专注于基础原语或机器学习，忽视了统计函数。本文提出SafeStats安全工具包，参考Excel统计库总结出大多数统计操作可由频率计数、排序和非线性数学函数三种核心功能实现。通过为这些核心功能设计高效2PC协议，显著提升了安全统计分析的性能。",
-          "llm_tldr": "在敏感数据集上进行统计分析至关重要，但引发严重隐私问题，现有安全两方计算（2PC）协议多专注于基础原语或机器学习，忽视了统计函数。本文提出SafeStats安全工具包，参考Excel统计库总结出大多数统计操作可由频率计数、排序和非线性数学函数三种核心功能实现。通过为这些核心功能设计高效2PC协议，显著提升了安全统计分析的性能。",
+          "llm_evidence_en": "secure two-party computation protocols for private statistics",
+          "llm_evidence_cn": "面向隐私统计的安全两方计算协议",
+          "llm_evidence": "面向隐私统计的安全两方计算协议",
+          "canonical_evidence": "面向隐私统计的安全两方计算协议",
+          "llm_tldr_en": "Secure 2PC rarely covers statistical functions. SafeStats builds a toolkit for 2PC statistical analysis by reducing operations to frequency counting, sorting, and non-linear math, enabling privacy-preserving statistics on sensitive data.",
+          "llm_tldr_cn": "对医疗记录、金融交易等敏感数据的统计分析至关重要，但现有安全两方计算主要关注基础原语和机器学习函数，较少支持统计函数。本文提出SafeStats安全工具包，参照Excel统计库将常见统计操作归纳为频数计数、排序和非线性数学三类核心函数并实现高效2PC协议。该工具可在不泄露原始数据的前提下完成多种统计分析，为隐私保护的数据决策提供支撑。",
+          "llm_tldr": "对医疗记录、金融交易等敏感数据的统计分析至关重要，但现有安全两方计算主要关注基础原语和机器学习函数，较少支持统计函数。本文提出SafeStats安全工具包，参照Excel统计库将常见统计操作归纳为频数计数、排序和非线性数学三类核心函数并实现高效2PC协议。该工具可在不泄露原始数据的前提下完成多种统计分析，为隐私保护的数据决策提供支撑。",
           "llm_tags": [
             "query:ns"
           ],
@@ -405,48 +249,6 @@
           "matched_requirement_id": "req-4",
           "selection_source": "carryover_cache",
           "paper_id": "2607.25430v1",
-          "carry_days": 1
-        },
-        {
-          "id": "2607.24116v1",
-          "source": "arxiv",
-          "title": "A Cybersecurity MLPS Large Language Model with Multi-Path Retrieval Fusion",
-          "abstract": "The Multi-Level Protection Scheme (MLPS) is a foundational system in China's cybersecurity governance framework. Therefore, accurate analysis and understanding of MLPS requirements are essential. At present, MLPS analysis still relies mainly on manual interpretation of standards and rule-based tools. This makes it hard to provide stable and consistent compliance analysis in complex application scenarios. The rise of large language models has created new opportunities for making MLPS work more intelligent. However, in standards-intensive and security-sensitive scenarios, general-purpose large language models often cannot ensure controllable reasoning or complete understanding of rules. This paper proposes a large language model framework for MLPS that integrates multiple retrieval strategies. It combines hierarchical retrieval, tree-based retrieval, and tokenization-based matching retrieval. This design helps maintain retrieval coverage while reducing the interference of irrelevant context in the reasoning process. To address the requirements of MLPS question answering for clause accuracy, conclusion traceability, and practical deployability, this paper adopts a evaluation method based on multi-dimensional weighted scoring to quantitatively assess model responses. In comparative experiments on ten typical questions, the proposed domain-specific large language model for MLPS achieved higher overall scores.",
-          "authors": [
-            "Qian Li",
-            "Zhenyan Qi",
-            "Liang Shen",
-            "Yuan Zhang",
-            "Yifan Wan",
-            "Junyuan Ma",
-            "Yining Hu"
-          ],
-          "primary_category": "cs.CR",
-          "categories": [
-            "cs.CR"
-          ],
-          "published": "2026-07-27T07:57:28+00:00",
-          "link": "https://arxiv.org/pdf/2607.24116v1",
-          "tags": [
-            "keyword:ns",
-            "query:ns"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "LLM framework for cybersecurity MLPS compliance analysis",
-          "llm_evidence_cn": "面向网络安全等级保护合规分析的LLM框架",
-          "llm_evidence": "面向网络安全等级保护合规分析的LLM框架",
-          "canonical_evidence": "面向网络安全等级保护合规分析的LLM框架",
-          "llm_tldr_en": "Presents a cybersecurity MLPS large language model with multi-path retrieval fusion to support accurate and consistent MLPS compliance analysis in complex scenarios.",
-          "llm_tldr_cn": "网络安全等级保护（MLPS）是我国网络安全管理的基础制度，合规分析仍依赖人工解读和规则工具，复杂场景下难以保持一致。本文提出一种面向MLPS的网络安全大语言模型框架，采用多路径检索融合增强对标准和规则的理解与可控推理。该方法提升了合规分析的稳定性和一致性，为等级保护工作提供了智能化的技术支撑。",
-          "llm_tldr": "网络安全等级保护（MLPS）是我国网络安全管理的基础制度，合规分析仍依赖人工解读和规则工具，复杂场景下难以保持一致。本文提出一种面向MLPS的网络安全大语言模型框架，采用多路径检索融合增强对标准和规则的理解与可控推理。该方法提升了合规分析的稳定性和一致性，为等级保护工作提供了智能化的技术支撑。",
-          "llm_tags": [
-            "query:ns"
-          ],
-          "matched_query_tag": "query:ns",
-          "matched_query_text": "cyber security principles and practices",
-          "matched_requirement_id": "req-2",
-          "selection_source": "carryover_cache",
-          "paper_id": "2607.24116v1",
           "carry_days": 1
         },
         {
@@ -471,94 +273,56 @@
             "query:ns"
           ],
           "llm_score": 8.0,
-          "llm_evidence_en": "automated detection of code backdoors in CI pipelines and release vetting",
-          "llm_evidence_cn": "在CI流水线和发布审查中自动检测代码后门",
-          "llm_evidence": "在CI流水线和发布审查中自动检测代码后门",
-          "canonical_evidence": "在CI流水线和发布审查中自动检测代码后门",
-          "llm_tldr_en": "Introduces Lily, an automated approach integrating backdoor detection into CI pipelines and release vetting workflows to block malicious commits and tampered packages.",
-          "llm_tldr_cn": "代码级后门通过恶意提交、篡改发布包或受损依赖注入开源软件，现有持续集成（CI）流水线无法检测，下游二进制分析工具又需要大量人工。本文提出Lily自动化方法，将后门检测机制嵌入CI流水线以阻止恶意提交，并加入发布审查工作流以识别被篡改的发布包。该方法有效加强了开源软件开发和发布流程对抗后门注入的能力。",
-          "llm_tldr": "代码级后门通过恶意提交、篡改发布包或受损依赖注入开源软件，现有持续集成（CI）流水线无法检测，下游二进制分析工具又需要大量人工。本文提出Lily自动化方法，将后门检测机制嵌入CI流水线以阻止恶意提交，并加入发布审查工作流以识别被篡改的发布包。该方法有效加强了开源软件开发和发布流程对抗后门注入的能力。",
+          "llm_evidence_en": "backdoor detection integrated into CI and release vetting",
+          "llm_evidence_cn": "将后门检测集成到CI和发布审查",
+          "llm_evidence": "将后门检测集成到CI和发布审查",
+          "canonical_evidence": "将后门检测集成到CI和发布审查",
+          "llm_tldr_en": "Presents Lily, an automated CI-integrated backdoor detection approach that flags malicious commits and tampered release packages, addressing a critical software supply chain vulnerability with minimal manual effort.",
+          "llm_tldr_cn": "针对开源软件中难以被现有CI捕获的代码级后门注入威胁，作者提出自动化检测工具Lily，将其接入CI流水线与发布审查流程。Lily能识别恶意提交和被篡改的发布包，将过去的运气与人工审查转变为系统化防御，显著降低软件供应链被植入后门的风险。",
+          "llm_tldr": "针对开源软件中难以被现有CI捕获的代码级后门注入威胁，作者提出自动化检测工具Lily，将其接入CI流水线与发布审查流程。Lily能识别恶意提交和被篡改的发布包，将过去的运气与人工审查转变为系统化防御，显著降低软件供应链被植入后门的风险。",
           "llm_tags": [
             "query:ns"
           ],
           "matched_query_tag": "query:ns",
-          "matched_query_text": "assessment of vulnerabilities and risk mitigation in information systems",
-          "matched_requirement_id": "req-10",
+          "matched_query_text": "security vulnerability assessment and mitigation",
+          "matched_requirement_id": "req-5",
           "selection_source": "carryover_cache",
           "paper_id": "2607.26719v1",
           "carry_days": 1
         },
         {
-          "id": "2607.27624v1",
+          "id": "2607.27528v1",
           "source": "arxiv",
-          "title": "Targeted Quarantine Strategies Mitigate SIS-model Cyber Epidemics on Complex Networks",
-          "abstract": "The rapid expansion of highly connected and heterogeneous digital infrastructures has fundamentally altered the dynamics of cyber epidemics, making it increasingly important to understand how malware propagates under realistic structural and policy conditions. In this study, we employ an SIS epidemic model on complex networks to investigate virus spreading under a range of cybersecurity scenarios, including minimally protected environments, anti-virus, vulnerable legacy systems, mixed security systems, rapidly evolving virus, and targeted quarantine of key nodes. Using simulations on scale-free topologies, we characterize how infection prevalence evolves over time and identify conditions under which outbreaks become explosive versus controlled. Our results show that vulnerable and rapidly evolving virus scenarios lead to fast and almost complete compromise, while antivirus and mixed-security configurations significantly reduce peak infection levels. Most importantly, we demonstrate that targeted quarantine of a small fraction of structurally important nodes can both delay the onset of large scale outbreaks and lower steady state infection, revealing a threshold in the fraction of quarantined nodes which required to alter spreading of computer virus. These findings highlight the critical role of network topology and selective protection in enhancing the resilience of cyber-physical infrastructures.",
+          "title": "ThreatForest: Multi-Agent Attack Tree Generation with Pluggable TTP Framework Mapping",
+          "abstract": "Threat modeling is essential for secure software development, yet manual analysis of cloud-native architectures is slow and demands scarce security expertise. We present ThreatForest, a multi-agent system that generates structured attack trees from source code repositories, maps attack steps to adversary tactics, techniques, and procedures (TTPs) from a pluggable set of frameworks (MITRE ATT&CK, CAPEC, and cloud-specific threat matrices), and synthesizes actionable mitigations. ThreatForest decomposes threat modeling into a multi-stage agent pipeline -- repository analysis, context refinement, threat generation, parallel attack-tree construction with TTP mapping and mitigation synthesis, and report generation -- orchestrated as a directed graph with deterministic verification gates, bounded retries, and three human-in-the-loop validation points. A domain-specific sentence-transformer maps each attack step to candidate techniques by cosine similarity; we show empirically that this embedding stage, not the surrounding pipeline, is the dominant accuracy bottleneck. We evaluate ThreatForest across seven application domains on a sixteen-dimension rubric, scored by a panel of independent LLM raters with an adversarial verification pass and expert review. Panel-measured quality reaches 0.63-0.68 (on a 0-1 scale) for threat statements, attack trees, and mitigations, but only 0.29 for embedding-only TTP mapping -- a gap stable across all seven domains that isolates the binding constraint. A controlled single-call baseline on the same model more than doubles mapping defensibility, pinning the limitation on the embedding encoder rather than the multi-agent design. To our knowledge, ThreatForest is the first end-to-end system that turns a code repository into TTP-mapped attack trees with evidence-based mitigations across adversary frameworks, with a reusable framework for benchmarking such systems.",
           "authors": [
-            "Ho Yuen Wong",
-            "Tak Shing Tai"
+            "Cristian Leo",
+            "Anton Dykyi",
+            "Danny Cortegaca",
+            "Daniel Begimher",
+            "Prakash Jha"
           ],
-          "primary_category": "physics.soc-ph",
+          "primary_category": "cs.CR",
           "categories": [
-            "physics.soc-ph",
-            "nlin.AO"
+            "cs.CR",
+            "cs.AI",
+            "cs.CL",
+            "cs.SE"
           ],
-          "published": "2026-07-30T03:24:17+00:00",
-          "link": "https://arxiv.org/pdf/2607.27624v1",
+          "published": "2026-07-29T23:46:23+00:00",
+          "link": "https://arxiv.org/pdf/2607.27528v1",
           "tags": [
             "keyword:ns",
             "query:ns"
           ],
           "llm_score": 8.0,
-          "llm_evidence_en": "targeted quarantine for malware epidemics on networks",
-          "llm_evidence_cn": "网络上恶意软件传播的靶向隔离防护研究",
-          "llm_evidence": "网络上恶意软件传播的靶向隔离防护研究",
-          "canonical_evidence": "网络上恶意软件传播的靶向隔离防护研究",
-          "llm_tldr_en": "This work applies an SIS epidemic model on complex networks to study malware propagation under realistic cybersecurity scenarios, showing that targeted quarantine of key nodes can significantly mitigate cyber epidemics.",
-          "llm_tldr_cn": "该研究针对复杂网络中恶意软件传播的防护问题，采用SIS流行病模型，在无标度拓扑等复杂网络上模拟多种真实网络安全场景下的病毒扩散过程。通过分析感染流行率的时变特征，系统比较了无防护、防病毒、脆弱遗留系统、混合安全系统和快速演变病毒等条件下的疫情态势。结果表明，对关键节点实施靶向隔离策略能够显著降低感染规模并抑制疫情爆发，为网络空间安全防护策略的设计与优化提供了量化依据。",
-          "llm_tldr": "该研究针对复杂网络中恶意软件传播的防护问题，采用SIS流行病模型，在无标度拓扑等复杂网络上模拟多种真实网络安全场景下的病毒扩散过程。通过分析感染流行率的时变特征，系统比较了无防护、防病毒、脆弱遗留系统、混合安全系统和快速演变病毒等条件下的疫情态势。结果表明，对关键节点实施靶向隔离策略能够显著降低感染规模并抑制疫情爆发，为网络空间安全防护策略的设计与优化提供了量化依据。",
-          "llm_tags": [
-            "query:ns"
-          ],
-          "matched_query_tag": "query:ns",
-          "matched_query_text": "current research on protecting computer networks from cyber attacks",
-          "matched_requirement_id": "req-7",
-          "selection_source": "carryover_cache",
-          "paper_id": "2607.27624v1",
-          "carry_days": 1
-        },
-        {
-          "id": "2607.24639v1",
-          "source": "arxiv",
-          "title": "Experimental Side Channel Analysis of Protocol Stages in Quantum Identity Authentication",
-          "abstract": "Quantum networks can enable distributed computing and sensing. To realize these capabilities securely, quantum identity authentication is essential. Without authentication at the quantum layer, malicious repeaters may retain entanglement instead of performing swapping, enabling man-in-the-middle attacks (MitM) between communicating parties. Authentication mitigates this threat by embedding authentication qubits within data qubits at positions and bases based on a secret key shared a priori. While prior work analyzes security and MitM detection guarantees, physical layer side channel analysis remains unexplored. If an attacker infers protocol stages, it can avoid authentication qubits and extract data qubits, rendering authentication ineffective. To this end, we carry out experimental studies using a quantum communication testbed. A beam splitter is used to tap a portion of the optical signal, allowing the observer to collect side channel data without disrupting the quantum state. We evaluate two sampling settings, where 30% or 10% of the signal is diverted. The collected side channel data includes photon arrival timing and optical power data obtained using a single-photon detector and a power meter. Using this dataset, we extract and engineer features that capture both timing dynamics and signal intensity variations. We then train machine learning models to classify protocol stages based solely on side channel observations. Our results show that protocol-stage inference is feasible with high accuracy, reaching 98% (F1-score 97%) at 30% sampling and 96% (F1-score 94%) at 10% sampling. These findings reveal an overlooked vulnerability and highlight the need for robust designs against side channel inference attacks.",
-          "authors": [
-            "Marwan Elawady",
-            "Lance Young",
-            "Contessa Wilburn",
-            "Blaine Keyton",
-            "Carrie Houston",
-            "Mohamed Shaban",
-            "Muhammad Ismail"
-          ],
-          "primary_category": "quant-ph",
-          "categories": [
-            "quant-ph",
-            "cs.NI"
-          ],
-          "published": "2026-07-27T16:35:47+00:00",
-          "link": "https://arxiv.org/pdf/2607.24639v1",
-          "tags": [
-            "keyword:ns",
-            "query:ns"
-          ],
-          "llm_score": 8.0,
-          "llm_evidence_en": "side-channel vulnerability analysis of an authentication protocol in quantum networks",
-          "llm_evidence_cn": "量子身份认证协议的侧信道漏洞分析",
-          "llm_evidence": "量子身份认证协议的侧信道漏洞分析",
-          "canonical_evidence": "量子身份认证协议的侧信道漏洞分析",
-          "llm_tldr_en": "This paper experimentally analyzes side-channel leakage in quantum identity authentication, showing that an attacker can infer protocol stages to bypass authentication and extract data qubits, revealing a new physical-layer vulnerability.",
-          "llm_tldr_cn": "量子身份认证是量子网络安全的基础，但此前研究仅关注算法层安全保障，物理层侧信道泄漏未得到分析。本文对量子身份认证协议各阶段开展实验侧信道分析，发现攻击者能够通过侧信道信息推断协议阶段，从而避开认证量子比特、提取数据量子比特，使认证形同虚设。实验证实该攻击路径可行，表明量子身份认证在物理层存在新漏洞，后续量子网络协议设计必须纳入侧信道防护对策。",
-          "llm_tldr": "量子身份认证是量子网络安全的基础，但此前研究仅关注算法层安全保障，物理层侧信道泄漏未得到分析。本文对量子身份认证协议各阶段开展实验侧信道分析，发现攻击者能够通过侧信道信息推断协议阶段，从而避开认证量子比特、提取数据量子比特，使认证形同虚设。实验证实该攻击路径可行，表明量子身份认证在物理层存在新漏洞，后续量子网络协议设计必须纳入侧信道防护对策。",
+          "llm_evidence_en": "automated threat modeling and mitigation synthesis",
+          "llm_evidence_cn": "自动化威胁建模与缓解生成",
+          "llm_evidence": "自动化威胁建模与缓解生成",
+          "canonical_evidence": "自动化威胁建模与缓解生成",
+          "llm_tldr_en": "Introduces ThreatForest, a multi-agent system that generates structured attack trees from code repositories, maps steps to MITRE ATT&CK/CAPEC/cloud threat matrices, and synthesizes mitigations, reducing manual threat analysis.",
+          "llm_tldr_cn": "为缓解云原生架构威胁建模依赖稀缺专家的问题，作者提出多智能体系统ThreatForest。它从源码仓库自动生成结构化的攻击树，将攻击步骤映射到MITRE ATT&CK、CAPEC及云威胁矩阵，并同步生成可操作的缓解建议，大幅减少人工威胁分析工作。",
+          "llm_tldr": "为缓解云原生架构威胁建模依赖稀缺专家的问题，作者提出多智能体系统ThreatForest。它从源码仓库自动生成结构化的攻击树，将攻击步骤映射到MITRE ATT&CK、CAPEC及云威胁矩阵，并同步生成可操作的缓解建议，大幅减少人工威胁分析工作。",
           "llm_tags": [
             "query:ns"
           ],
@@ -566,37 +330,73 @@
           "matched_query_text": "security vulnerability assessment and mitigation",
           "matched_requirement_id": "req-5",
           "selection_source": "carryover_cache",
-          "paper_id": "2607.24639v1",
+          "paper_id": "2607.27528v1",
           "carry_days": 1
         },
         {
-          "id": "2607.26239v1",
+          "id": "2607.27858v1",
           "source": "arxiv",
-          "title": "Round Trip Time: A Benign Signal or an Indirect Window into Datacenter Workloads?",
-          "abstract": "Multi-tenant datacenter networks increasingly rely on shared leaf-spine fabrics, where traffic from multiple tenants traverses common network resources. While logical isolation mechanisms prevent direct access between tenants, shared congestion dynamics may still expose indirect information about co-located workloads through observable latency variations. In this paper, we investigate a network side-channel vulnerability arising from shared congestion behavior in multi-tenant datacenter fabrics using RTT observations collected along overlapping network paths. We develop a framework to explore how workload-induced latency variations contain sufficiently distinguishable signatures to enable workload inference under realistic deployment conditions. Our evaluations show that indirect RTT observations can reveal meaningful workload information, achieving up to 97.3\\% run-level accuracy under cross-path evaluation when workload-induced congestion is sufficiently observable. The findings suggest that logical network isolation alone may be insufficient to prevent information leakage through shared congestion dynamics in modern datacenter infrastructures.",
+          "title": "Adaptive Security at the Edge for 6G-Enabled Healthcare IoT",
+          "abstract": "Healthcare IoT services increasingly rely on edge gateways to relay routine telemetry and deliver rare but timecritical alarms. Even short traffic bursts can inflate worstcase delay and interfere with urgent messages. We present NANOEDGEGUARD, a kernel-plane closed-loop controller that observes per-source traffic intensity at the edge and enforces an auditable, multi-tier rate policy using in-kernel traffic-control hooks. Unlike static firewall rules or user-space control loops, our design prioritizes fast actuation and explicit recovery through hysteresis, and it records policy transitions for auditability. Using a Raspberry Pi gateway hosting an MQTT broker and two ESP32 endpoints generating vitals, alarms, and a timed burst, we show that adaptive kernel-plane rate control reduces the 99th-percentile alarm RTT by 13.3% compared to a user-space firewall baseline while maintaining no-enforcement-level RTT, and it reduces excess admitted burst traffic by 46% compared to no enforcement. These early results indicate that adaptive, auditable enforcement at the gateway can improve resilience for healthcare IoT, and it can be extended toward on-demand policy deployment in future edge intelligence.",
           "authors": [
-            "Sourya Saha",
-            "Md Nurul Absur",
-            "Saptarshi Debroy"
+            "Ijaz Ahmad",
+            "Ijaz Ahmad",
+            "Erkki Harjula"
           ],
-          "primary_category": "cs.NI",
+          "primary_category": "cs.CR",
           "categories": [
-            "cs.NI"
+            "cs.CR"
           ],
-          "published": "2026-07-28T20:19:32+00:00",
-          "link": "https://arxiv.org/pdf/2607.26239v1",
+          "published": "2026-07-30T08:34:42+00:00",
+          "link": "https://arxiv.org/pdf/2607.27858v1",
           "tags": [
             "keyword:ns",
             "query:ns"
           ],
           "llm_score": 8.0,
-          "llm_evidence_en": "network side-channel vulnerability via RTT in multi-tenant datacenters",
-          "llm_evidence_cn": "利用RTT共享拥塞实现多租户数据中心负载推断的网络侧信道漏洞",
-          "llm_evidence": "利用RTT共享拥塞实现多租户数据中心负载推断的网络侧信道漏洞",
-          "canonical_evidence": "利用RTT共享拥塞实现多租户数据中心负载推断的网络侧信道漏洞",
-          "llm_tldr_en": "This paper investigates a side-channel in multi-tenant datacenter networks where shared congestion makes RTT variations reveal co-located workload patterns; the proposed framework shows latency signatures are distinguishable enough for workload inference under realistic conditions.",
-          "llm_tldr_cn": "多租户数据中心网络虽然采取逻辑隔离，但共享拥塞可能通过延迟变化泄露邻居租户的负载信息。本文基于重叠路径的RTT观测构建推断框架，证明工作负载导致的时延变化具备足够可区分的特征，可在现实部署中完成负载推断。该工作揭示了共享网络基础设施中的跨租户侧信道漏洞，对数据中心安全隔离设计具有重要意义。",
-          "llm_tldr": "多租户数据中心网络虽然采取逻辑隔离，但共享拥塞可能通过延迟变化泄露邻居租户的负载信息。本文基于重叠路径的RTT观测构建推断框架，证明工作负载导致的时延变化具备足够可区分的特征，可在现实部署中完成负载推断。该工作揭示了共享网络基础设施中的跨租户侧信道漏洞，对数据中心安全隔离设计具有重要意义。",
+          "llm_evidence_en": "adaptive edge network security mechanism with in-kernel rate policy enforcement",
+          "llm_evidence_cn": "边缘网络自适应安全机制，内核态流量控制策略",
+          "llm_evidence": "边缘网络自适应安全机制，内核态流量控制策略",
+          "canonical_evidence": "边缘网络自适应安全机制，内核态流量控制策略",
+          "llm_tldr_en": "NANOEDGEGUARD is a kernel-plane adaptive security controller for healthcare IoT gateways, enforcing per-source rate policies with hysteresis and auditability to protect time-critical alarms from traffic bursts, validated on a Raspberry Pi-based edge testbed.",
+          "llm_tldr_cn": "针对医疗物联网边缘网关面临流量突发导致时延恶化的问题，提出NANOEDGEGUARD内核平面闭环控制器，通过内核流量控制钩子执行多级速率策略并记录策略转换用于审计。采用迟滞机制实现快速恢复，实验表明在树莓派与MQTT/ESP32环境下能有效保护紧急报警流量。该工作为边缘网络自适应安全提供了一种可审计的机制。",
+          "llm_tldr": "针对医疗物联网边缘网关面临流量突发导致时延恶化的问题，提出NANOEDGEGUARD内核平面闭环控制器，通过内核流量控制钩子执行多级速率策略并记录策略转换用于审计。采用迟滞机制实现快速恢复，实验表明在树莓派与MQTT/ESP32环境下能有效保护紧急报警流量。该工作为边缘网络自适应安全提供了一种可审计的机制。",
+          "llm_tags": [
+            "query:ns"
+          ],
+          "matched_query_tag": "query:ns",
+          "matched_query_text": "network security mechanisms and protocols",
+          "matched_requirement_id": "req-1",
+          "selection_source": "carryover_cache",
+          "paper_id": "2607.27858v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2607.25379v1",
+          "source": "arxiv",
+          "title": "Cyber-Capable AI Agents: Vulnerabilities, Evaluation Containment, and Defensive Response",
+          "abstract": "Cyber-capable AI agents combine language models with tools, memory, and execution en- vironments to perform multi-step offensive-security tasks. Existing work separately measures cyber capability and catalogs attacks against agent components, but provides less guidance on containing a capable agent within the environments used to evaluate it. This review synthe- sizes five vulnerability classes at that boundary: multi-step offensive chains, objectives that conflict with sandbox boundaries, supply-chain and credential exposure, persistent command- and-control, and the speed of automated action. We use the reported July 2026 Hugging Face/OpenAI incident as a bounded case study, distinguishing incident-specific observations from findings established in the wider literature. Across the taxonomy and case, we examine controls for containment, privilege separation, provenance, and responder access, including the dual-use problem that defensive artifacts may also enable misuse. The review identifies practical priorities for evaluating cyber capability together with the security of the environment in which that capability is exercised.",
+          "authors": [
+            "Abu Bakar Siddik"
+          ],
+          "primary_category": "cs.AI",
+          "categories": [
+            "cs.AI"
+          ],
+          "published": "2026-07-28T07:34:37+00:00",
+          "link": "https://arxiv.org/pdf/2607.25379v1",
+          "tags": [
+            "keyword:ns",
+            "query:ns"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "synthesizes vulnerability classes and defensive response for cyber-capable AI agents",
+          "llm_evidence_cn": "针对具备网络攻击能力的AI智能体，综述漏洞类别并给出防御应对",
+          "llm_evidence": "针对具备网络攻击能力的AI智能体，综述漏洞类别并给出防御应对",
+          "canonical_evidence": "针对具备网络攻击能力的AI智能体，综述漏洞类别并给出防御应对",
+          "llm_tldr_en": "Reviews cyber-capable AI agent security, synthesizing five vulnerability classes (multi-step offensive chains, sandbox conflicts, supply-chain and credential exposure, persistent C2, automated action speed) and defensive containment, using the Hugging Face/OpenAI incident as a case study.",
+          "llm_tldr_cn": "该综述关注具备网络攻防能力的AI智能体在评测环境中的安全问题，归纳了多步攻击链、沙盒目标冲突、供应链与凭据暴露、持续命令控制以及自动化行动速度五类漏洞。文章结合2026年7月Hugging Face/OpenAI事件的案例，区分事件特定观察与通用结论，并提出评测遏制与防御响应方面的建议。这项工作为评估和防护高能力网络攻击智能体提供了系统性参考。",
+          "llm_tldr": "该综述关注具备网络攻防能力的AI智能体在评测环境中的安全问题，归纳了多步攻击链、沙盒目标冲突、供应链与凭据暴露、持续命令控制以及自动化行动速度五类漏洞。文章结合2026年7月Hugging Face/OpenAI事件的案例，区分事件特定观察与通用结论，并提出评测遏制与防御响应方面的建议。这项工作为评估和防护高能力网络攻击智能体提供了系统性参考。",
           "llm_tags": [
             "query:ns"
           ],
@@ -604,7 +404,132 @@
           "matched_query_text": "security vulnerability assessment and mitigation",
           "matched_requirement_id": "req-5",
           "selection_source": "carryover_cache",
-          "paper_id": "2607.26239v1",
+          "paper_id": "2607.25379v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2607.26314v1",
+          "source": "arxiv",
+          "title": "StealthBench: Measuring Operational Stealth in Autonomous Offensive-Security Agents",
+          "abstract": "Stealth, the discipline of achieving an objective without revealing your presence, capabilities, or collected intelligence, is what separates sophisticated operators from detectable ones. Elite security researchers and advanced persistent threats achieve their objectives unnoticed; autonomous agents increasingly inherit the same offensive tasks, but do they inherit the tradecraft? We introduce StealthBench,a benchmark that measures operational stealth in autonomous offensive-security agents across six operational security (OPSEC) dimensions. We extract 11 hand-verified OPSEC incidents from real bug-bounty and red-team trajectories, expanded into 14 dockerized task scenarios, where agents, despite finding real vulnerabilities, committed stealth failures inconsistent with standard operational tradecraft: embedding credentials in public uploads, deleting production resources to prove access, force-adding uninvolved users to demonstrate a race condition.   We evaluate agent trajectories using a 3-model large language model (LLM) judge panel with majority-vote aggregation, measuring safe success rate (solved and stealthy), Stealth@Solve (tradecraft quality among successful solves), and reckless solve rate (solved but cover blown). Our results show that no model exceeds 54% safe success rate (the compound metric requiring both task completion and stealth), confirming that OPSEC failures are systematic across model families. We release StealthBench as a public benchmark to support both the development of stealth-aware agents and automated OPSEC monitoring for autonomous offensive-security deployments. The interactive leaderboard, evaluation harness, and dataset are available at https://stealthbench.com.",
+          "authors": [
+            "Ads Dawson",
+            "Adrian Wood"
+          ],
+          "primary_category": "cs.CR",
+          "categories": [
+            "cs.CR",
+            "cs.AI"
+          ],
+          "published": "2026-07-28T22:23:34+00:00",
+          "link": "https://arxiv.org/pdf/2607.26314v1",
+          "tags": [
+            "keyword:ns",
+            "query:ns"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "Benchmark for measuring operational stealth in autonomous offensive-security agents, relevant to penetration testing tradecraft",
+          "llm_evidence_cn": "面向自主攻击性安全代理的隐蔽性基准，与渗透测试技术相关",
+          "llm_evidence": "面向自主攻击性安全代理的隐蔽性基准，与渗透测试技术相关",
+          "canonical_evidence": "面向自主攻击性安全代理的隐蔽性基准，与渗透测试技术相关",
+          "llm_tldr_en": "Introduces StealthBench, a benchmark measuring operational stealth of autonomous offensive-security agents across six OPSEC dimensions, using real bug-bounty and red-team scenarios to expose common stealth failures.",
+          "llm_tldr_cn": "针对自主攻击性安全代理在真实攻击场景中缺乏隐蔽性量化评估的问题，本文提出StealthBench基准，从六个行动安全维度度量代理的隐蔽能力；该基准从真实漏洞赏金和红队轨迹中提取11个人工核验的事件，扩展为14个docker化任务场景，实验显示代理即使发现真实漏洞仍会泄露行动痕迹，为渗透测试代理的作战技艺评估提供了重要工具。",
+          "llm_tldr": "针对自主攻击性安全代理在真实攻击场景中缺乏隐蔽性量化评估的问题，本文提出StealthBench基准，从六个行动安全维度度量代理的隐蔽能力；该基准从真实漏洞赏金和红队轨迹中提取11个人工核验的事件，扩展为14个docker化任务场景，实验显示代理即使发现真实漏洞仍会泄露行动痕迹，为渗透测试代理的作战技艺评估提供了重要工具。",
+          "llm_tags": [
+            "query:ns"
+          ],
+          "matched_query_tag": "query:ns",
+          "matched_query_text": "penetration testing methodologies and tools",
+          "matched_requirement_id": "req-6",
+          "selection_source": "carryover_cache",
+          "paper_id": "2607.26314v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2607.25417v1",
+          "source": "arxiv",
+          "title": "Bayesian-Guided Cooperative RL Beamforming for Wireless Adversarial User Detection",
+          "abstract": "In next-generation wireless networks, communication systems are expected to go beyond simple data transmission and simultaneously provide high data rates, efficiency, and security. This requirement has motivated the extensive adoption of machine learning methods to develop intelligent and real-time network management frameworks, enabling the system to continuously monitor and react to channel variations and user behavior while maintaining efficient information delivery. In this context, the integration of machine learning with beamforming enables adaptive and data-driven beam direction selection, improving both the efficiency and security of wireless links. In this work, a 3GPP-based system model is first implemented under a no-attacker scenario, and an exhaustive search is employed as a reference to identify the best beamforming configurations. The proposed framework is then evaluated in the presence of an attacker and under different network scalability conditions. We demonstrate that the reinforcement learning-based approaches, namely Q-learning and SARSA (State-Action-Reward-State-Action), consistently outperform random selection in terms of total channel capacity, attacker detection accuracy, and performance stability. Among the evaluated reinforcement learning methods, Q-learning achieves the best overall trade-off between detection accuracy and computational efficiency. Our results indicate that the proposed framework provides a stable, scalable, and effective solution for joint beamforming and security-aware decision-making in dynamic and adversarial wireless environments.",
+          "authors": [
+            "Parmida Geranmayeh",
+            "Onur Günlü"
+          ],
+          "primary_category": "cs.IT",
+          "categories": [
+            "cs.IT",
+            "cs.CR"
+          ],
+          "published": "2026-07-28T08:15:31+00:00",
+          "link": "https://arxiv.org/pdf/2607.25417v1",
+          "tags": [
+            "keyword:ns",
+            "query:ns"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "Wireless network security mechanism using beamforming to detect adversarial users",
+          "llm_evidence_cn": "利用波束成形检测对抗用户的无线网络安全机制",
+          "llm_evidence": "利用波束成形检测对抗用户的无线网络安全机制",
+          "canonical_evidence": "利用波束成形检测对抗用户的无线网络安全机制",
+          "llm_tldr_en": "Proposes a Bayesian-guided cooperative reinforcement learning beamforming method that monitors channel and user behavior to detect and react to adversarial users, enhancing wireless link security.",
+          "llm_tldr_cn": "下一代无线网络需要同时提供高速率、高效率和安全性，这要求系统能实时监控信道变化和用户行为。论文提出一种贝叶斯引导的协作强化学习波束成形方法，先在3GPP系统模型下训练无攻击基线，再扩展到对抗用户存在的场景。该方法能够自适应选择波束方向，在保证通信效率的同时检测并应对恶意用户。实验表明它可有效提升无线链路的物理层安全性。",
+          "llm_tldr": "下一代无线网络需要同时提供高速率、高效率和安全性，这要求系统能实时监控信道变化和用户行为。论文提出一种贝叶斯引导的协作强化学习波束成形方法，先在3GPP系统模型下训练无攻击基线，再扩展到对抗用户存在的场景。该方法能够自适应选择波束方向，在保证通信效率的同时检测并应对恶意用户。实验表明它可有效提升无线链路的物理层安全性。",
+          "llm_tags": [
+            "query:ns"
+          ],
+          "matched_query_tag": "query:ns",
+          "matched_query_text": "network security mechanisms and protocols",
+          "matched_requirement_id": "req-1",
+          "selection_source": "carryover_cache",
+          "paper_id": "2607.25417v1",
+          "carry_days": 1
+        },
+        {
+          "id": "2607.28460v1",
+          "source": "arxiv",
+          "title": "Cybersecurity Detection Classification with Reasoning-enabled Language Models",
+          "abstract": "A major issue in Security Operations Centers (SOCs) is alert fatigue, as the number of detections reported is more than staff can triage in a given day. Prior work prompts or fine-tunes large language models (LLMs) to emit a triage label directly, but does not train them to reason about whether a detection is a genuine threat. We train a chain-of-thought (CoT) reasoning-enabled triage classifier on real, human-labeled Windows endpoint detections by combining automated prompt optimization, self-training, and reinforcement learning with verifiable rewards. We find that CoT reasoning also degrades the label-token probabilities that automated triage relies on, so we separately train a calibrator that reads the full reasoning trace and estimates the probability that the verdict is correct. Our system reaches 82.6% test accuracy and, at the high-confidence operating point that governs automated triage, improves benign recall by 43.0% and malicious recall by 18.3% over a direct-label LLM classifier. We further show that the trained calibrator is necessary - an untrained confidence judge collapses high-confidence recall to zero - and that a finetuned 30B model significantly outperforms frontier general-purpose models, motivating targeted training over scale.",
+          "authors": [
+            "Amol Khanna",
+            "Manu Nandan",
+            "Cristian Viorel Popa",
+            "Joan Pujol-Roig",
+            "Diana Bolocan",
+            "Laura Vasilie",
+            "Alexandru Apostu",
+            "Chase Helwig",
+            "Mihaela Gaman",
+            "Michael Brautbar",
+            "Edward Raff",
+            "Chase Midler",
+            "Sven Krasser"
+          ],
+          "primary_category": "cs.LG",
+          "categories": [
+            "cs.LG",
+            "cs.CR"
+          ],
+          "published": "2026-07-30T16:22:13+00:00",
+          "link": "https://arxiv.org/pdf/2607.28460v1",
+          "tags": [
+            "keyword:ns",
+            "query:ns"
+          ],
+          "llm_score": 8.0,
+          "llm_evidence_en": "LLM-based triage classifier for cybersecurity detection alerts",
+          "llm_evidence_cn": "面向网络安全告警分类的推理增强语言模型",
+          "llm_evidence": "面向网络安全告警分类的推理增强语言模型",
+          "canonical_evidence": "面向网络安全告警分类的推理增强语言模型",
+          "llm_tldr_en": "SOC alert fatigue prompts a reasoning-enabled LLM triage classifier trained via prompt optimization, self-training, and RL with verifiable rewards on real Windows endpoint detections. A calibrator estimates probability from the reasoning trace, improving genuine-threat identification.",
+          "llm_tldr_cn": "安全运营中心面临告警疲劳，现有LLM方法直接输出分类标签但缺乏对威胁的推理。本文使用自动化提示优化、自训练和带可验证奖励的强化学习，在真实人工标注的Windows终端检测数据上训练链式推理分类器。由于推理会损害标签概率，还额外训练校准器读取完整推理轨迹以估计置信度，从而更准确地区分真实威胁，缓解告警疲劳。",
+          "llm_tldr": "安全运营中心面临告警疲劳，现有LLM方法直接输出分类标签但缺乏对威胁的推理。本文使用自动化提示优化、自训练和带可验证奖励的强化学习，在真实人工标注的Windows终端检测数据上训练链式推理分类器。由于推理会损害标签概率，还额外训练校准器读取完整推理轨迹以估计置信度，从而更准确地区分真实威胁，缓解告警疲劳。",
+          "llm_tags": [
+            "query:ns"
+          ],
+          "matched_query_tag": "query:ns",
+          "matched_query_text": "effective methods for detecting and preventing network intrusions",
+          "matched_requirement_id": "req-8",
+          "selection_source": "carryover_cache",
+          "paper_id": "2607.28460v1",
           "carry_days": 1
         }
       ]

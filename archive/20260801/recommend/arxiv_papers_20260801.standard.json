@@ -1,0 +1,714 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-01T20:25:28.006527+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 24,
+    "deep_cap": 6,
+    "deep_selected": 7,
+    "quick_candidates": 38,
+    "quick_skim_target": 11,
+    "quick_selected": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2607.25093v1",
+      "source": "arxiv",
+      "title": "Functional Subspace Projection for Detection of Coordinated Stealthy Attacks in Power Systems",
+      "abstract": "Modern power grids are increasingly vulnerable to coordinated cyber-attacks, particularly false data injection attacks (FDIAs) that can evade conventional residual-based detectors. While most existing detection methods rely on instantaneous measurements, coordinated dynamic attacks can remain stealthy at each time step while introducing structured temporal deviations. This paper develops a joint framework for modeling and detecting such attacks in multi-area power systems. A time-aggregated attack model is first formulated to capture temporal evolution and inter-area coordination. For detection, a kernel-embedded functional subspace detection (KEFSD) method is proposed, which models residual trajectories in a reproducing kernel Hilbert space (RKHS) and employs RKHS-constrained functional principal component analysis (PCA) to identify anomalous temporal patterns. Simulation results on a modified IEEE 14-bus system demonstrates the proposed method achieves improved detection performance compared to the conventional residual based 2-norm detector.",
+      "authors": [
+        "Koto Omiloli",
+        "Satish Vedula",
+        "Olugbenga Moses Anubi"
+      ],
+      "primary_category": "math.OC",
+      "categories": [
+        "math.OC"
+      ],
+      "published": "2026-07-27T21:33:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.25093v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "kernel-embedded functional subspace detection for coordinated false data injection attacks",
+      "llm_evidence_cn": "核嵌入功能子空间检测方法用于协同虚假数据注入攻击",
+      "llm_evidence": "核嵌入功能子空间检测方法用于协同虚假数据注入攻击",
+      "canonical_evidence": "核嵌入功能子空间检测方法用于协同虚假数据注入攻击",
+      "llm_tldr_en": "This paper proposes KEFSD, a kernel-embedded functional subspace detection method that models residual trajectories to detect coordinated stealthy false data injection attacks in multi-area power systems, capturing temporal deviations that evade instantaneous residual detectors.",
+      "llm_tldr_cn": "针对多区域电力系统中可逐时步保持隐蔽的协同虚假数据注入攻击，提出时域聚合攻击模型，并设计核嵌入功能子空间检测方法(KEFSD)，对残差轨迹在再生核希尔伯特空间中建模以捕获时间结构偏差。该方法能检测那些瞬时残差检测器无法发现的隐蔽攻击，提高电网网络安全态势感知能力。",
+      "llm_tldr": "针对多区域电力系统中可逐时步保持隐蔽的协同虚假数据注入攻击，提出时域聚合攻击模型，并设计核嵌入功能子空间检测方法(KEFSD)，对残差轨迹在再生核希尔伯特空间中建模以捕获时间结构偏差。该方法能检测那些瞬时残差检测器无法发现的隐蔽攻击，提高电网网络安全态势感知能力。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "intrusion detection systems and techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.25107v1",
+      "source": "arxiv",
+      "title": "MOSAIC-FL, a micro-service based privacy-preserving framework with application to genomics",
+      "abstract": "Security and privacy are primordial requirements for Federated Learning (FL), especially in fields such as healthcare and genomics where sensitive information has to be analyzed. Our FL framework is designed to address these challenges while proposing a modular, flexible and micro-service architecture. More precisely, it integrates an efficient gRPC communication layer and a Finite State Machine to ensure robust component synchronization and threat detection, while relying on a fault-tolerant secure aggregation protocol using a Threshold variant of the CKKS homomorphic cryptosystem. This allows blind model aggregation by an orchestration server, requiring a minimum of $t$-out-of-$N$ active clients for decryption while minimizing communication overhead thanks to both cryptographic and network protocols. We ensure IND-CPA-D security through noise flooding and mitigate the recent key-recovery attack on synchronized decryptors by renewing the collective key material at every round. We demonstrate the framework's effectiveness through diverse use cases, ranging from standard image recognition (EMNIST) to complex genomic classification including breast cancer subtyping on TCGA, evaluating system performance across different threshold values and model scales.",
+      "authors": [
+        "Paul Largillier",
+        "Karl Paygambar",
+        "Cédric Gouy-Pailler",
+        "Vincent Meyer",
+        "Mallek Mziou",
+        "Oana Stan"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "cs.LG"
+      ],
+      "published": "2026-07-27T22:09:46+00:00",
+      "link": "https://arxiv.org/pdf/2607.25107v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "threshold CKKS homomorphic cryptosystem for securely aggregating federated model updates",
+      "llm_evidence_cn": "使用门限CKKS同态加密实现联邦学习安全聚合",
+      "llm_evidence": "使用门限CKKS同态加密实现联邦学习安全聚合",
+      "canonical_evidence": "使用门限CKKS同态加密实现联邦学习安全聚合",
+      "llm_tldr_en": "MOSAIC-FL is a micro-service federated learning framework that uses gRPC communication, finite-state machine synchronization, and threshold CKKS homomorphic encryption for fault-tolerant secure aggregation, enabling blind model aggregation for sensitive genomic data with t-out-of-N active clients required for decryption.",
+      "llm_tldr_cn": "针对医疗和基因组学等敏感场景中的联邦学习隐私安全问题，提出基于微服务架构的MOSAIC-FL框架。框架集成gRPC通信层和有限状态机以实现组件同步和威胁检测，并采用门限CKKS同态加密的容错安全聚合协议，允许编排服务器进行盲聚合而无需接触明文模型。实验或设计表明只要t个活动客户端即可解密，兼顾隐私与效率，为隐私保护联邦学习提供了模块化可行方案。",
+      "llm_tldr": "针对医疗和基因组学等敏感场景中的联邦学习隐私安全问题，提出基于微服务架构的MOSAIC-FL框架。框架集成gRPC通信层和有限状态机以实现组件同步和威胁检测，并采用门限CKKS同态加密的容错安全聚合协议，允许编排服务器进行盲聚合而无需接触明文模型。实验或设计表明只要t个活动客户端即可解密，兼顾隐私与效率，为隐私保护联邦学习提供了模块化可行方案。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "cryptographic algorithms and applications",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.25222v1",
+      "source": "arxiv",
+      "title": "How to Watermark the RLWE Homomorphic Ciphertexts",
+      "abstract": "In recent years, homomorphic encryption (HE) schemes based on the Ring Learning with Errors (RLWE) problem have rapidly developed and been widely applied to secure computation tasks, including privacy-preserving deep learning inference, privacy-preserving database queries, and related applications. However, most existing HE schemes focus primarily on the feasibility and efficiency of homomorphic computation, often neglecting practical requirements such as copyright protection of ciphertexts, source authentication, and supervision during computation. To address these issues, we propose a watermarking technique for RLWE-based HE ciphertexts. The algebraic structure of RLWE polynomials allows us to embed small noise as watermarking information into the ciphertext polynomials without affecting the plaintext values. However, HE ciphertexts typically undergo multiple homomorphic operations, which can distort or even remove the embedded watermark information. To address this challenge, we propose two practical solutions. The first, ARWMark, is a watermarking scheme based on noise stratification and is robust to homomorphic additive operations. The second scheme, MRWMark, is constructed using the roots of a linear equation and is resilient to both homomorphic additive and multiplicative operations, while supporting zero-bit watermarking. We provide a detailed theoretical analysis, proving that our schemes do not compromise the original security of HE, while ensuring the correctness and robustness of the proposed watermarking techniques. Furthermore, we conduct extensive experiments to demonstrate the effectiveness of both watermarking schemes.",
+      "authors": [
+        "Yufei Zhou"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR"
+      ],
+      "published": "2026-07-28T02:53:30+00:00",
+      "link": "https://arxiv.org/pdf/2607.25222v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Watermarking technique for RLWE homomorphic encryption ciphertexts",
+      "llm_evidence_cn": "面向RLWE同态加密密文的水印技术",
+      "llm_evidence": "面向RLWE同态加密密文的水印技术",
+      "canonical_evidence": "面向RLWE同态加密密文的水印技术",
+      "llm_tldr_en": "Proposes a watermarking method for RLWE-based homomorphic ciphertexts, embedding small noise as watermarks into ciphertext polynomials to support copyright protection, source authentication, and supervision.",
+      "llm_tldr_cn": "同态加密(HE)已在隐私保护推理和数据库查询中广泛应用，但现有方案主要关注计算可行性和效率，缺少对密文版权保护、来源认证和计算监督的支持。论文针对RLWE同态加密提出一种密文水印技术，利用多项式代数结构将微小噪声作为水印嵌入密文。该方法可以在不破坏同态能力的前提下对密文进行标记和追溯。这为同态加密的实际部署增加了重要的可监管属性，扩展了其应用边界。",
+      "llm_tldr": "同态加密(HE)已在隐私保护推理和数据库查询中广泛应用，但现有方案主要关注计算可行性和效率，缺少对密文版权保护、来源认证和计算监督的支持。论文针对RLWE同态加密提出一种密文水印技术，利用多项式代数结构将微小噪声作为水印嵌入密文。该方法可以在不破坏同态能力的前提下对密文进行标记和追溯。这为同态加密的实际部署增加了重要的可监管属性，扩展了其应用边界。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "cryptographic algorithms and applications",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.26655v1",
+      "source": "arxiv",
+      "title": "Fingerprint-Driven Automation: Coupling Reconnaissance with POC Verification",
+      "abstract": "In the field of network security confrontation, reconnaissance is the first and most critical step. Accurate, efficient, and comprehensive reconnaissance can help network security workers more fully understand the target's current state, identify potential weaknesses, and formulate a targeted attack strategy. However, there are some problems in the existing tools on the market, such as low accuracy of the collected information, lack of concealment, time-consuming, low or high integration of tools, which makes them difficult to start using. With the continuous development of technology, systems need to continuously upgrade their technologies and strategies, and expand new functions. The scalability of tool functions is also one of the factors that need to be taken into consideration. These problems in the practice of network security have a serious impact on user experience and work efficiency. In view of this, a more user-friendly, more automated reconnaissance and vulnerability verification tool is designed.This paper proposes to develop a highly automated reconnaissance and vulnerability verification tool. This paper presents the tool functions and conducts the basic design. Finally, we implement and test all the functions specifically to verify the feasibility of the tool functions and highlight the advantages of this tool in terms of automation, retrieval, and use in network security operations.Through the test of the online security simulation range, the results show that this tool can complete the automatic reconnaissance and in-depth data processing of specific targets, and conduct automatic vulnerability detection and verification.",
+      "authors": [
+        "Hongping Wang",
+        "Xiaoqi Li"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR"
+      ],
+      "published": "2026-07-29T09:16:43+00:00",
+      "link": "https://arxiv.org/pdf/2607.26655v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "reconnaissance and POC verification for penetration testing",
+      "llm_evidence_cn": "面向渗透测试的侦察与验证方法",
+      "llm_evidence": "面向渗透测试的侦察与验证方法",
+      "canonical_evidence": "面向渗透测试的侦察与验证方法",
+      "llm_tldr_en": "Network reconnaissance tools suffer from low accuracy, poor stealth, and fragmented integration. This paper proposes fingerprint-driven automation coupling reconnaissance with POC verification, improving target understanding and attack-strategy formulation.",
+      "llm_tldr_cn": "在网络攻防中，侦察是首要且关键的环节，但现有工具存在信息精度低、隐蔽性差、耗时长、集成度不一等问题。本文提出指纹驱动的自动化方法，将侦察与POC验证相耦合，帮助安全人员更全面地掌握目标状态并识别潜在弱点。该方法兼顾工具功能扩展性，可支撑制定针对性的攻击策略，提升渗透测试的效率与准确性。",
+      "llm_tldr": "在网络攻防中，侦察是首要且关键的环节，但现有工具存在信息精度低、隐蔽性差、耗时长、集成度不一等问题。本文提出指纹驱动的自动化方法，将侦察与POC验证相耦合，帮助安全人员更全面地掌握目标状态并识别潜在弱点。该方法兼顾工具功能扩展性，可支撑制定针对性的攻击策略，提升渗透测试的效率与准确性。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "penetration testing methodologies and tools",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.27491v1",
+      "source": "arxiv",
+      "title": "Flock: Fast Proving for Batch Boolean Computations",
+      "abstract": "For many applications of SNARKs, a key bottleneck is proving large batches of standard cryptographic hash evaluations, such as SHA-256, Keccak, or BLAKE3. We introduce Flock, a hash-based SNARK for extremely fast proving of such batched Boolean computations. Flock proves batches of the same R1CS circuit (plus input/output relations between them), can prove hash-chains and Merkle path openings, and in principle can be extended to full-fledged hash-based signature verification. At its core, Flock combines new optimizations for the lincheck and zerocheck protocols with an aggressively optimized proof-of-concept implementation co-designed by coding agents.   On a single core of an M4 Max processor, Flock proves 82k evaluations of the BLAKE3 compression function, 42k SHA-256 compressions, and 30k Keccak permutations per second --- less than a $250\\times$ overhead over native execution. On ten cores, throughput exceeds 660k BLAKE3 compressions per second; in proving SHA-256, Flock is more than $9\\times$ faster than Binius64, the prior state of the art, and more than $500\\times$ faster than the fastest elliptic curve-based SNARK we measured against.",
+      "authors": [
+        "Benedikt Bünz",
+        "Ron D. Rothblum",
+        "William Wang"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR"
+      ],
+      "published": "2026-07-29T22:11:08+00:00",
+      "link": "https://arxiv.org/pdf/2607.27491v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "SNARK for fast proving of cryptographic hash evaluations",
+      "llm_evidence_cn": "用于密码哈希求值快速证明的SNARK",
+      "llm_evidence": "用于密码哈希求值快速证明的SNARK",
+      "canonical_evidence": "用于密码哈希求值快速证明的SNARK",
+      "llm_tldr_en": "Introduces Flock, a hash-based SNARK that rapidly proves large batches of Boolean hash computations such as SHA-256 and BLAKE3, enabling efficient hash-chain, Merkle path, and signature verification.",
+      "llm_tldr_cn": "零知识证明(SNARK)应用常受限于大批量密码哈希求值(如SHA-256、Keccak、BLAKE3)的证明速度。论文提出Flock，一种基于哈希的SNARK，可对同一R1CS电路的批量计算连同输入输出关系进行快速证明，支持哈希链和Merkle路径验证。核心是lincheck与zerocheck协议的新优化，并结合编码智能体优化的高性能实现。在M4 Max单核上，Flock每秒可证明数万至数十万次哈希压缩函数求值，大幅提升了批量布尔计算的证明效率。",
+      "llm_tldr": "零知识证明(SNARK)应用常受限于大批量密码哈希求值(如SHA-256、Keccak、BLAKE3)的证明速度。论文提出Flock，一种基于哈希的SNARK，可对同一R1CS电路的批量计算连同输入输出关系进行快速证明，支持哈希链和Merkle路径验证。核心是lincheck与zerocheck协议的新优化，并结合编码智能体优化的高性能实现。在M4 Max单核上，Flock每秒可证明数万至数十万次哈希压缩函数求值，大幅提升了批量布尔计算的证明效率。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "cryptographic algorithms and applications",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.27510v1",
+      "source": "arxiv",
+      "title": "Send and Pretend: Exploiting Transcript Consistency Issues in End-to-End Encrypted Group Chats",
+      "abstract": "End-to-end encrypted (E2EE) messaging apps are widely praised for their security and thus also used for sensitive coordination in group chats (e.g., by political decision makers). After Threema and WhatsApp, also Signal and iMessage have recently introduced polls to aid agreement processes in groups. This implicitly sets the expectation that all participants see the same outcome and thus have the same view of the conversation. This property is commonly referred to as transcript consistency (TC). In this work, we demonstrate that today's major E2EE messengers do not guarantee any form of TC for group chats, allowing a malicious group member to selectively omit, reorder, or present altered content to different recipients without triggering warnings in their user interface. We systematically investigate the extent of the problem under a malicious-participant threat model that targets the integrity of the shared transcript, or inconsistent delivery across a user's linked devices. We identify multiple equivocation vectors that range from protocol fallback paths to deliberate use of pairwise delivery channels within groups. We demonstrate concrete exploitation scenarios such as social engineering, evading moderation, and, in particular, rigging polls. Beyond these cross-service design issues, we also uncover implementation-specific behaviors with privacy implications (e.g., device OS fingerprinting). Finally, we contextualize our findings within prior transcript-consistency research and outline practical low-overhead mitigations and UI signaling strategies that can be integrated into state-of-the-art E2EE group protocols.",
+      "authors": [
+        "Gabriel K. Gegenhuber",
+        "Moritz Grefner",
+        "Maximilian Günther",
+        "Matthäus Wininger",
+        "David Schmidt",
+        "Aljosha Judmayer"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR"
+      ],
+      "published": "2026-07-29T22:54:21+00:00",
+      "link": "https://arxiv.org/pdf/2607.27510v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Exploits transcript consistency vulnerabilities in major E2EE group chat protocols, demonstrating a concrete attack class",
+      "llm_evidence_cn": "利用主流端到端加密群聊中的一致性漏洞，展示具体攻击类别",
+      "llm_evidence": "利用主流端到端加密群聊中的一致性漏洞，展示具体攻击类别",
+      "canonical_evidence": "利用主流端到端加密群聊中的一致性漏洞，展示具体攻击类别",
+      "llm_tldr_en": "Shows that major end-to-end encrypted group chat apps fail to guarantee transcript consistency, allowing malicious members to selectively omit, reorder, or alter content seen by recipients; attacks are demonstrated in real systems.",
+      "llm_tldr_cn": "该工作研究端到端加密群聊中的一致性保证问题，发现主流应用在群聊中普遍不提供任何形式的转录一致性。恶意群成员可以针对不同接收者选择性地省略、重排或篡改内容，而不会被检测。作者在多个真实E2EE消息应用（包括Threema、WhatsApp、Signal和iMessage）的投票等场景中验证了这些攻击。这表明现有E2EE协议对群聊的一致性安全存在系统性缺失，需重新审视其威胁模型。",
+      "llm_tldr": "该工作研究端到端加密群聊中的一致性保证问题，发现主流应用在群聊中普遍不提供任何形式的转录一致性。恶意群成员可以针对不同接收者选择性地省略、重排或篡改内容，而不会被检测。作者在多个真实E2EE消息应用（包括Threema、WhatsApp、Signal和iMessage）的投票等场景中验证了这些攻击。这表明现有E2EE协议对群聊的一致性安全存在系统性缺失，需重新审视其威胁模型。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "security vulnerability assessment and mitigation",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.27624v1",
+      "source": "arxiv",
+      "title": "Targeted Quarantine Strategies Mitigate SIS-model Cyber Epidemics on Complex Networks",
+      "abstract": "The rapid expansion of highly connected and heterogeneous digital infrastructures has fundamentally altered the dynamics of cyber epidemics, making it increasingly important to understand how malware propagates under realistic structural and policy conditions. In this study, we employ an SIS epidemic model on complex networks to investigate virus spreading under a range of cybersecurity scenarios, including minimally protected environments, anti-virus, vulnerable legacy systems, mixed security systems, rapidly evolving virus, and targeted quarantine of key nodes. Using simulations on scale-free topologies, we characterize how infection prevalence evolves over time and identify conditions under which outbreaks become explosive versus controlled. Our results show that vulnerable and rapidly evolving virus scenarios lead to fast and almost complete compromise, while antivirus and mixed-security configurations significantly reduce peak infection levels. Most importantly, we demonstrate that targeted quarantine of a small fraction of structurally important nodes can both delay the onset of large scale outbreaks and lower steady state infection, revealing a threshold in the fraction of quarantined nodes which required to alter spreading of computer virus. These findings highlight the critical role of network topology and selective protection in enhancing the resilience of cyber-physical infrastructures.",
+      "authors": [
+        "Ho Yuen Wong",
+        "Tak Shing Tai"
+      ],
+      "primary_category": "physics.soc-ph",
+      "categories": [
+        "physics.soc-ph",
+        "nlin.AO"
+      ],
+      "published": "2026-07-30T03:24:17+00:00",
+      "link": "https://arxiv.org/pdf/2607.27624v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "malware propagation on networks, targeted quarantine strategies",
+      "llm_evidence_cn": "网络恶意软件传播，定向隔离策略",
+      "llm_evidence": "网络恶意软件传播，定向隔离策略",
+      "canonical_evidence": "网络恶意软件传播，定向隔离策略",
+      "llm_tldr_en": "Simulates SIS-model cyber epidemics on complex networks under realistic security scenarios, showing targeted quarantine of key nodes mitigates infection outbreaks on scale-free topologies.",
+      "llm_tldr_cn": "高度互联的异构数字基础设施使网络流行病动态发生改变，需要理解恶意软件在真实结构下的传播。本文在复杂网络上采用SIS流行病模型，模拟低防护、反病毒、遗留漏洞系统、混合安全系统、快速演化病毒以及关键节点定向隔离等场景。在无标度拓扑上的仿真刻画了感染流行率随时间的变化，找出了爆发转为爆炸性的条件，并证明关键节点的定向隔离策略能有效缓解网络流行病，为保护计算机网络提供策略支持。",
+      "llm_tldr": "高度互联的异构数字基础设施使网络流行病动态发生改变，需要理解恶意软件在真实结构下的传播。本文在复杂网络上采用SIS流行病模型，模拟低防护、反病毒、遗留漏洞系统、混合安全系统、快速演化病毒以及关键节点定向隔离等场景。在无标度拓扑上的仿真刻画了感染流行率随时间的变化，找出了爆发转为爆炸性的条件，并证明关键节点的定向隔离策略能有效缓解网络流行病，为保护计算机网络提供策略支持。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "network security mechanisms and protocols",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.22094v1",
+      "source": "arxiv",
+      "title": "Transforming Keystroke Noise to Text: Self-Supervised Acoustic Eavesdropping Attacks on Keyboards",
+      "abstract": "We present a self-supervised acoustic eavesdropping attack that reconstructs typed text solely from keystroke sounds, without requiring labeled data for the target device. The proposed attack enables stealthy eavesdropping in two real-world scenarios-physical spaces (public and semi-public) and online meetings. Our method combines unsupervised acoustic clustering with Transformer-based language model inference and iterative self-training, enabling stable character inference under highly uncertain acoustic-to-character mappings. We demonstrate that the proposed method achieves over 99% reconstruction accuracy with only 100-150 observed keystrokes under a close-proximity recording setup using a smartphone placed near the target device, significantly outperforming prior unsupervised baselines in low-data regimes. We further evaluate robustness across multiple laptop platforms and in realistic acquisition channels, including distance recording from approximately 3 meters away on the same desk, through-the-wall eavesdropping with a contact microphone, and background keyboard noise in online conferencing systems. Across these scenarios, the proposed method achieves high reconstruction accuracy (often exceeding 90%) with approximately 150-250 observed keystrokes. These results indicate that accurate text reconstruction from keystroke sounds is feasible in practice under an audio-only setting, even with limited observed keystrokes and without requiring device-specific labeled data, highlighting a realistic and previously underestimated privacy risk.",
+      "authors": [
+        "Atsunori Okada",
+        "Akira Ito",
+        "Rei Ueno",
+        "Yuichi Hayashi",
+        "Naofumi Homma"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "cs.SD"
+      ],
+      "published": "2026-07-24T08:43:16+00:00",
+      "link": "https://arxiv.org/pdf/2607.22094v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "self-supervised acoustic eavesdropping attack on keyboards",
+      "llm_evidence_cn": "键盘声学侧信道窃听攻击",
+      "llm_evidence": "键盘声学侧信道窃听攻击",
+      "canonical_evidence": "键盘声学侧信道窃听攻击",
+      "llm_tldr_en": "A self-supervised acoustic eavesdropping attack reconstructs typed text from keystroke sounds without labeled data, achieving over 99% accuracy with 100-150 keystrokes.",
+      "llm_tldr_cn": "该论文提出一种自监督声学窃听攻击，仅凭键盘敲击声重建用户输入文本，无需标记数据。方法结合无监督声学聚类、Transformer语言模型推理和迭代自训练，在声学-字符映射不确定时仍能稳定推断。实验显示智能手机近距录音下仅需100-150次击键即可获得超过99%的字符重建准确率。研究揭示了键盘声学侧信道泄密的现实风险，对信息安全防护有重要启示。",
+      "llm_tldr": "该论文提出一种自监督声学窃听攻击，仅凭键盘敲击声重建用户输入文本，无需标记数据。方法结合无监督声学聚类、Transformer语言模型推理和迭代自训练，在声学-字符映射不确定时仍能稳定推断。实验显示智能手机近距录音下仅需100-150次击键即可获得超过99%的字符重建准确率。研究揭示了键盘声学侧信道泄密的现实风险，对信息安全防护有重要启示。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "cyber security principles and practices",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.23417v1",
+      "source": "arxiv",
+      "title": "Early Detection of Hardware Trojans Using Neural Controlled Differential Equations and Analysis of Power Traces",
+      "abstract": "Evolving Hardware Trojans pose a serious threat to modern digital systems by evading traditional detection through stealthy, adaptive behavior. Even recent methods that leverage advances in machine learning can only detect them after activation, leaving a critical window for potential security breaches. To address this gap, we propose a novel approach for hardware Trojan detection and prediction using Neural Controlled Differential Equations (NCDEs) and analysis of power traces. Our method leverages an NCDE model trained exclusively on Trojan-free data to learn nominal power behavior, combined with a Linear Discriminant Analysis (LDA) classifier calibrated on labeled data, to distinguish between three scenarios: no Trojan, dormant Trojan, and active Trojan. Our method uses a sliding window to process side-channel measurements, enabling detection of subtle power consumption deviations that indicate Trojan presence, even when dormant. Experimental results demonstrate that the proposed NCDE-based method achieves superior accuracy compared to traditional machine learning approaches, with the additional advantage of handling dormant Trojans above a sensitivity threshold. We validate our approach on standard hardware Trojan benchmarks, showing robust detection and prediction performance.",
+      "authors": [
+        "Hasala Senevirathne",
+        "Rahul Vishwakarma",
+        "Amin Rezaei"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR"
+      ],
+      "published": "2026-07-26T02:27:59+00:00",
+      "link": "https://arxiv.org/pdf/2607.23417v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "early hardware trojan detection using power trace analysis",
+      "llm_evidence_cn": "基于功率迹分析的硬件木马早期检测技术",
+      "llm_evidence": "基于功率迹分析的硬件木马早期检测技术",
+      "canonical_evidence": "基于功率迹分析的硬件木马早期检测技术",
+      "llm_tldr_en": "Hardware Trojans evade traditional detection until activation. The paper uses Neural Controlled Differential Equations trained on Trojan-free data plus an LDA classifier to detect and predict Trojans from power traces before activation, reducing the breach window.",
+      "llm_tldr_cn": "演化型硬件木马通过隐蔽自适应行为规避传统检测，现有机器学习方法也往往只能在激活后发现威胁。本文提出基于神经控制微分方程与功率迹分析的检测方法，仅在无木马数据上学习正常功率行为，并结合线性判别分析分类器区分不同场景。该方法可在木马激活前实现早期检测与预测，缩短安全漏洞窗口，对数字系统安全具有重要意义。",
+      "llm_tldr": "演化型硬件木马通过隐蔽自适应行为规避传统检测，现有机器学习方法也往往只能在激活后发现威胁。本文提出基于神经控制微分方程与功率迹分析的检测方法，仅在无木马数据上学习正常功率行为，并结合线性判别分析分类器区分不同场景。该方法可在木马激活前实现早期检测与预测，缩短安全漏洞窗口，对数字系统安全具有重要意义。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "intrusion detection systems and techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.24343v1",
+      "source": "arxiv",
+      "title": "Beyond Aggregate Risk: Role-Stratified Conformal Risk Control for LLM Tool Calls",
+      "abstract": "Language-model agents act through structured tool calls whose arguments carry different risks. Untrusted content may safely influence an email body but should not determine a recipient, account, command, or credential. Existing statistical methods typically control risk over the entire action, allowing failures in rare, high-risk fields to be obscured by benign arguments. We introduce role-stratified per-field conformal risk control, a calibration layer that wraps any per-field detector and sets separate thresholds and risk budgets for semantic argument roles. For a role with prevalence $p_r$, aggregate-only certification must use an effective budget of $αp_r$ to guarantee role-specific risk $α$, whereas role-stratified calibration certifies each sufficiently sampled role directly with a finite-sample guarantee; rarer roles are handled by pooled certification. Across AgentDojo and InjecAgent with six language models, the empirical utility gap tracks this predicted price of coarseness, and our method achieves the most consistent role-specific budget compliance under model and attack transfer, detector noise, gradual drift, unseen tool suites, and adaptive attacks. It provides formal per-role guarantees under exchangeability or after recalibration, and empirical compliance under frozen distribution shift. These results suggest that structured tool calls should be certified at the semantic-role level, not the whole action.",
+      "authors": [
+        "Md Ashikur Rahman",
+        "Md Arifur Rahman",
+        "Niamul Hassan Samin",
+        "Khandaker Rifah Tasnia",
+        "Sifat Rahman Ahona",
+        "Juena Ahmed Noshin"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-07-27T12:21:18+00:00",
+      "link": "https://arxiv.org/pdf/2607.24343v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Role-stratified conformal risk control to mitigate risks in LLM tool calls, particularly high-risk credentials",
+      "llm_evidence_cn": "通过角色分层共形风险控制降低LLM工具调用中的高危凭证风险",
+      "llm_evidence": "通过角色分层共形风险控制降低LLM工具调用中的高危凭证风险",
+      "canonical_evidence": "通过角色分层共形风险控制降低LLM工具调用中的高危凭证风险",
+      "llm_tldr_en": "Introduces role-stratified per-field conformal risk control for LLM tool calls, providing certified risk guarantees for high-risk argument roles instead of aggregate-only calibration.",
+      "llm_tldr_cn": "针对LLM智能体工具调用中高风险参数（如收件人、账户、命令）被总体风险控制掩盖的问题，提出角色分层逐字段共形风险控制方法，为不同语义角色设置独立阈值和风险预算，实验证明与总体认证相比，在保证角色级风险的同时显著降低所需的统计预算，为安全使用LLM工具调用提供了可认证的细粒度保障。",
+      "llm_tldr": "针对LLM智能体工具调用中高风险参数（如收件人、账户、命令）被总体风险控制掩盖的问题，提出角色分层逐字段共形风险控制方法，为不同语义角色设置独立阈值和风险预算，实验证明与总体认证相比，在保证角色级风险的同时显著降低所需的统计预算，为安全使用LLM工具调用提供了可认证的细粒度保障。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "security vulnerability assessment and mitigation",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.23444v1",
+      "source": "arxiv",
+      "title": "Isolated but Exposed: Persistence-Based Memory Extraction Attack on LLM Agents",
+      "abstract": "LLM-based agents extend large language models with long-term memory (LTM) that persists privacy-sensitive user data across sessions. Production systems mitigate extraction risks through memory isolation, binding each user's LTM to a unique identifier. This defense has blocked known attacks on shared storage, fostering the assumption that isolated LTM is secure. We identify the tool interface as an overlooked attack surface. Agents routinely embed LTM-retrieved data in tool invocation parameters, enabling a malicious tool to exfiltrate private memory without violating user-level isolation. Naive adaptations of user-side extraction techniques fail because the adversarial command's semantics interfere with retrieval precision, and platform-imposed tool-call limits constrain the extraction budget per trigger. We present SPORE, the first extraction attack designed for this threat model. SPORE decouples the adversarial command from retrieval anchors by persisting the command in short-term memory and emitting semantically pure anchors in tool responses. The restored retrieval precision enables a geometric coverage optimization over the embedding space that systematically steers anchors toward unexplored memory regions. To sustain extraction beyond tool-call limits, SPORE persists reactivation payloads in memory that automatically resume the attack within and across sessions without additional user triggers. SPORE achieves an 80.0% record extraction rate with unlimited triggers and 47.0% with only 20 triggers. In multi-user deployments, attackers can link extracted records to user identities, enabling targeted surveillance. These results demonstrate that memory isolation alone is insufficient and call for reexamining tool-side trust boundaries in agent architectures.",
+      "authors": [
+        "Xinyu Gao",
+        "Wenyu Chen",
+        "Xiangtao Meng",
+        "Li Wang",
+        "Chuanchao Zang",
+        "Jianing Wang",
+        "Zheng Li",
+        "Shanqing Guo"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR"
+      ],
+      "published": "2026-07-26T03:51:20+00:00",
+      "link": "https://arxiv.org/pdf/2607.23444v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "memory extraction attack exposes vulnerability in LLM agents",
+      "llm_evidence_cn": "针对LLM智能体内存隔离机制的提取攻击与漏洞分析",
+      "llm_evidence": "针对LLM智能体内存隔离机制的提取攻击与漏洞分析",
+      "canonical_evidence": "针对LLM智能体内存隔离机制的提取攻击与漏洞分析",
+      "llm_tldr_en": "LLM agents store private data in isolated long-term memory, believed secure. This paper exposes the tool interface as an attack surface: malicious tools can exfiltrate LTM data via tool-call parameters without breaking user-level isolation, revealing a new vulnerability class.",
+      "llm_tldr_cn": "LLM智能体的长期记忆会跨会话保留隐私敏感数据，生产系统通常通过用户级隔离来阻止提取攻击，但本文发现工具接口是被忽视的攻击面。智能体在调用工具时会嵌入从记忆检索的数据，恶意工具可在不违反隔离机制的情况下窃取私有记忆。此攻击无法通过简单的用户侧提取技术防御，揭示了长期记忆隔离假设的缺陷，为智能体安全设计提出新的挑战。",
+      "llm_tldr": "LLM智能体的长期记忆会跨会话保留隐私敏感数据，生产系统通常通过用户级隔离来阻止提取攻击，但本文发现工具接口是被忽视的攻击面。智能体在调用工具时会嵌入从记忆检索的数据，恶意工具可在不违反隔离机制的情况下窃取私有记忆。此攻击无法通过简单的用户侧提取技术防御，揭示了长期记忆隔离假设的缺陷，为智能体安全设计提出新的挑战。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "security vulnerability assessment and mitigation",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.24116v1",
+      "source": "arxiv",
+      "title": "A Cybersecurity MLPS Large Language Model with Multi-Path Retrieval Fusion",
+      "abstract": "The Multi-Level Protection Scheme (MLPS) is a foundational system in China's cybersecurity governance framework. Therefore, accurate analysis and understanding of MLPS requirements are essential. At present, MLPS analysis still relies mainly on manual interpretation of standards and rule-based tools. This makes it hard to provide stable and consistent compliance analysis in complex application scenarios. The rise of large language models has created new opportunities for making MLPS work more intelligent. However, in standards-intensive and security-sensitive scenarios, general-purpose large language models often cannot ensure controllable reasoning or complete understanding of rules. This paper proposes a large language model framework for MLPS that integrates multiple retrieval strategies. It combines hierarchical retrieval, tree-based retrieval, and tokenization-based matching retrieval. This design helps maintain retrieval coverage while reducing the interference of irrelevant context in the reasoning process. To address the requirements of MLPS question answering for clause accuracy, conclusion traceability, and practical deployability, this paper adopts a evaluation method based on multi-dimensional weighted scoring to quantitatively assess model responses. In comparative experiments on ten typical questions, the proposed domain-specific large language model for MLPS achieved higher overall scores.",
+      "authors": [
+        "Qian Li",
+        "Zhenyan Qi",
+        "Liang Shen",
+        "Yuan Zhang",
+        "Yifan Wan",
+        "Junyuan Ma",
+        "Yining Hu"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR"
+      ],
+      "published": "2026-07-27T07:57:28+00:00",
+      "link": "https://arxiv.org/pdf/2607.24116v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "LLM framework for cybersecurity MLPS compliance analysis, aligning with cyber security principles and practices",
+      "llm_evidence_cn": "面向网络安全等级保护合规分析的LLM框架，契合网络安全原则与实践",
+      "llm_evidence": "面向网络安全等级保护合规分析的LLM框架，契合网络安全原则与实践",
+      "canonical_evidence": "面向网络安全等级保护合规分析的LLM框架，契合网络安全原则与实践",
+      "llm_tldr_en": "Proposes a cybersecurity LLM framework for Multi-Level Protection Scheme (MLPS) analysis with multi-path retrieval fusion, improving controllable reasoning and rule understanding in standards-intensive compliance scenarios.",
+      "llm_tldr_cn": "该工作针对等级保护（MLPS）分析仍依赖人工解读和规则工具、难以保证一致性的问题，提出多路径检索融合的网络安全大语言模型框架。该框架在标准密集且安全敏感的场景下增强了对规则的可控推理和完整理解，支持自动化合规分析。方法提升了复杂应用场景中MLPS分析的稳定性和一致性。这是结合大语言模型与等级保护实践的有益探索。",
+      "llm_tldr": "该工作针对等级保护（MLPS）分析仍依赖人工解读和规则工具、难以保证一致性的问题，提出多路径检索融合的网络安全大语言模型框架。该框架在标准密集且安全敏感的场景下增强了对规则的可控推理和完整理解，支持自动化合规分析。方法提升了复杂应用场景中MLPS分析的稳定性和一致性。这是结合大语言模型与等级保护实践的有益探索。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "cyber security principles and practices",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.24563v2",
+      "source": "arxiv",
+      "title": "TRACE-CTI: Auditable Post-Extraction Governance of TTP Claims with Knowledge Graphs",
+      "abstract": "Security Operations Centers increasingly rely on automated mapping of Cyber Threat Intelligence reports to MITRE ATT&CK, yet extractor outputs remain fallible and are often stored without the evidence, provenance, and validation history needed to decide whether an individual mapping should be trusted. We present TRACE- CTI, a post-extraction claim-governance framework that preserves run-level Predictions, aggregates them into configuration-level GraphAssertions, materializes setup-deduplicated corroboration as ConsensusAssertions, and exposes only GraphAssertions backed by policy-compliant validation grounds. The framework retains native evidence granularity, complete extraction provenance, versioned trust decisions, and non-destructive revocation history. We evaluate TRACE-CTI on two public CTI corpora comprising 65 reports and 5,303 sentences, using a controlled 2 x 3 matrix of retrievers and generator families, incrementally ingested across six GraphVersions. All setups are incorporated without schema modification; provenance paths remain complete, operational scopes remain disjoint, and every trusted GraphAssertion has an active qualifying validation ground. Cross-generator-family setup pairs exhibit greater output diversity than same-family pairs. At the final graph state, increasing setup support from k >= 1 to six-setup unanimity raises gold-aligned precision from 25.3% to 90.6%, while recall decreases from 88.2% to 16.3%. The graph also directly answers seven questions about provenance, trust, versioning, dependency, disagreement, and review-queue that the evaluated minimal flat output cannot fully answer without enrichment or reprocessing. These results support explicit, auditable governance of extracted TTP claims; the observed corroboration trajectory is descriptive and does not establish statistical independence or a causal model-family effect.",
+      "authors": [
+        "Federico Valletta",
+        "Giacomo Longo",
+        "Enrico Russo",
+        "Alessio Merlo"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI",
+        "cs.CR"
+      ],
+      "published": "2026-07-27T15:33:18+00:00",
+      "link": "https://arxiv.org/pdf/2607.24563v2",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "knowledge-graph governance framework for validating cyber threat intelligence TTP mappings",
+      "llm_evidence_cn": "基于知识图谱的威胁情报TTP映射治理与验证框架",
+      "llm_evidence": "基于知识图谱的威胁情报TTP映射治理与验证框架",
+      "canonical_evidence": "基于知识图谱的威胁情报TTP映射治理与验证框架",
+      "llm_tldr_en": "TRACE-CTI is a post-extraction governance framework for Cyber Threat Intelligence that preserves provenance, aggregates predictions into graph assertions, and exposes only validated claims, enabling auditable trust decisions for MITRE ATT&CK mappings.",
+      "llm_tldr_cn": "针对安全运营中心依赖自动化CTI到MITRE ATT&CK映射但提取结果缺乏证据与验证历史的问题，提出TRACE-CTI框架，保留运行级预测，聚合为配置级图断言，并基于政策合规的验证依据暴露可信断言。该框架提供完整溯源、版本化信任决策与非破坏性重评，提升TTP声明的可审计性与可信度。",
+      "llm_tldr": "针对安全运营中心依赖自动化CTI到MITRE ATT&CK映射但提取结果缺乏证据与验证历史的问题，提出TRACE-CTI框架，保留运行级预测，聚合为配置级图断言，并基于政策合规的验证依据暴露可信断言。该框架提供完整溯源、版本化信任决策与非破坏性重评，提升TTP声明的可审计性与可信度。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "cyber security principles and practices",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.23752v1",
+      "source": "arxiv",
+      "title": "ZKP Security Tools and Verification: Coverage, Effectiveness, Adoption, and Challenges",
+      "abstract": "Zero-knowledge proofs (ZKPs) have become a core technology for privacy and verifiable computing. They are used to secure blockchains that handle billions of dollars and identity applications dealing with sensitive personal data. However, ZKP systems are complex, and subtle implementation errors can completely break their guarantees, letting attackers forge money or false proofs of identity. Researchers and practitioners have therefore developed a growing set of bug detection and formal verification methods to secure these systems. Yet their real-world effectiveness and adoption remain unclear. In this paper, we aim to shed light on the state of ZKP security tooling. We first systematize the landscape of these tools and observe that most target Circom, leaving newer DSLs and zkVMs with limited support. We then evaluate six tools across 70 real-world vulnerabilities and find that while the tools detect 45.7% of bugs on isolated targets, their effectiveness drops to 19.6% on full codebases, with important vulnerability classes left unaddressed. We also present the first systematic analysis of formal verification efforts, revealing that current work focuses primarily on constraint correctness and identifying key gaps and risks. Finally, we survey 48 practitioners, showing that development and security remain human-led, LLMs are widely used, and practitioners prioritize tools with clearer guarantees and lower integration effort. Overall, our results highlight the need for better integration of security tooling with the development and auditing process, and we provide actionable insights for researchers and practitioners.",
+      "authors": [
+        "Arman Kolozyan",
+        "Tom Sorger",
+        "Alexander Hicks",
+        "Stefanos Chaliasos"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR"
+      ],
+      "published": "2026-07-26T16:54:31+00:00",
+      "link": "https://arxiv.org/pdf/2607.23752v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Systematizes security tools and verification methods for zero-knowledge proofs, a core cryptographic application",
+      "llm_evidence_cn": "系统梳理零知识证明的安全工具与验证方法，属核心密码应用",
+      "llm_evidence": "系统梳理零知识证明的安全工具与验证方法，属核心密码应用",
+      "canonical_evidence": "系统梳理零知识证明的安全工具与验证方法，属核心密码应用",
+      "llm_tldr_en": "Systematizes the landscape of ZKP security tools and verification methods, analyzing coverage, effectiveness, adoption, and challenges to reveal gaps in real-world security assurance.",
+      "llm_tldr_cn": "针对零知识证明实现中细微错误可完全破坏安全保证的问题，系统梳理了当前ZKP安全工具与验证方法的全景，分析其覆盖范围、有效性、实际采用与面临挑战，发现大多数工具仅覆盖有限漏洞类型、真实世界采用率不高等问题，为密码实现的安全验证研究提供了详尽的现状分析与未来方向。",
+      "llm_tldr": "针对零知识证明实现中细微错误可完全破坏安全保证的问题，系统梳理了当前ZKP安全工具与验证方法的全景，分析其覆盖范围、有效性、实际采用与面临挑战，发现大多数工具仅覆盖有限漏洞类型、真实世界采用率不高等问题，为密码实现的安全验证研究提供了详尽的现状分析与未来方向。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "cryptographic algorithms and applications",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.24177v1",
+      "source": "arxiv",
+      "title": "EXE-Bench: Ranking the Tradeoffs of AI-based Windows Malware Detectors for Real-World Usability",
+      "abstract": "Due to the lack of systematic evaluations, we are not yet able to determine which AI-based Windows malware detector to deploy in production, since existing evaluations (i) differ in terms of data used for both training and testing; (ii) do not consider temporal analysis to showcase whether models withstand the passage of time; (iii) avoid security evaluations with adversarial attacks that could highlight their brittleness against content-injection attacks; and (iv) neglect the computational requirements for deployment, risking slow inference on endpoints. For these reasons, we develop EXE-Bench, a comprehensive benchmark of AI-based Windows malware detectors. EXE-Bench assesses performance, temporal and adversarial robustness, and computational overhead, aggregating them into a single score for direct and fair model comparison. Through EXE-Bench, we highlight how evaluations conducted only after deployment are suboptimal and unable to provide a complete picture of their performance. In particular, through our analysis, we remark how much domain knowledge instilled through feature engineering is still extremely useful in this domain, resisting both time and adversarial attacks, in stark contrast with most of the deep networks that only excel right after deployment.",
+      "authors": [
+        "Andrea Ponte",
+        "Daniel Gibert",
+        "Matous Kozak",
+        "Dmitrijs Trizna",
+        "Maura Pintor",
+        "Battista Biggio",
+        "Fabio Roli",
+        "Luca Demetrio"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "cs.LG"
+      ],
+      "published": "2026-07-27T09:02:56+00:00",
+      "link": "https://arxiv.org/pdf/2607.24177v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "benchmark evaluating AI-based Windows malware detectors for detection and robustness, relevant to intrusion prevention",
+      "llm_evidence_cn": "构建AI型Windows恶意软件检测器基准，评估检测力与鲁棒性，支撑入侵防御",
+      "llm_evidence": "构建AI型Windows恶意软件检测器基准，评估检测力与鲁棒性，支撑入侵防御",
+      "canonical_evidence": "构建AI型Windows恶意软件检测器基准，评估检测力与鲁棒性，支撑入侵防御",
+      "llm_tldr_en": "Develops EXE-Bench, a comprehensive benchmark for AI-based Windows malware detectors, measuring detection performance, temporal robustness to concept drift, adversarial robustness against content-injection, and computational deployment costs, to guide real-world production choices.",
+      "llm_tldr_cn": "针对AI型Windows恶意软件检测器缺乏系统评测的问题，提出EXE-Bench基准。该基准同时评估检测性能、时间维度上的鲁棒性（能否抵御概念漂移）、面对内容注入对抗攻击的脆弱性，以及推理所需的计算开销，弥补了现有评测数据与设置不一致的不足。通过统一评测，EXE-Bench帮助用户在真实部署中权衡模型性能与可用性，是恶意软件检测研究的重要参考工具。",
+      "llm_tldr": "针对AI型Windows恶意软件检测器缺乏系统评测的问题，提出EXE-Bench基准。该基准同时评估检测性能、时间维度上的鲁棒性（能否抵御概念漂移）、面对内容注入对抗攻击的脆弱性，以及推理所需的计算开销，弥补了现有评测数据与设置不一致的不足。通过统一评测，EXE-Bench帮助用户在真实部署中权衡模型性能与可用性，是恶意软件检测研究的重要参考工具。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "effective methods for detecting and preventing network intrusions",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.24896v1",
+      "source": "arxiv",
+      "title": "Latent Stability Analysis of Malware Representations Under Feature-Space Perturbations",
+      "abstract": "Static malware detectors are commonly evaluated using clean-sample metrics such as accuracy, F1, ROC AUC, and PR AUC. However, these metrics provide limited insight into how learned malware representations behave when feature vectors are perturbed, how close samples move toward uncertain decision regions, or whether compressed representations preserve security-relevant structure. This paper presents a latent-stability analysis pipeline for malware perturbation assessment in EMBER feature space. The pipeline compares full EMBER features, PCA-based compression, beta/denoising variational autoencoder representations, Mandelbrot-inspired escape-time descriptors, and a PINN-style latent-flow module. We define Latent Escape Divergence (LED) to measure changes in escape-time profiles under perturbation, and use PINNFlow-derived residual, velocity, risk, and gradient-shift metrics to characterize latent movement. Experiments are conducted on EMBER static PE feature vectors using 180,000 training samples, 180,000 test samples, and 240,000 holdout samples. Full EMBER features achieve the strongest clean classification performance with ROC AUC of 0.9962 and F1 of 0.9713, while PCA-64 is the strongest compressed baseline with ROC AUC of 0.9846 and F1 of 0.9347. The proposed VAE+Mandelbrot+PINNFlow representation does not outperform these baselines for clean classification, but it provides additional diagnostic value under controlled feature-space perturbation probes.",
+      "authors": [
+        "Bamidele Ajayi",
+        "Ken McGarry"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "cs.AI"
+      ],
+      "published": "2026-07-27T15:53:28+00:00",
+      "link": "https://arxiv.org/pdf/2607.24896v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "Latent stability analysis of malware representations under perturbations, supporting robust intrusion/malware detection",
+      "llm_evidence_cn": "恶意软件表示在扰动下的潜在稳定性分析，支持鲁棒的入侵/恶意软件检测",
+      "llm_evidence": "恶意软件表示在扰动下的潜在稳定性分析，支持鲁棒的入侵/恶意软件检测",
+      "canonical_evidence": "恶意软件表示在扰动下的潜在稳定性分析，支持鲁棒的入侵/恶意软件检测",
+      "llm_tldr_en": "Presents a latent-stability analysis pipeline for malware representations in EMBER feature space, defining Latent Escape Divergence to evaluate how perturbed feature vectors move toward decision boundaries across compressed representations.",
+      "llm_tldr_cn": "该工作针对静态恶意软件检测器仅用准确率等指标评估、无法反映表示鲁棒性的问题，提出潜在稳定性分析管线。在EMBER特征空间下比较多种压缩表示（PCA、VAE、逃逸时间描述符等），并定义潜在逃逸散度来量化扰动样本到决策边界的变化。分析显示不同表示对特征扰动的稳定性差异显著，为训练更鲁棒的检测器提供依据。这为恶意软件检测的表示学习评估提供了新视角。",
+      "llm_tldr": "该工作针对静态恶意软件检测器仅用准确率等指标评估、无法反映表示鲁棒性的问题，提出潜在稳定性分析管线。在EMBER特征空间下比较多种压缩表示（PCA、VAE、逃逸时间描述符等），并定义潜在逃逸散度来量化扰动样本到决策边界的变化。分析显示不同表示对特征扰动的稳定性差异显著，为训练更鲁棒的检测器提供依据。这为恶意软件检测的表示学习评估提供了新视角。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "intrusion detection systems and techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.24639v1",
+      "source": "arxiv",
+      "title": "Experimental Side Channel Analysis of Protocol Stages in Quantum Identity Authentication",
+      "abstract": "Quantum networks can enable distributed computing and sensing. To realize these capabilities securely, quantum identity authentication is essential. Without authentication at the quantum layer, malicious repeaters may retain entanglement instead of performing swapping, enabling man-in-the-middle attacks (MitM) between communicating parties. Authentication mitigates this threat by embedding authentication qubits within data qubits at positions and bases based on a secret key shared a priori. While prior work analyzes security and MitM detection guarantees, physical layer side channel analysis remains unexplored. If an attacker infers protocol stages, it can avoid authentication qubits and extract data qubits, rendering authentication ineffective. To this end, we carry out experimental studies using a quantum communication testbed. A beam splitter is used to tap a portion of the optical signal, allowing the observer to collect side channel data without disrupting the quantum state. We evaluate two sampling settings, where 30% or 10% of the signal is diverted. The collected side channel data includes photon arrival timing and optical power data obtained using a single-photon detector and a power meter. Using this dataset, we extract and engineer features that capture both timing dynamics and signal intensity variations. We then train machine learning models to classify protocol stages based solely on side channel observations. Our results show that protocol-stage inference is feasible with high accuracy, reaching 98% (F1-score 97%) at 30% sampling and 96% (F1-score 94%) at 10% sampling. These findings reveal an overlooked vulnerability and highlight the need for robust designs against side channel inference attacks.",
+      "authors": [
+        "Marwan Elawady",
+        "Lance Young",
+        "Contessa Wilburn",
+        "Blaine Keyton",
+        "Carrie Houston",
+        "Mohamed Shaban",
+        "Muhammad Ismail"
+      ],
+      "primary_category": "quant-ph",
+      "categories": [
+        "quant-ph",
+        "cs.NI"
+      ],
+      "published": "2026-07-27T16:35:47+00:00",
+      "link": "https://arxiv.org/pdf/2607.24639v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "side-channel vulnerability analysis of an authentication protocol in quantum networks",
+      "llm_evidence_cn": "量子身份认证协议的侧信道漏洞分析",
+      "llm_evidence": "量子身份认证协议的侧信道漏洞分析",
+      "canonical_evidence": "量子身份认证协议的侧信道漏洞分析",
+      "llm_tldr_en": "This paper experimentally analyzes side-channel leakage in quantum identity authentication, showing that an attacker can infer protocol stages to bypass authentication and extract data qubits, revealing a new physical-layer vulnerability.",
+      "llm_tldr_cn": "量子身份认证是量子网络安全的基础，但此前研究仅关注算法层安全保障，物理层侧信道泄漏未得到分析。本文对量子身份认证协议各阶段开展实验侧信道分析，发现攻击者能够通过侧信道信息推断协议阶段，从而避开认证量子比特、提取数据量子比特，使认证形同虚设。实验证实该攻击路径可行，表明量子身份认证在物理层存在新漏洞，后续量子网络协议设计必须纳入侧信道防护对策。",
+      "llm_tldr": "量子身份认证是量子网络安全的基础，但此前研究仅关注算法层安全保障，物理层侧信道泄漏未得到分析。本文对量子身份认证协议各阶段开展实验侧信道分析，发现攻击者能够通过侧信道信息推断协议阶段，从而避开认证量子比特、提取数据量子比特，使认证形同虚设。实验证实该攻击路径可行，表明量子身份认证在物理层存在新漏洞，后续量子网络协议设计必须纳入侧信道防护对策。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "security vulnerability assessment and mitigation",
+      "matched_requirement_id": "req-5",
+      "selection_source": "carryover_cache",
+      "paper_id": "2607.24639v1",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.25225v1",
+      "source": "arxiv",
+      "title": "SecDrift: Measuring Sector-Conditioned Security Drift in AI-Generated Code",
+      "abstract": "LLMs are increasingly used for code generation in critical infrastructure, yet the security effect of domain-specific prompting is understudied. We present SecDrift, a benchmark measuring sector-conditioned security drift: the change in static-analysis vulnerability rates when prompts are conditioned on industry contexts versus neutral baselines. We evaluate 7 LLMs (6 producing analyzable code) across 8 CISA critical infrastructure sectors and 9 CWE categories with 5 replicates (5,355 evaluations), using a 5-dimension transformation with a matched-baseline condition that holds the task fixed while substituting only domain terminology. Industry prompts naively appear more secure (14.0% vs. 11.4%, -2.7pp), but the gap is not statistically significant (Fisher's exact p = 0.24, Cohen's h = -0.08) and is a composition artifact of two CWE categories: excluding CWE-502 and CWE-22 eliminates and slightly reverses it (+0.4pp, p = 1.00). A mixed-effects logistic regression confirms sector identity is not a moderator and localizes the only detectable condition effect to those two vulnerability types. 0 of 8 sectors show drift distinguishable from baseline, corrected or uncorrected (|h| < 0.15). A placebo on two non-CISA sectors (e-commerce, online education) reproduces the CISA industry rate almost exactly (10.5% vs. 11.4%, p = 0.63): the small pooled pattern reflects generic industry-framing specificity, not critical-infrastructure identity. In contrast, model selection has a large and consistent effect: among full-output models vulnerability rates range from 11.6% to 16.1%, and these differences persist across conditions. Model choice, not prompt framing, is the more reliable security lever. We release the framework, prompts, generated code, findings, human-validation verdicts, and analysis scripts.",
+      "authors": [
+        "Narayanaswami Natraj Bharadwaj",
+        "Dhivya Chandramouleeswaran"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "cs.LG",
+        "cs.SE"
+      ],
+      "published": "2026-07-28T02:57:19+00:00",
+      "link": "https://arxiv.org/pdf/2607.25225v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "Benchmark measuring security drift in AI-generated code via static-analysis vulnerability rates",
+      "llm_evidence_cn": "通过静态分析漏洞率测量 AI 生成代码的安全漂移",
+      "llm_evidence": "通过静态分析漏洞率测量 AI 生成代码的安全漂移",
+      "canonical_evidence": "通过静态分析漏洞率测量 AI 生成代码的安全漂移",
+      "llm_tldr_en": "SecDrift measures how domain-specific prompting changes vulnerability rates in LLM-generated code using matched baselines, finding the apparent gap is not statistically significant.",
+      "llm_tldr_cn": "大模型生成的代码在关键基础设施中的安全性受领域提示影响，但缺乏量化研究。本文提出 SecDrift 基准，用 7 个 LLM 在 8 个关键基础设施行业和 9 个 CWE 类别的 5000 多次评测中测量提示语义变化对静态分析漏洞率的影响。采用匹配基线的 5 维变换，结果表明领域提示看似更安全，但差异并不显著，提示了安全评估需谨慎解读。",
+      "llm_tldr": "大模型生成的代码在关键基础设施中的安全性受领域提示影响，但缺乏量化研究。本文提出 SecDrift 基准，用 7 个 LLM 在 8 个关键基础设施行业和 9 个 CWE 类别的 5000 多次评测中测量提示语义变化对静态分析漏洞率的影响。采用匹配基线的 5 维变换，结果表明领域提示看似更安全，但差异并不显著，提示了安全评估需谨慎解读。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "security vulnerability assessment and mitigation",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

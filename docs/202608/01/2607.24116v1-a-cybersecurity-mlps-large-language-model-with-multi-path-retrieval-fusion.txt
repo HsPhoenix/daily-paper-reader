@@ -1,0 +1,1224 @@
+Title: 2607.24116v1.pdf
+
+URL Source: https://arxiv.org/pdf/2607.24116v1
+
+Published Time: Tue, 28 Jul 2026 01:39:21 GMT
+
+Number of Pages: 20
+
+Markdown Content:
+1
+
+A Cybersecurity MLPS Large Language Model with Multi -Path Retrieval 
+
+Fusion 
+
+Qian Li 1, 2, Zhenyan Qi 1, 2, Liang Shen 1, 2, Yuan Zhan g3, Yifan Wan 4, Junyuan Ma 5,
+
+Yining H u5* 
+
+> 1
+
+The Third Research Institute of Ministry of Public Security, Shanghai 200031, China  
+
+> 2
+
+Shanghai Engineering Research Center of Cyber and Information Security 
+
+Evaluation , Shanghai 200031, China  
+
+> 3
+
+Network and Information Center, Southeast University, Nanjing 211189, China  
+
+> 4
+
+School of Computer Science and Engineering, Southeast University, Nanjing 
+
+211189, China  
+
+> 5
+
+School of Cyber Science and Engineering, Southeast University, Nanjing 211189, 
+
+China 
+
+*Corresponding author. Em ail:  hyn.list@seu.edu.cn 
+
+Abstract :
+
+The Multi -Level Protection Scheme (MLPS) is a foundational system in China’s 
+
+cybersecurity governance framework. Therefore, accurate analysis and understanding 
+
+of MLPS requirements are essential. At present, MLPS analysis still relies mainly on 
+
+manual interpretation of standards and rule -based tools. This makes it hard to provide 
+
+stable and consistent compliance analysis in complex application scenarios. The rise of 
+
+larg e language models has created new opportunities for making MLPS work more 
+
+intelligent. However, in standards -intensive and security -sensitive scenarios, general -
+
+purpose large language models often cannot ensure controllable reasoning or complete 
+
+understand ing of rules. 
+
+This paper proposes a large language model framework for MLPS that integrates 
+
+multiple retrieval strategies. It combines hierarchical retrieval, tree -based retrieval, and 
+
+tokenization -based matching retrieval. This design helps maintain retri eval coverage 
+
+while reducing the interference of irrelevant context in the reasoning process. To 
+
+address the requirements of MLPS question answering for clause accuracy, conclusion 
+
+traceability, and practical deployability, this paper adopts a evaluation m ethod based on 
+
+multi -dimensional weighted scoring to quantitatively assess model responses. In 
+
+comparative experiments on ten typical questions, the proposed domain -specific large 
+
+language model for MLPS achieved higher overall scores. 2
+
+Keywords: 
+
+Cybersecurity; Multi -Level Protection Scheme; Large Language Models; Retrieval -
+
+Augmented Generation .
+
+1. Introduction 
+
+As a foundational system in China’s cybersecurity field, the Multi -Level Protection 
+
+Scheme (MLPS) includes basic requirements, classifica tion guidelines, and evaluation 
+
+requirements. At present, MLPS work relies heavily on manual interpretation of 
+
+standards and rule -based checking tools. In practice, this often leads to high costs, low 
+
+efficiency, insufficient consistency, and limited suppo rt for continuous compliance. 
+
+In recent years, large language models (LLMs) have rapidly improved in language 
+
+understanding, knowledge reasoning, and text generation. They have shown strong 
+
+performance, especially in knowledge -intensive tasks. However, dir ectly applying 
+
+general -purpose LLMs to MLPS scenarios still faces several challenges. The MLPS 
+
+knowledge system contains dense provisions, strong structural hierarchy, and clear 
+
+context dependence. It also requires a very high level of standardization, tra ceability, 
+
+and completeness in outputs. Without reliable external knowledge constraints, general -
+
+purpose models are prone to hallucinations and incomplete responses. 
+
+To address these issues, this paper designs and implements an intelligent question -
+
+answeri ng and assisted analysis framework for the MLPS domain, with Retrieval -
+
+Augmented Generation (Lewis et al., 2020) as its core approach. The framework 
+
+introduces customized improvements in knowledge organization, retrieval strategies, 
+
+and generation constraints. As a result, it can provide highly accurate, consistent, and 
+
+interpretable answers to MLPS -related questions. 
+
+1.1 Literature Review 
+
+Large language models have been w idely applied in the cybersecurity field, 
+
+including threat intelligence analysis and vulnerability detection (Ali and Ghanem, 
+
+2025; Zhang et al., 2025) . They show clear advantages in improving the efficiency of 
+
+security analysis, reducing manual workload, and integrating multi -source security 
+
+knowledge (Divakaran and Peddinti, 2025 ; Xu et al., 2024) . In threat intelligence 
+
+analysis, current research mainly focuses on two areas: the construction of CTI datasets 
+
+and evaluation benchmarks, and methods for automated analysis and detection. Della 3
+
+Penna et al. (2025) built the manually annotated CTI -HAL dataset. Huang et al. (2025) 
+
+developed a dataset for fake threat intelligence detection. These studies la id the 
+
+foundation for cyber threat intelligence analysis. Hu et al. (2024) leveraged the 
+
+capabilities of large language models in natural language understanding and knowledge 
+
+reasoning, and proposed a me thod called LLM -TIKG. This method constructs 
+
+knowledge graphs from unstructured open -source threat intelligence and effectively 
+
+improves the precision of two tasks: named entity recognition and TTP classification. 
+
+Bokkena (2024) introduced large language models into threat intelligence prediction 
+
+and identification, and proposed an LLM -based threat prediction framework with an 
+
+accuracy of 95%. 
+
+MLPS is an important foundation of China’s cybersecurity assurance system. At 
+
+present, research in the MLPS field mainly focuses on two areas: (1) interpretat ion of 
+
+MLPS standards and compliance analysis (Jiang et al., 2021; Ma et al., 2019) ; and (2) 
+
+the application of MLPS in different industry scenarios and the design of cybersecurity 
+
+protection solutions based on it (Li and Qian, 2021; Zhu et al., 2020) . Jiang et al. (2021) 
+
+explained the background, development, and necessity of MLPS, and gave a detailed 
+
+introduction to the key points and core standards of MLPS 2.0. Under the guidance of 
+
+the MLPS 2.0 stan dards, Li and Qian (2021) proposed a general cybersecurity 
+
+protection solution for the gateway station of satellite communication systems. Zhang 
+
+(2025) discussed the application of MLPS in the power industry and proposed a 
+
+comprehensive solution to improve cybersecurity in that sector. Zhu et al. (2020) 
+
+extended MLPS to the blockchain field and evaluated and analyzed blockchain system 
+
+operational data. Research on large language models in the M LPS field is still at an 
+
+early stage. Existing studies mainly focus on MLPS knowledge enhancement and 
+
+evaluation report inspection (Wu et al., 2025) . However, current research is still 
+
+exploring ret rieval methods, and mature research is still lacking. 
+
+The MLPS domain is characterized by dense standards, complex hierarchies, and 
+
+extremely high requirements for result reliability. To address these structural features 
+
+and practical needs, this paper pro poses a large language model approach that integrates 
+
+workflow control, hierarchical knowledge organization, customized retrieval strategies, 
+
+and generation constraint mechanisms, so as to address the limitations of existing 
+
+research in this area. 4
+
+1.2 Objectives and Contributions 
+
+This paper proposes a domain -specific large language model framework for the 
+
+MLPS field based on RAG. Based on relevant regulatory documents such as GB/T 
+
+22239 -2019 (National Information Security Standardization Technical Committee 
+
+(SAC/TC 260), 2019a) and GB/T 28448 -2019 (National Information Security 
+
+Standardization Technical Committee (SAC/TC 260), 2019b) , the framework can 
+
+accurately understand user questions and produce standardized outputs, including 
+
+standard references, clause identification, explanations, and difference analysis. It can 
+
+support MLPS -related knowledge retrieval, consulting, and evaluat ion. 
+
+(1) Construction of a domain knowledge base for MLPS scenarios 
+
+A knowledge base was built around laws, regulations, and cybersecurity 
+
+knowledge related to MLPS. It provides support for semantic understanding and 
+
+compliance analysis by large language m odels in this field. 
+
+(2) Design of a multi -path hybrid retrieval strategy integrating hierarchical retrieval, 
+
+tree -based retrieval, and tokenization -based matching retrieval 
+
+Given the clear hierarchical structure of MLPS standards and the strong correlatio n
+
+between technical terms, this paper designs a multi -path hybrid retrieval strategy. It 
+
+combines hierarchical retrieval by security level, tree -based retrieval based on 
+
+document title structure, and tokenization -based matching retrieval based on the BM25 
+
+algorithm. This strategy can effectively improve the accuracy of retrieval results and 
+
+the coverage of retrieval for complex standards. 
+
+2. Problem Statements 
+
+This paper mainly addresses the application of large language models in MLPS 
+
+scenarios, including intelligent standards retrieval and compliance analysis. Based on 
+
+the security issue description, scenario information, and target object provided by the 
+
+user, the model retrieves relevant standard content from the constructed MLPS 
+
+kno wledge base. On this basis, it generates analysis results that are standards -based, 
+
+semantically consistent, and explainable. 
+
+3. Methodology 
+
+This paper proposes a domain -specific large language model framework for MLPS 
+
+scenarios. The framework is constructed on a general -purpose large language model. It 5
+
+integrates multi -path retrieval fusion, including hierarchical retrieval, tree -based 
+
+retriev al, and tokenization -based matching retrieval. The framework also incorporates 
+
+MLPS domain knowledge. This design improves the reliability of the generated outputs. 
+
+3.1 Design of a Large Language Model Framework for the Multi -Level Protection 
+
+Scheme Integrating Retrieval -Augmented Generation 
+
+In the MLPS domain, knowledge texts exhibit clear hierarchical relationships. The 
+
+structures are well -defined. The terminology is highly standardized. User queries show 
+
+significant variation in expression and sema ntic complexity. They include factual 
+
+questions that correspond to specific clauses. They also include scenario -based 
+
+questions that depend on business contexts. 
+
+To address these challenges, this paper proposes a large language model framework 
+
+based on Ret rieval -Augmented Generation. In this framework, the openPangu 7B 
+
+Model (Chen et al., 2025) is used for query classification. The Qwen is used for query 
+
+rewriting and answer generation. The framework improves performance in query 
+
+understanding, k nowledge retrieval, and answer generation. 
+
+Figure 1. MLPS -Oriented Large Language Model Framework 
+
+(1) Query Type Identification and Abstraction Mechanism 
+
+Before retrieval and generation, the system first identifies the type of the user 
+
+question and classifies it as either a factual question or a scenario -based question. This 
+
+classification is based on the semantic understanding capability of the large language 
+
+model. It determines whether the question depends on a specific conte xt and whether 
+
+reasoning and summarization are required. 
+
+Factual questions usually correspond to specific standard clauses, laws and 
+
+regulations, or technical definitions. Their answers are deterministic and verifiable. For 
+
+such questions, the main goal of the system is to improve the matching accuracy 
+
+between the question and the standard texts. Scenario -based questions, however, often 
+
+contain business context or hypothetical conditions, so their answers cannot be obtained 6
+
+directly through retrieval. The s ystem performs semantic abstraction on such questions, 
+
+reducing the influence of specific scenario descriptions and rewriting them as 
+
+theoretical questions that can be aligned with normative texts. This provides a unified 
+
+entry point for subsequent retriev al. 
+
+(2) Query Normalization and Semantic Alignment 
+
+To further improve retrieval performance, the system applies unified normalization 
+
+to all input questions. The purpose of this process is to convert colloquial and 
+
+unstructured natural language questions into retrieval queries that better match the 
+
+expression style of standard documents. 
+
+The normalization process mainly includes removing colloquial expressions, 
+
+eliminating semantic ambiguity, adding necessary constraints, and adopting written 
+
+expressions t hat are more consistent with normative texts. Through this mechanism, the 
+
+system can better align the structure and wording of user questions with knowledge 
+
+base content such as national standards, industry specifications, and laws and 
+
+regulations, without changing the original meaning of the questions. 
+
+(3) Hybrid Retrieval Module 
+
+The framework in this paper does not rely on a single retrieval method. Instead, it 
+
+introduces multiple complementary retrieval strategies to improve the stability and 
+
+coverage of recall. During retrieval, it combines hierarchical retrieval based on security 
+
+levels, tree -based retrieval based on document title structure, and tokenization -based 
+
+matching retrieval based on the BM25 algorithm to generate candidate text segm ents 
+
+from different perspectives. These candidate results are then included in the subsequent 
+
+processing pipeline and integrated through semantic reranking and authority -based 
+
+constraint mechanisms, providing reliable knowledge support for the generation s tage. 
+
+By uniformly coordinating the hybrid retrieval strategy at the framework level, the 
+
+system can improve the accuracy and stability of retrieval results while maintaining 
+
+retrieval coverage. 
+
+3.2 Hybrid Retrieval Mechanism Integrating Multiple Strategi es 
+
+In MLPS knowledge base scenarios, user queries often show strong structural 
+
+features, complex semantic hierarchies, and dense technical terminology. A single 
+
+retrieval strategy often has limitations in recall coverage and semantic generalization. 
+
+To addres s this issue, this paper proposes a multi -strategy retrieval framework that 7
+
+integrates hierarchical retrieval, tree -based semantic retrieval, and tokenization -based 
+
+matching retrieval. By combining multi -source candidate generation with unified 
+
+reranking, the framework improves the stability and accuracy of retrieval in multi -
+
+document and multi -standard environments. 
+
+3.2.1 BM25 -Based Token Matching Retrieval Strategy 
+
+BM25 is a classical sparse retrieval method that models the matching degree 
+
+between query t erms and document content based on term frequency (TF) and inverse 
+
+document frequency (IDF). This method is highly sensitive to terminology, clause 
+
+numbers, standard names, and fixed expressions, making it particularly suitable for 
+
+highly standardized corp ora such as security standards and regulatory texts. As a low -
+
+level exact matching retriever, BM25 builds independent indexes for each candidate 
+
+document and returns relevance -ranked results based on the query terms. To avoid 
+
+introducing excessive noise in multi -document scenarios, the proposed framework 
+
+dynamically adjusts the number of candidates selected from each document according 
+
+to document -level relevance rankings, thereby controlling candidate scale while 
+
+maintaining recall. BM25 demonstrates stabl e performance in exact matching and 
+
+effectively prevents the omission of critical clauses or key terms. However, its 
+
+generalization capability for semantic paraphrasing and implicit intent is limited, 
+
+making it difficult to cover natural language queries w ith highly diverse expressions. 
+
+3.2.2 Tree -Based Retrieval Strategy Based on Document Title Structure 
+
+Raptor (Sarthi et al., 2024) constructs multi -level semantic trees by leveraging the 
+
+structured characteristics of documents. Leaf nodes correspond to the finest -grained 
+
+original text segments, while higher -level nodes perform semantic aggregation over 
+
+their child nodes through a sum marization model, forming a hierarchical structure that 
+
+combines both summaries and evidential content. During the retrieval stage, RAPTOR 
+
+can return both leaf nodes, which provide directly citable original evidence, and routing 
+
+nodes, which represent sect ion -level or topic -level semantic summaries. Tree -based 
+
+retrieval exploits document structural information, making retrieval results more 
+
+consistent with human understanding of normative texts. However, its performance 
+
+depends on the quality of document st ructures and the stability of the summarization 8
+
+model, and summary nodes may introduce additional noise in multi -document mixed 
+
+scenarios. 
+
+3.2.3 Hierarchical Retrieval Strategy for Security Levels and Regulatory Clauses 
+
+The hierarchical retrieval strategy is designed to address the characteristics of 
+
+security assessment and MLPS -related texts, which exhibit strong hierarchical 
+
+structures and a high degree of itemization. This approach performs layered modeling 
+
+of documents, such as by security level, chapt er, or control point. During retrieval, it 
+
+first identifies relevant documents and then conducts retrieval within each document 
+
+according to its hierarchical structure. First, the large language model is used to assess 
+
+document -level relevance for the quer y, thereby narrowing the retrieval scope. Layered 
+
+retrieval is then performed within the selected documents, with the number of 
+
+candidates dynamically allocated based on document relevance. Finally, a unified re -
+
+ranking model selects the most representativ e clause -level segments from the cross -
+
+document candidate set. Texts returned by hierarchical retrieval are typically closer to 
+
+actionable items or inspection points, making them suitable for supplementing 
+
+principle -level conclusions. However, this method is sensitive to the accuracy of the 
+
+document selection stage. Once an incorrect document set is chosen, subsequent 
+
+retrieval steps have limited ability to correct the deviation. 
+
+3.2.4 Fusion Mechanism of Three Retrieval Strategies 
+
+The framework proposed in this paper first merges the candidates generated by 
+
+BM25, RAPTOR, and hierarchical retrieval, and then performs global ranking through 
+
+deduplication and a semantic reranking model. This process ensures that the results 
+
+from different retrieval strategies are compared under the same relevance standard, 
+
+thereby preventing any single retriever from dominating the result distribution. 
+
+The framework also considers file priority constraints in the knowledge base. For 
+
+example, national standards are as signed the highest priority. This mechanism 
+
+effectively reduces the risk of conflicts caused by mixing information from multiple 
+
+sources. 
+
+The hybrid retrieval strategy proposed in this paper combines tokenization -based 
+
+matching, tree -based semantic modelin g, and hierarchical structured retrieval. In this 9
+
+way, it achieves high coverage, high precision, and high reliability in complex MLPS 
+
+scenarios. 
+
+4. Experiments and Results 
+
+To evaluate the effectiveness of the proposed MLPS -oriented large language model 
+
+for cybersecurity, we constructed a question –answer dataset in collaboration with 
+
+relevant user organizations and conducted experimental evaluations based on this 
+
+dataset. Representative test questions are presented in the following table, covering 
+
+topics such as personal information protection, identity authentication, assessment 
+
+methodologies, database evaluation, system construction management, tool -based 
+
+testing, security management centers, and malware protection. 
+
+Table 1. Representative MLPS Questions 
+
+Representative MLPS Questions 
+
+1 Analyze whether the following behaviors comply with the requirements of the MLPS 
+
+standards: A financial product application requires users to actively provide information such 
+
+as mobile phone numbers, login passwords, account numbers, and transaction passwords 
+
+during use. In addition, the application automatically collects device information, real -time 
+
+location data, contact lists, and SMS messages through permission requests, and exhibit s
+
+behaviors such as frequent collection of user location information and direct uploading of 
+
+users’ entire contact lists. 
+
+2 For a Level -3 system of an organization, it was found during assessment that no identity 
+
+authentication policy was configured on the database server. Interviews revealed that in daily 
+
+operations, administrators manage the server through a bastion host that uses passwords and 
+
+dynamic tokens. With respect to the assessment requirement stating that “two or more 
+
+authentica tion technologies, such as passwords, cryptographic techniques, or biometric 
+
+technologies, shall be combined for user identity authentication, and at least one of them shall 
+
+be implemented using password -based technology,” determine whether this requiremen t is 
+
+satisfied and explain the reasons. 
+
+3 Briefly describe the differences and relationships between security management assessment 
+
+and security technical assessment under the MLPS framework, and provide examples. 
+
+4 According to the Basic Requirements (G B/T 22239 -2019), for a Level -3 protected object, 
+
+which security subclasses in the secure computing environment apply to server devices? What 
+
+are the contents of security auditing in the secure computing environment? Compared with 
+
+Level -2 protected objects, which additional security auditing requirement is introduced for 
+
+Level -3 protected objects? 
+
+5 What are common threats to databases? In MLPS 2.0 assessments, which security layer does 
+
+database security assessment belong to? During the assessment process, what control points 10                 
+
+> are mainly involved in database evaluation?
+> 6Our company plans to build a business system with certain security requirements, and the
+> proposed protection level is Level 2 or above, requiring MLPS assessment and protection.
+> Please answ er the following questions:
+> Question 1: From the perspective of security construction management, what aspects of work
+> need to be completed?
+> Question 2: In security construction management, what tasks are involved in system
+> classification and filing?
+> 7Please provide examples to illustrate the role of tool -based testing in the MLPS assessment
+> process, describing its application across relevant security layers, with at least five examples.
+> 8Briefly describe the assessment items related to centralized ma nagement and control within the
+> security management center.
+> 9What are the key inspection contents in security testing for malware protection?
+> 10 What are the main assessment objects in security management evaluation?
+
+4.1 Data Description 
+
+The retrieval -augmented generation (RAG) framework constructed in this study 
+
+takes normative documents in the fields of the Multi -Level Protection Scheme as its 
+
+core knowledge sources. The knowledge base consists of 39 documents, which mainly 
+
+fall into the fol lowing categories: 
+
+National standards, such as GB/T 22239 -2019 (National Information Security 
+
+Standardization Technical Committee (SAC/TC 260), 2019a) , which possess the 
+
+highest legal and technical authority and serve as the core basis of the MLPS framework. 
+
+Industry regulations and technical guidelines, including MLPS assessment 
+
+implementation guides, sector -specific te chnical specifications, and related supporting 
+
+documents, which provide technical refinement and operational supplements to 
+
+national standards. 
+
+Local standards and operational guidelines, such as implementation details, 
+
+working specifications, and suppleme ntary documents issued by local cybersecurity 
+
+authorities, which reflect regional regulatory requirements and practical enforcement. 
+
+Relevant laws and regulations, including the Cybersecurity Law and the Data 
+
+Security Law, which provide higher -level legal support for standards and assessment 
+
+requirements. 
+
+The knowledge base documents as a whole exhibit clear hierarchical structures, 
+
+dense clause numbering, and highly standardized terminology. Most documents are 
+
+organized in the form of chapters, clauses, an d subsections, while differences exist 11 
+
+across documents in terms of granularity of expression, scope of applicability, and level 
+
+of authority. 
+
+4.2 Evaluat ion standard 
+
+This study focuses on evaluating question answering performance in the domain of 
+
+the Cybersecurity Multi -Level Protection Scheme (MLPS) by analyzing the 
+
+consistency between model -generated responses and standard reference answers. Since 
+
+MLPS -oriented question answering tasks are highly dependent on regulatory standards 
+
+and technical specif ications, the evaluation framework must simultaneously reflect 
+
+compliance with cybersecurity regulations, semantic consistency with standard 
+
+conclusions, and practical applicability in real -world assessment scenarios. 
+
+Considering the characteristics of MLP S assessment tasks, this paper adopts an 
+
+LLM -as -a-Judge evaluation framework to conduct automatic scoring of model 
+
+responses. The evaluation process compares the generated answer against the 
+
+corresponding reference answer and assesses response quality from three core 
+
+dimensions: completeness, accuracy, and traceability of standards. Completeness 
+
+evaluates whether the generated response sufficiently covers the major control 
+
+requirements, implementation measures, and assessment points described in the 
+
+referen ce answer. Accuracy measures the semantic consistency and correctness of the 
+
+generated content with respect to the standard answer. Traceability focuses on whether 
+
+the response correctly references relevant MLPS standards and supporting clauses, such 
+
+as GB /T 22239 -2019 and GB/T 25070 -2019, and whether the cited evidence properly 
+
+supports the final conclusions. 
+
+To ensure quantitative and interpretable evaluation results, this study designs a 
+
+weighted scoring mechanism with a total score of 10 points for each response. 
+
+Specifically, completeness is assigned a weight of 5 points, accuracy is assigned 3 
+
+points, and traceability of standards is assigned 2 points. The scoring design 
+
+intentionally emphasizes completeness and regulatory compliance, reflecting the st rong 
+
+requirement in MLPS scenarios for comprehensive security control coverage and 
+
+rigorous standard alignment. During evaluation, the LLM judge outputs both a 
+
+numerical score and a brief justification, enabling both quantitative comparison and 
+
+qualitative analysis of model performance across different MLPS question answering 
+
+tasks. 12 
+
+Table 2. Evaluation Criteria          
+
+> Dimension Description Weight
+> Completeness
+> Whether the generated response sufficiently covers the
+> major control requirements, implementation measures, and
+> assessment points described in the reference answer
+> 50%
+> Accuracy Whether the semantic consistency and correctness of the
+> generated content with respec t to the standard answer 30%
+> Traceability Whether the response correctly references relevant MLPS
+> standards and supporting clauses 20 %
+
+4.3 Results 
+
+To verify the effectiveness of the proposed framework in classified protection 
+
+evaluation question -answering tasks, this study conducts comparative experiments 
+
+between the proposed method and a general Retrieval -Augmented Generation (RAG) 
+
+approach. During the experiments, both methods were evaluated using the same test 
+
+questions and reference a nswers, and the generated responses were automatically 
+
+assessed using an LLM -as -Judge strategy. The evaluation criteria consisted of three 
+
+dimensions: completeness, accuracy, and compliance basis. Specifically, completeness 
+
+accounted for 5 points and was u sed to measure the coverage of key points in the 
+
+reference answers; accuracy accounted for 3 points and evaluated the consistency 
+
+between the generated responses and the reference answers; compliance basis 
+
+accounted for 2 points and assessed whether the re sponses correctly referenced relevant 
+
+classified protection standards, such as GB/T 22239 -2019 and GB/T 25070 -2019. The 
+
+final score ranged from 0 to 10, obtained by aggregating the three evaluation 
+
+dimensions, thereby enabling a quantitative comparison of answer quality across 
+
+different methods. Experimental results demonstrate that the proposed method 
+
+outperforms the general RAG approach in overall evaluation scores and achieves higher 
+
+scores on most test questions, indicating that the proposed framework p rovides better 
+
+completeness, professionalism, and standard compliance in classified protection 
+
+question -answering tasks. 
+
+4.3.1 Analysis of Experimental Results 
+
+Before evaluating the final question -answering results, the proposed framework 
+
+uses openPangu 7B Model to perform hierarchical classification of user queries. In the 13 
+
+first stage, each query is classified as either related to cybersecurity and Multi -Level 
+
+Protection Scheme (MLPS) or as a general query. General queries are directed to the 
+
+general -purpose response branch, whereas domain -related queries undergo a second -
+
+stage classification. The second stage further distinguishes MLPS -related queries from 
+
+broader cybersecurity queries, thereby determining whether the subsequent process 
+
+should invoke the dom ain -specific RAG pipeline. 
+
+This hierarchical classification mechanism enables the system to identify the intent 
+
+and domain relevance of user queries before knowledge retrieval. During the 
+
+experiment, openPangu 7B Model was able to generate classification res ults in 
+
+accordance with the predefined categories and route the queries to the corresponding 
+
+processing branches. Consequently, MLPS -related queries entered the domain -specific 
+
+knowledge retrieval and answer -generation process, while unrelated or general q ueries 
+
+were handled separately. This demonstrates the applicability of openPangu 7B Model 
+
+to user -query classification and retrieval -route selection within the proposed framework. 
+
+Representative classification results further illustrate this process. For exa mple, the 
+
+query “What security requirements should a Level 3 information system satisfy?” was 
+
+first identified as cybersecurity - and MLPS -related and was subsequently classified as 
+
+an MLPS -specific query, thereby invoking the domain -specific RAG pipeline. The 
+
+query “What are the common encryption algorithms?” was identified as cybersecurity -
+
+related but not MLPS -specific and was therefore routed to the broader cybersecurity 
+
+processing branch. By contrast, a general query such as “What are the main applicatio ns 
+
+of artificial intelligence?” was classified as unrelated to cybersecurity or MLPS and was 
+
+directed to the general -purpose response branch. These examples show that the 
+
+openPangu 7B model can distinguish among MLPS -specific, broader cybersecurity, 
+
+and gene ral queries and direct them to the corresponding processing paths. 
+
+Based on the dataset and scoring rules described above, we further evaluated the 
+
+end -to -end question -answering performance by comparing the proposed framework 
+
+with a general Retrieval -Augme nted Generation (RAG) approach. The experimental 
+
+results are presented in Table 3. 
+
+Table 3. Experimental Results       
+
+> ID Proposed Framework general Retrieval -Augmented Generation (RAG) approach
+> 177
+> 287
+
+14                   
+
+> 397
+> 454
+> 567
+> 677
+> 757
+> 885
+> 975
+> 10 54
+> Average 6.7 6
+
+Based on the evaluation results of the 10 classified protection assessment question -
+
+answering samples shown in the table, it can be observed that the proposed framework 
+
+achieves overall better performance than the general RAG approach. In terms of overall 
+
+evaluation scores, the proposed framework achieved an average score of 6.7, whereas 
+
+the general RAG approach obtained an average score of 6.0, representing an overall 
+
+improvement of approximate ly 11.7%. From the perspective of individual sample 
+
+performance, the proposed framework achieved higher scores than the general RAG 
+
+approach on 6 out of 10 test questions, obtained equal scores on 2 samples, and scored 
+
+lower on only 2 samples. These result s indicate that the proposed framework is capable 
+
+of generating more comprehensive and classified protection -compliant responses in 
+
+most scenarios. 
+
+The experimental results indicate that the advantages of the proposed framework 
+
+are mainly reflected in the following aspects. 
+
+First, in terms of referencing classified protection standards and expressing 
+
+professional terminology, the proposed framework is able to conduct analyses more 
+
+accurately in accordance with standards such as GB/T 22239 -2019 . For example, in 
+
+questions related to identity authentication policies, secure computing environments, 
+
+and personal information protection, the proposed framework can explicitly identify the 
+
+corresponding control requirements and their applicable scope, thereby achievi ng 
+
+higher scores in the dimensions of “accuracy” and “professionalism.” In contrast, 
+
+although the general RAG approach can generate a certain level of summarized content, 
+
+it still exhibits limitations in standard clause mapping and standardized expression. 
+
+Second, the response structure of the proposed framework is more consistent with 
+
+the writing conventions commonly adopted in classified protection assessment 
+
+scenarios. Most responses follow a “conclusion –analysis –basis” organizational pattern, 
+
+with clear logical structure and better coverage of key points in the questions. For 
+
+instance, in Question 2 regarding the “differences and relationships between security 
+
+management assessment and security technical assessment,” the proposed framework 15 
+
+not only expla ined the differences in assessment objects and assessment methods, but 
+
+also supplemented the answer with practical assessment examples, thereby obtaining 
+
+the highest score of 9 points. In comparison, although the general RAG approach 
+
+provided basic concept ual explanations, it lacked further analytical elaboration and 
+
+ultimately received a score of 7 points. 
+
+In addition, the proposed framework demonstrates stronger fine -grained analytical 
+
+capability in complex scenarios. For example, in questions related to database security 
+
+and identity authentication strategies, the framework is able to perform targeted 
+
+analysis based on actual system components rather than remaining at the level of 
+
+general security risk descriptions. This indicates that the fram ework possesses better 
+
+domain adaptation capability in knowledge retrieval and contextual organization. 
+
+However, the experimental results also reveal certain limitations of the proposed 
+
+framework on some questions. For example, in Question 7, the proposed framework 
+
+received a score of 5, whereas the general RAG approach achieved a score of 7. This 
+
+suggests that, in certain scenarios, the proposed framework may suffer from incomplete 
+
+information coverage or omission of key points. These findings further indi cate that the 
+
+current framework still has room for improvement in terms of stability when handling 
+
+long -tail knowledge and complex semantic scenarios. 
+
+4.3.2 Analysis of Representative Questions 
+
+(1) High -Scoring Case Analysis 
+
+Question 3, concerning the “differences and relationships between classified 
+
+protection security management assessment and security technical assessment,” 
+
+represents a typical strength case of the proposed framework. The proposed framework 
+
+achieved a score of 9, where as the general RAG approach obtained a score of 7. 
+
+From the generated responses, the proposed framework first provided a clear 
+
+conclusion, indicating that both are essential components of classified protection 
+
+assessment. It then conducted a comparative an alysis from two perspectives, namely 
+
+“assessment objects” and “assessment methods,” and further supplemented the 
+
+response with practical assessment examples, resulting in strong completeness and 
+
+professionalism. In addition, the response structure was clea r and consistent with the 
+
+writing conventions commonly adopted in classified protection assessment reports, 
+
+which contributed to the higher evaluation score. 16 
+
+In contrast, although the general RAG approach was able to provide basic 
+
+conceptual explanations, its content was relatively generalized and lacked in -depth 
+
+analysis regarding the “relationship” and “practical application scenarios” of the two 
+
+assessment types. Consequently, it was slightly inferior to the proposed framework in 
+
+terms of completeness an d professionalism. 
+
+(2) Compliance -Oriented Case Analysis 
+
+In Question 2 regarding the “identity authentication strategy of a Level -3 system,” 
+
+the proposed framework achieved a score of 8, while the general RAG approach 
+
+received a score of 7. 
+
+The proposed f ramework was able to clearly distinguish between two types of 
+
+objects, namely the “bastion host” and the “database server,” and identified that the 
+
+absence of an identity authentication strategy on the database server failed to satisfy the 
+
+assessment requi rements. This demonstrates stronger capability in differentiating 
+
+assessment objects. Furthermore, the generated response incorporated specific control 
+
+measures such as “password complexity policies” and “identity authentication 
+
+mechanisms,” making the ana lysis more consistent with the practical logic of classified 
+
+protection assessment. 
+
+By comparison, although the general RAG approach also identified certain 
+
+deficiencies, its analysis was more oriented toward general security recommendations 
+
+and lacked suf ficient differentiated analysis across different devices and assessment 
+
+objects. As a result, its evaluation score was slightly lower. 
+
+(3) Limitation Case Analysis 
+
+Question 7, concerning the “role of tool testing in the classified protection 
+
+assessment pr ocess,” represents a relatively weak case for the proposed framework. In 
+
+this question, the proposed framework received a score of 5, whereas the general RAG 
+
+approach achieved a score of 7. 
+
+According to the evaluation results, the proposed framework may ha ve suffered 
+
+from insufficient coverage of key knowledge points in this question, which negatively 
+
+affected the completeness of the generated response. In contrast, although the general 
+
+RAG approach demonstrated limited professional depth, its generated con tent covered 
+
+a relatively broader range of information, thereby obtaining a higher overall score. 17 
+
+This case indicates that, although the proposed framework exhibits advantages in 
+
+professional compliance and structured expression, further improvements are s till 
+
+needed in terms of knowledge coverage capability and response stability in certain 
+
+scenarios, so as to avoid performance degradation caused by omission of critical 
+
+information. 
+
+4.3.3 Visualization Interface 
+
+Figure 2. Visualization Interface 
+
+During the experimental validation process, a supporting visualized interactive 
+
+interface was implemented. The front end is developed based on the React framework 
+
+to support model experimentation and result presentation. The system supports multi -
+
+turn textual interactions, enabling continuous question answering with the model while 
+
+maintaining contextual consistency. It also provides dynamic model switching 
+
+functionality, offering a unified interaction interface for comparative experiments 
+
+across different models or workflow configurations. In addition, the interface supports 
+
+uploading and parsing files in formats such as PDF and TXT, allowing model 
+
+evaluation to cover usage scenari os that are closer to real -world MLPS practices. 
+
+5. Conclusion and Discussion 
+
+This paper proposes an MLPS large language model framework integrating 
+
+multiple retrieval strategies. It is designed for MLPS scenarios, where standard clauses 
+
+are dense. Knowle dge hierarchies are complex. Compliance analysis often depends on 18 
+
+human experience. Through a systematic architectural design, the framework enables 
+
+structured reasoning for MLPS -related question answering and analysis tasks. 
+
+In terms of knowledge support, this paper builds a domain knowledge base around 
+
+MLPS -related standards and detailed specifications. Standard texts exhibit clear 
+
+hierarchical relationships. Clause structures are complex. Terminology is standardized. 
+
+Context dependence is strong. The kno wledge content is reorganized, segmented, and 
+
+restructured. This design supports effective domain knowledge enhancement. 
+
+In terms of method design, this paper adopts different models for different tasks. 
+
+The framework integrates multi -path retrieval fusion , including hierarchical retrieval, 
+
+tree -based retrieval, and tokenization -based matching retrieval. This design reduces the 
+
+interference of irrelevant knowledge. It also maintains recall. As a result, it improves 
+
+the standardization and consistency of out puts. 
+
+In terms of experimental design, this paper constructs a data -question set based on 
+
+practical MLPS scenarios. The dataset covers multiple task types, including standards 
+
+understanding, control point identification, clause matching, and rectification analysis. 
+
+It provides a comprehensive evaluation of model performance in MLPS scenarios. The 
+
+experimental results show that the proposed framework performs well in answer 
+
+structure stability, completeness of control point coverage, and the ability to cite 
+
+relevant clauses. 
+
+Overall, the proposed MLPS large language model framework provides a feasible 
+
+and controllable technical path for intelligent MLPS applications. It also demonstrates 
+
+the effectiveness of combining domain -specific retrieval strategies with large language 
+
+models in MLPS scenarios. 
+
+Acknowledgment 
+
+This study is supported by the projects TC20250926046 and KFKT2024 -009 .
+
+References 
+
+Ali, A., Ghanem, M.C., 2025. Beyond Detection: Large Language Models and Next -
+
+Generation Cybersecurity. SHIFRA 2025, 81 -97, 10.70470/SHIFRA/2025/005. 
+
+Bokkena, B., 2024. Enhancing IT Security with LLM -Powered Predictive Threat 
+
+Intelligence, 2024 5th Interna tional Conference on Smart Electronics and 19 
+
+Communication (ICOSEC) , pp. 751 -756. 
+
+Chen, H., Wang, Y., Han, K., et al., 2025. Pangu Embedded: An Efficient Dual -system 
+
+LLM Reasoner with Metacognition. arXiv preprint arXiv:2505.22375. 
+
+Della Penna, S., Natella, R., Orbinato, V., et al., 2025. Cti -hal: A human -annotated 
+
+dataset for cyber threat intelligence analysis, 2025 IEEE European Symposium on 
+
+Security and Privacy Workshops (EuroS&PW) . IEEE, pp. 69 -78. 
+
+Divakaran, D.M., Peddinti, S.T., 2025. Large Language Mod els for Cybersecurity: New 
+
+Opportunities. IEEE Security & Privacy 23(5), 38 -45, 
+
+10.1109/MSEC.2024.3504512. 
+
+Hu, Y., Zou, F., Han, J., et al., 2024. LLM -TIKG: Threat intelligence knowledge graph 
+
+construction utilizing large language model. Computers & Securi ty 145, 103999, 
+
+https://doi.org/10.1016/j.cose.2024.103999 .
+
+Huang, H., Sun, N., Tani, M., et al., 2025. Can LLM -generated misinformation be 
+
+detected: A study on Cyber Threat Intelligence. Future Ge neration Computer 
+
+Systems 173, 107877. 
+
+Jiang, X., Ding, Y., Ma, X., et al., 2021. Compliance analysis of business information 
+
+system under classified protection 2.0 of cybersecurity. Procedia Computer 
+
+Science 183, 87 -93,  https://doi.org/10.1016/j.procs.2021.02.034 .
+
+Lewis, P., Perez, E., Piktus, A., et al., 2020. Retrieval -augmented generation for 
+
+knowledge -intensive nlp tasks. Advances in neural information processing 
+
+systems 33, 9459 -9474. 
+
+Li, T., Qian, Q., 2021. Research on the network security of satellite gateway station 
+
+underclassifcation protection system for information security. 
+
+Telecommunications Information (01), 26 -30. 
+
+Ma, L., Zhu, G., Lu, L., 2019. Baseline for Classified Protection of Cy bersecurity 
+
+(GB/T 22239 -2019) Standard Interpretation. Netinfo Security 19(2), 77 -84. 
+
+National Information Security Standardization Technical Committee (SAC/TC 260), 
+
+2019a. Information security technology —Baseline for classified protection of 
+
+cybersecurity . State Administration for Market Regulation; Standardization 20 
+
+Administration of the People's Republic of China. 
+
+National Information Security Standardization Technical Committee (SAC/TC 260), 
+
+2019b. Information security technology —Evaluation requirement for classified 
+
+protection of cybersecurity. State Administration for Market Regulation; 
+
+Standardization Administration of the People's Republic of China. 
+
+Sarthi, P., Abdullah, S., Tuli, A., et al., 2024. Raptor: Recursive abstractive processing 
+
+for tree -organized retrieval, The Twelfth International Conference on Learning 
+
+Representations .
+
+Wu, J., Liu, Z., Zeng, R., et al., 2025. Research on the Application of Fine -Tunned 
+
+Large Language Models Based on LoRA in Quality Evaluation of the Security 
+
+Level Protection Assessment Reports. Frontiers of Data & Computing 7(06), 111 -
+
+123. 
+
+Xu, H., Wang, S., Li, N., et al., 2024. Large language models for cyber security: A 
+
+systematic literature review. ACM Transactions on Software Engineering 
+
+Methodology .
+
+Zhang, J., Bu, H., Wen, H., et al., 2025. When LLMs meet cybersecurity: a systematic 
+
+literature review. Cybersecurity 8(1), 55, 10.1186/s42400 -025 -00361 -w. 
+
+Zhang, Z., 2025. A Framework for the Implementation and Optimization of Classified 
+
+Cybersecurity Protectio n in Electric Power Critical Information Infrastructure. 
+
+International Journal of Advance in Applied Science Research 4(8), 1 -5. 
+
+Zhu, Y., Zhang, Y., Wang, D., et al., 2020. Research on blockchain evaluation methods 
+
+under the classified protection of cybers ecurity. Chinese Journal of Engineering 
+
+42(10), 1267 -1285.

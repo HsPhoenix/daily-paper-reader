@@ -1,0 +1,920 @@
+Title: TRACE-CTI: Auditable Post-Extraction Governance of TTP Claims with Knowledge Graphs
+
+URL Source: https://arxiv.org/pdf/2607.24563v2
+
+Published Time: Thu, 30 Jul 2026 00:08:22 GMT
+
+Number of Pages: 27
+
+Markdown Content:
+# TRACE-CTI: Auditable Post-Extraction Governance of TTP Claims with Knowledge Graphs 
+
+## Federico Valletta 1, Giacomo Longo 1, Enrico Russo 1, and Alessio Merlo ∗11CASD – School of Advanced Defense Studies, Piazza della Rovere 83, 00165 Rome, Italy 
+
+Abstract 
+
+Security Operations Centers increasingly rely on automated mapping of Cyber Threat Intelligence reports to MITRE ATT&CK, yet extractor outputs remain fallible and are often stored without the evidence, provenance, and validation history needed to decide whether an individual mapping should be trusted. We present TRACE-CTI, a post-extraction claim-governance framework that preserves run-level Predictions, aggregates them into configuration-level GraphAssertions, materializes setup-deduplicated corroboration as ConsensusAssertions, and exposes only GraphAssertions backed by policy-compliant validation grounds. The framework retains native evidence granularity, complete extraction provenance, versioned trust decisions, and non-destructive revocation history. We evaluate TRACE-CTI on two public CTI corpora comprising 65 reports and 5,303 sentences, using a controlled 2 × 3 matrix of retrievers and generator families incrementally ingested across six GraphVersions. All setups are incorporated without schema modification; provenance paths remain complete, operational scopes remain disjoint, and every trusted GraphAssertion has an active qualifying validation ground. Cross-generator-family setup pairs exhibit greater output diversity than same-family pairs. At the final graph state, increasing setup support from k ≥ 1 to six-setup unanimity raises gold-aligned precision from 25.3% to 90.6%, while recall decreases from 88.2% to 16.3%. The graph also directly answers seven questions about provenance, trust, versioning, dependency, disagreement, and review-queue that the evaluated minimal flat output cannot fully answer without enrichment or reprocessing. These results support explicit, auditable governance of extracted TTP claims; the observed corroboration trajectory is descriptive and does not establish statistical independence or a causal model-family effect. 
+
+Keywords: cyber threat intelligence; knowledge graphs; large language models; MITRE ATT&CK; provenance; auditability 
+
+# 1 Introduction 
+
+Cyber Threat Intelligence (CTI) reports describe how real-world adversaries operate, including the tools they use, the actions they perform, and the systems they target. Security Operations Centers (SOCs) use this information to support activities such as threat hunt-ing, detection engineering, and incident prioritization. However, CTI reports are typically written in unstruc-tured prose, whereas operational security tools require structured data. A common way to bridge this gap is to map passages from CTI reports to the tactics and techniques defined by MITRE ATT&CK (Strom et al., 2020). Produc-ing these mappings manually is time-consuming and requires specialized expertise (Orbinato et al., 2022). This has motivated a broad range of automated TTP-extraction methods, from rule-based systems to super-vised classifiers and, more recently, Large Language Models (LLMs) (Husari et al., 2017; Satvat et al., 2021; Orbinato et al., 2022; Büchel et al., 2025). Despite this progress, automated extraction remains imperfect. A recent systematic evaluation reports that perfor-mance across more than forty methods plateaus at ap-proximately 70% F1, with ambiguity and limited labeled data remaining major sources of error (Büchel et al., 2025). LLM-based extractors introduce an additional concern: they may produce plausible ATT&CK labels that are not adequately supported by the source text (Ji et al., 2023). Retrieval-augmented generation can im-prove the context available to a model, but it does not guarantee that the generated output is correct or grounded in the retrieved evidence (Lewis et al., 2020). This creates a problem that extraction accuracy alone does not address. Once an extractor emits an ATT&CK label, a SOC must decide whether that output is merely a model prediction or can be treated as trusted intelligence. An incorrect or insufficiently validated mapping may propa-gate into downstream operational processes as if it were reliable knowledge. This is particularly problematic in environments where false positives already contribute to alert overload and analyst fatigue (Alahmadi et al., 2022; Sundaramurthy et al., 2015). Deciding whether an extracted mapping can be trusted, therefore, requires more than a confidence score. An analyst must be able to determine which passage supports it, which model and configuration produced 1arXiv:2607.24563v2 [cs.AI] 28 Jul 2026 it, whether other distinct or heterogeneous extraction setups agree with it, and which downstream knowledge would be affected if a source or setup were later found to be unreliable. These questions concern the lifecycle and governance of extracted knowledge rather than the accuracy of the extractor itself. Existing extraction pipelines are not designed around this distinction. They commonly store outputs as flat sentence–label records or directly incorporate extracted entities and relations into a knowledge base. In the first case, the information required to audit, compare, version, and revoke individual mappings is often incom-plete. In the second case, a fallible model output may become indistinguishable from a validated fact. Con-sequently, improving precision, recall, or F1 does not by itself solve the operational problem: there is still no explicit and auditable boundary between what a model predicted and what the system is prepared to trust. Therefore, the unresolved problem addressed in this work is the following: 
+
+How can fallible outputs from heterogeneous TTP extractors be transformed into structured CTI knowledge without losing their evidence and provenance, and without silently treating predictions as trusted facts? 
+
+A solution to this problem should satisfy four require-ments: 1. every run-level output should remain traceable to the exact source text and extraction process that produced it; 2. raw predictions and trusted knowledge should re-main explicitly separated; 3. the basis on which a model-derived assertion be-comes trusted should be recorded and inspectable; 4. the knowledge base should remain auditable as new reports, models, extraction results, validation decisions, and revocations are introduced. In this paper, we introduce TRACE-CTI ( T rust-aware, R evocable, and A uditable C laims with Evidence for CTI ) to fulfill these requirements and address the post-extraction governance gap. TRACE-CTI is not a new TTP extractor and does not depend on a spe-cific language model. It receives the outputs of existing extractors and preserves each run-level output as an immutable Prediction in a versioned knowledge graph. Each Prediction remains linked to its supporting evi-dence, extraction configuration, model run, retrieved context, and graph version. Predictions sharing the same normalized evidence unit, ATT&CK target, ex-traction setup, and prompting method are aggregated into configuration-level GraphAssertions . Agreement on the same evidence–technique target across distinct extraction setups is materialized through a Consen-susAssertion . This representation preserves individual model observations while distinguishing them from the assertions governed by the knowledge graph and from the cross-setup evidence used to validate those asser-tions. A prediction-derived GraphAssertion remains outside the trusted view unless an explicit, recorded validation event satisfies the active policy. Such validation may be grounded in a trusted gold annotation, corroboration from distinct extraction setups, or, when available, ana-lyst review. A ConsensusAssertion records cross-setup support but does not become a trusted fact merely be-cause it exists. This preserves an explicit boundary be-tween observed model behavior, corroboration evidence, and knowledge exposed to downstream applications. The key intuition behind the corroboration mecha-nism is that agreement may become more informative as the supporting setups diversify. Multiple configu-rations sharing the same model family may reproduce correlated errors, whereas models from different fam-ilies may exhibit less similar output behavior. Nev-ertheless, distinct configuration labels do not estab-lish statistical independence. TRACE-CTI therefore treats each retriever–generator setup as a distinct wit-ness, records the composition of the supporting witness set, characterizes output diversity across same- and cross-generator-family setup pairs, and examines how gold-aligned correctness changes along the cumulative multi-setup agreement trajectory. Repeated runs, ran-dom seeds, and the RAG and RAG+FSP prompting variants associated with the same parent setup do not create additional setup witnesses. We evaluate this idea using a controlled 2 × 3 matrix comprising two retrievers and three generator families. The six resulting extraction setups are incrementally ingested into the same graph over two public CTI cor-pora, covering 65 reports and 5,303 sentences. This design serves two purposes: it verifies whether the same schema and trust policy can govern outputs from hetero-geneous extractors, and it characterizes output diversity across generator families and examines how gold-aligned correctness changes along the cumulative multi-setup agreement trajectory. The evaluation also examines whether the resulting graph supports operational tasks that a flat collection of extraction outputs cannot directly support, including evidence tracing, version comparison, setup revocation, disagreement analysis, and the construction of analyst-review queues. Based on this problem formulation, we investigate the following research questions: 
+
+• (RQ1) Auditable evolution. Can TRACE-CTI incorporate successive extraction setups with-out changing its schema or breaking the prove-nance paths of previously stored Predictions and GraphAssertions? 
+
+• (RQ2) Extractor-independent governance and wit-ness diversity. Can the same representation and trust policy govern heterogeneous retriever– generator setups, and what evidence does the ob-served witness diversity provide about the informa-tiveness of multi-setup corroboration? 2• (RQ3) Controlled promotion to trusted knowledge. 
+
+Can TRACE-CTI maintain a trusted view in which every model-derived GraphAssertion is backed by an explicit and recorded validation event? 
+
+• (RQ4) Operational utility. Which provenance, val-idation, versioning, revocation, and review tasks become directly answerable through the knowledge graph but remain unavailable, incomplete, or re-quire reprocessing in a flat extraction store? This work makes four contributions: 
+
+• A claim-governance model. We define a lifecycle that distinguishes immutable run-level Predictions, configuration-level GraphAssertions, cross-setup ConsensusAssertions, and the trusted view. This lifecycle preserves model outputs while preventing their silent promotion to trusted CTI knowledge. 
+
+• A versioned and extractor-independent knowledge-graph schema. We preserve a complete path from each governed GraphAssertion to its source evi-dence and to all Predictions, assertion configura-tions, model runs, validation records, and graph versions that support it, while retaining previous graph states and enabling non-destructive revoca-tion. 
+
+• A multi-witness validation mechanism evaluated over a controlled retriever–generator matrix. We formalize trust through recorded validation events and setup-deduplicated witness support, and em-pirically examine whether increasingly restrictive multi-setup agreement identifies a smaller but more precise set of evidence–technique targets. 
+
+• An evaluation of graph-native SOC operations. We assess the ability of TRACE-CTI to support ev-idence auditing, trust inspection, version com-parison, setup revocation, disagreement attribu-tion, and analyst-review prioritization without re-running the extractors. The remainder of the paper is organized as follows. Section 2 introduces CTI reports, ATT&CK mapping, and automated TTP extraction. Section 3 positions TRACE-CTI with respect to extraction pipelines, CTI knowledge graphs, threat-sharing platforms, and gen-eral provenance models. Section 4 defines the claim-governance methodology and multi-witness trust model. Section 5 presents the framework architecture and knowledge-graph schema. Section 6 describes the exper-imental instantiation and reports the evaluation results. Section 7 discusses the research questions, implications, and threats to validity. Finally, Section 8 concludes the paper. 
+
+# 2 Background 
+
+This section introduces the concepts needed to under-stand the post-extraction problem that TRACE-CTI addresses. It explains how CTI reports are mapped to MITRE ATT&CK, how automated TTP extraction pro-duces and evaluates such mappings, and why predictive performance alone is insufficient to establish whether an individual output can be trusted. 
+
+## 2.1 From CTI Reports to Structured Threat Knowledge 
+
+Cyber Threat Intelligence (CTI) describes cyber threats, the actors and tools involved, and the behaviors ob-served during attacks. A major source is the threat report published by security vendors, research organi-zations, or incident-response teams after investigating a campaign, malware family, or incident. These reports help Security Operations Centers (SOCs) guide threat hunting, detection engineering, alert interpretation, and incident prioritization. However, they are written pri-marily as narrative documents: relevant evidence may span several sentences, the same behavior may be ex-pressed in different ways, and technical descriptions often depend on context. Operational tools instead require structured infor-mation that can be indexed, compared, and queried. MITRE ATT&CK provides a widely adopted vocab-ulary for this purpose (Strom et al., 2020). It orga-nizes adversary behavior into tactics , which describe objectives, and techniques and sub-techniques , which describe how those objectives are pursued. Stable iden-tifiers allow reports, analysts, and security tools to refer consistently to the same behavior. Mapping a CTI report to ATT&CK, therefore, means identifying the passages that describe adversary behav-ior and associating them with the corresponding identi-fiers. This turns prose into structured knowledge that a SOC can use to compare campaigns, search for be-haviors, and relate observations to defensive measures. Expert analysts traditionally perform this mapping by reading the report, interpreting each behavior in con-text, distinguishing similar techniques, and verifying that the selected label is actually supported by the text. The process is consequently time-consuming, difficult to scale, and dependent on specialized expertise (Orbinato et al., 2022). 
+
+## 2.2 Automated TTP Extraction and RAG 
+
+Automated TTP extraction seeks to identify the ATT&CK techniques or sub-techniques described by a sentence, text span, paragraph, or document. Because a single passage may describe multiple behaviors, the task is commonly formulated as multi-label classifica-tion: given CTI text, an extractor returns zero or more ATT&CK identifiers. The task remains difficult. ATT&CK contains hun-dreds of labels, while public corpora cover only a limited and uneven subset. Similar techniques may use over-lapping language; the same technique may be described differently across reports and platforms. Relevant con-text may occur outside the sentence being classified, and 3CTI combines natural language with malware names, commands, paths, protocols, and other domain-specific elements. Existing methods include rule- and ontology-based systems, such as TTPDrill (Husari et al., 2017); super-vised classifiers, such as rcATT (Legoy et al., 2020; Orbinato et al., 2022); and generative Large Lan-guage Models (LLMs), which directly emit one or more ATT&CK identifiers. Although these families differ in how they derive labels, all produce predicted mappings between text and techniques. A recent systematic eval-uation (Büchel et al., 2025) shows that no family fully solves the task: performance remains constrained by label ambiguity, class imbalance, inconsistent annota-tion practices, and scarce labeled CTI data. Extraction errors must therefore be treated as an expected outcome rather than a rare exception. Some LLM-based extractors use retrieval-augmented generation (RAG) (Lewis et al., 2020). A retriever 
+
+selects contextual information, such as potentially rele-vant ATT&CK descriptions, and a generator reads that context together with the CTI passage and produces the labels. The two components are replaceable and may affect the output differently: the retriever controls what information is shown, whereas the generator interprets it. Retrieval may improve the available context, but it does not guarantee a correct or grounded output. An LLM may still generate a plausible but unsupported label (Ji et al., 2023), and retrieved material does not necessarily constitute the evidence on which the model relied. Auditing, therefore, requires three elements to remain distinct: the source passage being analyzed, the context supplied to the model, and the label it produced. RAG explains part of how a prediction was generated; it does not determine whether that prediction should be trusted, how it compares with outputs from other setups, or how it should be handled if its source or extractor is later found unreliable. Accordingly, TRACE-CTI is not another TTP ex-tractor. It accepts outputs from different extraction approaches and governs what happens after generation. The pipeline used in our evaluation is one concrete source of predictions, not a framework requirement. 
+
+## 2.3 Evaluation Corpora and Evidence Granularity 
+
+TTP extractors are commonly evaluated on CTI corpora annotated by human experts. These gold labels provide a reference against which predictions are classified as true positives, false positives, or false negatives. Preci-sion measures the proportion of predictions matching the reference, recall measures the proportion of refer-ence labels recovered, and F1 summarizes their balance. These metrics are essential for comparing extractors, but they characterize aggregate predictive performance rather than the status of an individual output, i.e., they do not show which exact words support a label, which setup produced it, whether a distinct extractor agrees, whether it has been reviewed, or what downstream knowledge would be affected by its withdrawal. We use two public corpora that were used in prior TTP-extraction evaluations (Büchel et al., 2025). TRAM v2 associates CTI sentences with ATT&CK techniques (Center for Threat-Informed Defense, 2023), whereas AnnoCTR links specific text spans to entities, tactics, and techniques (Lange et al., 2024). The distinc-tion is important for auditability. A span-level anno-tation identifies the precise evidence and can safely be associated with its enclosing sentence. A sentence-level annotation states only that the sentence supports a map-ping and cannot safely be projected onto a more precise span that the annotator did not identify. TRACE-CTI therefore preserves the native granularity of the evi-dence. Section 5.4 formalizes this policy. 
+
+## 2.4 From Extractor Performance to Claim Reliability 
+
+An extractor output records what a system predicted, but it does not by itself establish that the mapping is correct. Even a high-precision system produces false positives, and aggregate metrics cannot identify in ad-vance which individual outputs are wrong. In a SOC, an unsupported ATT&CK mapping may misdirect an-alyst attention, distort the interpretation of a report, or propagate inaccurate information into downstream analyses, adding to environments already affected by false-positive overload and analyst fatigue (Alahmadi et al., 2022; Sundaramurthy et al., 2015). Model confidence is not sufficient evidence of correct-ness. Scores may be uncalibrated and are not necessar-ily comparable across architectures or configurations; a model can be highly confident in an incorrect out-put. Retaining the source sentence is also insufficient because it may not identify the exact evidence or record the retriever, generator, prompt, run, retrieved context, and subsequent validation history. The central distinction is therefore between extractor performance and claim reliability . The former measures how well an extractor performs over a corpus through precision, recall, F1, and related metrics. The latter concerns the basis on which a specific mapping may be accepted for operational use: which passage supports it, which setup and run produced it, whether it has hu-man backing or analyst review, whether distinct setups corroborate it, and whether it can be revoked without destroying its history. These questions require the prediction, its evidence, its provenance, and the events affecting its trust sta-tus to remain explicitly represented after extraction. TRACE-CTI addresses this post-extraction problem by treating ATT&CK mappings as inspectable claims rather than immediately converting model outputs into facts. The next section positions this lifecycle-oriented approach with respect to prior work. 43 Related Work 
+
+TRACE-CTI lies between automated CTI extraction and the systems that represent, trace, and share struc-tured threat knowledge. Prior work addresses important parts of this path, but generally treats extraction, knowl-edge representation, provenance, and dissemination as separate concerns. We organize the literature around these research lines and focus on how each treats a model-generated mapping after extraction. 
+
+## 3.1 Automated CTI Extraction and RAG 
+
+Early CTI-processing systems extracted indicators, en-tities, and adversary behavior from reports. iACE identified indicators of compromise in open-source CTI (Liao et al., 2016); TTPDrill extracted threat ac-tions using natural-language processing and domain knowledge (Husari et al., 2017); EXTRACTOR recon-structed attack behavior from reports (Satvat et al., 2021); and rcATT classified text according to MITRE ATT&CK (Legoy et al., 2020). Later studies exam-ined linguistic patterns, supervised models, and au-tomated ATT&CK mapping (Orbinato et al., 2022; Alam et al., 2023; Li et al., 2024). A recent systematic evaluation (Büchel et al., 2025) compares rule-based, classification-based, and generative approaches, high-lighting persistent limitations in labeled data, technique coverage, and annotation ambiguity. This literature establishes how to generate and eval-uate ATT&CK mappings. Its main object is the pre-dicted text–label association, typically assessed through precision, recall, and F1. The subsequent lifecycle of an individual prediction is usually outside scope: the output may be stored with a sentence or converted into a structured object, without remaining a distinct en-tity whose evidence, producer, validation history, trust status, and version can all be inspected and revised. Retrieval-augmented generation (RAG) adds external context to generation (Lewis et al., 2020) and is increas-ingly used in TTP extraction (Büchel et al., 2025). Retrieval may improve the information available to the model but does not prevent unsupported generation (Ji et al., 2023). Nor does it establish whether retrieved context supports the emitted label or whether the result-ing prediction should be trusted, superseded, or revoked. Thus, RAG contributes to extraction provenance, but not a post-extraction trust policy. TRACE-CTI is complementary to these methods: extractors determine which labels are proposed, while TRACE-CTI preserves and governs those proposals after generation. 
+
+## 3.2 Cybersecurity Knowledge Graphs 
+
+Cybersecurity knowledge graphs connect heterogeneous entities such as adversary behaviors, malware, vulner-abilities, and affected platforms. BRON (Hemberg et al., 2020) integrates ATT&CK, CWE, CVE, and related sources; POIROT (Milajerdi et al., 2019) aligns observed activity with known attack behavior over provenance graphs; and AttacKG and Piplai et al. (Li et al., 2022; Piplai et al., 2020) construct attack-oriented graphs from CTI reports. MALOnt (Rastogi et al., 2020) provides an ontology for malware-related concepts and relations. These systems demonstrate the value of graph-based integration and analysis, but their primary objective is cybersecurity knowledge or the observation of activity. When content is automatically extracted, the model output is not generally represented as a separate life-cycle object. Consequently, a graph relation may not reveal whether it was manually curated, produced by a single extractor, corroborated across multiple setups, or later reviewed. TRACE-CTI retains this distinction: the claim connecting report evidence to an ATT&CK concept remains separate from the domain fact it may eventually support. 
+
+## 3.3 Threat Sharing and General Prove-nance 
+
+MISP and STIX/TAXII support the representation and exchange of structured threat information across tools and organizations (Wagner et al., 2016; OASIS Open, 2021). They provide mechanisms for identifying, relating, marking, and updating shared objects, but operate mainly after information has been selected for representation or dissemination. Deciding which of several raw extractor outputs to add to that trusted collection remains an upstream responsibility. A trusted view produced by TRACE-CTI can therefore feed a sharing platform while unsupported predictions remain in the audit graph. General knowledge-graph models (Hogan et al., 2021) provide reusable mechanisms for representing structured information, while PROV-O (Lebo et al., 2013) repre-sents entities, activities, agents, and derivation relations. These foundations can describe where information came from and which process produced it, but are intention-ally domain-independent. They do not define sufficient evidence for an ATT&CK mapping, distinguish trusted from untrusted CTI claims, compare heterogeneous ex-tractors, or specify the effect of revoking an extractor. TRACE-CTI specializes these principles through a CTI-specific claim lifecycle and trust policy. 
+
+## 3.4 Positioning of TRACE-CTI 
+
+The reviewed areas are complementary rather than direct competitors: extraction methods generate map-pings; cybersecurity graphs organize domain knowledge; sharing platforms disseminate selected intelligence; and provenance models describe derivation. Table 1 summa-rizes their treatment of the post-extraction stage. The comparison is descriptive: an approach is not deficient because governance lies outside its objective. The rel-evant distinction is whether raw predictions, evidence, validation, trust, versioning, and revocation are treated as a single lifecycle. 5Table 1: Positioning of TRACE-CTI across research lines related to post-extraction CTI governance.        
+
+> Research line Representative work Primary objective Post-extraction treatment
+> Automated TTP extraction (Liao et al., 2016; Husari et al., 2017; Satvat et al., 2021; Legoy et al., 2020; Orbinato et al., 2022; Alam et al., 2023; Li et al., 2024; Büchel et al., 2025) Extract ATT&CK mappings from CTI text. Outputs are evaluated mainly as predictions; claim-level trust, history, and revocation are outside the primary objective. CTI knowledge graphs (Hemberg et al., 2020; Milajerdi et al., 2019; Li et al., 2022; Pi-plai et al., 2020; Rastogi et al., 2020) Represent and connect cybersecurity entities and behaviors. Domain knowledge is central; the extractor output and its validation history are not generally a distinct lifecycle. Threat-information sharing (Wagner et al., 2016; OASIS Open, 2021) Represent and exchange structured CTI. Information is typically handled after upstream selection; competing raw predictions remain outside the scope. RAG and general provenance (Lewis et al., 2020; Ji et al., 2023; Hogan et al., 2021; Lebo et al., 2013) Provide retrieved context or general derivation tracking. They record parts of production and provenance but do not define a CTI-specific validation and trust policy.
+> TRACE-CTI This work. Govern extractor outputs as evidence-linked, versioned CTI claims. Predictions, evidence, provenance, validation events, trust status, and revocation remain in one auditable lifecycle.
+
+The gap is therefore not the absence of extraction, graph, sharing, or provenance mechanisms in isolation, but their integration around fallible model outputs. Existing lines do not jointly preserve each prediction, connect it to precise evidence and complete extraction provenance, separate it from trusted knowledge, record the event that changes its status, and retain its history after updates or revocation. TRACE-CTI addresses this gap by representing auto-mated mappings as first-class claims whose provenance and trust status evolve explicitly. This provides the con-ceptual bridge to the methodology in the next section, which formalizes the claim lifecycle and multi-witness validation process. 
+
+# 4 Methodology 
+
+The previous sections identified a gap between produc-ing an automated ATT&CK mapping and treating that mapping as trusted CTI knowledge. This section de-fines the methodology used by TRACE-CTI to govern that transition independently of a particular extractor or graph technology. The methodology preserves every model output, separates run-level observations from gov-erned assertions and cross-setup consensus summaries, records the evidence used to validate each assertion, and allows the active trusted view to change without erasing its history. 
+
+## 4.1 Methodological Overview and De-sign Goals 
+
+Let an extractor process a textual unit from a CTI re-port and emit one or more ATT&CK identifiers. Each output is fallible: extraction performance remains lim-ited by ambiguous labels, uneven training data, and annotation differences (Büchel et al., 2025), while gen-erative models may produce plausible but unsupported mappings (Ji et al., 2023). The methodology, there-fore, treats an extractor output as an observation to be preserved and assessed, not as a fact to be silently admitted to the knowledge base. Four design goals follow from this premise. 1. Preservation. Every output must remain traceable to the source text, extraction configuration, ex-ecution, retrieved context, and graph state that produced it. 2. Separation. Run-level Predictions, configuration-level GraphAssertions, cross-setup ConsensusAsser-tions, validation evidence, and trusted knowledge must remain distinguishable. Storing a Prediction must not imply accepting it. 3. Explicit validation. A model-derived GraphAsser-tion may enter the trusted view only through a recorded validation event that satisfies the active policy. Such an event may originate from a trusted human annotation, analyst review, or corrobora-tion by a policy-compliant set of distinct extraction setups. 6Ingest      
+
+> reports and native evidence units
+> Extract
+> preserve each run and raw Prediction
+> Normalize
+> evidence and ATT&CK target
+> Construct assertions
+> aggregate run-level Predictions
+> Validate
+> apply policy and record grounds
+> Publish
+> audit state and trusted view
+> 123456
+> next batch, new validation evidence, or revocation
+
+Figure 1: Claim-governance lifecycle. The audit history is append-only, whereas the active trusted view is derived from the validation records and sources active at each version. 4. Auditable evolution. New reports, configurations, policies, and validation decisions must extend the audit history without destroying previous observa-tions. At the same time, the active trusted view must be allowed to expand or contract after vali-dation, supersession, or revocation. Figure 1 summarizes the process as six governance stages. In Ingest , reports and their native evidence units are acquired. In Extract , each run-level output is preserved as a Prediction together with the provenance needed to reconstruct how it was produced. In Normal-ize , evidence references and ATT&CK identifiers are mapped to a common representation so that outputs produced by different configurations can be compared consistently. In Construct assertions , Predictions refer-ring to the same normalized claim are aggregated into configuration-level GraphAssertions, while agreement across distinct extraction setups is represented through ConsensusAssertions. In Validate , GraphAssertions are evaluated against the active policy, and the grounds supporting each trust decision are recorded. Finally, in 
+
+Publish , the framework exposes both the complete audit state and the trusted view containing the GraphAsser-tions currently accepted for downstream use. The following subsections progressively develop the methodological components that support this lifecycle. 
+
+## 4.2 Claim Representation and State 
+
+The methodology is built around four connected el-ements: the textual evidence unit supporting an ATT&CK mapping; the provenance of the extraction process that produced it; the representation of the re-sulting claim at three aggregation levels, namely the run-level Prediction , the configuration-level GraphAs-sertion , and the cross-setup ConsensusAssertion ; and the versioned graph state in which the resulting objects are maintained. The three claim levels address comple-mentary questions: what did a particular run output ,
+
+what did a particular extraction configuration assert, and which normalized targets are supported by multiple setups ?
+
+Evidence unit An evidence unit e is the textual ob-ject on which an ATT&CK mapping is asserted. It may be an entire sentence or a more precise span of evidence, depending on the native annotation or extraction gran-ularity. The methodology never infers a finer trusted boundary than the source provides. A span may be linked to its enclosing sentence, but a sentence-level label is not converted into an artificial span. 
+
+Provenance The extraction provenance is described through the extraction setup, prompting method, and run. An extraction setup s is a versioned retriever– generator bundle together with the setup-level param-eters shared across executions. A prompting method 
+
+m specifies how the retrieved context is presented to the generator. In the evaluated instantiation, m ∈{RAG , RAG + FSP }, where RAG+FSP adds five few-shot examples to the prompt. Their combination 
+
+c := ⟨s, m ⟩
+
+is the assertion configuration : the aggregation level used to construct GraphAssertions. A run r is one execu-tion of configuration c over a defined dataset and seed. Repeated runs or seeds belong to the same assertion configuration and therefore do not become additional GraphAssertions or additional setup witnesses. 
+
+Prediction A Prediction p is the immutable record of one output produced by one run. After normalization, it contains or references the evidence unit e, ATT&CK technique a, assertion configuration c, run r, model confidence when available, retrieved context, import batch, and graph version. A Prediction records model behavior and is untrusted by default. 
+
+GraphAssertion A GraphAssertion is the configuration-level claim 
+
+g := ⟨e, a, c ⟩,
+
+meaning that assertion configuration c = ⟨s, m ⟩ as-sociates evidence unit e with ATT&CK technique a.Predictions produced by repeated runs or seeds of the same configuration may therefore map to the same GraphAssertion. This aggregation preserves every run-level observation while preventing repeated executions from inflating the number of governed assertions. 
+
+ConsensusAssertion A canonical target is the configuration-independent pair 
+
+u := ⟨e, a ⟩.
+
+A ConsensusAssertion is a derived, materialized sum-mary for a target supported by GraphAssertions associ-ated with at least two distinct active extraction setups. 7It records the target, the supporting configuration-level GraphAssertions, the deduplicated setup support count, and the represented retriever and generator families. Its existence indicates cross-setup corroboration; it does not by itself imply membership in the trusted view. Stronger agreement levels, including strong consensus and unanimity, are read from the same materialized sup-port information rather than represented as additional assertion types. 
+
+Graph state Let bt be the t-th import or governance batch and let Gt be the corresponding logical graph state. Gt contains the audit history accumulated up to bt, together with the activation status of sources, configurations, GraphAssertions, ConsensusAssertions, and validation records at that version. A GraphVersion is not a destructive copy of the database but an identifi-able state that can be reconstructed from the recorded history. These definitions are storage-independent. Section 5 explains how TRACE-CTI realizes them while retaining the schema and entity counts used in the experimental evaluation. 
+
+## 4.3 Validation Events and Trust Policy 
+
+Once Predictions have been organized into GraphAs-sertions and cross-setup support has been represented through ConsensusAssertions, the framework must de-termine which GraphAssertions may enter the trusted view and on what grounds. This task requires valida-tion events , which record the admission or withdrawal of trust; validation sources , which identify the grounds supporting each decision; operational scopes , which clas-sify each GraphAssertion according to its current trust status; and the trusted view and policy invariant , which formalize the conditions under which an assertion may be treated as trusted. 
+
+Validation events Trust is assigned to configuration-level GraphAssertions and exposed through the trusted view. Every reason for admitting or withdrawing an assertion is represented by a logically explicit, queryable validation record. Conceptually, each record represents a validation event, defined as 
+
+v := ⟨g, τ, i, d, P, G t, σ ⟩,
+
+where g is the affected GraphAssertion, τ is the vali-dation type, i is the issuer, d identifies the supporting grounds, P is the policy under which the event was created, Gt is the graph version, and σ is its active or revoked status. The methodology admits three validation sources: 
+
+• Gold validation , based on a trusted human annota-tion supplied with a corpus; 
+
+• Analyst validation , based on an authorized review of the assertion and its evidence; 
+
+• Multi-witness validation , based on a Consen-susAssertion whose active cross-setup support sat-isfies the current corroboration policy. These categories identify the provenance of trust. They do not make ConsensusAssertion a second trusted fact: the ConsensusAssertion supplies queryable cor-roboration evidence, while validated GraphAssertions remain the assertions exposed downstream. 
+
+Operational scopes Every GraphAssertion belongs to one of four exclusive operational scopes: gold , vali-dated , prediction-only , or deprecated . Gold and validated assertions enter the trusted view. Prediction-only asser-tions have no qualifying validation record. Deprecated assertions remain in the audit graph but are excluded because their source, producer, or validation basis has been revoked. Within the validated scope, corroborated and unanimous subsets remain separately queryable; these are agreement-based decompositions, not addi-tional top-level scopes. Gold is assigned to a GraphAssertion when its normal-ized evidence–technique target is backed by a trusted human annotation. The annotation remains a separate gold instance and is not counted as a setup witness. 
+
+Trusted view and policy invariant Let At denote the set of GraphAssertions active at version t, let Pt
+
+be the policy active at that version, and let Vt(g) be the validation records associated with GraphAssertion 
+
+g. The trusted view is 
+
+Tt = {g ∈ At | ∃ v ∈ Vt(g) : active( v, t ) ∧ satisfies( v, P t)}.
+
+This definition yields the machine-checkable invariant used throughout the paper: 
+
+No prediction-derived GraphAssertion may ap-pear in the trusted view unless it is backed by at least one active, recorded validation event satisfying the current policy. 
+
+The invariant prevents silent promotion while allow-ing a prediction-derived assertion to become trusted after explicit validation. If all qualifying validation records become inactive, the assertion leaves Tt but remains available in Gt for audit. Gold, analyst-reviewed, and multi-witness validation remain separately queryable. Likewise, corroborated ,
+
+strong-consensus , and unanimous describe measured agreement among active setups. They become grounds for trust only when the active policy requires the corre-sponding level of support. 
+
+## 4.4 Multi-Witness Corroboration 
+
+Among the validation sources introduced above, multi-witness validation requires a precise definition of how support across distinct extraction setups is represented and assessed. The methodology therefore introduces 8Table 2: The four exclusive operational scopes of GraphAssertions. Agreement levels refine the validated scope but do not replace it.          
+
+> Scope Entry condition at ver-sion t
+> ∈Tt
+> gold backed by a trusted human-supplied annotation yes validated backed by an active analyst or policy-compliant multi-witness event yes prediction-only no active qualifying valida-tion event no deprecated source, configuration, or val-idation basis revoked no
+
+the witness-support set , which identifies the distinct ac-tive setups supporting a target; the support count and ConsensusAssertion , which quantify and materialize that corroboration; witness diversity and policy require-ments , which determine whether the composition of the supporting setups satisfies the active policy; and the resulting agreement views , which express increasingly restrictive levels of corroboration. 
+
+Witness-support set For a target u = ⟨e, a ⟩, let 
+
+St be the set of active extraction setups at version t,and let C(s) denote the assertion configurations whose parent setup is s. Its witness-support set is 
+
+Wt(u) = {s ∈ St | ∃ c ∈ C(s),
+
+∃g = ⟨e, a, c ⟩ : active( g, t )}.
+
+The set is deduplicated by parent ExtractionSetup: RAG and RAG+FSP configurations associated with the same retriever–generator setup contribute at most one witness to Wt(u), and repeated runs or seeds cannot add further votes. 
+
+Support count and ConsensusAssertion The sup-port count is 
+
+kt(u) = |Wt(u)|.
+
+When kt(u) ≥ 2, TRACE-CTI materializes or versions one ConsensusAssertion for u. The ConsensusAsser-tion provides an efficient, queryable representation of the inclusive corroborated view and retains links to all supporting configuration-level GraphAssertions. 
+
+Witness diversity and policy requirements Adistinct setup is a distinct witness identity, but distinct-ness does not imply statistical independence. Two se-tups may share a generator, retriever, prompt, training lineage, or source corpus and may therefore reproduce correlated errors. Ensemble methods motivate the use of diverse predictors (Breiman, 2001; Dietterich, 2000), but evidential independence cannot be assumed from configuration labels alone. The methodology, therefore, exposes both the size of support and the diversity of witnesses to the trust policy. Let FG(Wt(u)) and FR(Wt(u)) denote the generator and retriever families represented in the support set. A policy may require, for example, 
+
+kt(u) ≥ kmin , |FG(Wt(u)) | ≥ fmin ,
+
+possibly together with analyst review, source restric-tions, or other provenance constraints. The threshold 
+
+kmin = 2 defines the first non-trivial corroborated view, but it is not treated as a universal correctness guaran-tee. The evaluation measures how precision and recall change as support and diversity requirements become stricter. 
+
+Agreement views For descriptive analysis, the framework retains three nested agreement views: 
+
+C(2)  
+
+> t
+
+= {u : kt(u) ≥ 2},C(3)  
+
+> t
+
+= {u : kt(u) ≥ 3},Ut = {u : Wt(u) = St}.
+
+Thus Ut ⊆ C(3)  
+
+> t
+
+⊆ C(2)  
+
+> t
+
+whenever at least three setups are active. ConsensusAssertion nodes materialize C(2)  
+
+> t
+
+;stronger levels are derived from their support metadata. Membership in one of these views supplies validation evidence only when it satisfies Pt.Disagreement is preserved rather than collapsed. If active configurations associate different techniques with the same evidence, each configuration-level GraphAsser-tion remains available, and distinct targets acquire sep-arate support sets. Abstention contributes no support. This permits later analysis of whether disagreement is associated mainly with retrieval, generation, prompting method, or normalization. 
+
+## 4.5 Versioned Evolution and Revoca-tion 
+
+Because witness support and trust decisions depend on which sources, setups, configurations, and validation records are active, the methodology must represent both how the graph evolves and how previously accepted sup-port can be withdrawn. It therefore distinguishes ver-sioned evolution , which records successive graph states without overwriting prior history, from non-destructive revocation , which updates active support and trust while preserving the records that explain earlier decisions. More specifically, the methodology separates an append-only audit history from a non-monotonic ac-tive state. New Predictions, GraphAssertions, Consen-susAssertion states, validation records, and revocation records are appended; previous records are not overwrit-ten. However, the active support set and trusted view may expand or contract when setups, datasets, configu-rations, or validation records are activated, superseded, or revoked. Candidate setups may be organized as an expansion matrix. With retrievers R and generators L, the cells of 
+
+R×L define the setup identities used in the experimental instantiation. A prompting method selects an assertion 9Algorithm 1 Versioned claim-governance procedure.  
+
+> 1:
+
+Input: initial audit state G0; ordered batches B =(b1, b 2, . . . ) 
+
+> 2:
+
+Output: versioned audit states Gt and trusted views Tt 
+
+> 3:
+
+for each batch bt ∈ B do  
+
+> 4:
+
+(Et, X t, H t, R t, P t) ← UnpackBatch( bt) 
+
+> 5:
+
+Ot ← PreservePredictions( Et, X t)
+
+> 6:
+
+̂ Ot ← Normalize( Ot) 
+
+> 7:
+
+G′ 
+
+> t
+
+← ApplyStateChanges( Gt−1, R t) 
+
+> 8:
+
+At ← ResolveGraphAssertions( G′
+
+> t
+
+,̂ Ot, ⟨e, a, c ⟩) 
+
+> 9:
+
+for each affected target u = ⟨e, a ⟩ do  
+
+> 10:
+
+Wt(u) ← ComputeWitnessSupport( u, G ′
+
+> t
+
+) 
+
+> 11:
+
+if |Wt(u)| ≥ 2 then  
+
+> 12:
+
+UpdateConsensus( u, W t(u), G ′
+
+> t
+
+) 
+
+> 13:
+
+else  
+
+> 14:
+
+DeactivateConsensus( u, G ′
+
+> t
+
+) 
+
+> 15:
+
+end if  
+
+> 16:
+
+end for  
+
+> 17:
+
+Vt ← UpdateValidationRecords( Ht, W t, P t, G ′
+
+> t
+
+) 
+
+> 18:
+
+Zt ← AssignOperationalScopes( At, V t, P t) 
+
+> 19:
+
+Tt ← MaterializeTrustedView( At, V t, P t) 
+
+> 20:
+
+Gt ← PublishVersion( G′
+
+> t
+
+, A t, V t, Z t, T t) 
+
+> 21:
+
+end for  
+
+> 22:
+
+return Gt, T t
+
+configuration within a setup but does not create an additional setup witness. More generally, a configura-tion space may include a prompt family, a provider, a retrieval policy, a dataset source, or an analyst team. The matrix is an experimental device for controlling witness diversity; the governance model itself is agnostic to the number and ingestion order of setups. A revocation is non-destructive. When a source, run, configuration, setup, or validation record is revoked, the framework records the revocation, updates the cor-responding active states, recomputes affected support sets, and reevaluates policy-derived validation records. A GraphAssertion that no longer has an active qualify-ing record leaves the trusted view in the newly published version, while its previous status and complete prove-nance remain reconstructible. The resulting property is therefore more precise than monotonic knowledge growth: the audit history grows monotonically, whereas the active trusted view is version-dependent .
+
+## 4.6 Governance Procedure 
+
+Algorithm 1 defines the governance procedure by com-bining claim representation, validation, multi-witness corroboration, and versioned evolution into a single workflow for each ingestion or governance batch. Abatch may introduce new evidence and extraction out-puts, add validation grounds, modify the active policy, or revoke previously active sources or decisions. Line 1 specifies the initial audit state G0 and the ordered sequence of batches B = ( b1, b 2, . . . ) processed by the procedure. Line 2 identifies the outputs: the versioned audit state Gt and the corresponding trusted view Tt produced at each iteration. Line 3 starts the iteration over the ordered batches. Line 4 decomposes the current batch into new evidence 
+
+Et, extraction records Xt, human validation grounds 
+
+Ht, revocations Rt, and the active policy Pt.Lines 5–6 implement the claim-representation model of Section 4.2: PreservePredictions retains each run-level output and its provenance, and Normalize 
+
+resolves evidence references and ATT&CK identifiers. Line 7 applies activations, supersessions, and revo-cations, following the versioning model of Section 4.5, so that assertion resolution and support recomputation operate on the active state. Line 8 then associates the normalized Predictions with the configuration-level key ⟨e, a, c ⟩, yielding At,the set of GraphAssertions active at version t.Lines 10–16 implement the multi-witness corrobo-ration mechanism of Section 4.4. For each affected target, ComputeWitnessSupport derives the active setup-deduplicated support set Wt(u). The correspond-ing ConsensusAssertion is updated when at least two distinct setups support the target and deactivated oth-erwise. Lines 17–19 apply the validation and trust model of Section 4.3. UpdateValidationRecords com-bines gold, analyst, and policy-compliant multi-witness grounds; AssignOperationalScopes assigns each GraphAssertion to one exclusive scope; and Material-izeTrustedView derives the active trusted view. Finally, Line 20 publishes the new GraphVersion with-out deleting prior observations or governance decisions. 
+
+# 5 The TRACE-CTI Framework 
+
+Section 4 defined claim governance independently of any storage technology. This section describes its realization in TRACE-CTI. We map the methodological objects to a claim-centric graph schema, present the processing architecture, and explain how the audit graph, trusted view, evidence granularity, versioning, and revocation are implemented. 
+
+## 5.1 From Methodology to Graph Rep-resentation 
+
+The evaluated graph directly implements the three ag-gregation levels of Section 4.2. Persistent observations and derived summaries become first-class entities; vali-dation is represented through explicit, queryable meta-data and relations attached to the governed assertions; and the trusted view is derived from their active state. Table 3 summarizes the mapping. Predictions remain run-specific. Repeated seeds with the same assertion configuration may map to a single configuration-level GraphAssertion, whereas RAG and RAG+FSP produce distinct assertion configurations un-der the same parent ExtractionSetup. GraphAssertions associated with different setups may then converge on a single ConsensusAssertion. Trust remains attached to 10 Table 3: Mapping from the methodology to the evaluated TRACE-CTI representation. 
+
+Methodological object Graph realization Purpose Lifecycle property 
+
+Evidence unit Sentence or EvidenceSpan Preserve the native textual support of a mapping Never refined beyond source granularity Run-level observa-tion Prediction node Record one immutable model output and its full run provenance Untrusted by default Assertion configura-tion ExtractionSetup plus prompting method Define the aggregation key shared across repeated runs and seeds RAG and RAG+FSP remain distinct assertion configurations without becoming separate setup witnesses Configuration-level claim GraphAssertion node Represent one normalized ⟨e, a, c ⟩
+
+assertion Reused across repeated runs of the same configuration Cross-setup summa-ry ConsensusAssertion node Materialize ⟨e, a ⟩ targets supported by at least two distinct setups Measures setup-deduplicated corroboration, not automatic trust Validation event Trust-event metadata and relations Record gold, analyst, or multi-witness validation grounds and version Basis for scope assignment and trusted-view inclusion Versioned state ImportBatch and GraphVersion Identify when observations and governance decisions became active Reconstructible audit history Trusted view Materialized GraphAsser-tion set Expose only active gold or validated assertions May expand or contract across versions 
+
+> Data & Evidence
+> Extraction Provenance
+> Normalization & Grounding
+> Claims & Validation
+> Evolution & Governance
+> CTI Report
+> Preserve native evidence units
+> Run assertion configuration
+> RetrievedContext
+> Prediction
+> Normalize evidence and ATT&CK ID
+> Resolve GraphAssertion
+> Update sup-port and validation records
+> Publish GraphVersion
+> Audit graph
+> Trusted view
+
+Figure 2: Process view of TRACE-CTI. Grounding precedes cross-setup comparison; validation records determine the trusted view, while all observations remain in the audit graph. GraphAssertions through recorded validation grounds, and a ConsensusAssertion provides multi-witness evi-dence without automatically becoming a trusted fact. In the current implementation, a validation event is logically explicit and queryable, but is not required to be a separate node label. Its type, supporting object, policy-relevant evidence, graph version, and active state are represented through trust metadata and relations as-sociated with the governed assertion. This preserves the evaluated artifact while enforcing the methodological invariant of Section 4.3. 
+
+## 5.2 High-Level Architecture 
+
+The framework implements the lifecycle through five interconnected macro-layers, as shown in Table 4 and Figure 2. Figure 2 complements Figure 1 by showing how the six governance stages are realized across the architectural layers of TRACE-CTI. Table 4 summarizes the core entities, responsibilities, and methodological roles of those layers. The layers are arranged according to the dependen-cies of the governance process: evidence is preserved; extraction provenance is captured; outputs are normal-ized and grounded; configuration-level assertions and cross-setup consensus summaries are constructed; and versioned views are published. In the Data and Evidence layer, reports are seg-mented while preserving whether the available support is sentence-level or span-level. In Extraction Provenance ,a replaceable ExtractionSetup is invoked through an assertion configuration, emits Predictions, and records retrieved context separately from source evidence. This distinction allows later queries to inspect what the model considered and what it actually asserted. The Normalization and Grounding layer resolves tech-nique identifiers and canonical evidence units before outputs are compared. ATT&CK supplies the tar-get tactics and techniques, while MALOnt may pro-vide supporting cybersecurity concepts (Rastogi et al., 2020). The Claims and Validation layer maps Predic-tions to configuration-level GraphAssertions, material-izes cross-setup support as ConsensusAssertions after deduplication by parent ExtractionSetup, and records the trust metadata that justifies scope assignment. Fi-nally, Evolution and Governance assigns ImportBatches and GraphVersions, records revocations, and derives the audit and trusted views. 11 Table 4: TRACE-CTI layers and the methodological responsibilities they realize.                 
+
+> Layer Core entities Responsibility Methodological concept
+> Data and Evidence Dataset, SourceFile, Report, Sentence, EvidenceSpan Preserve reports and their native evidence units Evidence preservation and granularity Extraction Provenan-ce ExtractionSetup, LLMRun, PromptTemplate, Retrieved-Context, Prediction Record how every run-level output was produced Immutable Prediction and producer traceability Normalization and Grounding AttackTactic, AttackTechnique, MalontClass Resolve comparable evidence–technique targets and ontology links Normalized aggregation key Claims and Valida-tion GraphAssertion, Consen-susAssertion, gold instances, trust metadata Represent configuration-level claims, materialize setup-deduplicated corroboration, and record validation grounds Trust policy and validation provenance Evolution and Gover-nance ImportBatch, GraphVersion, re-vocation records, active-state markers Reconstruct versions and derive current views Auditable evolution and non-destructive revocation
+
+## 5.3 Claim-Centric Knowledge Graph Schema 
+
+The schema is organized around three connected paths. The run-level provenance path reconstructs a model observation: Report → EvidenceUnit → Prediction 
+
+→ LLMRun → ExtractionSetup .
+
+The prompting method associated with the LLMRun completes the logical assertion configuration c = ⟨s, m ⟩;AssertionConfiguration is therefore a methodological ag-gregation key, not a separate node class in the evaluated schema. The configuration-level assertion path links repeated observations to the claim made by one assertion config-uration: Prediction → GraphAssertion → AttackTechnique .
+
+The cross-setup governance path materializes corrobo-ration and its trust consequences: GraphAssertion → ConsensusAssertion 
+
+→ support and trust metadata → GraphVersion .
+
+Together, these paths answer different audit questions. The first identifies the text, retrieved context, run, seed, prompting method, and parent setup behind an output. The second shows which normalized assertion that con-figuration contributes. The third identifies the distinct setups supporting the same target, the agreement level reached, the validation basis used by the policy, and the version in which the resulting scope was active. The complete entity inventory remains in A (Table 12). Each Prediction has one outgoing assertion relation and zero or more relations to RetrievedContext items. Predictions produced by repeated runs or seeds of the same assertion configuration can map to the same GraphAssertion. RAG and RAG+FSP are retained as distinct assertion configurations because the latter augments the common sentence-and-retrieved-context input with five few-shot examples. Both configurations inherit the same parent ExtractionSetup for witness counting. The retrieved items record material made available to the model; they are not treated as source evidence unless the validation record explicitly identifies them as supporting grounds. GraphAssertions sharing the same normalized evidence–technique target are connected through one ConsensusAssertion when their parent-setup set contains at least two distinct active ExtractionSetups. The ConsensusAssertion stores or exposes the setup-deduplicated support count and family composition needed for agreement queries. Consequently, multiple methods, repeated runs, or repeated seeds under the same parent setup cannot inflate corroboration. The topology remains stable when new extractors are added. A new setup creates new assertion configura-tions, runs, Predictions, and GraphAssertions and may create or version ConsensusAssertions, while existing reports, evidence units, ATT&CK concepts, and prior audit paths remain unchanged. This realizes extractor-independent evolution without conflating ingestion, cor-roboration, and trust assignment. 
+
+## 5.4 Evidence Granularity and Canoni-calization 
+
+CTI corpora and extractors may identify evidence at different levels of textual granularity. TRACE-CTI preserves this distinction explicitly. A sentence-level mapping is represented as supported by that sentence; a span-level mapping is represented by the annotated substring and linked to its enclosing sentence. The framework permits upward projection from a span to its sentence for broader retrieval, but never creates a finer trusted span from sentence-level evidence. Canonicalization proceeds at two related levels. First, Predictions are aggregated into the same GraphAs-sertion only when their normalized evidence unit, ATT&CK identifier, parent ExtractionSetup, and prompting method match; run and seed are delib-erately excluded from this aggregation key. Second, configuration-level GraphAssertions support the same ConsensusAssertion target only when their normalized evidence unit and ATT&CK identifier match. At this 12 Figure 3: Provenance and governance paths from run-level Predictions to configuration-level GraphAssertions and cross-setup ConsensusAssertions. The latter summarize setup-deduplicated corroboration and do not constitute trusted facts on their own. second level, support is deduplicated by parent Extrac-tionSetup, so RAG and RAG+FSP variants of the same setup do not create two witnesses. If a coarser comparison is required, it must be exposed as a separate query view rather than silently rewriting the underlying evidence. This policy preserves the evidential precision of AnnoCTR-like span annotations while remaining compatible with TRAM-like sentence annotations. It also makes the assumptions behind each agreement measurement explicit and queryable. 
+
+## 5.5 Validation and Trusted-View Mate-rialization 
+
+The audit graph contains all Predictions, GraphAs-sertions, ConsensusAssertions, gold instances, support relations, trust metadata, and revocation records. The trusted view is the subset of GraphAssertions satisfying the invariant in Section 4.3. It is derived from recorded validation grounds rather than from an unexplained mutable flag. Gold validation links a GraphAssertion to the corre-sponding human annotation. Analyst validation records the reviewer’s decision and, when available, the version. For multi-witness validation, the framework uses the associated ConsensusAssertion to recover distinct setup support and the represented generator and retriever families. If this evidence satisfies the active policy, the affected GraphAssertions enter the validated scope. The ConsensusAssertion remains a summary of the inclu-sive, corroborated target and does not, by itself, become trusted merely because it exists. Agreement views C(2)  
+
+> t
+
+, C(3)  
+
+> t
+
+, and Ut are computed from ConsensusAssertion support metadata. They sup-port the precision–recall and unanimity analyses in the evaluation. The experimental four-way decomposition remains unchanged: GraphAssertions are assigned to gold, validated, prediction-only, or deprecated scopes; corroborated and unanimous subsets refine the validated results and can be queried separately. The downstream view is therefore 
+
+Tt = {g : active( g, t ) ∧
+
+scope( g, t ) ∈ { gold , validated }} .
+
+Prediction-only GraphAssertions and all underlying Pre-dictions remain available for audit and review-queue construction but are not silently merged into Tt.
+
+## 5.6 Versioning and Non-Destructive Re-vocation 
+
+Each ingestion or governance batch creates an Import-Batch and publishes a GraphVersion. Nodes and rela-tions record the batch in which they were introduced and, where relevant, the versions in which they are active. Stable identifiers allow the framework to reuse existing reports, evidence units, ATT&CK concepts, GraphAssertions, and consensus targets without rewrit-ing earlier paths. Revocation is represented as a new governance record. If a dataset, setup, assertion configuration, run, or vali-dation decision becomes unreliable, the corresponding object is deactivated rather than deleted. The frame-work then recomputes affected ConsensusAssertion sup-port and reevaluates policy-derived validation records. GraphAssertions that lose their final qualifying record 13 leave the trusted view in the new GraphVersion, while previous versions still show why they were formerly trusted. Consequently, TRACE-CTI provides two comple-mentary guarantees: the audit history is append-only and reconstructible, while the active state remains re-sponsive to corrections. This distinction supports non-destructive revocation more accurately than a model in which knowledge can only grow. 
+
+## 5.7 Framework Guarantees and Evalua-tion Boundary 
+
+The framework guarantees, by construction, that raw model outputs are preserved; configuration-level GraphAssertions remain linked to evidence and pro-ducer provenance; trust changes are backed by explicit, queryable validation records; setup support is dedupli-cated before corroboration; and previous graph states remain reconstructible. These are structural properties of the representation and governance procedure. Other properties require empirical evaluation. In par-ticular, the framework does not assume that distinct setups are independent or that a fixed support thresh-old guarantees correctness. The experiments therefore characterize output diversity across same- and cross-generator-family setup pairs, examine the precision– recall trade-off across support levels, verify that the schema and audit paths remain stable as setups are ingested, and determine which SOC-oriented questions become directly answerable. Section 6 evaluates these questions under the concrete instantiation described in Section 6.1. 
+
+# 6 Evaluation 
+
+We evaluate whether TRACE-CTI realizes the four prop-erties posed in Section 1: auditable evolution (RQ1), extractor-independent governance and informative wit-ness diversity (RQ2), controlled promotion to trusted knowledge (RQ3), and graph-native operational utility (RQ4). The evaluation separates two kinds of evidence. 
+
+Conformance evidence checks whether the implementa-tion preserves the structural invariants defined in Sec-tions 4–5; empirical evidence measures properties that are not guaranteed by construction, including the behav-ioral diversity of heterogeneous extraction setups and the precision–recall trade-off induced by multi-witness policies. The upstream prediction protocol follows the 2025 USENIX Security SoK on automated TTP extrac-tion (Büchel et al., 2025). The SoK pipeline supplies the Predictions governed by TRACE-CTI and is not treated as a competing governance system. We imple-ment the graph in Neo4j 5 (Neo4j, Inc., 2024), query it with Cypher, and load Neo4j-safe CSV files, while keeping the report text in content-hashed JSONL. All reported values are derived from the published extrac-tion outputs and graph snapshot; no additional live LLM call is required. 
+
+## 6.1 Experimental Design and Measure-ment Protocol 
+
+6.1.1 Corpora and extraction setups 
+
+We exercise the methodology on the two public corpora used by the upstream evaluation: TRAM v2 (Cen-ter for Threat-Informed Defense, 2023), which sup-plies sentence-level ATT&CK annotations, and An-noCTR (Lange et al., 2024), which supplies span-level annotations. Both are ingested in their entirety, for a total of 65 reports and 5,303 sentences. TRACE-CTI preserves the native evidence granularity according to Section 5.4. The ontology layer is built from the Enterprise, Mo-bile, and ICS STIX bundles of MITRE ATT&CK v19.1, retrieved on 22 May 2026. This version identifies the on-tology snapshot imported into the graph. The retrieval knowledge base and dataset-specific label sets are in-stead inherited unchanged from the frozen upstream SoK pipeline; they were not rebuilt from the v19.1 bundles. The three STIX bundles are included among the audit path’s source files so that the provenance of ontology grounding remains queryable. The controlled extraction matrix contains two retriev-ers, E5-large-v2 (Wang et al., 2022) and GTE-Qwen2-7B-Instruct (Alibaba NLP, 2024), and three genera-tors, Llama-3.1-8B-Instruct (Meta AI, 2024), Mistral-7B-Instruct-v0.3 (Jiang et al., 2023), and Phi-3.5-mini-instruct (Abdin et al., 2024). Each retriever–generator cell defines one parent ExtractionSetup. The six setups are ingested in the order S1–S6, producing the cumu-lative graph states v1.0–v6.0 shown in Table 6. The order exercises versioned ingestion; it is not interpreted as a randomized treatment order. Each setup is executed on both datasets, with RAG and RAG+FSP prompting, and with three recorded seeds. Thus, each (setup , dataset , method , seed ) tuple defines one LLMRun, yielding 
+
+6 × 2 × 2 × 3 = 72 LLMRuns .
+
+Both prompting methods receive the source sentence and the retrieved context. RAG+FSP additionally includes five few-shot examples in the prompt, whereas RAG does not. Native AnnoCTR span annotations are preserved at their source granularity; model outputs are not interpreted as supporting a finer span that the extractor did not identify. RAG and RAG+FSP remain distinct assertion configurations c = ⟨s, m ⟩, but both inherit the same parent ExtractionSetup and therefore contribute at most one setup witness to Wt(u). The generator uses zero-temperature greedy decoding with a frozen retriever. For each sentence, the retriever first returns the top 100 candidates over the frozen knowledge base; candidates outside the dataset label set are removed, and the first kret = 5 remaining items are supplied as retrieved context. This retrieval depth is fixed across all setups and runs. The three recorded seeds produce identical outputs ( σ = 0 ). They are retained for reproducibility and provenance, not treated as independent statistical replicates. 14 Table 5: Evaluation questions, evidence, and primary measurements. 
+
+RQ Evaluation focus Evidence Primary measurements 
+
+RQ1 Auditable evolution Six cumulative GraphVersions produced by ingesting S1–S6 schema delta, provenance closure, scope disjointness, version-localisability, graph growth RQ2 Setup compatibility and witness diversity Closed 2 × 3 retriever–generator matrix successful ingestion, mean ATT&CK reach, reference F1, Jaccard output diversity, correctness of cumulative agreement RQ3 Controlled promotion Gold, validated, prediction-only, and deprecated GraphAssertion scopes validation-record conformance, leakage, agreement views, gold-aligned precision and recall RQ4 Operational utility Audit queries Q1–Q7 over the v6.0 snapshot and a flat-output baseline direct answerability, required enrichment or reprocessing, counterfactual setup dependencies 
+
+Table 6: Setup–state mapping for the experimental instantiation.                                    
+
+> Setup State Retriever Generator Cell Role
+> S1 v1.0 GTE-Qwen2 Llama-3.1 (GTE,Llama) initial state S2 v2.0 E5 Mistral (E5,Mistral) second family S3 v3.0 GTE-Qwen2 Mistral (GTE,Mistral) enables k= 3
+> S4 v4.0 E5 Llama-3.1 (E5,Llama) closes 2×2
+> S5 v5.0 E5 Phi-3.5 (E5,Phi-3.5) third family S6 v6.0 GTE-Qwen2 Phi-3.5 (GTE,Phi-3.5) closes 2×3
+
+The retrieval depth kret = 5 , the five few-shot exam-ples used by RAG+FSP, and the agreement threshold 
+
+kt(u) are distinct quantities. 
+
+6.1.2 Units of analysis 
+
+The evaluation keeps the three methodological levels separate. 
+
+• A Prediction is one run-level output and is used to verify provenance and reproducibility. 
+
+• A GraphAssertion g = ⟨e, a, c ⟩ is a configuration-level governed assertion and is the unit used for operational scopes and trusted-view exposure. 
+
+• A canonical target u = ⟨e, a ⟩ is configuration-independent. Support kt(u) = |Wt(u)|, Consen-susAssertions, and agreement levels are computed at this target level after deduplication by parent ExtractionSetup. This distinction prevents the count of Consen-susAssertions from being interpreted as a fraction of configuration-level GraphAssertions: the two values describe different aggregation levels. For analysis, let 
+
+C(k) 
+
+> t
+
+= {u : kt(u) ≥ k}
+
+be the target-level agreement view and let 
+
+E(k) 
+
+> t
+
+= {g ∈ At : target( g) ∈ C(k) 
+
+> t
+
+}
+
+be its GraphAssertion exposure view. Target-level sup-port and GraphAssertion-level trusted-view size are reported separately. 
+
+Operational policy and analytical agreement views We distinguish the operational trust policy used to materialize the reported trusted view from stricter agreement-conditioned views used only for analysis. In the evaluated snapshot, a GraphAssertion enters the gold scope when its document-level target is backed by a trusted corpus annotation of the same document. A non-gold GraphAssertion enters the validated scope when its target is supported by at least two distinct active parent ExtractionSetups, after deduplication of RAG/RAG+FSP configurations and repeated seeds. This operational rule is applied uniformly across v1.0– v6.0. The stricter k ≥ 3 and unanimity views evaluated below are counterfactual analytical views derived from the same ConsensusAssertion support metadata; they do not redefine the operational scope assignment used to obtain the trusted-view counts in Table 7. 
+
+6.1.3 Correctness and diversity measurements 
+
+Gold-aligned precision and recall follow the document-level matching policy of the upstream evaluation. Gold annotations from both corpora are normalized to document-level tuples ⟨d, a ⟩, where d is the report and 
+
+a the normalized ATT&CK identifier; the 824 gold in-stances yield 663 distinct document-level tuples. Each GraphAssertion g in an exposure view V is likewise projected to its document-level tuple ⟨d(g), a (g)⟩, and duplicate tuples are counted once. Let D(V ) denote the resulting tuple set, D∗(V ) ⊆ D(V ) the subset whose documents carry at least one gold annotation, and Y
+
+the set of gold document-level tuples. Per corpus, 
+
+P (V ) = |D∗(V ) ∩ Y ||D∗(V )| , R(V ) = |D(V ) ∩ Y ||Y | ,
+
+and the reported aggregates are macro-averages across TRAM v2 and AnnoCTR; per-corpus results are given where available. Two of the 65 reports (one per corpus) contain no gold annotation; assertions for these docu-ments remain in the graph and in the reported view sizes, but are excluded from the precision denominator. View sizes remain reported in GraphAssertions, whereas cor-rectness is computed over deduplicated document-level tuples; the two units must not be mixed. Document-level alignment is deliberately coarser than sentence-15 or span-level recovery: an exposed assertion counts as gold-aligned when its technique is annotated anywhere in the same document, so the reported precision and recall are upper bounds with respect to finer-grained matching. The native sentence-level (TRAM v2) and span-level (AnnoCTR) annotations remain available in the source corpora and are never projected to finer arti-ficial units (Section 5.4). Gold membership is also used as a conformance ground for the gold operational scope, which is likewise assigned at document level; the latter is not interpreted as an extractor-performance result. Output diversity between two setup cells is measured with Jaccard distance over their predicted ATT&CK-ID sets: 
+
+dJ (A, B ) = 1 − |A ∩ B||A ∪ B| .
+
+A larger value indicates less overlap. Jaccard distance measures behavioral diversity, not statistical indepen-dence of errors. Accordingly, the evaluation uses dis-tinct , heterogeneous , and diverse witnesses rather than assuming independent draws. 
+
+## 6.2 Artifact Overview 
+
+Table 7 reports the v6.0 graph inventory; counts on different rows may refer to different aggregation lev-els. The counts illustrate the three aggregation levels: 82,260 run-level Predictions are consolidated into 27,420 configuration-level GraphAssertions, while 5,410 Con-sensusAssertions materialize configuration-independent targets supported by at least two distinct parent setups. The implementation contains one evidence record for each of the 5,303 extractor-input sentences; this tech-nical count is not used as a count of native AnnoCTR spans and does not imply that sentence-level TRAM annotations were refined to artificial spans. Policy and matching retain the native corpus granularity described above. The 68 source files comprise the 65 CTI report files (34 from AnnoCTR and 31 from TRAM v2) and the three MITRE ATT&CK STIX bundles used as ontology sources (Enterprise, Mobile, and ICS). The latter belong to the audit path because they provide the provenance of the grounding layer. 1 MALOnt enrichment is not included in this count because it remains outside that path. Of the 1,250 AttackTechnique nodes, 1,149 are im-ported from the three ATT&CK v19.1 STIX bundles. The remaining 101 are placeholder nodes for identifiers observed in model Predictions or gold annotations but absent from the current ontology snapshot. Such iden-tifiers may correspond to unsupported model outputs, techniques deprecated or removed between ATT&CK releases, or annotations based on an earlier catalog. Placeholder nodes retain the observed attack_id and are marked observed_not_in_current_stix_bundle .
+
+> 1In the published snapshot, corpus membership and file-level provenance are recorded as properties of Report, Sentence, and LLMRun nodes and of the ontology import rather than as separate Dataset or SourceFile nodes; the count enumerates the 65 report files and the three STIX bundles.
+
+They ensure that every assertion retains a queryable tar-get rather than silently discarding outputs that cannot be grounded in the current bundles. 
+
+## 6.3 RQ1: Schema-Stable and Auditable Evolution 
+
+RQ1 asks whether successive setups can be incorpo-rated without changing the schema or breaking existing provenance paths. The schema and ingestion procedure establish the required path shape by construction; the six-version ladder verifies conformance for all ingested data. At every ImportBatch, we check: (i) path complete-ness from each GraphAssertion to evidence, run, setup, and report; (ii) uniqueness of the outgoing ASSERTS re-lation from each Prediction; (iii) disjointness of the four operational scopes; (iv) version-localisability through ImportBatch and GraphVersion; and (v) evidence-granularity safety. Across v1.0–v6.0, evidence coverage and path completeness are 100%, no dangling prove-nance reference or duplicate assertion relation is ob-served, and the operational scopes remain disjoint. All entity types materialized in the snapshot are exercised at v6.0; Dataset, SourceFile, PromptTemplate, and Evi-denceSpan are realized as node properties or as external source artifacts in this instantiation (A). Ingesting S1– S6 introduces no node labels, relation types, or schema constraints beyond those already present in v1.0. Figure 4 complements the conformance table with de-scriptive growth signals: panel (a) tracks configuration-level GraphAssertions, panel (b) distinct ATT&CK IDs, panel (c) the inclusive target-level corroborated view C(2)  
+
+> t
+
+, and panel (d) the exclusive non-gold strict-unanimity component. GraphAssertion volume in-creases from 5,249 to 27,420, while observed ATT&CK reach increases from 120 to 139 IDs. The target-level corroborated view C(2)  
+
+> t
+
+becomes available at v2.0 and grows to 5,410 targets at v6.0. Panel (d) starts at v3.0 because, with at most two active setups, unanimity does not define a stricter component than the k ≥ 2 corrob-oration floor. These target counts are not divided by the configuration-level GraphAssertion counts because they describe different units. 
+
+Preservation rather than monotonic trust. The ingestion schedule contains additions but no revocation batch; consequently, its active trusted view grows from 2,850 to 20,209 GraphAssertions. This observation does not imply that the methodology is monotonic: Sections 4.5 and 5.6 allow a later governance batch to contract the active view while retaining earlier records. RQ1 establishes that this additive schedule preserves existing audit paths and requires no schema migration. 
+
+Reach and corroboration. ATT&CK reach follows 
+
+120 → 133 → 137 → 137 → 138 → 139 , whereas the inclusive corroborated target view follows 0 → 1,539 →
+
+3,952 → 4,810 → 5,088 → 5,410 . The near-plateau in reach and continued growth in corroboration indicate that later setups mainly add alternative support for already observed targets. This is the regime required 16 Table 7: Artifact inventory for graph v6.0. 
+
+Entity Count 
+
+Dataset / Report / Sentence 2 / 65 / 5,303 Implementation evidence records 5,303 Source files / ImportBatch 68 / 6 LLMRun / ExtractionSetup / GraphVersion 72 / 6 / 6 Prediction 82,260 
+
+RetrievedContext / CONSIDERED edges 89,706 / 140,630 AttackTactic 21 AttackTechnique (1,149 from v19.1 STIX + 101 observed-ID placeholders) 1,250 ATTACK_RELATIONSHIP edges 21,324 MalontClass / MALONT_RELATION 75 / 60 GraphAssertion (configuration level) 27,420 
+
+ConsensusAssertion (target level, k ≥ 2) 5,410 
+
+Gold annotation instances 824 
+
+SUPPORTS / AGREES_WITH / DISAGREES_WITH edges 15,120 / 16,991 / 68,231 Trusted-view GraphAssertions (gold ∪ validated) 20,209 
+
+Table 8: Evolution and conformance across cumulative graph states. A dash indicates that corroboration is not defined by a single active setup. 
+
+State Active setups GraphAssertions ATT&CK IDs C(2)  
+
+> t
+
+targets Path closure Scope overlap Schema delta 
+
+v1.0 1 5,249 120 – 100% 0 0v2.0 2 11,930 133 1,539 100% 0 0v3.0 3 19,065 137 3,952 100% 0 0v4.0 4 23,961 137 4,810 100% 0 0v5.0 5 25,625 138 5,088 100% 0 0v6.0 6 27,420 139 5,410 100% 0 0
+
+for the multi-witness analyses of RQ2 and RQ3. RQ1 finding All six heterogeneous setups are in-gested with the same schema, loader, and provenance v1.0 v2.0 v3.0 v4.0 v5.0 v6.0   
+
+> 0
+> 5000
+> 10000
+> 15000
+> 20000
+> 25000
+> 30000
+> Assertions
+> 5,249
+> 11,930
+> 19,065
+> 23,961 25,625 27,420
+
+(a) Configuration-level GraphAssertions          
+
+> v1.0 v2.0 v3.0 v4.0 v5.0 v6.0
+> 0
+> 25
+> 50
+> 75
+> 100
+> 125
+> 150
+> IDs
+> 120
+> 133 137 137 138 139
+
+(b) Distinct ATT&CK IDs        
+
+> v1.0 v2.0 v3.0 v4.0 v5.0 v6.0
+> 0
+> 1000
+> 2000
+> 3000
+> 4000
+> 5000
+> 6000
+> Targets
+> 0
+> 1,539
+> 3,952
+> 4,810 5,088 5,410
+
+(c) Corroborated target view ( k ≥ 2, inclusive)            
+
+> v1.0 v2.0 v3.0 v4.0 v5.0 v6.0
+> 0
+> 200
+> 400
+> 600
+> 800
+> Assertions
+> 732
+> (k= 3)
+> 592
+> (k= 4)
+> 170
+> (k= 5) 126
+> (k= 6)
+> ----
+
+(d) Strict unanimity component (exclusive non-gold) 
+
+Figure 4: Evolution across v1.0–v6.0 of assertions, ATT&CK reach, corroborated targets, and strict unanimity. 17 path. Every checked GraphAssertion remains evidence-and producer-traceable, previous states remain version-localizable, and no schema element is added between v1.0 and v6.0. The evaluation therefore supports au-ditable, schema-stable evolution for the observed addi-tive schedule. 
+
+## 6.4 RQ2: Extractor-Independent Gov-ernance and Witness Diversity 
+
+RQ2 has two parts. First, extractor-independent gov-ernance requires the same representation and policy to accept heterogeneous setups. Second, witness diversity asks whether heterogeneous generators provide an in-formative validation signal beyond repeated or closely related configurations. 
+
+6.4.1 Heterogeneous-setup compatibility 
+
+The six retriever–generator cells are imported through the same node labels, relations, canonicalization rules, and trust policy. RAG and RAG+FSP remain dis-tinguishable as assertion configurations, and the three deterministic seed records remain traceable, yet neither methods nor seeds inflate Wt(u). The deferred (GTE-Qwen2, Phi-3.5) cell is admitted at v6.0 without schema or loader modification. These observations support the structural, extractor-independent part of RQ2. 
+
+6.4.2 Upstream prediction profile 
+
+Table 9 characterizes the prediction substrate governed by TRACE-CTI. Mean ATT&CK reach and doc-level F1 are descriptive upstream measurements rather than governance outcomes. The non-integer reach values are aggregated means over the evaluation strata used by the reused protocol, not graph-wide counts of distinct IDs. The table pools RAG and RAG+FSP results and is therefore not interpreted as a causal estimate of the effect of few-shot prompting. Both methods receive the source sentence and the retrieved context; RAG+FSP additionally includes five few-shot examples in the prompt. Aggregates reported in the text are computed from the unrounded stratum-level values; the cells in Table 9 are rounded to two decimal places. Mistral has the broadest mean reach in both retriever rows, followed by Llama and Phi-3.5. The same ordering is not mirrored exactly by doc-level F1: the generator-family means are 0.455 for Llama, 0.471 for Mistral, and 0.384 for Phi-3.5, while the retriever-row F1 means differ by 0.005. We therefore treat breadth and reference F1 as complementary descriptive properties. The design does not isolate whether the narrower Phi-3.5 output originates from scale, training data, instruction tuning, or their interaction. 
+
+6.4.3 Within- and cross-family output diversity 
+
+The closed 2 × 3 matrix yields 15 unordered setup pairs, each evaluated over four dataset–method strata, for 60 stratified comparisons. The three setup pairs that share a generator family contribute 12 comparisons; the remaining 12 cross-generator-family setup pairs con-tribute 48 comparisons. The mean Jaccard distance is 0.3184 for pairs sharing the same generator family and 0.4326 for cross-generator-family pairs, a difference of 0.114. Thus, cross-family pairs exhibit greater output diversity , not greater raw agreement. The corresponding retriever-axis contrast is reported as −0.020 , indicating no analogous positive diversity gap. Figure 5 reports the corresponding group means of the sentence-level Jac-card distance, pooled across the four dataset–method strata ( N = 12 /48 for same-/different-generator-family pairs and N = 24 /36 for same-/different-retriever pairs); error bars show ±1 sample standard deviation over the pairwise comparisons and are not confidence intervals for the group means. Same    
+
+> family
+> Different
+> families
+> Same
+> retriever
+> Different
+> retrievers
+> 0.0
+> 0.1
+> 0.2
+> 0.3
+> 0.4
+> 0.5
+> 0.6
+> Mean pairwise output Jaccard distance
+> 0.318
+> N=12
+> 0.433
+> N=48
+> 0.422
+> N=24 0.402
+> N=36
+> Generator-family axis Retriever-identity axis
+> Δ = +0.114 Δ = −0.020
+
+Figure 5: Setup-pair output diversity by configuration axis in the closed 2 × 3 matrix. Means are pooled across the four dataset–method strata; error bars show ±1
+
+sample standard deviation across setup pairs. Complementary correctness evidence is supplied by the cumulative unanimity schedule reported in Sec-tion 6.5. This schedule shows that agreement over an increasingly heterogeneous active set is associated with Table 9: Mean ATT&CK reach and reference doc-level F1 for the closed 2 × 3 setup matrix.                  
+
+> Generator family Retriever Llama Mistral Phi-3.5
+> E5 mean ATT&CK reach 60.75 71.00 58.50 F1 0.44 0.47 0.39 GTE-Qwen2 mean ATT&CK reach 65.75 75.50 61.25 F1 0.47 0.47 0.38
+
+18 higher gold-aligned precision: Macro-averaged preci-sion across the two corpora rises from 38.0% at v1.0 to 90.6% at v6.0 as the active set expands from one setup and one generator family to all six setups and three generator families. It does not directly compare same-family and cross-family support at fixed k, be-cause support threshold, active-set composition, and ingestion order vary jointly. The two analyses therefore provide converging but not controlled evidence: the pairwise comparison establishes behavioral diversity, while the cumulative schedule establishes the correct-ness associated with agreement across the expanding heterogeneous witness set. 
+
+RQ2 finding The same governance model accom-modates all six setup cells without schema or loader changes. Cross-generator-family pairs exhibit greater behavioral diversity than pairs sharing a generator family, while full-matrix agreement is associated with substantially higher gold-aligned precision along the specified cumulative schedule. These results establish extractor-independent governance and provide support-ive evidence that heterogeneous corroboration is in-formative in this instantiation. They do not directly estimate a cross-family precision advantage over within-family corroboration at fixed support size and therefore do not support a causal family-diversity claim. 
+
+## 6.5 RQ3: Controlled Promotion to the Trusted View 
+
+RQ3 concerns whether every prediction-derived GraphAssertion exposed as trusted has an explicit qualifying validation record. We therefore evaluate policy conformance separately from the empirical correctness of analytical agreement views. 
+
+6.5.1 Operational scopes and policy confor-mance 
+
+The operational scopes are the four exclusive categories defined in Section 4.3: gold, validated, prediction-only, and deprecated. Corroborated, strong-consensus, and unanimous are nested agreement views that may pro-vide grounds for multi-witness validation; they are not additional top-level scopes. At v6.0, 20,209 GraphAssertions are exposed in the trusted view, and 7,211 remain prediction-only. No deprecated assertion is present because the observed schedule contains no revocation batch. For exclusive reporting, the trusted view is decomposed into 15,561 gold-backed GraphAssertions, 4,522 validated GraphAs-sertions in the corroborated non-unanimous component, and 126 validated GraphAssertions in the exclusive non-gold unanimity component; these values sum to 20,209. The 5,410 ConsensusAssertions are instead the inclusive target-level C(2) 6 view and can overlap gold-backed ma-terial. They must therefore not be added to, or divided by, the configuration-level operational-scope counts. Across all six GraphVersions, every trusted GraphAs-sertion has an active qualifying validation ground, no prediction-only GraphAssertion appears in the trusted view, and no GraphAssertion belongs to more than one exclusive operational scope. Thus, validation-record completeness is 100%, leakage is 0, and scope overlap is 0 for the evaluated states. The gold-scope check con-firms correct materialization of corpus annotations; its definitional correctness is a conformance result, not an extractor-accuracy claim. 
+
+6.5.2 Agreement thresholds and gold-aligned correctness 
+
+At fixed graph state v6.0, increasing the setup-support requirement produces the expected selectivity trade-off. Gold-aligned precision rises from 25.3% for the broad 
+
+k ≥ 1 exposure view to 90.6% for full k = 6 unanimity, while recall decreases from 88.2% to 16.3%. The k ≥ 1
+
+value at v6.0 is the union of GraphAssertions whose targets are emitted by any of the six active setups; it must not be confused with the 38.0% precision of the single S1 setup at v1.0 reported in the cumulative schedule. The inclusive k = 6 exposure view contains 1,236 GraphAssertions; 126 belong to the exclusive non-gold unanimity component after gold-backed material is assigned to the gold scope. Figure 6 and Table 10 provide the cumulative reading. In the figure, the thick curve shows the macro-averaged precision across TRAM v2 and AnnoCTR; the thin curves show the per-corpus results; the secondary axis reports macro-averaged recall; and the annotations show the percentage-point change in precision between con-secutive states. Each row applies unanimity to the active setup set of that version; the threshold therefore tightens as the number of active setups grows. The two largest precision increases coincide with the introduc-tion of a previously absent generator family, but ver-sion, threshold, and composition change together. The table is interpreted as the observed cumulative analyti-cal agreement trajectory, not as an order-independent causal decomposition. 
+
+RQ3 finding For all evaluated versions, trusted-view membership is fully explained by active recorded valida-tion grounds, operational scopes remain exclusive, and no prediction-only assertion leaks into the trusted view. Stricter setup-support views yield smaller exposure sets with higher gold-aligned precision. The results therefore support controlled, inspectable promotion rather than silent conversion of Predictions into trusted facts. 
+
+## 6.6 RQ4: Graph-Native Operational Utility 
+
+RQ4 asks which tasks can be answered directly from the governed store. The baseline is a minimal flat extraction output: one record per emitted sentence — technique mapping — without first-class validation history, active-state dependencies, RetrievedContext links, or graph-version semantics. This is a lifecycle baseline, not a claim that relational storage cannot be extended to reproduce the graph schema. 19 v1.0 
+
+> GTE x Llama
+> (1 gen. family)
+> v2.0
+> E5 x Mistral
+> (2 gen. families)
+> v3.0
+> GTE x Mistral
+> (2 gen. families)
+> v4.0
+> E5 x Llama
+> (2 gen. families)
+> v5.0
+> E5 x Phi-3.5
+> (3 gen. families)
+> v6.0
+> GTE x Phi-3.5
+> (3 gen. families)
+> GraphVersion = accumulated parent ExtractionSetups
+> 30
+> 40
+> 50
+> 60
+> 70
+> 80
+> 90
+> 100
+> Gold-aligned precision (%)
+> 38.0
+> 65.2
+> 69.6
+> 75.3
+> 88.2
+> 90.6
+> +27.2 pp
+> +4.4 pp
+> +5.7 pp
+> +12.9 pp
+> +2.4 pp
+> new generator family
+> (Mistral)
+> new generator family
+> (Phi-3.5)
+> Precision - TRAM v2
+> Precision - AnnoCTR
+> Precision - macro-average
+> Recall - macro-average
+> 0
+> 20
+> 40
+> 60
+> 80
+> 100
+> Gold-aligned recall (%)
+
+Figure 6: Document-level gold-aligned precision and recall of the cumulative unanimity exposure view, v1.0–v6.0. Table 10: Document-level gold-aligned correctness of the cumulative unanimity exposure view, v1.0–v6.0; † marks the first setup from a new generator family. 
+
+#Gen. View # ATT&CK Gold-aligned precision (%) ∆P
+
+Version New setup fam. size IDs TRAM AnnoCTR Macro-avg (pp) 
+
+v1.0 GTE ×Llama 1 5,249 120 38.7 37.2 38.0 –v2.0 E5 ×Mistral † 2 3,078 93 70.7 59.7 65.2 +27 .2
+
+v3.0 GTE ×Mistral 2 3,984 85 73.8 65.4 69.6 +4 .4
+
+v4.0 E5 ×Llama 2 3,616 68 77.0 73.6 75.3 +5 .7
+
+v5.0 E5 ×Phi-3.5 † 3 1,615 56 87.5 88.9 88.2 +12 .9
+
+v6.0 GTE ×Phi-3.5 3 1,236 50 90.2 90.9 90.6 +2 .4
+
+Table 11 evaluates seven operational questions against the information retained by the two representations. A check mark means that the supplied snapshot and audit-query set contain the required entities and relations; a partial mark means that the flat row can return an approximate answer but lacks the governed evidence or lifecycle context. 
+
+Evidence and provenance queries Q1 follows the GraphAssertion–Prediction–EvidenceUnit path while preserving sentence- versus span-level support. Q2 con-tinues through LLMRun and ExtractionSetup and can also recover prompting method and RetrievedContext. A flat sentence–label row may retain the sentence, hence the partial result for Q1, but it does not contain the complete governed path assumed by Q2. 
+
+Trust and version queries Q3 retrieves the exclu-sive operational scope separately from agreement sup-port and validation grounds. Q4 filters by GraphVersion and ImportBatch rather than re-running any extractor. These queries rely on the lifecycle objects introduced in Sections 4.3 and 5.6. 
+
+Counterfactual revocation Q5 traverses from a selected ExtractionSetup to its configurations, Predic-tions, GraphAssertions, support relations, and policy-derived validation records. It identifies which active targets would lose support and which GraphAssertions would require scope reevaluation before a revocation batch is published. The evaluated schedule does not con-tain an actual revocation event, so the deprecated scope remains empty; RQ4 demonstrates stored dependency answerability and non-destructive version support, not a measured live-SOC recovery time. 
+
+Disagreement and review queries Q6 groups dis-agreement edges by shared or changed retriever and gen-erator components. Q7 selects prediction-only GraphAs-sertions under an explicit queue policy while retaining 20 Table 11: Operational query workload for the flat-output baseline and TRACE-CTI.                 
+
+> Operational question Flat KG
+> Q1 Which native evidence unit supports this ATT&CK assertion?
+> ∼✓
+> Q2 Which setup, method, run, seed, prompt, and context produced it?
+> ✗✓
+> Q3 What are its operational scope, agreement level, and validation grounds?
+> ✗✓
+> Q4 Which assertions and trust decisions differ across graph versions?
+> ✗✓
+> Q5 Which active assertions and validation grounds depend on a setup selected for revocation?
+> ✗✓
+> Q6 Which disagreements are associated with retriever or generator changes?
+> ✗✓
+> Q7 Which prediction-only assertions satisfy a review-queue policy?
+> ∼✓
+
+evidence and provenance for analyst inspection. Aminimal flat output can approximate a queue from con-fidence or frequency, which motivates the partial mark, but it cannot express the same trust- and provenance-aware selection without enriching the representation or reconstructing missing lifecycle state. 
+
+Relation to prior CTI stores The comparison in Sec-tion 3 shows that extraction pipelines, CTI knowledge graphs, sharing platforms, and general provenance mod-els address complementary parts of this lifecycle. The operational contribution evaluated here is not just graph storage, but the joint availability of run-level Predic-tions, configuration-level GraphAssertions, target-level corroboration, validation records, and versioned active state. 
+
+RQ4 finding All seven operational questions are di-rectly answerable from the published TRACE-CTI snap-shot and audit-query set. A minimal per-emission flat output does not retain sufficient lifecycle state to an-swer Q2–Q6 directly and provides only approximate answers to Q1 and Q7; answering the same questions would require enriching the representation or recon-structing provenance, validation, and version depen-dencies through additional processing. The current experiment evaluates answerability rather than analyst usability or query latency. 
+
+## 6.7 Summary of Findings 
+
+RQ1. Six successive setups are incorporated with-out schema modification, while complete provenance paths, native evidence handling, scope disjointness, and version-localisability are preserved across all observed graph states. 
+
+RQ2. The same governance model accepts all six het-erogeneous setup cells. Cross-generator-family setup pairs exhibit greater behavioral diversity than pairs sharing a generator family, and cumulative full-matrix agreement is associated with higher gold-aligned pre-cision. Together, these analyses provide converging, though not controlled, evidence that heterogeneous cor-roboration is informative in this instantiation; they do not compare cross-family and within-family precision at a fixed support size. 
+
+RQ3. Every trusted GraphAssertion is backed by an active qualifying validation ground, the four op-erational scopes remain exclusive, and no prediction-only assertion is exposed as trusted. Increasing the setup-support requirement produces a smaller but more precise agreement-conditioned exposure view. 
+
+RQ4. The graph directly supports evidence tracing, producer reconstruction, trust inspection, version com-parison, setup-dependency analysis, disagreement attri-bution, and review-queue construction. These results establish lifecycle answerability for the stored artifact; they do not constitute a live SOC user study or a per-formance benchmark. 
+
+# 7 Discussion 
+
+The results support the central claim of this work: fal-lible TTP-extraction outputs can be governed as au-ditable CTI assertions without losing evidence, prove-nance, validation grounds, or version history, and with-out treating every Prediction as trusted knowledge. The strongest evidence concerns schema-stable ingestion, complete provenance paths, explicit validation grounds, exclusive operational scopes, and lifecycle queryabil-ity. The agreement analyses additionally show that stricter setup-support requirements select smaller expo-sure views with higher gold-aligned precision, at the cost of recall; they do not establish statistical independence or a causal model-family effect. 
+
+## 7.1 Interpretation of the Research Ques-tions 
+
+RQ1: Auditable evolution Across v1.0–v6.0, all six ExtractionSetups are incorporated through the same schema and ingestion procedure. Every checked GraphAssertion remains traceable to its native evidence unit, supporting Predictions, LLMRuns, assertion con-figuration, and parent ExtractionSetup; the four opera-tional scopes remain disjoint; and each state is localiz-able through its ImportBatch and GraphVersion. The relevant result is preservation of existing audit paths under successive ingestion, not graph growth itself. Be-cause the observed schedule is additive, RQ1 does not empirically cover ontology migration, conflicting corpus revisions, or an executed revocation. The methodology nevertheless separates append-only audit history from the version-dependent trusted view, which may contract after revocation or a policy change. 
+
+RQ2: Extractor-independent governance and witness diversity The structural part of RQ2 is supported: the same representation, canonicalization rules, loader, and trust policy govern all six retriever– generator setups. RAG and RAG+FSP remain distinct 21 assertion configurations. However, because both config-urations inherit the same parent ExtractionSetup, they contribute at most one setup witness; repeated seeds likewise add no witnesses. Here, extractor-independent 
+
+means that governance is not tied to one extractor; it does not imply independent errors. The empirical conclusion is narrower. Cross-generator-family pairs exhibit greater output-set di-versity than pairs sharing a generator family. Sep-arately, unanimity over the progressively larger and more heterogeneous active set is associated with higher gold-aligned precision, reaching 90.6% at v6.0. These analyses provide converging, though not controlled, evidence that heterogeneous corroboration is informa-tive in this instantiation. They do not compare cross-family and within-family corroboration at fixed support size: threshold, active-set composition, and ingestion order co-vary, while Jaccard distance measures diversity rather than correctness conditional on agreement. No causal family-diversity or statistical-independence claim follows. 
+
+RQ3: Controlled promotion to trusted knowl-edge Across the evaluated GraphVersions, every trusted GraphAssertion has an active qualifying valida-tion ground, no prediction-only GraphAssertion enters the trusted view, and the gold , validated , prediction-only ,and deprecated scopes remain mutually exclusive. Stor-ing a Prediction therefore does not silently promote its GraphAssertion. Stricter setup support yields smaller exposure views with higher gold-aligned precision and lower recall, making the threshold an explicit policy choice. Corroborated, strong-consensus, and unanimous remain nested analytical views rather than additional operational scopes, and a ConsensusAssertion remains corroboration evidence rather than a trusted fact. The evaluation exercises gold and multi-witness grounds, but not analyst validation; it establishes policy conformance, not the effectiveness or cost of human review. 
+
+RQ4: Operational utility The graph directly sup-ports evidence tracing, producer reconstruction, trust inspection, version comparison, setup-dependency anal-ysis, disagreement attribution, and provenance-aware review queues through the lifecycle it represents, link-ing Predictions, GraphAssertions, ConsensusAssertions, validation records, and GraphVersions. This is a repre-sentational result, not a claim that graph databases are uniquely capable of these operations: an enriched rela-tional or event-sourced implementation could encode the same semantics. The evaluated minimal flat output does not retain them without enrichment or reprocess-ing. The experiment establishes answerability over the artifact, not query latency, storage efficiency, analyst us-ability, improved SOC decisions, or recovery time after revocation; the revocation query exposes dependencies, but no revocation batch is executed. 
+
+## 7.2 Scientific Contribution and Implica-tions 
+
+The principal implication is that extraction performance and claim reliability require different units of analysis. A benchmark evaluates whether an ATT&CK target is recovered; governance must also preserve which run emitted it, which assertion configuration it represents, which parent setups support its canonical target, why its GraphAssertion is trusted, and what could inval-idate that decision. The Prediction–GraphAssertion– ConsensusAssertion separation makes these responsi-bilities explicit. TRACE-CTI therefore complements automated extraction, operates upstream of threat-sharing platforms, and specializes general provenance and knowledge-graph mechanisms for post-extraction CTI governance. Agreement must consequently be treated as evidence of validation, not as truth. Unanimity cannot guarantee correctness because setups may share models, training data, prompts, retrievers, corpora, or annotation biases. TRACE-CTI records witness identity and family compo-sition so that support can be inspected and reevaluated. The appropriate policy depends on false-positive cost, tolerance for missed techniques, analyst availability, and downstream use; the study does not identify a universal threshold. The scientific novelty lies not in any individual mecha-nism, but in their integration into a single explicit claim lifecycle. Prediction-only GraphAssertions remain avail-able in the audit graph for disagreement analysis and future review without entering the trusted view; gold and validated GraphAssertions support more conser-vative downstream use; and versioned dependencies permit later correction. Uncertain outputs can thus be preserved without becoming indistinguishable from curated CTI facts. 
+
+## 7.3 Limitations and Threats to Validity 
+
+Construct validity Gold-aligned correctness de-pends on the quality and granularity of TRAM v2 and AnnoCTR. Alignment is performed at the document level: an exposed assertion counts as gold-aligned when its technique is annotated anywhere in the same report, so sentence- and span-level correctness is not established, and the reported precision and recall are upper bounds with respect to finer-grained matching. Precision and recall are computed over deduplicated document-level tuples, whereas view sizes are reported in GraphAsser-tions; comparisons with other units or matching policies require caution. Correctness of documents without gold annotations cannot be assessed directly; the reported precision estimates the reliability of the consensus mech-anism only where reference annotations are available. Jaccard distance measures output diversity, not error independence, and operational utility is measured as stored answerability rather than analyst or system per-formance. The graph ontology uses the ATT&CK v19.1 snapshot retrieved on 22 May 2026. Identifiers absent from that snapshot are retained as marked placeholders; 22 consequently, their absence in the imported bundles must not be automatically interpreted as an extrac-tion error, because some identifiers may derive from deprecated techniques or older gold annotations. 
+
+Internal and conclusion validity The cumulative ingestion order is not randomized, and support thresh-old, active-set size, family composition, and version change jointly. The unanimity trajectory is therefore descriptive, not a causal test of generator-family diver-sity. Deterministic seeds improve reproducibility but do not estimate stochastic variation, while pooling RAG and RAG+FSP in some summaries limits prompting-method-specific conclusions. The use of precomputed outputs and the absence of analyst validation and re-vocation batches leave live model updates, end-to-end latency, human-review behavior, and deployed rollback unevaluated. Finally, the high precision of the strictest agreement view is accompanied by substantially lower recall and is not a universally optimal operating point. 
+
+External validity The experiment covers two public English-language CTI corpora, 65 reports, two retriev-ers, three generator families, and two prompting meth-ods. It does not represent all CTI styles, languages, ATT&CK domains, proprietary sources, commercial models, or extraction architectures. Corroboration may differ with shared training lineage, common retrieval collections, or additional model families; the reported thresholds are therefore policy examples for this arti-fact. Neo4j is one realization of the storage-independent methodology; alternative data models, production-scale concurrency, access control, long-term schema migra-tion, and ATT&CK evolution remain unevaluated. Overall, the evidence supports TRACE-CTI as a framework for making trust decisions explicit, in-spectable, versioned, and subject to non-destructive revocation, not as a mechanism that guarantees model correctness. Its contribution is the transition from a prediction-only representation to an auditable claim lifecycle in which native evidence, provenance, corrobo-ration, validation, and active trust remain distinct and queryable. 
+
+# 8 Conclusion 
+
+The broader implication of this work is that automated CTI extraction should not end when a model emits an ATT&CK mapping. That output begins a governance process in which its evidence, producer, corroboration, validation grounds, and active status must remain ex-plicit and revisable. By providing a stable governance layer between replaceable extractors and downstream CTI systems, TRACE-CTI enables extraction technol-ogy to evolve while preserving the provenance and trust history of earlier outputs. The next step is to move from artifact-level confor-mance to operational validation. This requires exercis-ing analyst review and revocation as actual lifecycle events; comparing same-family and cross-family corrobo-ration under controlled support size and ingestion order; studying how trust policies should vary with the oper-ational costs of false positives and missed techniques; and evaluating portability across additional extractors, CTI sources, storage technologies, and SOC workloads. More generally, TRACE-CTI provides a basis for treating automatically extracted CTI not as a collection of static facts, but as a set of versioned and contestable claims whose grounds can be inspected, updated, and withdrawn without erasing their history. This shift from prediction storage to explicit claim governance is the principal direction this work opens. 
+
+# Ethical considerations 
+
+This work uses public CTI datasets and public open-weight models for offline, non-operational analysis. We do not instrument a live SOC or collect non-public ad-versary, analyst, or victim data. The study evaluates already generated extraction outputs and does not de-ploy offensive capabilities or act on operational systems. We therefore identify no significant additional ethical concerns arising from the study. 
+
+# CRediT authorship contribution statement 
+
+Federico Valletta: Conceptualization, Methodology, Software, Formal analysis, Data curation, Writing – original draft. Giacomo Longo: Conceptualization, Methodology, Writing – review & editing. Enrico Russo: Conceptualization, Validation, Writing – re-view & editing. Alessio Merlo: Conceptualization, Supervision, Writing – review & editing. 
+
+# Declaration of competing interest 
+
+The authors declare no known competing financial in-terests or personal relationships that could appear to influence the work reported in this paper. 
+
+# Funding 
+
+This research did not receive any specific grant from funding agencies in the public, commercial, or not-for-profit sectors. 
+
+# Declaration of generative AI and AI-assisted technologies in the manuscript preparation process 
+
+No technical contributions, implementations, data, or experiments are AI-generated. During the preparation of this work, the authors used GitHub Copilot and Grammarly to improve the 23 manuscript’s language and assist with its L ATEX format-ting. After using such tools, the authors reviewed and edited the content as needed and take full responsibility for the published article. 
+
+# Data availability 
+
+All data and code supporting this study are avail-able as supplementary materials to this article and in the public repository https://github. com/federicovalletta/TRACE-CTI-artifacts .The artifact archive, TRACE-CTI_artifacts_v6_ 20260728.tar.gz (SHA-256 E76E3AD2DCB658D43BDCEC40 6B75E1BC456BDB25639ADA49CEE0C144AB71C3BC ), contains the KG schema, CSV loaders, Cypher import scripts, audit queries Q1–Q7, the six extraction setups, and the v6.0 KG snapshot; all outputs are deterministic under the published seeds and reproducible from public model weights. 
+
+# References 
+
+Marah Abdin, Jyoti Aneja, Hany Awadalla, Ahmed Awadallah, Ammar Ahmad Awan, Nguyen Bach, Amit Bahree, Arash Bakhtiari, Jianmin Bao, Harkirat Behl, et al. Phi-3 technical report: A highly capable language model locally on your phone, 2024. Bushra A. Alahmadi, Louise Axon, and Ivan Marti-novic. 99% false positives: A qualitative study of SOC analysts’ perspectives on security alarms. In 
+
+Proceedings of the 31st USENIX Security Symposium ,pages 2783–2800. USENIX Association, 2022. Md Tanvirul Alam, Dipkamal Bhusal, Youngja Park, and Nidhi Rastogi. Looking beyond IoCs: Automati-cally extracting attack patterns from external CTI. arXiv preprint arXiv:2211.01753, 2023. Alibaba NLP. GTE-Qwen2-7B-Instruct: Gen-eral text embeddings. https://huggingface.co/ Alibaba-NLP/gte-Qwen2-7B-instruct , 2024. Leo Breiman. Random forests. Machine Learning , 45 (1):5–32, 2001. doi: 10.1023/A:1010933404324. Marvin Büchel, Tommaso Paladini, Stefano Lon-gari, Michele Carminati, Stefano Zanero, Ho-daya Binyamini, Gal Engelberg, Dan Klein, Gian-carlo Guizzardi, Marco Caselli, Andrea Continella, Maarten van Steen, Andreas Peter, and Thijs van Ede. SoK: Automated TTP extraction from CTI reports – are we there yet? In Proceedings of the 34th USENIX Security Symposium , pages 4621–4641. USENIX Association, 2025. Center for Threat-Informed Defense. TRAM v2: Threat report ATT&CK mapper. https://github.com/ center-for-threat-informed-defense/tram ,2023. Thomas G. Dietterich. Ensemble methods in machine learning. In Multiple Classifier Systems (MCS) , vol-ume 1857 of Lecture Notes in Computer Science ,pages 1–15. Springer, 2000. Erik Hemberg, Jonathan Kelly, Michal Shlapentokh-Rothman, Bryn Reinstadler, Katherine Xu, Nick Ru-tar, and Una-May O’Reilly. Linking threat tactics, techniques, and patterns with defensive weaknesses, vulnerabilities and affected platform configurations for cyber hunting. arXiv preprint arXiv:2010.00533, 2020. Aidan Hogan, Eva Blomqvist, Michael Cochez, Claudia d’Amato, Gerard de Melo, Claudio Gutierrez, Sabrina Kirrane, José Emilio Labra Gayo, Roberto Navigli, Sebastian Neumaier, Axel-Cyrille Ngonga Ngomo, Axel Polleres, Sabbir M. Rashid, Anisa Rula, Lukas Schmelzeisen, Juan Sequeda, Steffen Staab, and An-toine Zimmermann. Knowledge graphs. ACM Com-puting Surveys , 54(4):1–37, 2021. doi: 10.1145/ 3447772. Ghaith Husari, Ehab Al-Shaer, Mohiuddin Ahmed, Bill Chu, and Xi Niu. TTPDrill: Automatic and accurate extraction of threat actions from unstructured text of CTI sources. In Proceedings of the 33rd Annual Computer Security Applications Conference (ACSAC) ,pages 103–115. ACM, 2017. doi: 10.1145/3134600. 3134646. Ziwei Ji, Nayeon Lee, Rita Frieske, Tiezheng Yu, Dan Su, Yan Xu, Etsuko Ishii, Yejin Bang, Andrea Madotto, and Pascale Fung. Survey of hallucination in natural language generation. ACM Computing Surveys , 55 (12):1–38, 2023. doi: 10.1145/3571730. Albert Q. Jiang, Alexandre Sablayrolles, Arthur Men-sch, Chris Bamford, Devendra Singh Chaplot, Diego de las Casas, Florian Bressand, Gianna Lengyel, Guil-laume Lample, Lucile Saulnier, Lélio Renard Lavaud, Marie-Anne Lachaux, Pierre Stock, Teven Le Scao, Thibaut Lavril, Thomas Wang, Timothée Lacroix, and William El Sayed. Mistral 7B. arXiv preprint arXiv:2310.06825, 2023. Lukas Lange, Marc Reiter, and Jannik Strötgen. An-noCTR: A dataset for detecting and linking entities, tactics, and techniques in cyber threat reports. In Pro-ceedings of the 2024 Joint International Conference on Computational Linguistics, Language Resources and Evaluation (LREC-COLING) , pages 1052–1065, 2024. Timothy Lebo, Satya Sahoo, Deborah McGuinness, Khalid Belhajjame, James Cheney, David Corsar, Daniel Garijo, Stian Soiland-Reyes, Stephan Zednik, and Jun Zhao. PROV-O: The PROV ontology. Tech-nical report, W3C Recommendation, 2013. URL 
+
+https://www.w3.org/TR/prov-o/ .Valentine Legoy, Marco Caselli, Christian Seifert, and Andreas Peter. rcATT: A tool for automatic classifica-tion of threat reports with MITRE ATT&CK tactics 24 and techniques. arXiv preprint arXiv:2004.14322, 2020. Patrick Lewis, Ethan Perez, Aleksandra Piktus, Fabio Petroni, Vladimir Karpukhin, Naman Goyal, Hein-rich Küttler, Mike Lewis, Wen-tau Yih, Tim Rock-täschel, Sebastian Riedel, and Douwe Kiela. Retrieval-augmented generation for knowledge-intensive NLP tasks. In Advances in Neural Information Process-ing Systems (NeurIPS) , volume 33, pages 9459–9474, 2020. Lingzi Li, Cheng Huang, and Junren Chen. Au-tomated discovery and mapping ATT&CK tactics and techniques for unstructured cyber threat intelli-gence. Computers & Security , 140:103815, 2024. doi: 10.1016/j.cose.2024.103815. Zhenyuan Li, Jun Zeng, Yan Chen, and Zhenkai Liang. AttacKG: Constructing technique knowledge graph from cyber threat intelligence reports. In Proceed-ings of the 27th European Symposium on Research in Computer Security (ESORICS) , pages 589–609. Springer, 2022. doi: 10.1007/978-3-031-17140-6_29. Xiaojing Liao, Kan Yuan, XiaoFeng Wang, Zhou Li, Luyi Xing, and Raheem Beyah. Acing the IOC game: Toward automatic discovery and analysis of open-source cyber threat intelligence. In Proceedings of the 2016 ACM SIGSAC Conference on Computer and Communications Security (CCS) , pages 755–766. ACM, 2016. doi: 10.1145/2976749.2978315. Meta AI. The Llama 3 herd of models. arXiv preprint arXiv:2407.21783, 2024. Sadegh M. Milajerdi, Birhanu Eshete, Rigel Gjomemo, and V. N. Venkatakrishnan. POIROT: Aligning at-tack behavior with kernel audit records for cyber threat hunting. In Proceedings of the 2019 ACM SIGSAC Conference on Computer and Communica-tions Security (CCS) , pages 1795–1812. ACM, 2019. doi: 10.1145/3319535.3363217. Neo4j, Inc. Neo4j graph database. https://neo4j.com ,2024. OASIS Open. STIX version 2.1, OASIS stan-dard. Technical report, OASIS, 2021. URL 
+
+https://docs.oasis-open.org/cti/stix/v2.1/ stix-v2.1.html .Vittorio Orbinato, Mariarosaria Barbaraci, Roberto Natella, and Domenico Cotroneo. Automatic mapping of unstructured cyber threat intelligence: An experi-mental study (practical experience report). In Pro-ceedings of the 33rd IEEE International Symposium on Software Reliability Engineering (ISSRE) , pages 181–192. IEEE, 2022. doi: 10.1109/ISSRE55969.2022. 00031. Aritran Piplai, Sudip Mittal, Anupam Joshi, Tim Finin, James Holt, and Richard Zak. Creating cybersecurity knowledge graphs from malware after action reports. 
+
+IEEE Access , 8:211691–211703, 2020. doi: 10.1109/ ACCESS.2020.3039234. Nidhi Rastogi, Sharmishtha Dutta, Mohammed J. Zaki, Alex Gittens, and Charu Aggarwal. MALOnt: An ontology for malware threat intelligence. In Inter-national Workshop on Deployable Machine Learning for Security Defense (MLHat) , pages 28–44. Springer, 2020. Kiavash Satvat, Rigel Gjomemo, and V. N. Venkatakr-ishnan. EXTRACTOR: Extracting attack behav-ior from threat reports. In Proceedings of the 6th IEEE European Symposium on Security and Pri-vacy (EuroS&P) , pages 598–615. IEEE, 2021. doi: 10.1109/EuroSP51992.2021.00046. Blake E. Strom, Andy Applebaum, Doug P. Miller, Kathryn C. Nickels, Adam G. Pennington, and Cody B. Thomas. MITRE ATT&CK: Design and phi-losophy. Technical report, The MITRE Corporation, 2020. URL https://attack.mitre.org .Sathya Chandran Sundaramurthy, Alexandru G. Bar-das, Jacob Case, Xinming Ou, Michael Wesch, John McHugh, and S. Raj Rajagopalan. A human cap-ital model for mitigating security analyst burnout. In Proceedings of the Eleventh Symposium On Us-able Privacy and Security (SOUPS) , pages 347–359. USENIX Association, 2015. Cynthia Wagner, Alexandre Dulaunoy, Gérard Wagener, and Andras Iklody. MISP: The design and implemen-tation of a collaborative threat intelligence sharing platform. In Proceedings of the 2016 ACM Workshop on Information Sharing and Collaborative Security (WISCS) , pages 49–56. ACM, 2016. Liang Wang, Nan Yang, Xiaolong Huang, Binx-ing Jiao, Linjun Yang, Daxin Jiang, Rangan Ma-jumder, and Furu Wei. Text embeddings by weakly-supervised contrastive pre-training. arXiv preprint arXiv:2212.03533, 2022. 
+
+# A The TRACE-CTI Schema 
+
+This appendix provides a compact implementation refer-ence for the persistent entities that realize the method-ological objects introduced in Section 4.2 and the graph paths described in Section 5.3. Table 12 preserves the distinctions used throughout the paper: source evidence is separate from retrieved context; run-level Predictions are separate from configuration-level GraphAssertions; and cross-setup ConsensusAssertions summarize cor-roboration without becoming trusted facts. Assertion configuration is the logical key formed by an Extraction-Setup and one of the two prompting methods: RAG or RAG+FSP; it is not an additional node class. Likewise, validation and revocation are represented by explicit metadata and relations associated with the governed objects and their GraphVersions rather than requir-ing separate node labels. The same schema is used 25 in v1.0–v6.0; successive setup ingestion changes graph contents and active state, not the entity model. In the published v6.0 snapshot, Dataset, SourceFile, Prompt-Template, and EvidenceSpan are realized as properties of the materialized nodes or as external source artifacts rather than as separate node labels; all other entities are materialized as nodes. 26 Table 12: Core persistent entities in the TRACE-CTI schema and their lifecycle roles. 
+
+Entity Representation Lifecycle role 
+
+Dataset A labeled or unlabeled CTI corpus. Defines an ingestion and provenance boundary; a dataset is not itself a validation ground unless its annotations are explicitly designated as trusted. SourceFile A source artifact ingested by the framework, including a CTI report file or one of the MITRE ATT&CK STIX bundles used by the grounding layer. Preserves file-level origin for reports and ontology sources on the audit path and supports source deac-tivation or revocation without deleting prior history. Report One CTI document contained in a Dataset and derived from a SourceFile. Provides document-level provenance and review con-text for its evidence units. Sentence A sentence in a Report and the textual unit consumed by the evaluated extractor. Preserves sentence-level evidence and contains any native span-level annotations. EvidenceSpan A source-identified substring linked to its en-closing Sentence. Preserves native span granularity; it is never inferred from a sentence-level label. ExtractionSetup A versioned retriever–generator bundle with setup-level parameters. Identifies the parent witness used for setup-deduplicated corroboration. Prompting methods and repeated seeds do not create additional setup witnesses. LLMRun One execution of an assertion configuration over a dataset and seed. Records execution provenance and reproducibility information for the Predictions emitted in that run. PromptTemplate The prompt specification used by an LLM-Run. Makes the prompting method and model input re-constructible without treating the prompt as source evidence. Records whether the run uses RAG or RAG+FSP and, for the latter, the five few-shot examples included in the prompt. RetrievedContext A retrieved item supplied to a RAG run. Records what the generator was shown; it remains distinct from the native evidence supporting the ATT&CK mapping. Prediction One immutable run-level extractor output. Records observed model behavior and is un-trusted by default; each Prediction resolves to one configuration-level GraphAssertion. AttackTactic A MITRE ATT&CK tactic represented in the grounding layer. Organizes normalized techniques by adversary ob-jective. AttackTechnique A normalized MITRE ATT&CK technique or sub-technique imported from the current STIX bundles, or a placeholder for an ob-served identifier absent from those bundles. Supplies the target used by Predictions, GraphAs-sertions, and agreement queries. Placeholder nodes retain otherwise ungroundable pre-diction or gold identifiers and are marked 
+
+observed_not_in_current_stix_bundle .MalontClass A MALOnt concept used as optional domain enrichment. Adds malware-oriented semantic context without changing claim or trust semantics. GraphAssertion The configuration-level claim g = ⟨e, a, c ⟩,where c = ⟨s, m ⟩ combines the parent Extrac-tionSetup and prompting method. Aggregates repeated run-level observations for the same normalized key and is the unit assigned to an operational scope and exposed through the trusted view. ConsensusAssertion A materialized summary for a canonical tar-get u = ⟨e, a ⟩ supported by at least two dis-tinct active parent ExtractionSetups. Stores setup-deduplicated support and witness-family composition. It supplies corroboration evi-dence but is not automatically trusted and is not an additional operational scope. Gold annotation in-stance A trusted human-supplied corpus annotation retained separately from model outputs. May provide a gold-validation ground for aligned GraphAssertions; it is not counted as a setup wit-ness. ImportBatch One ingestion or governance batch. Records when evidence, extraction outputs, valida-tion grounds, activations, or revocations enter the audit history. GraphVersion An identifiable logical graph state recon-structed from the accumulated history and active-state metadata. Localizes scope and trust decisions over time; prior states remain reconstructible while the ac-tive trusted view may expand or contract. 
+
+27

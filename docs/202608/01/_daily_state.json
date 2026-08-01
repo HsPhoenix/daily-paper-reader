@@ -1,0 +1,297 @@
+{
+  "date": "20260801",
+  "date_label": "",
+  "generated_at": "2026-08-01 20:37:48 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2607.25093v1",
+      "route": "202608/01/2607.25093v1-functional-subspace-projection-for-detection-of-coordinated-stealthy-attacks-in-power-systems",
+      "title": "Functional Subspace Projection for Detection of Coordinated Stealthy Attacks in Power Systems",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "核嵌入功能子空间检测方法用于协同虚假数据注入攻击",
+      "first_seen_at": "2026-08-01 20:37:48 UTC",
+      "updated_at": "2026-08-01 20:37:48 UTC"
+    },
+    {
+      "paper_id": "2607.25107v1",
+      "route": "202608/01/2607.25107v1-mosaic-fl-a-micro-service-based-privacy-preserving-framework-with-application-to-genomics",
+      "title": "MOSAIC-FL, a micro-service based privacy-preserving framework with application to genomics",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "使用门限CKKS同态加密实现联邦学习安全聚合",
+      "first_seen_at": "2026-08-01 20:37:48 UTC",
+      "updated_at": "2026-08-01 20:37:48 UTC"
+    },
+    {
+      "paper_id": "2607.25222v1",
+      "route": "202608/01/2607.25222v1-how-to-watermark-the-rlwe-homomorphic-ciphertexts",
+      "title": "How to Watermark the RLWE Homomorphic Ciphertexts",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向RLWE同态加密密文的水印技术",
+      "first_seen_at": "2026-08-01 20:37:48 UTC",
+      "updated_at": "2026-08-01 20:37:48 UTC"
+    },
+    {
+      "paper_id": "2607.26655v1",
+      "route": "202608/01/2607.26655v1-fingerprint-driven-automation-coupling-reconnaissance-with-poc-verification",
+      "title": "Fingerprint-Driven Automation: Coupling Reconnaissance with POC Verification",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向渗透测试的侦察与验证方法",
+      "first_seen_at": "2026-08-01 20:37:48 UTC",
+      "updated_at": "2026-08-01 20:37:48 UTC"
+    },
+    {
+      "paper_id": "2607.27491v1",
+      "route": "202608/01/2607.27491v1-flock-fast-proving-for-batch-boolean-computations",
+      "title": "Flock: Fast Proving for Batch Boolean Computations",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "用于密码哈希求值快速证明的SNARK",
+      "first_seen_at": "2026-08-01 20:37:48 UTC",
+      "updated_at": "2026-08-01 20:37:48 UTC"
+    },
+    {
+      "paper_id": "2607.27510v1",
+      "route": "202608/01/2607.27510v1-send-and-pretend-exploiting-transcript-consistency-issues-in-end-to-end-encrypted-group-chats",
+      "title": "Send and Pretend: Exploiting Transcript Consistency Issues in End-to-End Encrypted Group Chats",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "利用主流端到端加密群聊中的一致性漏洞，展示具体攻击类别",
+      "first_seen_at": "2026-08-01 20:37:48 UTC",
+      "updated_at": "2026-08-01 20:37:48 UTC"
+    },
+    {
+      "paper_id": "2607.27624v1",
+      "route": "202608/01/2607.27624v1-targeted-quarantine-strategies-mitigate-sis-model-cyber-epidemics-on-complex-networks",
+      "title": "Targeted Quarantine Strategies Mitigate SIS-model Cyber Epidemics on Complex Networks",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "网络恶意软件传播，定向隔离策略",
+      "first_seen_at": "2026-08-01 20:37:48 UTC",
+      "updated_at": "2026-08-01 20:37:48 UTC"
+    },
+    {
+      "paper_id": "2607.22094v1",
+      "route": "202608/01/2607.22094v1-transforming-keystroke-noise-to-text-self-supervised-acoustic-eavesdropping-attacks-on-keyboards",
+      "title": "Transforming Keystroke Noise to Text: Self-Supervised Acoustic Eavesdropping Attacks on Keyboards",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "键盘声学侧信道窃听攻击",
+      "first_seen_at": "2026-08-01 20:37:48 UTC",
+      "updated_at": "2026-08-01 20:37:48 UTC"
+    },
+    {
+      "paper_id": "2607.23444v1",
+      "route": "202608/01/2607.23444v1-isolated-but-exposed-persistence-based-memory-extraction-attack-on-llm-agents",
+      "title": "Isolated but Exposed: Persistence-Based Memory Extraction Attack on LLM Agents",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "针对LLM智能体内存隔离机制的提取攻击与漏洞分析",
+      "first_seen_at": "2026-08-01 20:37:48 UTC",
+      "updated_at": "2026-08-01 20:37:48 UTC"
+    },
+    {
+      "paper_id": "2607.23752v1",
+      "route": "202608/01/2607.23752v1-zkp-security-tools-and-verification-coverage-effectiveness-adoption-and-challenges",
+      "title": "ZKP Security Tools and Verification: Coverage, Effectiveness, Adoption, and Challenges",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "系统梳理零知识证明的安全工具与验证方法，属核心密码应用",
+      "first_seen_at": "2026-08-01 20:37:48 UTC",
+      "updated_at": "2026-08-01 20:37:48 UTC"
+    },
+    {
+      "paper_id": "2607.24639v1",
+      "route": "202608/01/2607.24639v1-experimental-side-channel-analysis-of-protocol-stages-in-quantum-identity-authentication",
+      "title": "Experimental Side Channel Analysis of Protocol Stages in Quantum Identity Authentication",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "量子身份认证协议的侧信道漏洞分析",
+      "first_seen_at": "2026-08-01 20:37:48 UTC",
+      "updated_at": "2026-08-01 20:37:48 UTC"
+    },
+    {
+      "paper_id": "2607.23417v1",
+      "route": "202608/01/2607.23417v1-early-detection-of-hardware-trojans-using-neural-controlled-differential-equations-and-analysis-of-power-traces",
+      "title": "Early Detection of Hardware Trojans Using Neural Controlled Differential Equations and Analysis of Power Traces",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "基于功率迹分析的硬件木马早期检测技术",
+      "first_seen_at": "2026-08-01 20:37:48 UTC",
+      "updated_at": "2026-08-01 20:37:48 UTC"
+    },
+    {
+      "paper_id": "2607.24116v1",
+      "route": "202608/01/2607.24116v1-a-cybersecurity-mlps-large-language-model-with-multi-path-retrieval-fusion",
+      "title": "A Cybersecurity MLPS Large Language Model with Multi-Path Retrieval Fusion",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "面向网络安全等级保护合规分析的LLM框架，契合网络安全原则与实践",
+      "first_seen_at": "2026-08-01 20:37:48 UTC",
+      "updated_at": "2026-08-01 20:37:48 UTC"
+    },
+    {
+      "paper_id": "2607.24177v1",
+      "route": "202608/01/2607.24177v1-exe-bench-ranking-the-tradeoffs-of-ai-based-windows-malware-detectors-for-real-world-usability",
+      "title": "EXE-Bench: Ranking the Tradeoffs of AI-based Windows Malware Detectors for Real-World Usability",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "构建AI型Windows恶意软件检测器基准，评估检测力与鲁棒性，支撑入侵防御",
+      "first_seen_at": "2026-08-01 20:37:48 UTC",
+      "updated_at": "2026-08-01 20:37:48 UTC"
+    },
+    {
+      "paper_id": "2607.25225v1",
+      "route": "202608/01/2607.25225v1-secdrift-measuring-sector-conditioned-security-drift-in-ai-generated-code",
+      "title": "SecDrift: Measuring Sector-Conditioned Security Drift in AI-Generated Code",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "通过静态分析漏洞率测量 AI 生成代码的安全漂移",
+      "first_seen_at": "2026-08-01 20:37:48 UTC",
+      "updated_at": "2026-08-01 20:37:48 UTC"
+    },
+    {
+      "paper_id": "2607.24343v1",
+      "route": "202608/01/2607.24343v1-beyond-aggregate-risk-role-stratified-conformal-risk-control-for-llm-tool-calls",
+      "title": "Beyond Aggregate Risk: Role-Stratified Conformal Risk Control for LLM Tool Calls",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "通过角色分层共形风险控制降低LLM工具调用中的高危凭证风险",
+      "first_seen_at": "2026-08-01 20:37:48 UTC",
+      "updated_at": "2026-08-01 20:37:48 UTC"
+    },
+    {
+      "paper_id": "2607.24563v2",
+      "route": "202608/01/2607.24563v2-trace-cti-auditable-post-extraction-governance-of-ttp-claims-with-knowledge-graphs",
+      "title": "TRACE-CTI: Auditable Post-Extraction Governance of TTP Claims with Knowledge Graphs",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "基于知识图谱的威胁情报TTP映射治理与验证框架",
+      "first_seen_at": "2026-08-01 20:37:48 UTC",
+      "updated_at": "2026-08-01 20:37:48 UTC"
+    },
+    {
+      "paper_id": "2607.24896v1",
+      "route": "202608/01/2607.24896v1-latent-stability-analysis-of-malware-representations-under-feature-space-perturbations",
+      "title": "Latent Stability Analysis of Malware Representations Under Feature-Space Perturbations",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "恶意软件表示在扰动下的潜在稳定性分析，支持鲁棒的入侵/恶意软件检测",
+      "first_seen_at": "2026-08-01 20:37:48 UTC",
+      "updated_at": "2026-08-01 20:37:48 UTC"
+    }
+  ]
+}

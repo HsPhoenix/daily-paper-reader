@@ -1,0 +1,369 @@
+Title: Targeted Quarantine Strategies Mitigate SIS-model Cyber Epidemics on Complex Networks
+
+URL Source: https://arxiv.org/pdf/2607.27624v1
+
+Published Time: Fri, 31 Jul 2026 00:25:45 GMT
+
+Number of Pages: 11
+
+Markdown Content:
+> Date of publication xxxx 00, 0000, date of current version xxxx 00, 0000.
+> Digital Object Identifier 0
+
+# Targeted Quarantine Strategies Mitigate SIS-model Cyber Epidemics on Complex Networks 
+
+HO YUEN WONG 1, AND TAK SHING TAI 1 
+
+> 1Department of Electronic Engineering and Computer Science, Hong Kong Metropolitan University, Homantin, Hong Kong SAR, China
+> Corresponding author: Tak Shing Tai (e-mail: stai@hkmu.edu.hk).
+
+ABSTRACT The rapid expansion of highly connected and heterogeneous digital infrastructures has fundamentally altered the dynamics of cyber epidemics, making it increasingly important to understand how malware propagates under realistic structural and policy conditions. In this study, we employ an SIS epidemic model on complex networks to investigate virus spreading under a range of cybersecurity scenarios, including minimally protected environments, anti-virus, vulnerable legacy systems, mixed security systems, rapidly evolving virus, and targeted quarantine of key nodes. Using simulations on scale-free topologies, we characterize how infection prevalence evolves over time and identify conditions under which outbreaks become explosive versus controlled. Our results show that vulnerable and rapidly evolving virus scenarios lead to fast and almost complete compromise, while antivirus and mixed-security configurations significantly reduce peak infection levels. Most importantly, we demonstrate that targeted quarantine of a small fraction of structurally important nodes can both delay the onset of large scale outbreaks and lower steady state infection, revealing a threshold in the fraction of quarantined nodes which required to alter spreading of computer virus. These findings highlight the critical role of network topology and selective protection in enhancing the resilience of cyber-physical infrastructures. 
+
+INDEX TERMS Adaptive System, Complex Network, Cybersecurity, Epidemic Spreading, Quarantine, SIS model 
+
+I. INTRODUCTION 
+
+# THE rapid expansion of highly connected digital ecosys-tems has fundamentally changed the landscape of cyber threats. Modern networks now interlink traditional IT in-frastructures with cloud platforms, mobile devices, industrial control systems, and billions of IoT sensors and actuators. This ubiquitous connectivity increases the attack surface dra-matically, providing adversaries with more entry points and pathways for lateral movement. Malware campaigns can now spread at unprecedented speed, often propagating automat-ically without requiring direct human interaction. Moreover, critical infrastructures such as energy grids and transportation systems are increasingly dependent on interconnected and often heterogeneous systems, where a single compromised component can trigger cascading failures [1]. The cyber at-tacks can also cause physical damage and large scale service disruptions. At the same time, the complexity and opacity of these networks make it difficult to maintain complete visibility to monitor all communication channels and isolate compromised segments. As a result, understanding how cyber threats emerge and propagate in such highly connected envi-ronments has become a challenge for cybersecurity research and a key motivation for simulation of virus spreading in complex networks. Moreover, some organizations rarely have a single, well-defined perimeter. Cloud services and any third-party inte-grations fragment the boundary into a collection of shifting, partially controlled edges, which makes it difficult to en-force consistent policies and to maintain a clear notion of inside versus outside. As a result, traditional models strug-gle to predict or contain the spread of malware in realis-tic environments, where trust assumptions can be violated and connectivity patterns are highly heterogeneous. These limitations motivate a shift towards models and tools that explicitly capture the complexity of real networks and the dynamics of malware propagation. Simulations in complex networks provide a way to study how viruses spread under different structural and policy conditions. By representing systems as graphs and simulating infection processes over time, researchers can examine how factors such as degree distribution, network structure and topologies, and key nodes influence propagation speed, infection reach, and outbreak thresholds [2]–[4]. Also, the simulations can make it possible to conduct controlled experiments that would be infeasible  
+
+> VOLUME 11, 2023 1arXiv:2607.27624v1 [physics.soc-ph] 30 Jul 2026 Wong & Tai: Preparation of Papers
+
+and dangerous on production systems. For example, the sim-ulations can compare how fast a given malware strain spreads in a scale-free network versus a more uniformly connected topology. Furthermore, researchers can evaluate different de-fense strategies to measure their effect on infection. Another advantage of simulation is its ability to incorporate hetero-geneity and dynamics, since real networks contain nodes with different security postures and patch levels. Network connectivity may also change over time as devices connect and disconnect, As a result, simulations can then model these aspects explicitly, so they deepen theoretical understanding of how cyber epidemics behave in complex environments, revealing critical thresholds and structural vulnerabilities. On the other hand, they provide practical guidance for security architecture design, helping to identify which controls such as stronger authentication and access control, segmentation of high-degree hubs can effectively disrupt malware spread. In this study, we reveal how the topology and interde-pendence patterns of critical infrastructure networks funda-mentally shape their cybersecurity resilience. By modeling computer systems and their communication links as a com-plex network, we quantify how attacks on a small subset of strategically important nodes can propagate to trigger cas-cading failures across multiple subsystems. We adopt an SIS model on scale-free networks to investigate how different se-curity configurations and intervention strategies shape cyber-epidemic dynamics. In particular, we focus on the role of tar-geted quarantine, where only a small fraction of structurally central nodes can be isolated due to resource constraints. Unlike immunization or uniform hardening, targeted quaran-tine exploits network topology considering the connectivity of individual nodes to disrupt critical transmission of com-puter virus. We compare this strategy against different scenar-ios, including minimally protected environments, antivirus-enhanced networks, legacy-dominated systems, mixed secu-rity postures, and settings with rapidly evolving malware. Our results shed light on the number of connections in the global structure influences the overall vulnerability of the infrastructure. By analyzing both node-based infection prevalence and a degree-weighted infection metric over time, we quantify how these scenarios differ in terms of outbreak speed, peak infec-tion level, and persistence. This allows us to identify practical thresholds in the fraction of quarantined nodes required to meaningfully alter epidemic trajectories, and to clarify when topology-aware quarantine can outperform different defense strategies. 
+
+> II. LITERATURE REVIEW
+
+Research on epidemic spreading in complex networks has de-veloped rapidly over the past two decades, providing a foun-dational framework for understanding both biological and cyber contagion processes. On the other hand, most existing studies related to cybersecurity assume uniform protection which focus on static immunization of nodes or consider coarse-grained isolation of entire sub-networks so they pro-vide limited insight into the role of selective and quarantine at the node level. Thus, the epidemic models can help improve the understanding of the spreading of virus related to cyber-security. 
+
+> A. EPIDEMIC MODELS FOR MALWARE PROPAGATION
+
+Epidemic models originally developed in mathematical epi-demiology has been widely adapted to describe malware propagation in computer and communication networks [5]. In their simplest form, these models classify each node into a small number of states and define transition rules be-tween them [6]–[8]. The Susceptible–Infected (SI) model captures scenarios where once a device is compromised, it remains infected indefinitely, approximating fast-spreading worms in the early stages of an outbreak or systems without effective remediation. The Susceptible–Infected–Susceptible (SIS) models extend this by allowing infected nodes to be clean but vulnerable again, reflecting environments where patches are incomplete or users repeatedly disable protection [9]–[11]. The Susceptible–Infected–Removed (SIR) models include a removed state representing nodes that are patched or a recovery state that is immune to reinfection [12]. Further-more, Susceptible–Exposed-Infected–Removed (SEIR) mod-els insert an exposed state to represent latent periods where malware has been delivered but not yet activated, which is relevant for ransomware with countdown timer, or multi-stage intrusion campaigns [13]–[15]. In the cyber context, the parameters of these models such as infection rate, recovery rate, and immunity duration are mapped to technical and organizational factors. The scan-ning speed, exploiting success probability, patch deployment, incident response, and user behavior are some factors that can be considered in the models. Analytical treatments of SIS or SIR models on networks often focus on deriving epidemic thresholds such as the critical values of the infec-tion rate. These thresholds can depend on network structure and heterogeneity in the complex networks [16]–[18]. Some models incorporate heterogeneous infection probabilities for different node types such as servers and clients, time-varying rates, or additional states for detection [19]–[21]. Thus, these models provide some insights to the virus spreading in cyber networks. This gap motivates a systematic investigation of targeted quarantine policies and their impact on the mitigation of SIS-type cyber epidemics on complex networks. 
+
+> B. NETWORK TOPOLOGY
+
+Different algorithms can be used for generating random net-works, including Barabási–Albert (BA), Erdős–Rényi (ER) model and the Watts–Strogatz (WS) model. The BA model can generate some human-made systems such as Internet and World Wide Web [22]–[24]. Some studies analyze the network structure of systems such as the connections between devices since networks or graphs have specific topologi-cal properties [25], [26]. For instance, Internet-topologies, like server–client structure, exhibit a highly heterogeneous connectivity pattern, in which a small number of nodes act  
+
+> 2VOLUME 11, 2023 Wong & Tai: Preparation of Papers
+
+as hubs with a very high degree of connectivity while the vast majority of nodes have only a few connections [27]– [29]. Moreover, small world networks combine high local clustering with short average path length, meaning that any two nodes are connected by relatively few hops and they can join together by a small number of links so these structural features have a direct impact on how malware and other cyber threats spread [30], [31]. In scale-free networks, highly connected hubs act as super-spreaders [32]. When they are compromised, they can infect many neighbors rapidly, dra-matically accelerating propagation [33], [34]. At the same time, such networks are robust to random node failures but extremely vulnerable to targeted attacks on hubs so it implied that protecting or segmenting high-degree nodes is crucial for containment [35]–[37]. Moreover, small world properties can increase the rate of propagation, allowing malware to traverse the network quickly via a few long-range connections, even if most nodes are only locally connected [38]–[40]. However, some social network structure can be slow for the spread as infections may remain confined within a community for some time, but once a bridging node or gateway is compromised, the malware can jump to new modules and trigger cascading outbreaks [41]–[43]. Understanding these topological characteristics is there-fore important to designing defense strategies and simulation models. Studies of epidemic processes on complex networks show that critical thresholds of infection rates depend strongly on the degree distribution and network heterogeneity [44], [45]. For the models in highly heterogeneous, scale-free net-works, the thresholds may even vanish, implying that arbi-trarily small infection rates can sustain persistent epidemics [46], [47]. For cybersecurity, this means that the assumptions of homogeneous mixing can underestimate risk, so it will misguide defense planning [48], [49]. By explicitly modeling degree heterogeneity and clustering, the simulations can iden-tify critical nodes and evaluate the impact of segmentation to reveal non-intuitive effects on the resilience of networks. 
+
+> C. CYBERSECURITY PROPAGATION MODELS
+
+The models related to cybersecurity in complex networks can refine generic epidemic frameworks to capture the spreading behaviors of ransomware in real networks. The models often incorporate explicit scanning strategies such as IP scanning and protocol-level constraints, which strongly influence prop-agation speed and coverage [50], [51]. Some models can distinguish node roles in enterprise environments and critical infrastructures [1]. Moreover, some defense-oriented mod-els extend these approaches by adding explicit mechanisms for detection, patch propagation and quarantine, which can partially change network configuration [47], [52], [53]. For example, immunization processes can represent automated patch rollout or policy updates, while quarantine states cap-ture host isolation by endpoint detection and response or net-work access control [15], [54]. Those measures may encode continuous authentication and authorization as reduced effec-tive infection rates on protected edges on allowable infection paths between security zones with least-privilege access as smaller reachable neighborhoods for compromised identities. Furthermore, some studies consider and optimize the cost of security to explore how defenders should allocate resources such as hardening hubs and deploying additional verifica-tion checks to minimize outbreak size or expected loss [55]. Some studies can quantify how architectural choices (such as segmentation granularity or policy strictness) shift epidemic thresholds and slow lateral movement that limit the blast radius of successful compromises in complex networks [56]. 
+
+> III. METHODOLOGY
+
+We employ a model with N nodes, denoted by i = 1 , . . . , N ,each node is connected with ki neighbors, generated by using the BA model. There are different states of different nodes. Initially, all nodes are susceptible with S state so Si(t = 0) = 1 for ∀i and the total number of node in S state at time t is 
+
+S(t) and it can be obtained by 
+
+S(t) = 
+
+> N
+
+X
+
+> i=1
+
+Si(t). (1) When t = 0 , the susceptible nodes are free of virus. How-ever, at the beginning of each simulation, n nodes are selected for containing the source of virus spreading, so S(0) = N −n.When the nodes are infected, they become infected nodes from S → I . An example is shown in figure 1. The total number of infected nodes, denoted by λ(t), increase when t
+
+increase. When t = 0 , λ(0) = n. When S nodes are connected with or communicating with I nodes, the S nodes can become 
+
+I nodes, depending on the probability β, since the I nodes can then transmit virus to their neighboring nodes. When it is infected, more nodes become infective I . Furthermore, the I
+
+node can recover and become susceptible S again that I → S,with the probability γ. During time t, the total infected node 
+
+I becomes 
+
+λ(t) = 
+
+> N
+
+X
+
+> i=1
+
+Ii(t). (2) 
+
+Aij describe whether node i can interact with node j, for 
+
+∀i, j, such that 
+
+Aij =
+
+(
+
+1, if nodes i and j are connected 
+
+0, otherwise. . (3) In the networks, Aij = Aji . For individual node, we can identify the key nodes by the sum of infection contributions from all infected neighbors j that are connected to node i by obtaining the value of P 
+
+> j
+
+Aij Ij(t). We draw a random number 
+
+η to determine whether any node i, where Si(t − 1) = 1 , will be infected at time t. On each connection with infected nodes, the Ii(t) at time t become 
+
+Ii(t) = 
+
+(
+
+1, if η < β 
+
+0, otherwise. , where Si(t − 1) = 1 , ∀i, t. (4)  
+
+> VOLUME 11, 2023 3Wong & Tai: Preparation of Papers
+
+When Ii(t) = 1, Si(t) = 0. Since not all nodes will be connected to all other nodes, the spreading rate may be slower than some traditional SIS/SIR models. Hence, we rewrite the net rate of the change of the total number of I at tdλ(t)
+
+dt =
+
+> N
+
+X
+
+> i=1
+
+dI i(t)
+
+dt (5) 
+
+= β X
+
+> (ij )
+
+Aij Sj(t) X
+
+> (ij )
+
+Aij Ij(t)
+
+N − γ
+
+> N
+
+X
+
+> i=1
+
+Ii(t). (6) 
+
+β and γ are distinct values in different scenarios. Further discussion is included in section III-B. When t → ∞ , the state of all nodes become I , so we determine the infected rate and spreading rate within time limit, as mentioned in section III-C. 
+
+> A. SCENARIOS WITH QUARANTINE STATE
+
+As the infection is mostly from infected neighbors, the pro-tection to neighbor is vital. Hence, to stop the virus spreading, we introduce a state Q that the node i cannot be infected (i.e. cannot be change from S → I ). The number of nodes that are quarantined, denoted by nQ, is between 0 ≤ nQ ≤ 1, and 
+
+Qi(t) = 1 , Ii(t) = 0 , Si(t) = 0 ∀t, i ∈ Q. (7) Hence, at time t, the total number of nodes N becomes 
+
+N = S(t) + λ(t) + Q(t) (8) Since protecting all nodes from the virus is costly, we assume that only a fraction of nodes, denoted by p, can be endowed with enhanced protection with 
+
+p = nQ
+
+N , (9) where p ≪ 1. Only a small subset of nodes is assumed to be protected. These Q nodes are intended to represent critical vertices or servers in the network, for which enhanced defen-sive measures are deployed to prevent them from acting as major sources for infection. We quantify the fraction of such key nodes that must be quarantined to achieve a reduction in spreading. We reveal how to select the number so as to maximize the mitigation of spreading. For the scenarios with Q state, we rewrite the Eq.6 to 
+
+dλ(t)
+
+dt = β X
+
+> (ij )
+
+Aij Sj(t) X
+
+> (ij )
+
+Aij Ij(t)|Qi(t) − 1|
+
+N
+
+− γ
+
+> N
+
+X
+
+> i=1
+
+Ii(t)|Qi(t) − 1| (10) 
+
+> B. DIFFERENT SCENARIOS FOR SIMULATION
+
+We consider six representative cybersecurity scenarios in our SIS modeling simulation, as shown in table 1. The first case, named default, represents a standard network with only basic protections and insufficient expertise to recover compromised systems. This is captured by moderate infection and recovery rates with β = 0.15 and γ = 0.03 . The second case, namely anti-virus, corresponds to a heavily patched and well-maintained network, in which improved defenses reduce the infection rate and accelerate recovery with β = 0 .03 and γ =0.08 . In contrast, the third case, namely vnpatched/vulnerable networks, is a model in legacy or unpatched endpoint envi-ronments, where the lack of updates and protections leads to a high infection rate and a low recovery rate with β = 0 .35 
+
+and γ = 0 .03 . The fourth case, namely targeted quarantine, is a scenario explicitly isolates the most connected nodes based on node connectivity. It introduces a quarantined (Q) state for selected nodes to limit propagation through critical hubs with same β and γ as in the first case. The fifth case, namely mixed security level, is a case assumes heterogeneous protection lev-els, with three classes of nodes including hardened, standard, and legacy. Each class is characterized by distinct β and γ
+
+with a fraction u of nodes hardened, a fraction v of nodes at standard security, and the remaining fraction w operating as legacy systems, where 
+
+u + v + w = 1 , (11) thereby reflecting non-uniform security postures. Finally, the case, namely rapidly evolving virus, is a sce-nario captures adaptive malware that becomes more effective over time. When the overall infection level exceeds 50% , the virus progressively increases its infection rate and decreases the recovery rate at each time step by ∆β = +0 .05 and 
+
+∆γ = −0.02 , modeling an arms race where the threat evolves in response to widespread compromise. 
+
+> C. QUANTITIES OF INTEREST
+
+The simulations start at t = 0 . When t = T , we obtain the state of all nodes and calculate the summarized infected rate, denoted by ⟨I ⟩, as 
+
+⟨I ⟩ = 1
+
+N
+
+X
+
+> i
+
+|Ii(T )|. (12) The infected rate at time t, denoted by I (t) measures the fraction of the number of infected nodes in the network. 
+
+I (t) = 1
+
+N
+
+X
+
+> i
+
+|Ii(t)|
+
+= 1
+
+N λ(t). (13) For each node i, |Ii(t)| denotes whether the node is infected at time t.The weighted infected rate at time t, denoted by ω(t) mea-sures the fraction of edge-weighted infection in the network. 
+
+ω(t) = 1
+
+N P 
+
+> i
+
+ki
+
+X
+
+> i
+
+|Ii(t)| × ki. (14)                                    
+
+> 4VOLUME 11, 2023 Wong & Tai: Preparation of Papers
+> Case Description Features
+> Default Standard connection with insufficient skills and minimal cybersecurity supports to recover the systems Fair βand γ
+> Anti-virus A heavily patched and well-maintained network Low βand high γ
+> Unpatched Unpatched or vulnerable systems with legacy or unpatched endpoint environment High βand low γ
+> Targeted Quarantine Using degree centrality to isolate the most connected nodes Q state in the nodes Mixed Mixed security levels include three different security levels for nodes:
+> uhardened, vstandard and wlegacy each with unique βand γ
+> Rapidly Evolving Rapidly evolving virus is virus that will become smarter overtime When the infection rate is over 50% ,
+> βincrease and γdecrease in each time t
+> TABLE 1. Different scenarios in the simulations. Six cases with different βand γshow different cybersecurity settings
+
+ki is its degree and |Ii(t)| × ki counts the number of incident edges attached to infected nodes. It emphasizes infections at highly connected nodes, capturing how many nodes are infected and how structurally important those infections are for potential spread. 
+
+IV. RESULTS 
+
+In this section, we will show the results of different quantities of interest, including ⟨I ⟩, I (t) and ω(t) between different cases with distinct β and γ.
+
+A. IMPACT ON DIFFERENT SCENARIOS FOR INFECTION SPREADING OVER TIME 
+
+We first examine how different scenarios in section III-B impact the infection spreading rate. As shown in figure 2, the infections generally start from near zero at t = 0 and rise over time, and the rises rapidly to a high steady level near 100% of nodes infected in some cases where ⟨I ⟩ = 1 . For the cases with the default setting, The infected nodes increase gradually but steadily from t = 0 to t = 10 . The infection reaches 45% 
+
+of nodes at t = 10 . The infection rate keep increasing from 
+
+t = 10 to t = 30 and around 75% nodes are infected. The infection stabilizes into a high plateau and hovers around 95% 
+
+infection for the remainder of the simulation (i.e. ⟨I ⟩ = 0 .95 ), infecting most of the network most of the time. it shows that this setting permits widespread of virus, if there are no additional measures are conducted. For the cases with anti-virus, the infection rate rises much more slowly from zero than the others. At t = 10 , only 7% of nodes are infected. From t = 10 to t = 40 , the infection rate keep increasing but the slope is low. After t = 40 , the infection seems to fluctuates between 20% to 30% , showing that the strong anti-virus controls can minimize infection prevalence. For the cases with unpatched/vulnerable systems, the infection rate is the steepest, At t = 5 , near half of the nodes are infected and at t = 10 , around 90% of nodes are infected. The cases suffer fast and nearly complete compromise. Similarly, for the cases with evolving virus, the number of infected nodes also increase very fast. At t = 4, around 90% of nodes are infected. This is the worst-case scenario where the virus rapidly conquers the network. A rapidly evolving virus is able to overcome defenses to produces an explosive outbreak. 
+
+1) Comparison between vulnerable networks and antivirus networks 
+
+As shown in figures 4(a) and 4(b), when t = 4 , the number and distribution of infected nodes in the cases with antivirus are still comparable to those in the cases with vulnerable networks. At this early stage, the virus has not yet had suf-ficient time to fully exploit structural differences, so both scenarios exhibit a similar initial growth of infections. How-ever, when t = 8 , a clear divergence emerges. In the cases with vulnerable networks, the infection spreads rapidly and a large fraction of nodes become compromised, indicating an early onset of a widespread outbreak. In contrast, in the cases with antivirus, the spreading is effectively suppressed, and only a very small fraction of nodes are infected. This suggests that even a moderate level of protective capability can significantly delay the contagion process and reduce the infection level. When t = 20 , the contrast becomes more pronounced. In the cases with vulnerable networks, almost all nodes are infected, implying a near-complete breakdown of security that illustrating the unmitigated malware propagation in critical infrastructures. For the cases with antivirus, the virus still begin to spread more noticeably, but the growth is much slower and the overall infection level remains substan-tially lower than in the cases with vulnerable networks. This gradual increase reflects the competing dynamics between infection and recovery processes introduced by the antivirus mechanisms. Moreover, it highlights the crucial role of de-fensive measures in reshaping the temporal evolution of virus spreading of cybersecurity problem. 
+
+2) Challenge on mixed security 
+
+For the cases with mixed security, The infection rate grows moderately fast. It is faster than the cases with anti-virus but much slower than the cases with vulnerable networks and evolving virus. At t = 20 , around 50% of nodes are infected. After t = 30 , it approaches a plateau at around 70% of nodes infected. It shows that the cases with mixed security yields  
+
+> VOLUME 11, 2023 5Wong & Tai: Preparation of Papers
+
+an intermediate outcome. When a fraction of the networks is infected, some nodes can still prevent themselves from infection. It demonstrates that partial hardening helps but still leaves a large infection reservoir. In this case, we set u = 0 .3
+
+and v = 0 .4 for the security levels for nodes. It shows that the heterogeneity in security improves the situation relative to uniformly weak defenses. The improvement takes part of the network’s security that it can avoid the near-total compro-mise. 
+
+> B. IMPORTANCE ON QUARANTINE NODES
+
+For the cases with targeted quarantine, we set p = 0 .05 and it shows a slower rise in the number of infected nodes over time. At t = 10 , around 40% of nodes are infected, which is lower than the cases with the default setting. At t = 20 ,the infection rate is around 70% , which is also lower than the cases with the default setting. From t = 30 , the infection rate keep fluctuating between 60% to 70% and it never reaches the maximum. We found that adding targeted quarantine to the systems can reduce the maximum infection level. Similar to the cases with mixed security, the infection rate in the network in the cases with targeted quarantine reduced. We can see that even though p is small, the outcome of preventing infection can be similar to the cases with mixed security. The effort of mixed security can be much higher to prevent the infection as u = 0 .3. However, identifying the key nodes with higher connectivity is vital for reducing the infection by the cases with targeted quarantine. In figure 5, we compare the case with the default setting with the case with targeted quarantine and p = 0.05 . At 
+
+t = 0 , 5 nodes are selected to become quarantine nodes in the case with targeted quarantine. At t = 4, as shown in figures 5(a)(ii) and figures 5(b)(ii), the number of infected nodes are similar. However, when t increases, the difference become observable. When t = 8, the number of infected nodes in the case with targeted quarantine is slightly smaller than that in the case with the default setting. When t = 12 ,it is clearly shown in figures 5(a)(iv) and figures 5(b)(iv) that the number of infected nodes is smaller in the case with targeted quarantine. The number of infected nodes keeps smaller when t = 16 and t = 20 , from the figures 5(a)(v) and figures 5(b)(v), and figures 5(a)(vi) and figures 5(b)(vi) respectively. We can see that the case with targeted quarantine can minimize the number of infected nodes. Moreover,We study the effect on the quarantine nodes in the network. When p is small, the effect on reducing infected nodes is almost unobservable. We can see that, from figure 6, when p = 0 .01 and p = 0 .02 , the number of infected nodes increases with t as usual, showing that the protection is far from enough. However, when p = 0 .03 , we can see that the critical point for greatly increasing the number of infected nodes shift to larger t. It means that the targeted quarantine can delay the t for the critical point. When p increases, the critical points shift to larger t. We can see that the targeted quarantine can help delay the occurrence of large group of infection and reduce the number of infected nodes.                    
+
+> FIGURE 1. An example of computer virus spreading. The original resource of computer virus, in the orange spot, connected with different nodes with k= 3. It infected the nearby nodes i= 1 and i= 2. The node i= 2 with k= 4 further infected node i= 3 and i= 5. The node i= 3 infected the node i= 4. It showed how the computer virus spread in the network.
+
+We further examine the impact of the fraction of quaran-tined nodes p. When p is small, the effect on reducing infec-tions is almost negligible. As shown in figure 6, for p = 0 .01 
+
+and p = 0 .02 , the number of infected nodes increases with time t, which is similar to the case with the default setting. It indicates that a low level of quarantine is far from sufficient to alter the overall spreading pattern as the quarantine nodes are too limited to disrupt the main transmission pathways in the network. However, when p = 0 .03 , the onset of the critical point at which the number of infected nodes begins to rise sharply is shifted to larger t. This indicates that targeted quarantine can delay the epidemic escalation even when only a small additional fraction of key nodes is protected. As p
+
+increases further, this critical point moves to later t, and both the infection rate and the peak prevalence of infection are reduced. In other words, it postpones the emergence of large scale outbreaks and lowers the eventual infection level. These observations suggest the existence of a threshold, in terms of p. When p is higher, the quarantine measures have more impact on the reduction on the number of infected nodes. This implies that carefully identifying and isolating a relatively small but critical subset of nodes can provide benefits to enhance the resilience of computer virus without requiring universal protection of the entire network. 
+
+> V. CONCLUSION
+
+This work demonstrates that the interplay between network structure and defensive heterogeneity, including targeted in-tervention, fundamentally shapes the progression of computer virus spreading in complex systems. By comparing multiple security scenarios within SIS models, we show that minimally protected and legacy-dominated environments are highly sus-ceptible to rapid compromise, especially when confronted with evolving virus. In contrast, antivirus deployment and mixed security systems substantially mitigate infection preva-lence. The result that quarantining a relatively small informed subset of nodes can delay epidemic escalation and reduce peak infection is striking as it can reveal a threshold in the quarantined fraction that separates ineffective from impactful intervention. These insights provide quantitative measures for prioritizing protection efforts toward critical infrastructures  
+
+> 6VOLUME 11, 2023
+
+Wong & Tai: Preparation of Papers 
+
+FIGURE 2. The simulation results of I(t ) as a function of t . Results for various cases stated in table 1 are obtained. We can see that both I(t ) increases with t . For the cases with default setting, vulnerable systems and rapidly evolving virus, the infection is serious. For the cases with mixed security and targeted quarantine, the infection is less serious. For the cases with anti-virus, the infection is much mild. We can see that the mixed security, targeted quarantine and anti-virus can be used to preventing the computer virus from disrupting the whole network. 
+
+FIGURE 3. The simulation results of ω(t ) as a function of t . Results for various cases stated in table 1 are obtained. We can see that there was a large peak of infection in the cases with vulnerable systems and rapidly evolving virus. The peak was delayed in the cases with default setting, but the peak was still observed in the first 10 − 20 time steps. For the cases with mixed security, targeted quarantine and anti-virus, we can see that the ω(t ) is low, representing that there are no sudden outbreaks. 
+
+and nodes, rather than attempting costly and homogeneous hardening of all nodes. Beyond improving understanding of cyber-epidemic behavior on complex networks, our findings offer practical guidance for designing security architectures that leverage topology-aware quarantine from the segmenta-tion of high-degree hubs. The differentiated protection levels can effectively disrupt malware propagation in real-world critical infrastructures. 
+
+ACKNOWLEDGMENT 
+
+The work described in this paper was supported by Hong Kong Metropolitan University Research Grant (Project Ref-erence No. RD/2025/1.27) 
+
+REFERENCES 
+
+[1] Y. Jiang, M. A. Jeusfeld, J. Ding, and E. Sandahl, ‘‘Model-based cybersecurity analysis,’’ Business & Information Systems Engineering ,vol. 65, no. 6, pp. 643–676, Dec 2023. [Online]. Available: https://doi.org/10.1007/s12599-023-00811-0 [2] A. Crocker and D. Strömbom, ‘‘Susceptible-infected-susceptible type covid-19 spread with collective effects,’’ Scientific Reports , vol. 13, no. 1, p. 22600, Dec 2023. [Online]. Available: https://doi.org/10.1038/s41598-023-49949-7 [3] Y. Zhou, Y. Li, and Y. Zhang, ‘‘Numerical sensitivity analysis of the susceptible- infected- susceptible model on two-layer interconnected networks,’’ Scientific Reports , vol. 15, no. 1, p. 9723, Mar 2025. [Online]. Available: https://doi.org/10.1038/s41598-025-92320-1 [4] S. Zapperi, C. Varlet-Bertrand, C. Bastidon, C. A. M. La Porta, and A. Parent, ‘‘Epidemiology models explain rumour spreading during france’s great fear of 1789,’’ Nature , vol. 646, no. 8084, pp. 358–364, Oct  
+
+> VOLUME 11, 2023
+
+7Wong & Tai: Preparation of Papers (a) (b) (c) 
+
+# (d) (e) (f) 
+
+# Susceptible Infected 
+
+FIGURE 4. An example of snapshots susceptible and infected nodes with the cases with anti-virus in (a)-(c), and the cases with vulnerable networks in (d)-(f). The susceptible nodes are in grey color, whereas the infected nodes are in green or red color, representing the infected nodes in the case with anti-virus and the case with anti-virus respectively. At t = 4, the number of infected nodes in (a) and (d) are similar. However, at t = 8, the number of infected nodes in the case with anti-virus in (b) is much smaller than the the number of vulnerable networks in the case with anti-virus in (e). At t = 20, the number of infected nodes in the case with anti-virus in (c) increase a lot, but it is smaller than the case with vulnerable networks. 
+
+2025. [Online]. Available: https://doi.org/10.1038/s41586-025-09392-2 [5] N. T. J. Bailey, The mathematical theory of infectious diseases and its applications. 2nd edition. 5a Crendon Street, High Wycombe, Bucks HP13 6LE., U.K.: Charles Griffin & Company Ltd, 1975. [6] F. Cohen, ‘‘Computer viruses: Theory and experiments,’’ Computers & Security , vol. 6, no. 1, pp. 22–35, 1987. [Online]. Available: https://www.sciencedirect.com/science/article/pii/0167404887901222 [7] K. Ilgun, R. Kemmerer, and P. Porras, ‘‘State transition analysis: a rule-based intrusion detection approach,’’ IEEE Transactions on Software En-gineering , vol. 21, no. 3, pp. 181–199, 1995. [8] B. Li and D. Saad, ‘‘Infection-induced cascading failures – impact and mitigation,’’ Communications Physics , vol. 7, no. 1, p. 144, May 2024. [Online]. Available: https://doi.org/10.1038/s42005-024-01638-1 [9] P. Van Mieghem, ‘‘The n-intertwined sis epidemic network model,’’ 
+
+Computing , vol. 93, no. 2, pp. 147–169, Dec 2011. [Online]. Available: https://doi.org/10.1007/s00607-011-0155-y [10] G. M. Nakamura and A. S. Martinez, ‘‘Hamiltonian dynamics of the sis epidemic model with stochastic fluctuations,’’ Scientific Reports , vol. 9, no. 1, p. 15841, Nov 2019. [Online]. Available: https://doi.org/10.1038/s41598-019-52351-x [11] C. Balzotti, M. D’Ovidio, A. C. Lai, and P. Loreti, ‘‘Effects of fractional derivatives with different orders in sis epidemic models,’’ Computation ,vol. 9, no. 8, 2021. [Online]. Available: https://www.mdpi.com/2079-3197/9/8/89 [12] M. E. J. Newman, ‘‘Spread of epidemic disease on networks,’’ 
+
+Phys. Rev. E, vol. 66, p. 016128, Jul 2002. [Online]. Available: https://link.aps.org/doi/10.1103/PhysRevE.66.016128 [13] T. Tomé and M. J. de Oliveira, ‘‘Susceptible-infected-recovered and susceptible-exposed-infected models,’’ Journal of Physics A: Mathematical and Theoretical , vol. 44, no. 9, p. 095005, feb 2011. [Online]. Available: https://doi.org/10.1088/1751-8113/44/9/095005 [14] A. Viguerie, G. Lorenzo, F. Auricchio, D. Baroli, T. J. Hughes, A. Patton, A. Reali, T. E. Yankeelov, and A. Veneziani, ‘‘Simulating the spread of covid-19 via a spatially-resolved susceptible–exposed–infected–recovered–deceased (seird) model with heterogeneous diffusion,’’ Applied Mathemat-ics Letters , vol. 111, p. 106617, 2021. [Online]. Available: https://www.sciencedirect.com/science/article/pii/S0893965920303013 [15] D. Džamić and A. Marković, ‘‘Si/sis/sir models for malware propagation in p2p networks: Numerical analysis and perspectives for fractional-order extensions,’’ Advances in Differential Equations and Control Processes , vol. 33, no. 1, Mar. 2026. [Online]. Available: https://ojs.acad-pub.com/index.php/ADECP/article/view/3966 [16] Y. Feng, L. Ding, Y.-H. Huang, and L. Zhang, ‘‘Epidemic spreading on weighted networks with adaptive topology based on infective information,’’ Physica A: Statistical Mechanics and its Applications , vol. 463, pp. 493–502, 2016. [Online]. Available: https://www.sciencedirect.com/science/article/pii/S037843711630512X [17] A. L. Krause, L. Kurowski, K. Yawar, and R. A. Van Gorder, ‘‘Stochastic epidemic metapopulation models on networks: Sis dynamics and control strategies,’’ Journal of Theoretical Biology , vol. 449, pp. 35–52, 2018. [Online]. Available: https://www.sciencedirect.com/science/article/pii/S0022519318301917 [18] B. Li and D. Saad, ‘‘Impact of presymptomatic transmission on epidemic 
+
+8 VOLUME 11, 2023 Wong & Tai: Preparation of Papers (i) (ii) 
+
+(iii) (iv) 
+
+(v) (vi) 
+
+(i) (ii) 
+
+(iii) (iv) 
+
+(v) (vi) 
+
+(a) (b) 
+
+Susceptible Infected Quarantine 
+
+FIGURE 5. An example of snapshots susceptible, infected and quarantine nodes with the cases with default setting in (a), and the cases with targeted quarantine p = 0 .05 in (b). The susceptible nodes are in grey color, the infected nodes are in blue or purple color, representing the infected nodes in the case with default setting and the case with targeted quarantine respectively, and the quarantine nodes are in yellow color. The sequence is from (i) to (vi). We can see that at t = 20, the number of infected nodes in the case with default setting in (a)(vi) is much larger than that of the case with targeted quarantine in (b)(vi). 
+
+spreading in contact networks: A dynamic message-passing analysis,’’ 
+
+Phys. Rev. E , vol. 103, p. 052303, May 2021. [Online]. Available: https://link.aps.org/doi/10.1103/PhysRevE.103.052303 [19] B. Qu and H. Wang, ‘‘Sis epidemic spreading with heterogeneous infection rates,’’ IEEE Transactions on Network Science and Engineering , vol. 4, no. 3, pp. 177–186, 2017. [20] D. Clancy, ‘‘Persistence time of sis infections in heterogeneous populations and networks,’’ Journal of Mathematical Biology , vol. 77, no. 3, pp. 545–570, Sep 2018. [Online]. Available: https://doi.org/10.1007/s00285-018-1222-1 [21] Y. Chen, F. Liu, Q. Yu, and T. Li, ‘‘Review of fractional epidemic models,’’ Applied Mathematical Mod-elling , vol. 97, pp. 281–307, 2021. [Online]. Available: https://www.sciencedirect.com/science/article/pii/S0307904X2100175X [22] A.-L. Barabási and R. Albert, ‘‘Emergence of scaling in random networks,’’ Science , vol. 286, no. 5439, pp. 509–512, 1999. [Online]. Available: https://www.science.org/doi/abs/10.1126/science.286.5439.509 [23] Y. Xu and Z. Wang, ‘‘On internet topology modeling and an improved ba model,’’ Journal of Networks, suppl.Special Issue: Recent Network Technologies and its... , vol. 6, no. 3, pp. 454–461, 03 2011, copyright -Copyright Academy Publisher Mar 2011; Last updated - 2023-09-01. [On-line]. Available: https://www.proquest.com/scholarly-journals/on-internet-topology-modeling-improved-ba-model/docview/860322724/se-2 [24] A. Ghavasieh and M. De Domenico, ‘‘Diversity of information pathways drives sparsity in real-world networks,’’ Nature Physics , vol. 20, no. 3, pp. 512–519, Mar 2024. [Online]. Available: https://doi.org/10.1038/s41567-023-02330-x [25] R. Pastor-Satorras and A. Vespignani, ‘‘Epidemic spreading in scale-free networks,’’ Phys. Rev. Lett. , vol. 86, pp. 3200–3203, Apr 2001. [Online]. Available: https://link.aps.org/doi/10.1103/PhysRevLett.86.3200 [26] E. Korngut and M. Assaf, ‘‘Impact of network assortativity on disease lifetime in the sis model of epidemics,’’ Phys. Rev. E , vol. 112, p. 024302, Aug 2025. [Online]. Available: https://link.aps.org/doi/10.1103/j147-hgsx [27] S. Zhou and R. J. Mondragón, ‘‘Accurately modeling the internet topology,’’ Phys. Rev. E, vol. 70, p. 066108, Dec 2004. [Online]. Available: https://link.aps.org/doi/10.1103/PhysRevE.70.066108 [28] R. Motamedi, R. Rejaie, and W. Willinger, ‘‘A survey of techniques for internet topology discovery,’’ IEEE Communications Surveys & Tutorials ,vol. 17, no. 2, pp. 1044–1065, 2015. [29] T. S. Tai and C. H. Yeung, ‘‘Optimally coordinated traffic diversion by statistical physics,’’ Phys. Rev. E , vol. 104, p. 024311, Aug 2021. [Online]. Available: https://link.aps.org/doi/10.1103/PhysRevE.104.024311  
+
+> VOLUME 11, 2023
+
+9Wong & Tai: Preparation of Papers         
+
+> FIGURE 6. The simulation results of the difference in I(t) between different cases with targeted quarantine, as a function of t. Results for various values of = 0 .01 ,0.02 ,0.03 ,0.05 and 0 .1 are obtained. We can see that if we protect more critical infrastructure from the virus spreading which disrupt the major transmission routes, the critical threshold of emerging outbreaks can be delayed.
+
+[30] A. V. Ventrella, G. Piro, and L. A. Grieco, ‘‘On modeling shortest path length distribution in scale-free network topologies,’’ IEEE Systems Jour-nal , vol. 12, no. 4, pp. 3869–3872, 2018. [31] B. Yang, T. Huang, and X. Li, ‘‘A time-series approach to measuring node similarity in networks and its application to community detection,’’ 
+
+Physics Letters A , vol. 383, no. 30, p. 125870, 2019. [Online]. Available: https://www.sciencedirect.com/science/article/pii/S0375960119306735 [32] E. Massad, S. Ma, M. Chen, C. J. Struchiner, N. Stol-lenwerk, and M. Aguiar, ‘‘Scale-free network of adengue epidemic,’’ Applied Mathematics and Computation ,vol. 195, no. 2, pp. 376–381, 2008. [Online]. Available: https://www.sciencedirect.com/science/article/pii/S0096300307005528 [33] R. Cohen, S. Havlin, and D. ben Avraham, ‘‘Efficient immunization strategies for computer networks and populations,’’ Phys. Rev. Lett. , vol. 91, p. 247901, Dec 2003. [Online]. Available: https://link.aps.org/doi/10.1103/PhysRevLett.91.247901 [34] A. Chernikova, N. Gozzi, S. Boboila, P. Angadi, J. Loughner, M. Wilden, N. Perra, T. Eliassi-Rad, and A. Oprea, ‘‘Cyber network resilience against self-propagating malware attacks,’’ in Computer Security – ESORICS 2022 , V. Atluri, R. Di Pietro, C. D. Jensen, and W. Meng, Eds. Cham: Springer International Publishing, 2022, pp. 531–550. [35] Y. Shen, N. P. Nguyen, Y. Xuan, and M. T. Thai, ‘‘On the discovery of critical links and nodes for assessing network vulnerability,’’ IEEE/ACM Transactions on Networking , vol. 21, no. 3, pp. 963–973, 2013. [36] O. Ugurlu, ‘‘Critical node detection for enhanced network reliability: A comparative analysis across real-world complex networks,’’ IEEE Trans-actions on Reliability , vol. 74, no. 4, pp. 4662–4676, 2025. [37] Z. Wang, Y. Deng, Z. Wang, J. Kurths, and J. Wu, ‘‘Efficient link-based spatial network disintegration strategy,’’ IEEE Transactions on Network Science and Engineering , vol. 12, no. 2, pp. 1096–1111, 2025. [38] D. H. Zanette, ‘‘Critical behavior of propagation on small-world networks,’’ Phys. Rev. E , vol. 64, p. 050901(R), Oct 2001. [Online]. Available: https://link.aps.org/doi/10.1103/PhysRevE.64.050901 [39] N. Zekri and J. P. Clerc, ‘‘Statistical and dynamical study of disease propagation in a small world network,’’ Phys. Rev. E, vol. 64, p. 056115, Oct 2001. [Online]. Available: https://link.aps.org/doi/10.1103/PhysRevE.64.056115 [40] W. Tian, J. Xu, C. Zhou, L. Chen, and X. Zou, ‘‘Exploring cascading failure in directed weighted small-world network: An adaptive sirs-f mechanism,’’ International Journal of Electrical Power & Energy Systems , vol. 169, p. 110697, 2025. [Online]. Available: https://www.sciencedirect.com/science/article/pii/S0142061525002480 [41] P. E. Paré, A. Janson, S. Gracy, J. Liu, H. Sandberg, and K. H. Johansson, ‘‘Multilayer sis model with an infrastructure network,’’ IEEE Transactions on Control of Network Systems , vol. 10, no. 1, pp. 295–307, 2023. [42] G. Genicot, ‘‘Tolerance and compromise in social networks,’’ Journal of Political Economy , vol. 130, no. 1, pp. 94–120, 2022. [Online]. Available: https://www.journals.uchicago.edu/doi/abs/10.1086/717041 [43] J. E. Coyac-Torres, G. Sidorov, E. Aguirre-Anaya, and G. Hernández-Oregón, ‘‘Cyberattack detection in social network messages based on convolutional neural networks and nlp techniques,’’ Machine Learning and Knowledge Extraction , vol. 5, no. 3, pp. 1132–1148, 2023. [Online]. Available: https://www.mdpi.com/2504-4990/5/3/58 [44] Z. Qiu, B. Espinoza, V. V. Vasconcelos, C. Chen, S. M. Constantino, S. A. Crabtree, L. Yang, A. Vullikanti, J. Chen, J. Weibull, K. Basu, A. Dixit, S. A. Levin, and M. V. Marathe, ‘‘Understanding the coevolution of mask wearing and epidemics: A network perspective,’’ Proceedings of the National Academy of Sciences , vol. 119, no. 26, p. e2123355119, 2022. [Online]. Available: https://www.pnas.org/doi/abs/10.1073/pnas.2123355119 [45] H. Martin, F. Castella, and F. Hamelin, ‘‘Wearing face masks to protect oneself and/or others: Counter-intuitive results from a simple epidemic model accounting for selfish and altruistic human behavior,’’ Journal of Theoretical Biology , vol. 624, p. 112395, 2026. [Online]. Available: https://www.sciencedirect.com/science/article/pii/S0022519326000202 [46] S. Acharya, B. Mondal, R. K. Upadhyay, and P. Das, ‘‘Exploring noise-induced dynamics and optimal control strat-egy of isir cholera transmission model,’’ Nonlinear Dynam-ics , vol. 112, no. 5, pp. 3951–3975, 03 2024. [Online]. Available: https://www.proquest.com/scholarly-journals/exploring-noise-induced-dynamics-optimal-control/docview/2923176836/se-2 [47] X. Zhang, H. Deng, Z. Ruan, and X. Zhang, ‘‘Coevolution of epidemic spread and protective behavior in populations with heterogeneous behavioral tendencies,’’ Physica A: Statistical Mechanics and its Applications , vol. 687, p. 131376, 2026. [Online]. Available: https://www.sciencedirect.com/science/article/pii/S0378437126001123 [48] W. JING, Z. JIN, and X.-L. PENG, ‘‘Adaptive sis epidemic models on heterogeneous networks with demographics and risk perception,’’ Journal of Biological Systems , vol. 26, no. 02, pp. 247–273, 2018. [Online]. Available: https://doi.org/10.1142/S0218339018500122 [49] A. Aleta, G. Ferraz de Arruda, and Y. Moreno, ‘‘Data-driven contact structures: From homogeneous mixing to multilayer networks,’’ PLOS Computational Biology , vol. 16, no. 7, pp. 1–16, 07 2020. [Online]. Available: https://doi.org/10.1371/journal.pcbi.1008035 [50] S. Xin, Q. Guo, H. Sun, B. Zhang, J. Wang, and C. Chen, ‘‘Cyber-physical modeling and cyber-contingency assessment of hierarchical control sys- 
+
+> 10 VOLUME 11, 2023 Wong & Tai: Preparation of Papers
+
+tems,’’ IEEE Transactions on Smart Grid , vol. 6, no. 5, pp. 2375–2385, 2015. [51] M. Semerci, A. T. Cemgil, and B. Sankur, ‘‘An intelligent cyber security system against ddos attacks in sip networks,’’ 
+
+Computer Networks , vol. 136, pp. 137–154, 2018. [Online]. Available: https://www.sciencedirect.com/science/article/pii/S1389128618300987 [52] J. Chen, C. Xia, and M. Perc, ‘‘The siqrs propagation model with quarantine on simplicial complexes,’’ IEEE Transactions on Computational Social Systems , vol. 11, no. 3, pp. 4267–4278, 2024. [53] J. Herttuainen, V. Kuikka, and K. K. Kaski, ‘‘Integrating network and attack graphs for service-centric impact analysis,’’ IEEE Access , vol. 14, pp. 80 912–80 927, 2026. [54] J. Li, Y. Zhang, and K. Zhou, ‘‘Adaptive quarantine control of an siqr epidemic model in a patchy environment,’’ in 2025 44th Chinese Control Conference (CCC) , 2025, pp. 2693–2698. [55] V. S. Mai, R. J. La, and A. Battou, ‘‘Optimal cybersecurity investments in large networks using sis model: Algorithm design,’’ IEEE/ACM Transac-tions on Networking , vol. 29, no. 6, pp. 2453–2466, 2021. [56] G. Da, M. Xu, and P. Zhao, ‘‘Modeling network systems under simulta-neous cyber-attacks,’’ IEEE Transactions on Reliability , vol. 68, no. 3, pp. 971–984, 2019.

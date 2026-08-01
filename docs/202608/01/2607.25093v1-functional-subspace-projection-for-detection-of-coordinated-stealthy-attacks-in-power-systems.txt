@@ -1,0 +1,557 @@
+Title: Functional Subspace Projection for Detection of Coordinated Stealthy Attacks in Power Systems
+
+URL Source: https://arxiv.org/pdf/2607.25093v1
+
+Published Time: Wed, 29 Jul 2026 00:17:22 GMT
+
+Number of Pages: 12
+
+Markdown Content:
+# Functional Subspace Projection for Detection of Coordinated Stealthy Attacks in Power Systems 
+
+Koto Omiloli, Satish Vedula and Olugbenga Moses Anubi 
+
+Department of Electrical and Computer Engineering Center for Advanced Power Systems, Florida State University E-mail: {kao23a, svedula, oanubi}@fsu.edu 
+
+A revised version of this manuscript has been accepted for publication in ASME Letters in Dynamic Systems and Control (ALDSC). 
+
+Abstract 
+
+Abstract: Modern power grids are increasingly vulnerable to coordinated cyber-attacks, par-ticularly false data injection attacks (FDIAs) that can evade conventional residual-based detec-tors. While most existing detection methods rely on instantaneous measurements, coordinated dynamic attacks can remain stealthy at each time step while introducing structured temporal deviations. This paper develops a joint framework for modeling and detecting such attacks in multi-area power systems. A time-aggregated attack model is first formulated to capture temporal evolution and inter-area coordination. For detection, a kernel-embedded functional subspace de-tection (KEFSD) method is proposed, which models residual trajectories in a reproducing kernel Hilbert space (RKHS) and employs RKHS-constrained functional principal component analysis (PCA) to identify anomalous temporal patterns. Simulation results on a modified IEEE 14-bus system demonstrates the proposed method achieves improved detection performance compared to the conventional residual based 2-norm detector. 
+
+Keywords: FDIAs, Functional, PCA, Multi-Area Power Systems, RKHS, Subspace Detection 
+
+# 1 Introduction 
+
+The increasing integration of communication networks, distributed generation, and advanced con-trol architectures has transformed modern power grids into tightly coupled cyber–physical systems. While these capabilities enhance operational flexibility and efficiency, they also expose the grid to sophisticated cyber-attacks targeting measurement and control channels. Among these threats, false data injection attacks (FDIAs) are particularly concerning because carefully designed pertur-bations can evade classical bad data detection mechanisms, such as residual-based and weighted least squares (WLS) detectors embedded within state estimation algorithms. Beyond centralized estimation, vulnerabilities extend to distributed architectures as well. For example, [1] demonstrated that coordinated attacks can bias distributed state estimators without triggering alarms, showing that stealthiness can persist under distributed consistency requirements. [2] proposed coordinated attacks that jointly manipulate network parameters and system states, reducing the number of measurements that must be compromised. In integrated infrastructures, [3] formulated bilevel optimization–based attacks on coupled power–gas systems, capable of bypassing 1arXiv:2607.25093v1 [math.OC] 27 Jul 2026 detection while disrupting gas fired generation. Collectively, these studies highlight the increasing sophistication of multi-node and multi-infrastructure attacks. To mitigate such threats, data-driven detection and resilient estimation methods have been explored. [4] proposed an online framework using load forecasts, generation schedules, and phase-measurement-units (PMU) to detect stealthy anomalies beyond traditional residual checks, empha-sizing adaptive real-time detection. Its effectiveness, however depends on forecast quality and PMU coverage. Similarly, [5] developed a deep autoencoding Gaussian mixture model for unsupervised detection, which is effective statistically but may fail if attackers mimic the learned data distri-bution. Supervised, semi-supervised, and online learning approaches [6, 7] have also been used to identify stealthy attacks, yet they do not explicitly account for physical system constraints, leav-ing some attacks undetected. For resilient estimation, [8] proposed a method leveraging Gaussian process priors within convex optimization frameworks to recover system states under corrupted measurements, but offer limited adaptability to coordinated, multi-area attacks. In parallel, efforts to improve WLS-based detection have been considered, including robust estimators such as least winsorized squares [9] and ensemble anomaly detection integrated with WLS [10]. While these methods enhance resilience against gross errors and outliers, they remain fundamentally residual-based and cannot eliminate the geometric vulnerability that enables stealth attacks within the measurement subspace. To overcome this limitation, data-driven kernel and latent-space methods have gained attention. For example, [11] applied kernel principal compo-nent analysis (KPCA) to detect AC-model FDIAs using high-dimensional statistical metrics; [12] employed radial basis function (RBF) KPCA for nonlinear feature extraction followed by decision tree classification, and [13] used self-supervised latent space clustering with autoencoders to model nonlinear measurement manifolds. These approaches improve statistical separability, though their effectiveness depends on the quality of the learned data manifold and does not inherently guarantee detection of attacks that respect the physical measurement relationships of the system. Building on these insights, this paper develops a joint framework for modeling and detecting coordinated dynamic stealthy attacks in power systems. We formulate a time-aggregated multi-area attack model that captures inter-area correlations via graph-structured coupling. For detection, we propose a kernel-embedded functional subspace detection (KEFSD) method that models residual trajectories as smooth functions in a reproducing kernel Hilbert space (RKHS), enabling the iden-tification of structured temporal deviations that remain undetected by conventional residual-based methods. To our knowledge, this is the first framework that jointly addresses dynamic physically consistent attack synthesis and RKHS-constrained functional detection. The main contributions of this work are summarized as follows: • We develop a dynamic multi-area FDIA model capturing temporal evolution across the power system measurements. • We derive a tractable stealthy attack design problem under linearized residual and sparsity constraints. • We propose an RKHS-based functional subspace detector using online projection of residual trajectories. • We validate the approach on a partitioned IEEE 14-bus system, showing improved detection over the conventional residual based 2-norm detector. 22 Notation and Preliminaries 
+
+We adopt the following notational conventions: Rn denotes the space of real-valued vectors of dimension n. Scalars are denoted by lowercase letters (e.g., x ∈ R), and vectors by bold lowercase letters (e.g., x ∈ Rn), with entries denoted by xi. Matrices are denoted by uppercase letters (e.g., 
+
+K ∈ Rn×m with entries Kij and column vectors denoted by K[i]. The trace of a square matrix A is denoted by Tr(A). The zero vector is written as 0. The identity matrix of size n as In. A weighted undirected graph is denoted by G = ( N , E), where N is the set of nodes and E is the set of edges. The weighted adjacency matrix is denoted by [wkl ] ∈ R|N |×|N | , where wkl represents the weight of the edge between nodes k and l, and wkl = 0 if (k, l ) /∈ E .
+
+Definition 1 A Hilbert space H of functions f : X → R is called a RKHS if, for every x ∈ X , the point evaluation map f 7 → f (x) is a bounded linear functional on H. Then there exists a function 
+
+κ : X × X → R such that f (x) = 〈f, κ (x, ·)〉H, ∀f ∈ H , where κ is called the reproducing kernel. 
+
+# 3 Dynamic Power System Modeling 
+
+We begin by representing the power network as a graph G = ( N , E), where N = {1, . . . , N } denotes the set of buses and E the set of transmission lines. Let NG ⊆ N and NL ⊆ N denote the sets of generator and load buses, respectively. Each synchronous generator i ∈ N G is modeled using the classical swing equations: 
+
+˙δi = ωi, (1) 
+
+mi ˙ωi = pm,i − pe,i − diωi, (2) where δi is the rotor angle, ωi is the rotor frequency, mi is the inertia constant, di is the damping coefficient, pm,i is the mechanical input power, and pe,i is the electrical output power. The network algebraic constraints is given by: 
+
+0 = pe,i − pl,i − ∑
+
+> j∈N
+
+vivj
+
+(
+
+Gij cos( θi − θj )+ Bij sin( θi − θj )
+
+)
+
+, (3) 
+
+0 = qe,i − ql,i − ∑
+
+> j∈N
+
+vivj
+
+(
+
+Gij sin( θi − θj )
+
+− Bij cos( θi − θj )
+
+)
+
+, (4) where vi, v j are bus voltage magnitudes, θi, θ j are bus voltage angles, Gij and Bij are the real and imaginary parts of the bus admittance matrix Ybus , respectively, pe,i and qe,i denote the active and reactive power generated by the generator at bus i, and pl,i and ql,i denote the active and reactive power consumed by the load at bus i.Let x = [ δ⊤ ω⊤]⊤ ∈ R2ng , s = [ v⊤ θ⊤]⊤ ∈ R2nb , denote the dynamic and algebraic variables, re-spectively with ng generators and nb buses. Then, the overall system is described by the differential algebraic equation 
+
+˙x = f (x, s), 0 = g(x, s), (5) where f : R2ng × R2nb → R2ng represents the right hand side terms in (1)-(2) and g : R2ng ×
+
+R2nb → R2nb represents the algebraic constraints in (3)–(4). For the system measurements, we generate them through the relationship z(t) = h(x(t), s(t)) + 
+
+a(t), where a(t) denotes the attack signal and h : R2ng × R2nb → Rm maps the system states to the active and reactive power injections from the generators. 34 Dynamic Attack Modeling 
+
+Consider the power system partitioned into d measurement areas, with the measurement vector 
+
+z(t) = [ z⊤ 
+
+> 1
+
+(t), . . . , z⊤ 
+
+> d
+
+(t)] ⊤, where zk(t) ∈ Rmk corresponds to the measurements in area k. Let 
+
+T = {t0, t 1, . . . , t N } denote the discrete time instants over the attack planning horizon. The attacker is assumed to have access to the complete measurement time series {zk(ti)}ti∈T for each area k.At any time t, the attack injected in area k is parameterized as ak(t) = c(t) μk, where c(t)
+
+is a known time-dependent attack policy, such as a sinusoidal function, and μk ∈ Rmk defines the spatial pattern of the attack within area k. We assume here the attacker possess sufficient system knowledge to construct a local linear approximation of the measurement model around the operating condition, inferred from historical measurements or leaked state estimates. Under this assumption, the measurement residual is linearized around a nominal operating point (x0, s0) as: 
+
+h(x, s) ≈ h(x0, s0) + H ∆s, (6) where ∆s = [ x⊤ s⊤]⊤ − [x⊤ 
+
+> 0
+
+s⊤ 
+
+> 0
+
+]⊤ and H is the measurement Jacobian. Given a WLS state estimator, the estimated state deviation is given by: 
+
+∆ˆ s = arg min  
+
+> ∆s
+
+‖z − H∆s‖2 
+
+> W
+
+= ( H⊤W H )−1H⊤W z. (7) Substituting this solution into the attack induced part of the residual r(t) = z(t) − H∆ˆ s(t) with 
+
+z(t) ≈ H∆s + a(t) yields the approximation: 
+
+r(t) ≈ R a(t), R = I − H(H⊤W H )−1H⊤W, (8) where R ∈ Rm×m. Consequently, the residual in area k is approximated as rk(t) ≈ c(t) Rkμk,
+
+where Rk ∈ Rm×mk . This residual is critical for measuring the stealthiness of the attacks. A bad data detector is bypassed when ‖rk(t)‖ ≤ ϵk, where ϵk is the detection threshold. To measure the effectiveness of the attacks, we measure the deviation of the state estimate under attack in (7) from the state estimate under nominal conditions. Accordingly, the attack effectiveness is given as: 
+
+E(t) ≈ ‖ Qa(t)‖, Q = ( H⊤W H )−1H⊤W, (9) where Q ∈ Rn×m, n = 2 ng +2 nb. And for each area k, it is approximated as Ek(t) ≈ ‖ c(t) Qkμk‖,where Qk ∈ Rn×mk . Thus, the attack design problem is formulated as: 
+
+max  
+
+> {μk}dk=1
+
+α
+
+> d
+
+∑
+
+> k=1
+
+‖Qkμk‖22
+
+−
+
+> d
+
+∑
+
+> k,l =1
+
+wkl ‖Qkμk − Qlμl‖22
+
+s.t. ‖c(t)Rkμk‖2 ≤ ϵk,
+
+‖μk‖1 ≤ ρk.
+
+(10) where α = ∑ 
+
+> t∈T
+
+c(t)2, wkl quantifies inter-area electrical coupling via impedances, and ρk
+
+controls the sparsity level of the attack. The formulation is nonconvex due to the maximization of convex quadratic terms (since Q⊤ 
+
+> k
+
+Qk  0). To obtain a tractable solution, we compute a locally optimal solution using the projected gradient ascent (PGA) method presented in Algorithm 1. 4Algorithm 1 PGA for Attack Design  
+
+> 1:
+
+Initialize {μ(0)  
+
+> k
+
+}dk=1  
+
+> 2:
+
+for t = 0 to T − 1 do  
+
+> 3:
+
+for k = 1 to d do  
+
+> 4:
+
+Compute gradient: 
+
+∇μk f = 2 αQ ⊤ 
+
+> k
+
+Qkμ(t)
+
+> k
+
+− 2
+
+> d
+
+∑
+
+> l=1
+
+wkl Q⊤
+
+> k
+
+(Qkμ(t) 
+
+> k
+
+− Qlμ(t)
+
+> l
+
+) 
+
+> 5:
+
+Gradient step: ˜μk ← μ(t) 
+
+> k
+
++ η∇μk f 
+
+> 6:
+
+Projection: 
+
+μ(t+1)  
+
+> k
+
+← arg min 
+
+> μk
+
+‖μk − ˜μk‖22
+
+s.t. ‖c(t)Rkμk‖2 ≤ ϵk,
+
+‖μk‖1 ≤ ρk. 
+
+> 7:
+
+end for  
+
+> 8:
+
+end for  
+
+> 9:
+
+return {μk}dk=1 
+
+# 5 Kernel-Embedded Detection 
+
+The KEFSD framework detects coordinated attacks by learning the intrinsic structure of residual trajectories. Residuals are first modeled in an RKHS to capture nonlinear dynamics, and a nominal subspace is constructed using RKHS-constrained functional PCA. Online, residual trajectories are projected onto this subspace, and deviations are quantified for real-time anomaly detection. 
+
+5.1 RKHS Modeling of Residual Trajectories 
+
+Let r(t) ∈ Rm denote the clean residual vector generated by the state estimator, where m =∑dk=1 mk is the total number of residual channels across all d areas. For each channel i ∈ { 1, . . . , m },the residual trajectory is denoted by ri(t) and is observed over the interval t ∈ [0 , T s] where Ts is chosen sufficiently large to ensure that the power system has reached steady-state operation under nominal conditions. The residuals are sampled at discrete time instants {tj }nj=1 ⊂ [0 , T s].To enable a kernel-based functional representation, each residual channel is approximated by a latent function gnom  
+
+> i
+
+(·) ∈ H κ. Specifically, we adopt the standard observation model: 
+
+ri(tj ) = gnom  
+
+> i
+
+(tj ) + wi(tj ), j = 1 , . . . , n, (11) where wi(tj ) captures measurement noise. Note that (11) does not require ri(·) to belong to 
+
+Hκ; rather, it assumes that the residual trajectory can be well-approximated by an RKHS function. By the representer theorem [14], the RKHS function gnom  
+
+> i
+
+(·) admits the finite kernel expansion: 
+
+gnom  
+
+> i
+
+(t) = 
+
+> n
+
+∑
+
+> j=1
+
+αij κ(t, t j ), (12) 5Let K ∈ Rn×n denote the Gram matrix associated with the kernel κ, with entries Kij =
+
+κ(ti, t j ), i, j ∈ { 1, . . . , n }. Evaluating (12) at the sampling instants yields 
+
+gnom  
+
+> i
+
+= [gnom  
+
+> i
+
+(t1) · · · gnom  
+
+> i
+
+(tn)]⊤ = Kαi, where αi = [ αi1 · · · αin ]⊤.Thus, the RKHS approximation is given as: 
+
+ˆgnom  
+
+> i
+
+= arg min  
+
+> gnom
+> i∈H κ
+> n
+
+∑
+
+> j=1
+
+(ri(tj ) − gnom  
+
+> i
+
+(tj ))2 + λ‖gnom  
+
+> i
+
+‖2 
+
+> Hκ
+
+, (13) where λ > 0 controls the trade-off between fidelity to the sampled residuals and smoothness of the RKHS approximation. Substituting (12) into (13) yields: 
+
+ˆαi = arg min  
+
+> α∈Rn
+
+‖ri − Kα‖22 + λ α⊤Kα, (14) with closed-form solution, ˆαi = ( K + λI n)−1ri, where ri = [ri(t1) ri(t2) · · · ri(tn)]⊤ ∈ Rn.Consequently, the estimated latent residual function is: 
+
+ˆgnom  
+
+> i
+
+(t) = 
+
+> n
+
+∑
+
+> j=1
+
+ˆαij κ(t, t j ). (15) 
+
+5.2 RKHS-Constrained Functional PCA (fPCA) 
+
+Let yi ∈ Rn, i = 1 , . . . , m , denote noisy discrete observations of gnom  
+
+> i
+
+: [0 , T s] → R evaluated at sampling points tj ∈ [0 , T s], j = 1 , . . . , n . The goal here is to identify an r-dimensional functional subspace: F∗ = span {f1, . . . , f r} ⊂ H κ that captures the dominant variation of the latent functions. Now to capture the dominant variability in the observed residuals, we examine the covariance matrix: 
+
+Σm = 1
+
+m Y Y ⊤, (16) where Y = [ y1 | y2 | · · · | ym ]. In classical PCA, principal directions are obtained from the eigendecomposition of Σm. However, such directions are unconstrained and may correspond to non-smooth functions. To enforce smoothness of the extracted functional components, we incorporate an RKHS norm constraint. For any vector z ∈ Rn, we define the associated RKHS function: 
+
+f (t) = 
+
+> n
+
+∑
+
+> j=1
+
+(K−1z)j κ(tj , t ). (17) From RKHS theory [14], its squared norm satisfies ‖f ‖2 
+
+> Hκ
+
+= z⊤K−1z. Therefore, controlling the quadratic form z⊤K−1z is equivalent to controlling the RKHS norm of the corresponding functional direction. Motivated by this observation, we consider the constrained optimization problem: 
+
+max  
+
+> Z∈Rn×r
+
+Tr 
+
+(
+
+Z⊤(Σ m − γK −1)Z
+
+)
+
+s.t. Z⊤Z = Ir.
+
+(18) where the optimal matrix Z consists of the eigenvectors corresponding to the largest r eigen-values. In practice, γ is chosen from a grid γ ∈ [γmin , γ max ] and for each candidate value, 6‖f ‖Hκ = ⟨Zγ , K −1Zγ
+
+⟩ is evaluated, where Zγ denotes the optimizer of (18). The value of γ
+
+yielding the minimum admissible RKHS norm is then selected. On close inspection it can be seen the solution to the problem is actually the eigendecomposition of Σm − γK −1. Finally, the functional principal components are reconstructed as: 
+
+fi(t) = 
+
+> n
+
+∑
+
+> j=1
+
+(K−1Z[i]) 
+
+> j
+
+κ(tj , t ), i = 1 , . . . , r. (19) The process described above is depicted in Algorithm 2. 
+
+Algorithm 2 RKHS-Constrained f PCA  
+
+> 1:
+
+procedure f PCA (Y, κ, r ) 
+
+> 2:
+
+Kij ← κ(ti, t j ), t i ∈ [0 , T s] ▷ Gram matrix  
+
+> 3:
+
+Σm ← cov( Y ) ▷ Sample covariance matrix  
+
+> 4:
+
+γ ← linspace( γmin , γ max , n ) 
+
+> 5:
+
+for i = 1 to n do  
+
+> 6:
+
+X ← eig(Σ m − γiK−1) 
+
+> 7:
+
+Z[i] ← X1: r ▷ assign top r eigenvalues  
+
+> 8:
+
+T [i] ← 〈 Z[i], K −1Z[i]〉 
+
+> 9:
+
+end for  
+
+> 10:
+
+i∗ ← arg min i T [i] ▷ i ∈ [1 , n ] 
+
+> 11:
+
+return Z[i∗] 
+
+> 12:
+
+end procedure 
+
+5.3 Online Projection-Based Attack Detection 
+
+To monitor residuals in real time, we adopt a sliding-window strategy. Specifically, at each sampling instant ts and for each channel i ∈ { 1, . . . , m }, the most recent window: Ws = {ts−W +1 , . . . , t s} is used to estimate a latent residual trajectory ˆgi ∈ H κ via the regularized RKHS problem: 
+
+ˆgi = arg min 
+
+> gi∈H κ
+
+∑
+
+> j∈W s
+
+(ri(tj ) − gi(tj ))2 + λ‖gi‖2 
+
+> Hκ
+
+, (20) where λ > 0 controls the smoothness–fidelity tradeoff. Although ˆgi ∈ H κ, it may deviate from the nominal functional subspace F∗ = span {f1, . . . , f r}
+
+learned from attack-free data. Its orthogonal projection onto F∗ is therefore: 
+
+ΠF∗ ˆgi =
+
+> r
+
+∑
+
+> ℓ=1
+
+〈ˆgi, f ℓ〉Hκ fℓ, (21) and the resulting projection residual energy is: 
+
+Ji(ts) = ‖(I − ΠF∗ )ˆ gi‖2 
+
+> Hκ
+
+. (22) To obtain an area-level detection statistic, the channel-wise energies are aggregated so that, for area k containing mk channels, we have: 
+
+J(k)(ts) = 1
+
+mkmk∑
+
+> i=1
+
+‖(I − ΠF∗ )ˆ gi‖2 
+
+> Hκ
+
+. (23) 7Consequently, an alarm is triggered if J(k)(ts) > τ (k), where τ (k) is the detection threshold for each area. 
+
+# 6 Simulation Experiments 
+
+The simulation studies are carried out on the IEEE 14-bus power system, which has been partitioned into three distinct areas ( k = 3 ) as illustrated in Fig. 1. In this configuration, Generators 1 and 2 are located in Area 1, Generator 3 in Area 2, and Generators 4 and 5 in Area 3. The dynamic behavior of each generator is captured using the classical swing equation (see Section 3), with inertia constants, m = [2 .1, 2.2, 2.3, 2.4, 2.5] s and damping coefficients, d = [0 .72 , 0.71 , 0.73 , 0.65 , 0.70] p.u., chosen within typical ranges for synchronous generators [15]. The matrices, G and B are obtained from the system topology and line parameters. The operating point (x0, s0) is taken as the steady-state IEEE 14-bus solution, where x0 consists of the generator rotor angles and frequency ( 120 π
+
+rad/s), and s0 consists of the bus voltage magnitudes and phase angles from the IEEE bus data. To account for interactions between the different areas, the inter-area weighted adjacency matrix, 
+
+[wkl ] is derived by considering the impedance-based coupling between connected areas. 
+
+Figure 1: Modified IEEE 14-bus power network divided into three areas (Area 1–3), highlighting generators (G1 - G5) and interconnecting transmission lines. The system outputs consist of m = 10 measurements corresponding to the active and reactive power of the generators. For the nominal model, the detection threshold is set to ϵ = [0 .2, 0.2, 0.8] .Attack scenarios, as formulated in Section 4, are generated using μk and c(t) chosen as a sinusoidal signal of frequency 1 Hz, zeroed at a 45% duty cycle. The resulting residual norm trajectories are presented in Fig. 2. As seen, the residual remains below the predefined thresholds, demonstrating the stealthy nature of the injected attacks. To learn the nominal subspace F∗, n = 200 clean residual samples were collected at ts = 0 .01 s. The latent residual function ˆgnom was estimated using a Gaussian kernel with regularization parameter λ = 10 −3. The principal components were then obtained via Algorithm 1, using Y formed by stacking the estimated latent residuals, a Gaussian 8kernel κ, and subspace dimension r = 200 ; the parameter γ was swept over [10 −6, 10] . During real-time operation, residual trajectories were estimated using a sliding window of size W = 20 .Detection thresholds were tuned to match the false alarm rate of the residual norm-based detector, resulting in τ = [0 .45 , 0.56 , 0.78] .Table 1 shows the performance scores of the detector such as true positive rates (TPR), false positive rates (FPR), false negative rates (FNR), precision, and F1 score. As seen in Table 1, the detector achieves high TPR (78–83%) and precision (88–90%) while FNR (17–22%). The F1 scores above 86% indicate a strong balance between detection sensitivity and reliability, demonstrating the effectiveness of KEFSD in identifying attacks across all areas. In Fig. 3, it is clear that the proposed KEFSD detector significantly outperforms the residual norm–based method, achieving high detection probability at much lower false alarm rates. Table 2 further quantifies this improve-ment using the area under the detection probability–false alarm rate curves (AUC), which reflects the detector’s ability to distinguish between normal and attack conditions. The consistently higher AUC values of KEFSD across all areas confirm its superior overall detection performance. 
+
+Figure 2: Residual norm trajectories with shaded attack intervals ( 45% duty cycle) across areas. The residual stays below the threshold, indicating successful stealthy attacks. Table 1: Performance metrics of the KEFSD across areas. Metrics Area 1 (%) Area 2 (%) Area 3 (%) TPR 78.30 81.10 83.11 FPR 13.33 12.23 10.23 FNR 21.7 18.90 16.89 Precision 88.34 89.20 89.56 F1 score 87.45 86.78 90.23 Table 2: AUC comparison of detectors across areas. Detectors Area 1 (%) Area 2 (%) Area 3 (%) Residual norm 74.5 77.4 75.8 KEFSD 84.80 83.0 82.4 90 0.2 0.4 0.6 0.8 1False Alarm Rate 
+
+00.2 0.4 0.6 0.8 1Detection Probability  Area 1 Detector 
+
+> Area 2 Detector
+> Area 3 Detector (a)
+
+0 0.2 0.4 0.6 0.8 1False Alarm Rate 
+
+00.2 0.4 0.6 0.8 1
+
+> Detection Probability
+
+Area 1 Detector 
+
+Area 2 Detector 
+
+Area 3 Detector 
+
+> (b)
+
+Figure 3: Detection performance across bus network areas: (a) residual norm–based detector with delayed response, (b)proposed KEFSD-based detector with faster and more reliable detection. 
+
+# 7 Conclusion 
+
+This paper presented a joint framework for modeling and detecting coordinated dynamic stealthy attacks in power systems. A time-aggregated multi-area attack model was developed to capture temporal evolution and inter-area coordination, along with a tractable attack design formulation. For detection, a KEFSD method was proposed, leveraging RKHS-constrained functional PCA to identify structured temporal deviations that missed by residual-based methods. Simulation results on the IEEE 14-bus system show that KEFSD achieves improved detection performance and robust-ness under coordinated stealthy attacks. These results highlight the importance of incorporating temporal and functional structure in power system security. Future work includes extending the framework to large-scale systems, and developing adaptive and distributed implementations. 10 Code Availability 
+
+The source code used to generate the simulation results presented in this paper is made publicly available at: https://github.com/resilient-autonomous-systems-lab. 
+
+# Acknowledgment 
+
+This work was supported by the U.S. Department of Energy under Award Number DE-CR0000028. The authors acknowledge that the views expressed do not necessarily reflect those of the United States Government. 
+
+# References 
+
+[1] S. Xu, D. Ye, G. Li, and D. Yang, “Globally stealthy attacks against distributed state esti-mation in smart grid,” IEEE Transactions on Automation Science and Engineering , vol. 22, pp. 1353–1363, 2024. [2] C. Liu, H. Liang, and T. Chen, “Network parameter coordinated false data injection attacks against power system ac state estimation,” IEEE Transactions on Smart Grid , vol. 12, no. 2, pp. 1626–1639, 2020. [3] M. Zadsar, A. Abazari, A. Ameli, J. Yan, and M. Ghafouri, “Prevention and detection of coor-dinated false data injection attacks on integrated power and gas systems,” IEEE Transactions on Power Systems , vol. 38, no. 5, pp. 4252–4268, 2022. [4] A. Ashok, M. Govindarasu, and V. Ajjarapu, “Online detection of stealthy false data injection attacks in power system state estimation,” IEEE Transactions on Smart Grid , vol. 9, no. 3, pp. 1636–1646, 2016. [5] C. Chen, Y. Wang, M. Cui, J. Zhao, W. Bi, Y. Chen, and X. Zhang, “Data-driven detection of stealthy false data injection attack against power system state estimation,” IEEE Transactions on Industrial Informatics , vol. 18, no. 12, pp. 8467–8476, 2022. [6] M. Ozay, I. Esnaola, F. T. Y. Vural, S. R. Kulkarni, and H. V. Poor, “Machine learning methods for attack detection in the smart grid,” IEEE transactions on neural networks and learning systems , vol. 27, no. 8, pp. 1773–1786, 2015. [7] D. Wang, X. Wang, Y. Zhang, and L. Jin, “Detection of power grid disturbances and cyber-attacks based on machine learning,” Journal of information security and applications , vol. 46, pp. 42–52, 2019. [8] O. M. Anubi and C. Konstantinou, “Enhanced resilient state estimation using data-driven auxiliary models,” IEEE Transactions on Industrial Informatics , vol. 16, no. 1, pp. 639–647, 2019. [9] V. Basetti and A. K. Chandel, “A robust lws state estimation including anomaly detection and identification in power systems,” Neurocomputing , vol. 166, pp. 122–132, 2015. [10] A. Gholami, A. Tiwari, C. Qin, S. Pannala, A. K. Srivastava, R. Sharma, S. Pandey, and F. Rahmatian, “Detection and classification of anomalies in power distribution system using 11 outlier filtered weighted least square,” IEEE Transactions on Industrial Informatics , vol. 20, no. 5, pp. 7513–7523, 2024. [11] G. Zhang, W. Gao, J. Zhu, and W. Jiang, “Detection of false data injection attacks in smart grid based on kernel principal component analysis,” in Proceedings of the 2024 International Conference on Power Electronics and Artificial Intelligence , pp. 823–827, 2024. [12] C. Ma, J. Zhang, L. Wang, and H. You, “Network attack detection based on kernel principal component analysis and decision tree,” in 2020 International Conference on Cyber-Enabled Distributed Computing and Knowledge Discovery (CyberC) , pp. 84–91, IEEE, 2020. [13] A. Bhattacharjee, A. K. Mondal, A. Verma, S. Mishra, and T. K. Saha, “Deep latent space clustering for detection of stealthy false data injection attacks against ac state estimation in power systems,” IEEE Transactions on Smart Grid , vol. 14, no. 3, pp. 2338–2351, 2022. [14] B. Schölkopf, R. Herbrich, and A. J. Smola, “A generalized representer theorem,” in Interna-tional conference on computational learning theory , pp. 416–426, Springer, 2001. [15] P. Kundur et al. , “Power system stability,” Power system stability and control , vol. 10, no. 1, pp. 7–1, 2007. 12

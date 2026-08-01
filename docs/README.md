@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-07-23 ~ 2026-08-01</span>
+      <span class="dpr-home-dashboard-kicker">2026-08-01</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 32 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 18 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>21</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>7</dd></div>
     <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-08-01 11:31:16 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-08-01 20:37:48 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,9 +62,7 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>本期共扫描32篇论文，精读21篇、速读11篇，重点聚焦量子加密与网络威胁检测前沿。</p>
-<p>最值得关注：基于Pauli本征态的不可克隆加密（满分10）为量子安全通信提供新范式；基于困惑度的无监督APT检测突破日志依赖，实为高价值落地方向。</p>
-<p>建议优先精读上述两篇高分论文，速读可顺带关注图存储私密检索与漏洞利用生成工具，其余报告按需查阅。</p>
+<p>今日精读7篇、速读11篇，共18篇论文，重点关注电力系统协同隐蔽攻击检测与隐私保护框架两大方向。最值得看的是《Functional Subspace Projection》与《MOSAIC-FL》，分别提出针对协同攻击的降维检测法及微服务基因隐私保护方案。建议普通读者优先浏览速读中的键盘声学窃听和LLM内存提取攻击，了解现实威胁。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -73,12 +71,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">21 篇</strong>
+    <strong class="dpr-home-dashboard-count">7 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Efficient Unclonable Encryption from Pauli Eigenstates">Efficient Unclonable Encryption from Pauli Eigenstates</span></li><li><span class="dpr-home-dashboard-paper-title" title="Beyond Heavy Log Curation: Perplexity-Based APT Detection via Unsupervised, Context-Augmented Language Models">Beyond Heavy Log Curation: Perplexity-Based APT Detection via Unsupervised, Context-Augmented Language Models</span></li><li><span class="dpr-home-dashboard-paper-title" title="Protocol-Level Attacks on Agentic Commerce Platforms: A Cross-Platform Taxonomy, AIP-Bench, and Unified Defense">Protocol-Level Attacks on Agentic Commerce Platforms: A Cross-Platform Taxonomy, AIP-Bench, and Unified Defense</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Functional Subspace Projection for Detection of Coordinated Stealthy Attacks in Power Systems">Functional Subspace Projection for Detection of Coordinated Stealthy Attacks in Power Systems</span></li><li><span class="dpr-home-dashboard-paper-title" title="MOSAIC-FL, a micro-service based privacy-preserving framework with application to genomics">MOSAIC-FL, a micro-service based privacy-preserving framework with application to genomics</span></li><li><span class="dpr-home-dashboard-paper-title" title="How to Watermark the RLWE Homomorphic Ciphertexts">How to Watermark the RLWE Homomorphic Ciphertexts</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ns <strong>21</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ns <strong>7</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -89,7 +87,7 @@
     <strong class="dpr-home-dashboard-count">11 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Weak Private Information Retrieval for Graph-based Storage">Weak Private Information Retrieval for Graph-based Storage</span></li><li><span class="dpr-home-dashboard-paper-title" title="PoCEvolve: Generating Proof-of-Concept Exploits from Security Patches with Vulnerability-Aware Prompt Evolution">PoCEvolve: Generating Proof-of-Concept Exploits from Security Patches with Vulnerability-Aware Prompt Evolution</span></li><li><span class="dpr-home-dashboard-paper-title" title="A Modular Cyber Range Platform for Smart Energy Systems">A Modular Cyber Range Platform for Smart Energy Systems</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Transforming Keystroke Noise to Text: Self-Supervised Acoustic Eavesdropping Attacks on Keyboards">Transforming Keystroke Noise to Text: Self-Supervised Acoustic Eavesdropping Attacks on Keyboards</span></li><li><span class="dpr-home-dashboard-paper-title" title="Isolated but Exposed: Persistence-Based Memory Extraction Attack on LLM Agents">Isolated but Exposed: Persistence-Based Memory Extraction Attack on LLM Agents</span></li><li><span class="dpr-home-dashboard-paper-title" title="ZKP Security Tools and Verification: Coverage, Effectiveness, Adoption, and Challenges">ZKP Security Tools and Verification: Coverage, Effectiveness, Adoption, and Challenges</span></li></ul>
   </div>
   <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ns <strong>11</strong></span></div>
 </section>
