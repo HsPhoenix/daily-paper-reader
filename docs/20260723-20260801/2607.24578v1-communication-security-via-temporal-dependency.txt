@@ -1,0 +1,1982 @@
+Title: Communication Security via Temporal Dependency
+
+URL Source: https://arxiv.org/pdf/2607.24578v1
+
+Published Time: Tue, 28 Jul 2026 02:11:54 GMT
+
+Number of Pages: 13
+
+Markdown Content:
+# Communication Security via Temporal Dependency 
+
+Mohsen Abedi, Ahmed Badawy, and Amr Mohamed 
+
+Abstract —Communication security has traditionally been built upon one of two external resources: shared secret keys or a communication advantage over the eavesdropper. However, many practical wireless scenarios, including infrastructure-less, emergency, and highly dynamic networks, cannot guarantee either resource, motivating the need for a new communication-security principle. This paper introduces a new communication-security paradigm that exploits temporal dependency as a secu-rity resource. Unlike conventional secrecy techniques that prevent an eavesdropper from recovering transmitted bits, the proposed paradigm allows packet decoding but prevents correct interpreta-tion by making original and dummy packets computationally in-distinguishable. Rather than protecting individual transmissions, successive transmissions are intentionally coupled so that future communication depends on correctly interpreting previous ones. As one realization, we develop a state-chained random linear network coding (RLNC) framework in which the synchronization state required to interpret each transmission block is embed-ded in the previous block. Therefore, synchronization failures propagate across future transmissions, resulting in persistent eavesdropper asynchronization. We analytically characterize the probability and persistence of eavesdropper asynchronization, together with the computational complexity of resynchronization, and develop transmission strategies based on transmit-power and intentional-interference optimization. Numerical results demon-strate sub-second eavesdropper asynchronization under a worst-case adversarial model with no channel advantage, no secret assumptions, complete protocol knowledge, and an arbitrarily stronger eavesdropper. 
+
+Index Terms —Communication security; Temporal depen-dency; State-chained RLNC; Eavesdropping. 
+
+I. I NTRODUCTION 
+
+Conventional cryptographic security and physical-layer se-curity are the two dominant paradigms for protecting wireless communications. Despite their different foundations, both de-rive security from external resources: cryptographic security relies on shared secret keys [1], [2], whereas physical-layer security exploits a communication advantage through channel asymmetry, CSI, beamforming, artificial noise, cooperative jamming, and related techniques [3]–[8]. However, both rely on assumptions that may not hold in highly dynamic wire-less environments, including secure key management, trusted infrastructure, or a communication advantage over the eaves-dropper. As wireless networks evolve toward infrastructure-less and highly heterogeneous deployments, these assumptions become increasingly difficult to guarantee. This motivates the need for a fundamentally different communication-security principle that derives protection from the communication process itself rather than from external resources. Although cryptographic security and physical-layer secu-rity derive protection from different resources, they share a common security principle: each transmission is treated as an                 
+
+> M. Abedi, A. Badawy, and A. Mohamed are with the Dept. Computer Engineering, Qatar University, Doha, Qatar. Email:
+> {mohsen.abedi; badawy; amrm }@qu.edu.qa.
+
+independent security event. Accordingly, the compromise or successful interception of one transmission has essentially no influence on the security of future communications. This paper departs from this transmission-centric view by introducing a communication-security paradigm that exploits temporal dependency as a new security resource. Rather than protecting transmissions independently, the proposed paradigm deliber-ately couples successive transmissions, making the successful interpretation of future communications contingent upon cor-rectly interpreting previous ones. Therefore, a synchronization failure propagates across future transmissions until synchro-nization is restored. The proposed communication-security paradigm can be realized using any communication framework capable of creat-ing temporal dependencies across successive transmissions. In this paper, we demonstrate one such realization using Random Linear Network Coding (RLNC), whose linear combinations naturally enable the information required to interpret future transmissions, referred to hereafter as the synchronization state , to be embedded within previous transmissions. Specif-ically, a chained synchronization state is conveyed across consecutive transmission blocks, making recovery of the syn-chronization state necessary for the correct interpretation of subsequent communications. Unlike existing RLNC-based se-curity techniques, which primarily protect the current coding generation [9], [10], the proposed state-chained RLNC frame-work realizes the temporal-dependency principle. While the underlying security paradigm is general, the analytical and numerical results presented in this paper are specific to this RLNC realization. The key advantage of exploiting temporal dependency is that a single synchronization failure can affect the interpre-tation of many future transmissions. Once the eavesdrop-per loses synchronization, subsequent transmissions remain uninterpretable until synchronization is restored, while the legitimate receiver remains synchronized. Hence, successful decoding no longer guarantees successful interpretation, which depends on recovering the evolving synchronization state. This property is particularly attractive for communication scenarios in which temporary compromise is difficult to avoid, such as satellite communications, UAV swarms, and infrastructure-less emergency networks. Unlike conventional stateful com-munication protocols, where state evolution primarily supports synchronization, authentication, or forward secrecy [11], [12], the proposed framework deliberately exploits it as the secu-rity mechanism itself, making state recovery a computational requirement rather than merely a protocol function. The proposed framework is designed and evaluated under a deliberately conservative threat model that eliminates nearly all conventional sources of communication security. The trans-mitter has no knowledge of either receiver’s channel, while the eavesdropper is assumed to be passive and possess com-arXiv:2607.24578v1 [math.OC] 27 Jul 2026 Fixed       
+
+> secret key
+> Good
+> channel
+> Weak
+> channel
+> Cryptographic Security
+> (Secret Key as Resource)
+> Physical Layer Security (PLS)
+> (Channel Advantage as Resource)
+> Proposed: Temporal Dependency Security
+> (Temporal Dependency as Resource)
+> Alice Bob Eve Alice Bob Eve Alice Bob Eve
+> Eve’s  Uncertainty
+> Level
+> Permanently
+> Exposed
+> Secret key compromised/Eve’s resynchronization
+> Time
+> Eve’s Uncertainty
+> Level
+> Channel advantage maintains
+> Time
+> Eve’s Uncertainty
+> Level
+> Asynchronization incidence
+> State chained
+> RLNC
+> Channel advantage disappears
+> Time
+> as Fig. 1. Comparison of security paradigms: Cryptographic security, physical layer security, and the proposed temporal dependency security. Unlike cryptographic security, where a key compromise permanently exposes future communications, and conventional physical-layer security, which requires a channel advantage, the proposed paradigm repeatedly re-establishes uncertainty in packet interpretation through eavesdropper asynchronization without relying on either assumption.
+
+plete knowledge of the communication system, including the protocols, coding procedures, acknowledgments, and even the cryptographic keys. Furthermore, the eavesdropper may have a substantially stronger channel than the legitimate receiver due to a larger antenna aperture, more receive antennas, or a more favorable location. Based on this conservative threat model, the main contribu-tions of this paper are summarized as follows:  
+
+> •
+
+We propose a communication-security paradigm based on temporal dependency, whereby the successful inter-pretation of future transmissions is intentionally coupled to the correct interpretation of previous ones. As one realization, we develop a state-chained RLNC trans-mission scheme that transforms a single eavesdropper synchronization failure into persistent asynchronization across future transmission blocks.  
+
+> •
+
+We analytically characterize how temporal dependency propagates synchronization failures, the expected time to its first occurrence, and the computational complexity of the eavesdropper’s resynchronization.  
+
+> •
+
+We develop optimization strategies that achieve sub-second eavesdropper asynchronization even against an arbitrarily stronger eavesdropper, demonstrating the prac-tical feasibility of the proposed paradigm. Unlike the existing communication-security techniques, the proposed paradigm does not attempt to hide the transmitted packets themselves. Instead, it allows the eavesdropper to decode the received packets while preventing their correct in-terpretation by embedding the transmitted information among computationally indistinguishable original and dummy pack-ets. As a result, communication security shifts from protecting packet recovery to protecting packet interpretation. Further, unlike many practical physical-layer security techniques that rely on receiver feedback (e.g., CSI) and cryptographic sys-tems that require pre-established or interactively negotiated secret keys, the proposed framework requires only sparse acknowledgment bits that are already used for reliable com-munication. Fig. 1 contrasts the proposed paradigm with cryptographic and physical-layer security [13]–[16]. It illustrates that tem-poral dependency establishes security by repeatedly inducing eavesdropper asynchronization rather than relying on secret credentials or channel advantage. Accordingly, temporal de-pendency preserves communication security even when secret keys are compromised and channel advantage no longer exists. To the best of our knowledge, existing communication systems employ temporal dependency primarily for synchronization, reliability, or protocol continuity rather than as the mechanism that provides communication security itself. The remainder of this paper is organized as follows. Sec-tion II introduces the considered system model and com-munication assumptions. Section III presents the proposed state-chained RLNC realization of the temporal-dependency communication-security paradigm. Section IV provides the analytical characterization of the asynchronization and the computational complexity imposed on the eavesdropper. Sec-tion V formulates the channel model, system metrics, and the corresponding optimization problems. Section VI presents numerical results that validate the analytical framework and illustrate the trade-offs between communication performance and security. Finally, Section VII concludes the paper. II. S YSTEM AND COMMUNICATION MODEL 
+
+In the considered system model, illustrated in Fig. 2, Alice (A) transmits RLNC-encoded packets to Bob (B) over a point-to-point (PtP) link, while Eve (E) passively intercepts the transmissions. Consistent with the worst-case threat model introduced in Section I, Alice has no knowledge of the CSI of either Bob or Eve, while Eve is assumed to possess complete knowledge of the communication framework, including pro-tocols, coding procedures, packet formats, acknowledgments, and even the CSI between Alice and Bob. Moreover, Eve remains entirely silent throughout the communication process. This section introduces the baseline RLNC communication model used throughout the paper. Let N denote the number of packets in each block, and let 
+
+p(b) = [ p(b)1 , p (b)2 , . . . , p (b) 
+
+> N
+
+]⊤TABLE I NOTATIONS AND SYMBOLS 
+
+Symbol Description 
+
+a(b) 
+
+> t
+
+Coding vector 
+
+α Intentional interference coefficient 
+
+Bt/Et Bob’s /Eve’s decoding matrix at time slot t
+
+d(b)/x(b) Vector of dummy /original packets dim (.) Matrix dimension 
+
+ϵ(.) Interpretation uncertainty level fACK (.) PDF of acknowledgment delay fB(.) PDF of the time that Bob achieves full rank fA(.) PDF of the time that Alice receives the ACK 
+
+ℓ(.)/η (.) Packet latency /throughput 
+
+m( .)/r( .) Number of rows /rank of a matrix 
+
+N/D Number of packets /dummy packets 
+
+P(.) Probability function 
+
+p(b) Vector of block packets at block b
+
+Pasy Probability that Eve loses the synchronization state required for interpreting the next block. 
+
+PB/PE Packet success probability at Bob /Eve 
+
+q(b) 
+
+> t
+
+RLNC-encoded packet row(.) Row space of a matrix 
+
+s(b) State vector of block bt Time slot 
+
+τq /t b Packet /block transmission time 
+
+τasy Mean time to the first asynchronization incidence 
+
+τcmp Computational time required to resynchronize 
+
+T The time slot that Bob achieves full rank 
+
+T ′ Time slot at which Alice receives the ACK 
+
+Tack Acknowledgment delay 
+
+represent the set of packets in block b, where p(b) 
+
+> i
+
+∈ Fn
+
+> 2
+
+denotes the ith packet of block b with length n over GF(2) at Alice for transmission to Bob. Each transmitted packet is generated using RLNC as follows. 
+
+q(b) 
+
+> t
+
+=
+
+> N
+
+M
+
+> i=1
+
+a(b) 
+
+> ti
+
+p(b) 
+
+> i
+
+, (1) where a(b) 
+
+> ti
+
+∼ Bern( 0.5) is randomly generated at Alice with a symmetric Bernoulli distribution. Then, the coding vector 
+
+a(b) 
+
+> t
+
+= [ a(b) 
+
+> t1
+
+, a (b) 
+
+> t2
+
+, . . . , a (b) 
+
+> tN
+
+]
+
+is appended as a header to the RLNC-encoded packet q(b)
+
+> t
+
+for transmission at time slot t. Since the coding coefficients are binary, the coding vector is represented as a binary vector of length N . Each transmitted packet therefore includes the RLNC-encoded packet, its associated coding vector, and the protocol headers required for transmission and decoding. At the beginning of block b, Bob and Eve independently construct time-varying decoding matrices, denoted by Bt ∈
+
+Fm(Bt)×N 
+
+> 2
+
+and Et ∈ Fm(Et)×N 
+
+> 2
+
+, respectively. Upon the transmission of packet q(b) 
+
+> t
+
+at time slot t, Bob and Eve suc-cessfully receive it with probabilities PB and PE, respectively, whose analytical expressions for Rayleigh fading channels are introduced in Section V. If the RLNC-encoded packet of block b is successfully received at time slot t, the packet 
+
+q(b) 
+
+> t
+
+is appended as a new row to the packet matrix of the corresponding receiver, namely QB 
+
+> t
+
+for Bob and QE 
+
+> t
+
+for Eve. Likewise, the associated coding vector a(b) 
+
+> t
+
+is appended as a new row to the corresponding decoding matrix, i.e., Bt for Legitimate communication channel  
+
+> (Passive, Full Protocol knowledge, keys known)
+> Fig. 2. Baseline system and communication model. Alice (A) transmits RLNC-encoded packets to Bob (B) over a PtP link without CSI. Passive Eve (E), with full protocol knowledge, intercepts the transmissions and may have a stronger channel, while Bob returns an ACK after successful decoding.
+
+Bob and Et for Eve. As soon as Bob’s decoding matrix becomes full rank, i.e., 
+
+r( BT ) = N, at time slot t = T , Bob decodes the block packets according to 
+
+p(b) = B−1 
+
+> T
+
+QB 
+
+> T
+
+. (2) At the same instant, Bob initiates the acknowledgment (ACK) procedure toward Alice. Let the random variable Tack denote the ACK delay, i.e., the interval between the time slot T at which Bob’s decoding matrix becomes full rank and the time slot at which Alice receives the ACK. Upon receiving the ACK, Alice stops transmitting linear combinations of the current block at time slot 
+
+T ′ = T + Tack . (3) During the interval from T +1 to T ′, Bob has already decoded the block, while Alice is unaware of this fact. Therefore, Alice continues transmitting additional RLNC-encoded packets of the current block until the ACK is received at time slot T ′.These packets do not contribute to Bob’s decoding process, since their coding vectors lie in the row space of BT . However, they may increase the rank of Eve’s decoding matrix. Then, if Eve achieves full rank by time slot T ′, i.e., 
+
+r( ET ′ ) = N , Eve can recover the block packets as 
+
+p(b) = E−1  
+
+> T′
+
+QE  
+
+> T′
+
+. (4) However, whether these decoded packets can be correctly interpreted depends on the synchronization state introduced in Section III. In contrast, if Eve remains rank deficient, i.e., 
+
+r( ET ′ ) < N, she cannot recover all packets in p(b), preventing recovery of the transmitted block. At the end of time slot T ′,Alice proceeds with the transmission of block b+1 , regardless of Eve’s decoding status. Throughout the remainder of this paper, we distinguish between several related concepts. Interpretation refers to correctly identifying which decoded packets correspond to original data and which correspond to dummy packets. Syn-chronization denotes possession of the synchronization state required to interpret the current transmission block. An asyn-chronization incidence occurs when Eve first fails to recover the synchronization state required for the next block. Finally, 
+
+interpretation uncertainty quantifies the fraction of decoded packets whose identities remain ambiguous without knowledge of the synchronization state. III. T EMPORAL -D EPENDENCY CONSTRUCTION VIA 
+
+STATE -C HAINED RLNC To realize the proposed temporal-dependency security paradigm, the synchronization state of each block is embedded in the dummy packets of the preceding block, intentionally coupling the interpretation of successive transmission blocks while leaving the RLNC decoding process itself unchanged. Here, the synchronization state of block b + 1 , which deter-mines the dummy-packet locations, is generated during the transmission of block b and secret-shared across its dummy packets. As a result, recovering the state of one block be-comes necessary to interpret the next, establishing temporal dependency across successive blocks before RLNC encoding. 
+
+A. State-Chained RLNC Construction 
+
+Let the vector of original data packets at block b be 
+
+x(b) = [ x(b)1 , x (b)2 . . . , x (b)  
+
+> N−D
+
+], (5) and the vector of dummy-packets be 
+
+d(b) = [ d(b)1 , d (b)2 . . . , d (b) 
+
+> D
+
+], (6) where D denotes the number of dummy packets. The state of block b is represented by a binary vector indicating the locations of the dummy packets within the transmission block, expressed as 
+
+s(b) = [ s(b)1 , s (b)2 , . . . , s (b) 
+
+> N
+
+] ∈ FN 
+
+> 2
+
+, (7) where s(b) 
+
+> j
+
+= {0, 1} for 1 ≤ j ≤ N , with the weight ofw (s(b)) = D. Using the state, dummy packets are inserted into the vector of original packets as 
+
+p(b) = [ p(b)1 , p (b)2 , . . . , p (b) 
+
+> N
+
+]⊤ = ins( x(b), d(b), s(b)), (8) where 
+
+p(b) 
+
+> j
+
+=
+
+
+
+d(b) 
+
+> k
+
+, if s(b) 
+
+> j
+
+= 1 , k = 1 , . . . , D, x(b)
+
+> ι(j)
+
+, if s(b) 
+
+> j
+
+= 0 ,
+
+for 1 ≤ j ≤ N with ι(j) = |{ s(b) 
+
+> i
+
+= 0 : i ≤ j}| .The state of block b + 1 , denoted by s(b+1) , is randomly generated at the beginning of block b. This state is mapped to the dummy-packet vector through 
+
+d(b) = S(s(b+1) ), (9) where S(.) is a reversible secret-sharing mapping of a vector in FN 
+
+> 2
+
+with weight D into a vector of D packets. The secret share mapping should satisfy the following properties: (i) there must exist a combination function that uniquely recovers the state, described as 
+
+s(b+1) = C(d(b)), (10) (ii) the synchronization state can be recovered only from the complete set of dummy packets, and finally, (iii) the generated dummy packets in d(b) should follow a sta-tistically and semantically indistinguishable distribution from the original data packets in x(b).The latter condition specifically prevents Eve from using application-layer validation, statistical inference, or learning-based methods to distinguish any individual dummy packet, or any incomplete subset of dummy packets, from the original data packets. This property is fundamental to the security of the proposed framework, forcing Eve to rely on brute-force search to determine the complete set of dummy packets. Fig. 3 summarizes the construction process. At the begin-ning of block b, the synchronization state of block b + 1 is generated and secret-shared into the dummy packets. These dummy packets are then inserted into the current data block according to the current synchronization state before RLNC encoding, thereby embedding the information required for the next transmission block within the current one. 
+
+B. Design of the Dummy Packets 
+
+To prevent Eve from identifying the dummy packets, all packets in the transmitted block should exhibit similar statis-tical characteristics, protocol headers, and packet signatures. Therefore, even after successfully decoding the entire RLNC block, Eve cannot correctly interpret the decoded packets because she cannot distinguish original packets from dummy packets without knowledge of the synchronization state. As a result, Eve is forced to rely on brute-force search to identify the complete set of dummy packets. Accordingly, each dummy packet should be generated to be statistically and semantically indistinguishable from the original data packets. As commonly encountered in encrypted or compressed traffic, the original data packets in x(b) are assumed to be statistically indistinguishable from uniformly random bit se-quences, with entropy of H(x(b) 
+
+> i
+
+) = n bits for all i, where 
+
+n denotes the number of bits in each original data packet. Accordingly, the secret share mapping can be designed as 
+
+d(b) = S(s(b+1) ) = 
+
+h
+
+d(b)1 ∼ Bern (0 .5) n,d(b)2 ∼ Bern (0 .5) n,
+
+...
+
+d(b) 
+
+> D−1
+
+∼ Bern (0 .5) n,d(b) 
+
+> D
+
+= L(s(b+1) ) ⊕   D−1M
+
+> i=1
+
+d(b)
+
+> i
+
+i
+
+,
+
+(11) wherein the first D − 1 dummy packets are independently generated as random binary vectors, whereas the last packet embeds the synchronization state. Further, Bern (0 .5) n denotes the function that generates a vector of size n with symmetric Bernoulli distribution and L : FN 
+
+> 2
+
+→ Fn 
+
+> 2
+
+can be any invertible mapping with n > N . The construction described in (11) ensures that every dummy packet contributes to state recovery while preserving statistical indistinguishability. The conditions (i) and (ii) follow directly from the construc-tion of d(b) via (11). With this construction, condition (iii) is also satisfied, since all dummy packets are randomly generated Fig. 3. Construction of temporal dependency communication-security paradigm using a state-chained RLNC framework. The synchronization state of each block is secret-shared into the dummy packets of the preceding block, making the correct interpretation of each block depend on recovering the synchronization state embedded in the previous block (red arrows). 
+
+with entropy H(d(b) 
+
+> i
+
+) = H(x(b) 
+
+> j
+
+) = n bits for all i and j.Conditions (i) and (ii) are also satisfied by the definition of 
+
+d(b) 
+
+> D
+
+in (11), as the complete set of dummy packets uniquely determines the state through a combination function 
+
+s(b+1) = C(d(b)) = L−1  DM
+
+> i=1
+
+d(b)
+
+> i
+
+, (12) while any proper subset of the dummy packets is insufficient to recover it. If the original data packets are subject to application-layer validation, the same compression, encryption, packetization, and higher-layer protocol processing can be applied to the dummy packets, producing protocol-compliant packet struc-tures [17], [18]. 
+
+C. Asynchronization Incidence and Propagation 
+
+Consider transmission block b. Let ET ′ denote Eve’s de-coding matrix at time slot T ′, when Alice receives Bob’s acknowledgment and terminates transmission of the current block. Since Bob is synchronized at the beginning of block b,he correctly separates the original and dummy packets after decoding and recovers the synchronization state of block b + 1 
+
+using (12). Hence, Bob successfully decodes every block and therefore remains synchronized, allowing correct interpretation of every subsequent block. For Eve, synchronization at block b is maintained whenever 
+
+s(b) lies in the row space of her decoding matrix as 
+
+s(b) ∈ row( ET ′ ) . (13) In this case, Eve can form the same linear combination of her decoded packet observations that isolates the combination of dummy packets LDi=1 d(b) 
+
+> i
+
+, required by the combination function expressed in (12). Otherwise, that combination is not identifiable from her available observations. In contrast, an asynchronization incidence occurs when 
+
+s(b) /∈ row( ET ′ ) , (14) in which Eve cannot recover the dummy-packet combination or determine the next state s(b+1) . The probability of this event is denoted by Pasy and is characterized in Section IV. Once the synchronization state s(b+1) is lost, Eve may continue decoding subsequent RLNC blocks, starting from block b + 1 , whenever sufficient coded packets are received. However, these decoded blocks cannot be correctly interpreted because the dummy-packet locations remain unknown. As a result, she cannot recover the synchronization state of block 
+
+b + 2 via 
+
+s(b+2) = C
+
+
+
+d(b+1) 
+
+, (15) causing eavesdropper asynchronization to propagate indefi-nitely across future blocks. To resynchronize, Eve must correctly identify the dummy packets of at least one asynchronous full-rank block. Since the dummy packets are statistically indistinguishable from the original packets, as discussed in Section III-B, they cannot be identified using protocol signatures or statistical features. Therefore, Eve must exhaustively search over all combinations of candidate dummy-packet subsets. Once the correct subset is identified for block b + i, Eve obtains 
+
+s(b+i+1) = C
+
+
+
+d(b+i)
+
+, (16) thereby restoring synchronization from block b+i+1 onward. Unlike conventional cryptographic systems, the proposed framework does not rely on a secret bootstrap phase. The synchronization state of the first transmission block, s(1) , is assumed to be public and may therefore be recovered by Eve. Consequently, confidentiality of the first communication block is not guaranteed. However, once Eve fails to recover the synchronization state of a subsequent block because insuf-ficient RLNC observations prevent recovery of the dummy-packet combination, all future synchronization states become unavailable, since each new state is embedded only in the previous block. Thereafter, the temporal dependency becomes self-sustaining, with each synchronization state generated and conveyed through the communication itself, eliminating the need for any pre-shared or subsequent key-refresh procedures. IV. C OMPUTATIONAL ANALYSIS 
+
+The time at which Bob achieves full rank determines when he transmits the acknowledgment, thereby defining the interval during which Alice continues transmitting additional RLNC packets and Eve continues collecting observations. Accord-ingly, the probability distribution of Bob’s full-rank decoding time underlies the characterization of Eve’s observation win-dow and the probability of asynchronization, and is described by the following theorem. 
+
+Theorem 1. The probability that the decoding matrix of Bob becomes full rank at time slot t = T is denoted as f B(t = T ),and described as fB(t = T ) = P
+
+
+
+r(BT ) = N, r(BT −1) = N − 1
+
+
+
+=
+
+> T
+
+X 
+
+> M=N
+
+F1(M, N )F2(T, M, P B)F3(M, N )
+
+(17) where F1(M, N ) = 2−(M −2) N −1
+
+2N − 1 ,
+
+F2(T, M, PB) = 
+
+ T − 1
+
+M − 1
+
+
+
+PM 
+
+> B
+
+(1 − PB)T −M ,
+
+and F3(M, N ) =  
+
+> N−2
+
+Y
+
+> i=0
+
+(2 M −1 − 2i)(2 N − 2i)2N −1 − 2i
+
+for T ≥ N and f B(t = T ) = 0 otherwise. 
+
+Proof. The proof is provided in Appendix A. Since T ′ is the sum of the decoding time T and the ACK delay, its PDF is obtained by convolution as fA(t) = fB(t) ∗ fACK (t), (18) where fACK (t = Tack ) refers to the PDF of the ACK delay. An asynchronization incidence occurs whenever the dummy-packet state vector does not belong to the row space of Eve’s final decoding matrix, i.e., s /∈ row (ET ′ ). In this case, Eve cannot recover the dummy-packet combination or determine the state of the next block. The resulting probability of asynchronization depends on three random mechanisms: Bob’s decoding time, the ACK delay, and Eve’s packet recep-tion. The expression is obtained by averaging the conditional asynchronization probability over Bob’s decoding time, the ACK delay, and Eve’s packet receptions before and after Bob achieves full rank. 
+
+Theorem 2. The probability of asynchronization incidence for Eve in a block is given as Pasy = P(s /∈ row( ET ′ )) =
+
+> ∞
+
+X  
+
+> T′=NT′
+
+X 
+
+> T=N
+
+fACK (T ′ − T )
+
+> T
+
+X 
+
+> M=N
+
+fB,M (T, M )Pasy |T ′,T,M ,
+
+(19) where fB,M (T, M ) = 2 −(M −1) N Φ( M − 1, N, N − 1) 
+
+×
+
+ T − 1
+
+M − 1
+
+
+
+PM −1 
+
+> B
+
+(1 − PB)T −M PB
+
+2N − 2N −1
+
+2N − 1 , (20) and Pasy |T ′,T,M =
+
+> 1
+
+X
+
+> z=0
+
+Pz
+
+> E
+
+(1 − PE)1−zM −1X
+
+> Kpre =0
+
+M − 1
+
+Kpre 
+
+
+
+PKpre  
+
+> E
+
+(1 − PE)M −1−Kpre 
+
+× 
+
+> min( Kpre ,N −1)
+
+X
+
+> rpre =0
+
+Θ( M − 1, N, N − 1, K pre , r pre )
+
+× 
+
+> T′−M
+
+X
+
+> K=0
+
+T ′ − MK
+
+
+
+PK 
+
+> E
+
+(1 − PE)T ′−M −K
+
+× 
+
+> N−1
+
+X
+
+> r′=r′′
+
+Ψ( K, N − r′′ , r ′ − r′′ ) 2N − 2r′
+
+2N − 1 ,
+
+(21) where r′′ = rpre + z. Here, the helper functions are 
+
+Ψ( m, n, r ) = 2 −mn Φ( m, n, r ), (22) and 
+
+Θ( m, N, R, K, r ′′ )= Φ( K, N, r ′′ ) 2 (m−K)r′′ 
+
+Φ( m − K, N − r′′ , R − r′′ )Φ( m, N, R ) ,
+
+(23) where 
+
+Φ( m, n, r ) = 
+
+Qr−1 
+
+> i=0
+
+(2 m − 2i)(2 n − 2i)
+
+Qr−1 
+
+> i=0
+
+(2 r − 2i) . (24) 
+
+Proof. The proof is provided in Appendix D. Since each transmission block is statistically identical and independent, the first asynchronization incidence follows a geometric process. Therefore, the expected time to the first asynchronization incidence is equivalent to the expected inter-val between two consecutive incidences. 
+
+Corollary 1. The expected time to the first asynchronization incidence, equivalently the expected interval between two consecutive incidences, is 
+
+τasy = τq
+
+Pasy 
+
+  N + 1 .6PB
+
++ E[Tack ] (25) where τq denotes the packet transmission time and Pasy is described in Theorem 2. Once an asynchronization incidence occurs, Eve must even-tually resynchronize by identifying the dummy packets of a subsequent full-rank block. Since these packets are indistin-guishable from the original packets, the required brute-force search gives rise to the following computational complexity. 
+
+Corollary 2. Let τcmp denote the expected computational time required to continuously maintain synchronization during one second of communication through repeated brute-force resynchronization. It is given by 
+
+τcmp =
+
+ND
+
+ DPBPasy C−1
+
+> E
+
+τq ×  N + 1 .6 + P BE{Tack } , (26) where CE denotes Eve’s computational capacity, measured as the number of packet combinations evaluated per second. Corollary 2 shows that the computational cost of each resynchronization attempt grows combinatorially with the block parameters. In particular, increasing either N or D
+
+rapidly increases the computational burden imposed on Eve. In contrast, the channel conditions and ACK delay affect only the frequency of resynchronization attempts through P asy , rather than the computational cost of each individual attempt. V. P ERFORMANCE METRICS AND DESIGN OPTIMIZATION 
+
+The analytical framework enables optimization of block parameters, transmit power, and intentional interference to bal-ance communication performance and computational security. 
+
+A. Channel Model 
+
+To formulate the optimization problems, we first introduce the physical-layer model used to evaluate the packet success probabilities of Bob and Eve. We consider a PtP Rayleigh fading channel in which Alice transmits with total power P .A fraction αP is allocated to the information signal, while the remaining (1 − α)P is allocated to intentional interference. The resulting signal-to-interference-plus-noise ratios (SINRs) are given by 
+
+γB = αP |hB|2
+
+(1 − α)P |gB|2 + σ2B
+
+,γE = αP |hE|2
+
+(1 − α)P |gE|2 + σ2E
+
+,
+
+(27) respectively. Here, hB ∼ CN (0 , ΩB) and hE ∼ CN (0 , ΩE)
+
+denote the data-signal channels, gB ∼ CN (0 , ΩB,AN ) and 
+
+gE ∼ CN (0 , ΩE,AN ) denote the intentional-interference chan-nels toward Bob and Eve, respectively, and σ2 
+
+> B
+
+and σ2 
+
+> E
+
+denote the corresponding thermal noise powers. The intentional interference is transmitted from a separate co-located antenna, whose channel is assumed to be statisti-cally independent of the data channel. Since the interference is unknown to both receivers, it is modeled as additional noise. Under Rayleigh fading and assuming capacity-achieving coding with sufficiently long packets, the packet success probabilities are approximated by the outage probabilities PB = P(γB > ν (Rt)) = exp 
+
+
+
+− ν(Rt)σ2B
+
+αP ΩB
+
+
+
+1 + ν(Rt)(1 − α)Ω B,AN 
+
+αΩB
+
+,
+
+PE = P(γE > ν (Rt)) = exp 
+
+
+
+− ν(Rt)σ2E
+
+αP ΩE
+
+
+
+1 + ν(Rt)(1 − α)Ω E,AN 
+
+αΩE
+
+,
+
+(28) where ν(Rt) = 2 Rt − 1, Rt = Rc log 2 Mmod is the target rate, 
+
+Mmod is the modulation order, and Rc ∈ [0 , 1] is the code rate. Under the co-located antenna assumption, the receivers experience approximately the same large-scale channel gains, i.e., ΩB,AN ≈ ΩB and ΩE,AN ≈ ΩE. So, (28) simplifies to PB = α exp 
+
+
+
+− ν(Rt)σ2B
+
+αP ΩB
+
+ . α + ν(Rt)(1 − α),
+
+PE = α exp 
+
+
+
+− ν(Rt)σ2E
+
+αP ΩE
+
+ . α + ν(Rt)(1 − α),
+
+(29) implying that intentional interference serves as an enhance-ment by increasing the probability of asynchronization inci-dence, rather than acting as the primary security mechanism. 
+
+B. Performance Metrics 
+
+Using the analytical framework developed in Section IV, the following performance metrics are employed throughout the optimization problems. Using the PDF of T derived in Theorem 1, the packet latency is defined as 
+
+ℓ = τq × E{T }, (30) which is equivalent to the expected time that the decoding matrix of Bob achieves full rank. Further, the throughput is defined as the average number of original packets successfully delivered per second, described as 
+
+η = N − Dτq × E{T ′} = N − Dτq × (E{T } + E{Tack }) , (31) where the PDF of T ′ is defined in (18). Besides communica-tion performance, the optimization also constrains the amount of uncertainty retained by Eve after successful decoding. Accordingly, the interpretation uncertainty is defined as 
+
+ϵ = DN . (32) A minimum uncertainty requirement ensures that successfully decoded blocks remain insufficient for reliable interpretation without the synchronization state. 
+
+C. Transmit Power Optimization 
+
+Transmit power directly affects the packet success proba-bilities of both Bob and Eve, and therefore, the probability of eavesdropper asynchronization. Specifically, varying the transmit power changes PB and PE, thereby affecting Pasy and the expected time to the first asynchronization incidence, τasy .Since reducing τasy increases the frequency with which Eve must perform computationally expensive resynchronization, it is selected as the optimization objective. We first consider the baseline system without intentional interference ( α = 1 ) to isolate the effect of transmit-power optimization. Let 
+
+Υ1 = ( α = 1 , N, D, ΩB, ΩE, σ B, σ E, R t, fACK (t)) 
+
+collect the fixed system parameters. The transmit power is then optimized by solving 
+
+P1 : minimize  
+
+> P
+
+τasy (P, Υ1) (33a) s.t. η(P, Υ1) ≥ ηmin , (33b) 
+
+ℓ(P, Υ1) ≤ ℓmax , (33c) 
+
+τcmp (P, Υ1) ≥ τmin , (33d) 
+
+0 < P ≤ Pmax . (33e) The objective function is given in (25), while con-straints (33)b–(33)d enforce the throughput, latency, and computational-security requirements, respectively. Problem P1 provides a useful performance benchmark when Alice has knowledge of Eve’s channel gain, or at least a conservative upper bound on it. Although such information is generally unavailable for passive eavesdroppers, the for-mulation establishes the best performance achievable through transmit-power adaptation alone. Nevertheless, when Eve’s channel is substantially stronger than Bob’s ( ΩE ≫ ΩB), transmit-power optimization cannot fundamentally compen-sate for Eve’s channel advantage. Therefore, although it pro-vides useful performance improvements, it may still yield unacceptably large values of τasy . This limitation motivates the intentional-interference optimization developed in the next subsection, where Eve’s packet success probability is reduced independently of her channel strength. 
+
+D. Intentional-Interference Optimization 
+
+Although transmit-power optimization improves the prob-ability of eavesdropper asynchronization, it cannot funda-mentally compensate for an arbitrarily strong eavesdropper. In contrast, intentional interference introduces a controllable impairment that limits Eve’s packet success probability even when her received signal power is very large. Hence, it reduces the expected time to the first asynchronization incidence, τasy .The optimization variable α determines the power split be-tween the information signal and the intentional interference. Accordingly, α is optimized by solving 
+
+P2 : minimize  
+
+> α
+
+τasy (α, Υ2) (34a) s.t. η(α, Υ2) ≥ ηmin , (34b) 
+
+ℓ(α, Υ2) ≤ ℓmax , (34c) 
+
+τcmp (α, Υ2) ≥ τmin , (34d) 
+
+0 < α ≤ 1, (34e) where 
+
+Υ2 = ( P = Pmax , N, D, ΩB, ΩE = ∞, σ B, σ E, R t, f ACK (t)) 
+
+collects the fixed system parameters. To obtain a design that remains effective regardless of Eve’s channel strength, we consider the worst-case limit ΩE → ∞ .Under this assumption, (29) reduces to PE = αα + ν(Rt)(1 − α) , (35) which depends solely on the power-allocation factor α. Hence, unlike transmit-power optimization, intentional interference fundamentally bounds Eve’s packet success probability even under arbitrarily strong channel conditions. Since increasing the transmit power no longer affects Eve’s packet success probability, the optimal strategy is to set P = Pmax and optimize only α. The resulting optimum is denoted by α∗, and the corresponding objective value by τ upp asy , which represents an upper bound on the expected time to the first asynchronization incidence because ΩE = ∞ corresponds to the most favorable propagation condition for Eve. VI. S IMULATION RESULTS 
+
+This section validates the analytical framework and eval-uates how temporal dependency behaves under increasingly adverse eavesdropping conditions. For the simulations, we consider a PtP link in the presence of a passive eavesdropper. The total available transmit power at Alice is Pmax = 1 Watt and the target rate is set as Rt = 2 bpcu. Each packet has a payload of n = 1 kilobyte and transmission time τq = 1 ms, while the receiver noise powers are σ2B = σ2E = −100 dBm. Unless otherwise stated, the results are presented as a function of the channel gain difference ΩE −ΩB, which provides a more informative comparison than the absolute channel gain of Eve. Fig. 4 evaluates the baseline temporal-dependency security performance before optimization, demonstrating how quickly Eve becomes asynchronized under different channel con-ditions. Specifically, it shows the mean time to the first asynchronization incidence, τasy , obtained from Monte Carlo simulations with 10 4 independent realizations, as a function of the channel gain difference ΩE − ΩB for N = 40 , 80 ,and 120 . The region ΩE > ΩB corresponds to a stronger eavesdropper, where the secrecy capacity becomes zero (or negative in theory). As expected, τasy increases with Eve’s channel gain because the probability of asynchronization, 
+
+Pasy , decreases. Likewise, increasing the ACK delay from 2 to 
+
+10 ms substantially degrades performance for all block sizes, since the longer observation window allows Eve to collect more innovative packets before transmission terminates. Nev-ertheless, for Tack = 2 ms, τasy remains below approximately 
+
+10 –30 s even when Eve’s channel is 10 dB stronger than Bob’s. Furthermore, larger block sizes are more resilient to long ACK delays because Eve requires more innovative packets to achieve full rank, whereas smaller block sizes become prefer-able under poor channel conditions. These results motivate the formulation of the transmit-power optimization problem 
+
+P1 and the intentional-interference optimization problem P2
+
+to reduce the expected time to the first asynchronization incidence. Fig. 5 evaluates the computational security provided by the proposed framework by showing the expected compu-tational time required for Eve to maintain synchronization over one second of communication through repeated brute-force resynchronization. To represent an extremely powerful adversary, Eve is assumed to employ 100 NVIDIA B200 GPUs operating in parallel, providing a total computational capacity of CE = 10 12 packet combinations per second, while her average channel gain is assumed to be 10 dB higher than Bob’s. The computational burden is highly sensitive to the block parameters N and D. For D ≤ 8, the required computation time remains below one second for all block sizes, whereas it increases combinatorially with D. Although the computation time remains below one second for N = 40 ,it exceeds ten years at approximately D = 30 for N = 80 and 
+
+D = 20 for N = 120 . Furthermore, for N = 120 , increasing 
+
+D from 14 to 18 increases the expected resynchronization time from approximately one day to several years. These results demonstrate that, once an asynchronization incidence occurs, maintaining synchronization becomes computationally infea--10 
+
+> -8
+> -6
+> -4
+> -2
+> 0
+> 2
+> 4
+> 6
+> 8
+> 10
+
+(a) 
+
+10 -2 
+
+10 -1 
+
+10 0
+
+10 1
+
+10 2
+
+> +B = !70 dBm
+> =asy [s]
+
+Acknowledgment delay Tack = 2 ms
+
+> -10
+> -8
+> -6
+> -4
+> -2
+> 0
+> 2
+> 4
+> 6
+> 8
+> 10
+
+(d) 
+
+10 -2 
+
+10 -1 
+
+10 0
+
+10 1
+
+10 2
+
+> +B = !80 dBm
+> =asy [s]
+> -10
+> -8
+> -6
+> -4
+> -2
+> 0
+> 2
+> 4
+> 6
+> 8
+> 10
+
++E ! +B [dB]
+
+(g)
+
+10 -2 
+
+10 -1 
+
+10 0
+
+10 1
+
+10 2
+
+> +B = !90 dBm
+> =asy [s]
+> -10
+> -8
+> -6
+> -4
+> -2
+> 0
+> 2
+> 4
+> 6
+> 8
+> 10
+
+(b) 
+
+10 -2 
+
+10 -1 
+
+10 0
+
+10 1
+
+10 2
+
+Acknowledgment delay Tack = 5 ms
+
+> -10
+> -8
+> -6
+> -4
+> -2
+> 0
+> 2
+> 4
+> 6
+> 8
+> 10
+
+(e) 
+
+10 -2 
+
+10 -1 
+
+10 0
+
+10 1
+
+10 2
+
+> -10
+> -8
+> -6
+> -4
+> -2
+> 0
+> 2
+> 4
+> 6
+> 8
+> 10
+
++E ! +B [dB]
+
+(h)
+
+10 -2 
+
+10 -1 
+
+10 0
+
+10 1
+
+10 2
+
+> -10
+> -8
+> -6
+> -4
+> -2
+> 0
+> 2
+> 4
+> 6
+> 8
+> 10
+
+(c) 
+
+10 -2 
+
+10 -1 
+
+10 0
+
+10 1
+
+10 2
+
+Acknowledgment delay Tack = 10 ms
+
+N = 40
+
+N = 80
+
+N = 120
+
+> -10
+> -8
+> -6
+> -4
+> -2
+> 0
+> 2
+> 4
+> 6
+> 8
+> 10
+
+(f) 
+
+10 -2 
+
+10 -1 
+
+10 0
+
+10 1
+
+10 2 N = 40
+
+N = 80
+
+N = 120
+
+> -10
+> -8
+> -6
+> -4
+> -2
+> 0
+> 2
+> 4
+> 6
+> 8
+> 10
+
++E ! +B [dB]
+
+(i)
+
+10 -2 
+
+10 -1 
+
+10 0
+
+10 1
+
+10 2
+
+N = 40
+
+N = 80
+
+N = 120Fig. 4. Mean time to the first asynchronization incidence, equivalently the mean interval between two consecutive asynchronization incidences, τasy , for transmit power P = 1 Watt versus the channel gain difference between Eve and Bob, ΩE − ΩB, for Bob’s mean channel gains ΩB = −70 , −80 , and 
+
+−90 dBm, ACK delays Tack = 2 , 5, and 10 ms, and block sizes N = 40 , 80 , and 120 .2 6 10 14 18 22 26 30
+
+(a) 
+
+10!10
+
+10!5
+
+100
+
+105
+
+1010
+
+1015
+
+> =cmp [s]
+
++B = !70 dBm      
+
+> 1 second
+> 1 day 1 month
+> 1 year 10 years
+> 1 second
+> 1 day 1 month
+> 1 year 10 years
+> 1 second
+> 1 day 1 month
+> 1 year 10 years
+
+2 6 10 14 18 22 26 30
+
+(b) 
+
+10!10
+
+10!5
+
+100
+
+105
+
+1010
+
+1015 +B = !80 dBm      
+
+> 1 second
+> 1 day 1 month
+> 1 year 10 years
+> 1 second
+> 1 day 1 month
+> 1 year 10 years
+> 1 second
+> 1 day 1 month
+> 1 year 10 years
+
+2 6 10 14 18 22 26 30
+
+(c) 
+
+10!10
+
+10!5
+
+100
+
+105
+
+1010
+
+1015 +B = !90 dBm      
+
+> 1 second
+> 1 day 1 month
+> 1 year 10 years
+> 1 second
+> 1 day 1 month
+> 1 year 10 years
+> 1 second
+> 1 day 1 month
+> 1 year 10 years
+
+N = 40
+
+N = 80
+
+N = 120
+
+Number of dummy packets D
+
+(d)
+
+2 6 10 14 18 22 26 30 
+
+> 2 [packets/s]
+
+0
+
+100 
+
+200 
+
+300 
+
+400 
+
+500 
+
+600 
+
+700 
+
+800 
+
+900 
+
+1000 
+
+Number of dummy packets D
+
+(e)
+
+2 6 10 14 18 22 26 30 
+
+0
+
+100 
+
+200 
+
+300 
+
+400 
+
+500 
+
+600 
+
+700 
+
+800 
+
+900 
+
+1000 
+
+Number of dummy packets D
+
+(f)
+
+2 6 10 14 18 22 26 30 
+
+0
+
+100 
+
+200 
+
+300 
+
+400 
+
+500 
+
+600 
+
+700 
+
+800 
+
+900 
+
+1000 
+
+N = 40
+
+N = 80
+
+N = 120
+
+Fig. 5. Impact of the number of dummy packets D on computational security and throughput. The top row shows the expected computational time required by Eve to maintain synchronization through repeated brute-force resynchronization, τcmp for one second of transmission with the proposed state-chained scheme, and the bottom row shows the resulting throughput η.
+
+sible even for an exceptionally powerful adversary, without relying on cryptographic assumptions. The bottom row of Fig. 5 shows the corresponding through-put. As expected, increasing the number of dummy packets reduces throughput because a larger fraction of each block is devoted to synchronization-state information. Conversely, for a fixed D, larger block sizes improve throughput by reducing the relative overhead introduced by the dummy packets. This trade-off motivates optimizing N and D rather than simply maximizing computational complexity. Fig. 6 demonstrates the benefit of transmit-power optimiza-tion in reducing the expected time to the first asynchronization incidence. The figure presents the optimal solution of P1 with 
+
+Pmax = 1 Watt and a minimum throughput requirement of 
+
+ηmin = 500 packets/s. The top row shows the optimal expected time to the first asynchronization incidence, τ ∗
+
+asy , while the bottom row shows the corresponding optimal transmit power, 
+
+P ∗, for ΩB = −70 dBm and ACK delays of Tack = 2 , 5, and 
+
+10 ms. As expected, τ ∗
+
+asy increases as Eve’s channel becomes stronger. Nevertheless, it remains below approximately 10 –
+
+20 s for Tack = 2 ms even when Eve’s channel is 10 dB stronger than Bob’s, and below 1 s for Tack ≤ 5 ms when Bob and Eve experience similar channel conditions. The optimal transmit power is approximately 0.01 Watt when the channel conditions are comparable, since a lower transmit power slightly delays Bob’s decoding while increasing the likelihood that Eve remains rank deficient, thereby reducing τasy . As either Bob’s or Eve’s channel becomes significantly stronger, -10                                                                      
+
+> -8
+> -6
+> -4
+> -2
+> 0
+> 2
+> 4
+> 6
+> 8
+> 10
+> (a)
+> 10!2
+> 10!1
+> 100
+> 101
+> 102
+> = $
+> asy [s]
+> AcknowledgmentdelayTack=2ms
+> +E!+B[dB]
+> (d)
+> -10
+> -8
+> -6
+> -4
+> -2
+> 0
+> 2
+> 4
+> 6
+> 8
+> 10
+> P $ [Watt]
+> 0
+> 0.02
+> 0.04
+> 0.06
+> 0.08
+> 0.1
+> 0.12
+> 0.14
+> 0.16
+> 0.18
+> 0.2
+> -10
+> -8
+> -6
+> -4
+> -2
+> 0
+> 2
+> 4
+> 6
+> 8
+> 10
+> (b)
+> 10!2
+> 10!1
+> 100
+> 101
+> 102
+> AcknowledgmentdelayTack=5ms
+> +E!+B[dB]
+> (e)
+> -10
+> -8
+> -6
+> -4
+> -2
+> 0
+> 2
+> 4
+> 6
+> 8
+> 10
+> 0
+> 0.02
+> 0.04
+> 0.06
+> 0.08
+> 0.1
+> 0.12
+> 0.14
+> 0.16
+> 0.18
+> 0.2
+> -10
+> -8
+> -6
+> -4
+> -2
+> 0
+> 2
+> 4
+> 6
+> 8
+> 10
+> (c)
+> 10!2
+> 10!1
+> 100
+> 101
+> 102
+> AcknowledgmentdelayTack=10ms
+> N=40;D=10
+> N=80;D=20
+> N=120;D=30
+> +E!+B[dB]
+> (f)
+> -10
+> -8
+> -6
+> -4
+> -2
+> 0
+> 2
+> 4
+> 6
+> 8
+> 10
+> 0
+> 0.02
+> 0.04
+> 0.06
+> 0.08
+> 0.1
+> 0.12
+> 0.14
+> 0.16
+> 0.18
+> 0.2
+> N=40;D=10
+> N=80;D=20
+> N=120;D=30Fig. 6. Optimal solution of P1. Optimal asynchronization time τ∗
+> asy (top row) and optimal transmit power P∗(bottom row) versus the channel gain difference
+> ΩE−ΩB, by setting ΩB=−70 dBm and Pmax = 1 Watt.
+
+the optimal transmit power increases to satisfy the throughput constraint while minimizing τasy . Compared with the baseline results in Fig. 4, transmit-power optimization substantially reduces τasy , particularly when Bob and Eve experience similar channel conditions. However, its performance remains fundamentally limited against arbitrarily strong eavesdroppers, motivating the intentional-interference optimization developed in P2.Fig. 7 presents the optimal solution of P2, demonstrating that intentional interference fundamentally removes the depen-dence of communication security on channel advantage. The top row shows the resulting upper bound on the expected time to the first asynchronization incidence, τ upp asy , while the bottom row shows the corresponding optimal intentional-interference coefficient, α∗, as a function of the minimum throughput requirement, ηmin . The results assume ΩB = −70 dBm, 
+
+ΩE = ∞, P = Pmax = 1 Watt, and D = N/ 4. As expected, increasing the throughput requirement increases α∗,allocating more power to the information signal and less to intentional interference. Therefore, τ upp asy increases with ηmin .Nevertheless, the proposed optimization maintains sub-second performance for all considered throughput requirements when 
+
+Tack = 2 ms, and for throughput requirements below ap-proximately 600 packets/s when Tack = 5 ms. These results demonstrate that sub-second eavesdropper asynchronization remains achievable even under the worst-case assumption of 
+
+ΩE = ∞. However, for Tack = 10 ms, the longer observation window outweighs the benefit of intentional interference, making packet interleaving necessary to further shorten Eve’s observation interval. VII. C ONCLUSION 
+
+This paper introduced a new communication-security paradigm in which temporal dependency serves as the under-lying security resource, allowing the successful interpretation of future communications to depend on correctly interpreting previous transmissions. As one realization, we developed a state-chained RLNC framework together with analytical mod-els for eavesdropper asynchronization, resynchronization com-plexity, and the optimization of transmit power and intentional interference. Numerical results showed that transmit-power optimization substantially reduces the expected time to the first eavesdropper asynchronization incidence, while intentional-interference optimization achieves sub-second expected asyn-chronization even under a worst-case adversarial model with no CSI, complete protocol and cryptographic knowledge, and an arbitrarily stronger eavesdropper. Meanwhile, resynchro-nization imposes computational costs of several years on the eavesdropper. These results demonstrate that communi-cation security can be achieved without relying on secret-key confidentiality or a communication advantage, making temporal-dependency security a promising paradigm for future infrastructure-less and highly dynamic wireless networks. APPENDIX APROOF OF THEOREM 1The probability that Bob becomes full rank exactly at packet time t = T is described as the joint probability of the rank be 
+
+N − 1 at the previous time slot T − 1 and a rank increment at time slot T as follows 
+
+P
+
+
+
+r(BT ) = N, r(BT −1) = N − 1
+
+
+
+= P
+
+
+
+r(BT −1) = N − 1
+
+
+
+P
+
+
+
+r(BT ) = N |r(BT −1) = N − 1
+
+
+
+(36) where the second term in (36) correspond to the probability that Bob successfully receive the packet at time slot t = T
+
+and that a random vector of size N be out of the row span of a random full rank matrix in FN −1×N , and derived as 
+
+P
+
+
+
+r(BT ) = N |r(BT −1) = N − 1
+
+
+
+= 2N −1
+
+2N − 1 PB. (37) Moreover, the first term in (36) can be expanded based on the number of rows in BT −1 as 
+
+P r(BT −1) = N − 1
+
+=
+
+> T
+
+X 
+
+> M=N
+
+P r(BT −1) = N − 1|m(BT −1) = M − 1) 
+
+× P 
+
+
+
+m(BT −1) = M − 1
+
+
+
+(38) (a)          
+
+> 500 550 600 650 700
+> = upp
+> asy [s]
+> 0
+> 1
+> 2
+> 3
+> 4AcknowledgmentdelayTack=2ms
+
+2min [packets/s]
+
+(d)    
+
+> 500 550 600 650 700
+> ,$
+> 0.8
+> 0.85
+> 0.9
+> 0.95
+> 1
+
+(b)          
+
+> 500 550 600 650 700
+> 0
+> 1
+> 2
+> 3
+> 4AcknowledgmentdelayTack=5ms
+
+2min [packets/s]
+
+(e)    
+
+> 500 550 600 650 700
+> 0.8
+> 0.85
+> 0.9
+> 0.95
+> 1
+
+(c)                         
+
+> 500 550 600 650 700
+> 0
+> 1
+> 2
+> 3
+> 4AcknowledgmentdelayTack=10ms
+> N=40;D=10
+> N=80;D=20
+> N=120;D=30
+
+2min [packets/s]
+
+(f)                   
+
+> 500 550 600 650 700
+> 0.8
+> 0.85
+> 0.9
+> 0.95
+> 1
+> N=40;D=10
+> N=80;D=20
+> N=120;D=30
+
+Fig. 7. Optimal solution of P2; Upper bound to the mean time of the first asynchronization incidence τ upp asy (top row) and respective optimal intentional interference coefficient α∗ (bottom row) versus the minimum required throughput ηmin for three ACK delay values Tack = 2 , 5 and 10 ms, by setting 
+
+ΩB = −70 dBm, ΩE = ∞, D = N/ 4, and P = Pmax = 1 Watt. 
+
+where the second term correspond to the probability of M −
+
+1 successful packet reception by Bob within T − 1 packet transmission, described as 
+
+P
+
+
+
+m(BT −1) = M − 1
+
+
+
+=
+
+ T − 1
+
+M − 1
+
+
+
+PM −1 
+
+> B
+
+(1 − PB)T −M
+
+(39) Also, the first term in (38) correspond to the the probability of a random matrix in FM −1×N with M ≥ N has the rank of N − 1, and derived as 
+
+P r(BT −1) = N − 1|m(BT −1) = M − 1) =
+
+QN −2 
+
+> i=0
+
+(2 M −1 − 2i) QN −2 
+
+> i=0
+
+(2 N − 2i)2(M −1) N QN −2 
+
+> i=0
+
+(2 N −1 − 2i)
+
+(40) whose proof is in Appendix B. So, substituting m with M − 1
+
+and r with N −1 in (46), (40) is derived. Finally, by replacing (39) and (40) into (38) and then replacing (37) and (38) into (36), Theorem 1 is concluded. APPENDIX BPROBABILITY OF A RANDOM MATRIX IN Fm×N 
+
+> 2
+
+BE RANK r
+
+To determine the probability that the rank of a random matrix B ∈ Fm∗N 
+
+> 2
+
+be r, we determine the the number of possible matrices B ∈ Fm∗N 
+
+> 2
+
+with rank r and divide it by all the possible matrices B ∈ Fm∗N 
+
+> 2
+
+. To this end, we firstly consider that every rank r matrix can be decomposed as 
+
+B = CD (41) where C ∈ Fm∗r 
+
+> 2
+
+has full column rank r and D ∈ Fr∗N 
+
+> 2
+
+has full row rank r. To prove the existence of such decomposition, we consider D as the stack of basis vectors of the row space of B. Since r( B) = r, the number of the basis vectors of 
+
+D is also r and they are linearly independent, and therefore, r( D) = r. Since each row of B is a linear combination of the rows of D, there exists a matrix C such that B = CD . Then, since r (B) = r(D) = r, we must have r (C) = r.To count the number of possible B ∈ Fm∗N 
+
+> 2
+
+with r( B)= r,we first count the number full column rank matrices C ∈
+
+Fm×r 
+
+> 2
+
+. The r columns of C must be linearly independent. Thus, the first column can be any nonzero vector in Fm 
+
+> 2
+
+. The second column must lie outside the span of the first, and so on. Hence, the number of such matrices is 
+
+|{ C ∈ Fm×r 
+
+> 2
+
+: r(C) = r}| =
+
+> r−1
+
+Y
+
+> i=0
+
+(2 m − 2i). (42) By the same argument, the number of matrices C ∈ Fr×N
+
+> 2
+
+with rank r is 
+
+|{ D ∈ Fr×N 
+
+> 2
+
+: r(D) = r}| =
+
+> r−1
+
+Y
+
+> i=0
+
+(2 N − 2i). (43) However, the decomposition (41) is not unique. This is because for any invertible matrix V ∈ Fr×r 
+
+> 2
+
+, we can rewrite (41) as 
+
+B = CD = ( CV )( V−1D) (44) implying that different pairs of C and D in (41) can generate the same matrix B. Therefore, the number of pairs of C and D
+
+that generates the same matrix B is equivalent to the number of all possible full rank matrices in Fr×r 
+
+> 2
+
+, given by 
+
+|{ V ∈ Fr×r 
+
+> 2
+
+: r(D) = r}| =
+
+> r−1
+
+Y
+
+> i=0
+
+(2 r − 2i). (45) Finally, from (42), (43), and (45), the probability that a random matrix B ∈ Fm×N 
+
+> 2
+
+be rank r is described as 
+
+P r(B) = r|m(B) = m)= 2 −mN 
+
+Qr−1 
+
+> i=0
+
+(2 m − 2i) Qr−1 
+
+> i=0
+
+(2 N − 2i)
+
+Qr−1 
+
+> i=0
+
+(2 r − 2i)
+
+(46) where the multiplier refers to the total number of possible matrices B ∈ Fm×N 
+
+> 2
+
+.APPENDIX CHELPER FUNCTION TO DETERMINE THE PROBABILITY OF ASYNCHRONIZATION INCIDENCE 
+
+Lets A[K] ∈ FK×N denotes the sub-matrix formed by a random selection of K rows of a matrix A ∈ Fm×N with rank R. We define the probability that A[K] has rank r′′ as 
+
+P r( A[K]) = r′′ | r( A) = R, A[K] ⊆K A ∈ Fm×N
+
+> 2
+
+
+
+=: Θ( m, N, R, K, r ′′ ). (47) To derive (47), we count the number of matrices A ∈ Fm×N
+
+> 2
+
+with rank R whose selected K rows have rank r′′ and divide by the total number of matrices A ∈ Fm×N 
+
+> 2
+
+with rank R. From Appendix B, the total number of matrices in Fm×N 
+
+> 2
+
+with rank 
+
+R is given by 
+
+|{ A ∈ Fm×N 
+
+> 2
+
+: r(A) = R}| =: Φ( m, N, R ), (48) where Φ( m, n, r ) is defined in (24). Next, consider the event that the selected K rows have rank exactly r′′ . The number of possible choices for the K rows is 
+
+|{ A[K] ∈ FK×N 
+
+> 2
+
+: r(A[K]) = r′′ }| = Φ( K, N, r ′′ ). (49) Since r (A[K]) = r′′ , the rows of A[K] span an r′′ -dimensional subspace U ⊆ FN 
+
+> 2
+
+with the dimension dim( U) = r′′ . The remaining (non-selected) m − K rows in A ∈ Fm×N must increase the rank from r′′ to R. Let W be a complementary subspace of U such that 
+
+U ⊕ W = FN 
+
+> 2
+
+, dim( W) = N − r′′ . (50) Then, any remaining row y ∈ FN 
+
+> 2
+
+in A ∈ Fm×N can be uniquely decomposed as 
+
+y = u ⊕ w, u ∈ U ⊆ FN 
+
+> 2
+
+, w ∈ W ⊆ FN 
+
+> 2
+
+. (51) Since U is an r′′ -dimensional subspace, there are exactly 
+
+2r′′ 
+
+selections for u. Therefore, for each of the m − K
+
+remaining rows, u can be chosen in 2r′′ 
+
+ways. Then, the total number of possible choices for the components inside U is 
+
+|{ U ∈ F(m−K)×N 
+
+> 2
+
+: row (U) ⊆ U , dim( U) = r′′ }| 
+
+= 2 (m−K)r′′ 
+
+, (52) where each selection of u forms a row in the matrix U .Choosing a basis for W establishes a one-to-one correspon-dence between any vector w in W and their coordinate representations in FN −r′′  
+
+> 2
+
+. Therefore, the components of the remaining m − K rows that lie in W can be represented by a matrix W ∈ F(m−K)×(N −r′′ ). In order to increase the overall rank from r′′ to R, this matrix must have rank R − r′′ .Consequently, the number of such possibilities is given by 
+
+|{ W ∈ F(m−K)×(N −r′′ )2 : r(W) = R − r′′ }| 
+
+= Φ( m − K, N − r′′ , R − r′′ ). (53) Then, the total number of rank-R matrices in Fm×N whose selected K rows have rank r′′ is 
+
+|{ A ⊆ Fm×N 
+
+> 2
+
+: r( A) = R, AK ⊆K A, r( AK ) = r′′ }| 
+
+= Φ( K, N, r ′′ ) 2 (m−K)r′′ 
+
+Φ( m − K, N − r′′ , R − r′′ ).
+
+(54) Dividing by the total number of rank-R matrices, the expres-sion in (47) is derived as 
+
+Θ( m, N, R, K, r ′′ )= Φ( K, N, r ′′ ) 2 (m−K)r′′ 
+
+Φ( m − K, N − r′′ , R − r′′ )Φ( m, N, R ) .
+
+(55) which is used in appendix D for determining the probability of asynchronization incidence at Eve. APPENDIX DPROBABILITY OF ASYNCHRONIZATION INCIDNECE 
+
+Asynchronization occurs when the state vector does not belong to the row space of Eve’s decoding matrix at the end of a transmission block, i.e., (14). The probability of this event is obtained by successively conditioning on Bob’s decoding event, the packets shared between Bob and Eve, the packets received only by Eve, and the final rank of Eve’s decoding matrix. Accordingly, Pasy = P(s /∈ row( ET ′ )) =
+
+> ∞
+
+X  
+
+> T′=NT′
+
+X 
+
+> T=N
+
+fACK (T ′ − T )
+
+> T
+
+X 
+
+> M=N
+
+fB,M (T, M )Pasy |T ′,T,M ,
+
+(56) where P asy |T ′,T,M denotes the conditional asynchronization probability given that Bob first achieves full rank at time slot T after successfully receiving M packets, while Alice terminates transmission at time slot T ′. The term fB,M (T, M )
+
+is the probability of this event and is given by fB,M (T, M ) = P(r( BT −1) = N − 1 | m(BT −1) = M − 1) 
+
+×
+
+ T − 1
+
+M − 1
+
+
+
+PM −1 
+
+> B
+
+(1 − PB)T −M PB
+
+2N − 2N −1
+
+2N − 1 .
+
+(57) Here, the first factor represents the probability that Bob’s first 
+
+M − 1 successfully received coding vectors have rank N − 1.Since these vectors are independently generated, we have 
+
+P(r( BT −1) = N − 1 | m(BT −1) = M − 1) = 2 −(M −1) N Φ( M − 1, N, N − 1) , (58) where Φ( ., ., . ) is described in (24). Conditioned on (T ′, T, M ), the asynchronization probabil-ity is Pasy (T ′, T, M ) = 
+
+> 1
+
+X
+
+> z=0
+
+P(Z = z)
+
+× 
+
+> M−1
+
+X
+
+> kpre =0
+
+P(s /∈ row (ET ′ ) | kpre , z )P(Kpre = kpre )
+
+(59) where Kpre denotes the number of packets that are received by Eve among the first M − 1 packets received by Bob. Thus, 
+
+P(Kpre = kpre ) = 
+
+M − 1
+
+kpre 
+
+
+
+Pkpre  
+
+> E
+
+(1 − PE)M −1−kpre . (60) Also, Z ∈ { 0, 1} indicates whether Eve also receives Bob’s final innovative packet at time slot T . Hence, 
+
+P(Z = z) = Pz
+
+> E
+
+(1 − PE)1−z . (61) Conditioning further on the rank of Eve’s shared decoding matrix, denoted by Rpre , gives 
+
+P(s /∈ row (ET ′ ) | kpre , z ) =  
+
+> min( kpre
+> ,N −1)
+
+X
+
+> rpre =0
+
+P(s /∈ row (ET ′ ) | rpre , k pre , z )P(Rpre = rpre | kpre ).
+
+(62) The conditional distribution of Rpre is obtained from Ap-pendix C as 
+
+P(Rpre = rpre | Kpre = kpre )= Θ( M − 1, N, N − 1, k pre , r pre ). (63) Whenever Eve receives Bob’s final innovative packet, it is linearly independent of the previous shared vectors. Therefore, the shared rank at time slot T is 
+
+R′′ = Rpre + Z. (64) Let K denote the number of packets received only by Eve after Bob reaches full rank. Conditioning on K yields 
+
+P(s /∈ row (ET ′ ) | rpre , k pre , z )= 
+
+> T′−M
+
+X
+
+> k=0
+
+P(s /∈ row (ET ′ ) | k, r pre , k pre , z )P(K = k). (65) The number of packets not received by Bob by time slot T
+
+is T − M . Also, from time slot T + 1 to T ′, Alice continues transmitting linear combinations of the same block, that are all independently generated. Therefore, the probability that Eve successfully receive K number of these packets is 
+
+P(K = k) = 
+
+T ′ − Mk
+
+
+
+Pk
+
+> E
+
+(1 − PE)T ′−M −k. (66) To derive the first term in (65), we span the probability based on the rank of the decoding matrix of Eve by time T ′ as 
+
+P(s /∈ row (ET ′ ) | K, r pre , K pre , z ) =  
+
+> N−1
+
+X
+
+> r′=r′′
+
+P(s /∈ row (ET ′ ) | r′, K, r pre , K pre , z )
+
+× P (r(ET ′ ) = r′ | r′′ , K )
+
+(67) Conditioned on successfully receiving K packets by Eve that is not received by Bob, and on the existing shared rank 
+
+r′′ , the probability that Eve’s final rank becomes r′ is 
+
+P(r(ET ′ ) = r′ | r′′ , K ) = Ψ( K, N − r′′ , r ′ − r′′ ), (68) where Ψ( K, N − r′′ , r ′ − r′′ ) denotes the probability that K
+
+random vectors increase the rank by r′ − r′′ in the quotient space of dimension N − r′′ and is defined as 
+
+Ψ( m, n, r ) = 2 −mn Φ( m, n, r ), (69) where Φ( ., ., . ) is defined in (24). To derive the first term in (67), we have 
+
+P(s /∈ row (ET ′ ) | r′, K, r pre , K pre , z )= Pr( s /∈ row( ET ′ ) | r( ET ′ ) = r′) = 2N − 2r′
+
+2N − 1 . (70) where the first equality follows from the fact that Pr( s /∈
+
+row( ET ′ )) depends only on the rank of ET ′ . The second equality follows since a rank-r′ subspace contains 2r′
+
+vectors among the 2N − 1 nonzero vectors in FN 
+
+> 2
+
+.Combining (68)–(70) yields the conditional probability Pasy |T′,T,M in (21). Substituting this result into (56) gives the exact asynchronization probability P asy . Finally, for a deter-ministic ACK delay, fACK (T ′ −T ) = 1 when T ′ = T +TACK 
+
+and zero otherwise, reducing (56) to (19) and completing the proof. REFERENCES [1] R. L. Rivest, A. Shamir, and L. Adleman, “A method for obtaining digital signatures and public-key cryptosystems,” Commun. ACM , vol. 21, no. 2, pp. 120–126, Feb. 1978. [2] A. D. Wyner, “The wire-tap channel,” Bell Syst. Tech. J. , vol. 54, no. 8, pp. 1355–1387, Oct. 1975. [3] S. Loyka and N. Merhav, “The secrecy capacity of the Gaussian wiretap channel with rate-limited help at the decoder,” in Proc. IEEE Int. Symp. Inf. Theory (ISIT) , Espoo, Finland, Jun. 2022, pp. 1040–1045. [4] H. Niu, Y. Xiao, X. Lei, J. Chen, Z. Xiao, M. Li, and C. Yuen, “A survey on artificial noise for physical layer security: Opportunities, technologies, guidelines, advances, and trends,” IEEE Commun. Surveys Tuts. , vol. 28, p. 341–381, Sep. 2025. [5] D. Luo, Z. Ye, B. Si, and J. Zhu, “Secure transmit beamforming for radar-communication system without eavesdropper CSI,” IEEE Trans. Veh. Technol. , vol. 71, no. 9, pp. 9794–9804, Sep. 2022. [6] M. H. Zadeh, T. Sadig, M. Maleki, N. H. Tran, and H. R. Bahrami, “Encryption-aware PHY security: Optimal cooperative jamming and achievable rates,” IEEE Commun. Lett. , vol. 30, no. 2, pp. 407–411, Feb. 2026. [7] M. Hayashi and Y. Chen, “Non-adaptive coding for two-way wiretap channel with or without cost constraints,” IEEE Trans. Inf. Theory ,vol. 70, no. 7, pp. 4611–4633, Jul. 2024. [8] Y. Liang, H. V. Poor, and S. Shamai, “Secure communication over fading channels,” IEEE Trans. Inf. Theory , vol. 54, no. 6, pp. 2470–2492, Jun. 2008. [9] A. Tassi, R. J. Piechocki, and A. Nix, “On intercept probability mini-mization under sparse random linear network coding,” IEEE Trans. Veh. Technol. , vol. 68, no. 6, pp. 6137–6141, 2019. [10] I. Chatzigeorgiou, “The impact of partial packet recovery on the inherent secrecy of random linear coding,” in Proc. IEEE 95th Veh. Technol. Conf. (VTC2022-Spring) , Helsinki, Finland, Jun. 2022, pp. 1–6. [11] G. Yu, Q. Li, H. Mao, A. A. Abd El-Latif, and J. J. Rodrigues, “A Multi-Scenario Authenticated Key Exchange Scheme With Forward Secrecy for Fog-Enabled VANETs,” IEEE Trans. Veh. Technol. , vol. 74, no. 1, pp. 831–846, Jan 2025. [12] H. Xiong, T. Yao, Y. Zhao, L. Gong, and K.-H. Yeh, “A conditional privacy-preserving mutual authentication protocol with fine-grained for-ward and backward security in IoV,” IEEE Trans. Intell. Transp. Syst. ,vol. 25, no. 11, pp. 15 493–15 511, Nov. 2024. [13] W. Diffie and M. E. Hellman, “New directions in cryptography,” Nov. 1976, vol. 22, no. 6, pp. 644–654. [14] J. Clark and P. C. Van Oorschot, “SoK: SSL and HTTPS: Revisiting past challenges and evaluating certificate trust model enhancements,” in 
+
+Proc. IEEE Symp. Security Privacy (SP) , San Francisco, CA, USA, May 2013, pp. 511–525. [15] S. Khan, F. Luo, Z. Zhang, F. Ullah, and et al. , “A survey on X. 509 public-key infrastructure, certificate revocation, and their modern implementation on blockchain and ledger technologies,” IEEE Commun. Surveys Tuts. , vol. 25, no. 4, pp. 2529–2568, Fourthquarter 2023. [16] P. W. Shor, “Algorithms for quantum computation: Discrete Logarithms and Factoring,” in Proc. 35th Annu. Symp. Found. Comput. Sci. (FOCS) ,Santa Fe, NM, USA, Nov. 1994, pp. 124–134. [17] C. V. Wright, S. E. Coull, and F. Monrose, “Traffic morphing: An efficient defense against statistical traffic analysis.” in NDSS , vol. 9, 2009. [18] J. O. Seo, S. Manoharan, and A. Mahanti, “A discussion and review of network steganography,” in Proc. IEEE 14th Int. Conf. Dependable, Auton. Secure Comput. (DASC), 14th Int. Conf. Pervasive Intell. Comput. (PiCom), 2nd Int. Conf. Big Data Intell. Comput. (DataCom), Cyber Sci. Technol. Congr. (CyberSciTech) , Auckland, New Zealand, Aug. 2016, pp. 384–391.

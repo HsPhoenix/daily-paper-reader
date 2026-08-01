@@ -1,0 +1,632 @@
+Title: Kalyna Block Cipher: From Design Space Exploration to ASIC Design
+
+URL Source: https://arxiv.org/pdf/2607.22269v1
+
+Published Time: Mon, 27 Jul 2026 00:53:52 GMT
+
+Number of Pages: 12
+
+Markdown Content:
+# Kalyna Block Cipher: From Design Space Exploration to ASIC Design 
+
+Carlos Gewehr *
+
+Electrical and Computer Engineering Carnegie Mellon University Pittsburgh, PA cdearauj@andrew.cmu.edu 
+
+Levent Aksoy *
+
+Computer Systems Tallinn University of Technology Tallinn, Estonia levent.aksoy@taltech.ee 
+
+Mariia Rodinko 
+
+Intelligent Software Systems and Technologies V. N. Karazin Kharkiv National University Kharkiv, Ukraine mariia.rodinko@karazin.ua 
+
+Roman Oliynykov 
+
+Cybersecurity of Inf. Systems, Networks and Technologies V. N. Karazin Kharkiv National University Kharkiv, Ukraine roman.oliynykov@karazin.ua 
+
+Samuel Pagliarini 
+
+Electrical and Computer Engineering Carnegie Mellon University Pittsburgh, PA pagliarini@cmu.edu 
+
+Abstract —The Kalyna block cipher is a Ukrainian cryptogra-phy standard, selected through a national competition held be-tween 2007 and 2010 and approved in 2015. Although its software implementations have been introduced, hardware-efficient imple-mentations of the algorithm, i.e., accelerators, do not exist. In this paper, we explore various design architectures to implement its encryption, decryption, and unified encryption/decryption functions, considering the trade-off between area and latency. We present hardware reduction techniques and introduce alternative designs with low area, latency, and energy consumption, targeting an application-specific integrated circuit (ASIC). We present hardware-efficient designs that include countermeasures against side-channel analysis (SCA) and fault injection (FI) attacks, such as hiding, masking, and duplication techniques. We validate these implementations in a 65 nm ASIC chip. Experimental results confirm the need for alternative designs that explore the design search space for different requirements. The proposed architec-tures enable hiding the power SCA leakage by randomizing the execution of operations, and the temporal duplication in designs with countermeasures against the SCA attacks can mitigate the FI attacks. The functionality of the ASIC test chip, including various Kalyna designs, is validated through measurements. 
+
+Index Terms —Kalyna block cipher, design space exploration, hiding, masking, and duplication, test vector leakage assessment, ASIC chip, silicon validation. 
+
+I. I NTRODUCTION 
+
+Block ciphers are symmetric cryptography primitives widely used for secure communication. They can also be used to provide confidentiality under certain modes and for various other functions: hash functions, message authentication codes, and pseudo-random number generators. Over the years, many efficient block ciphers have been introduced, standardized by national and international organizations, and used in our daily life applications [1]–[3]. The GOST 28147-89 block cipher [4] was used as the main block cipher in Ukraine until 2015. Since its software imple-mentation on scalar general-purpose CPU (without complex 
+
+> *These authors contributed equally to this work.
+
+SIMD extensions like AVX) is slow when compared to other standards, such as AES [1], and effective theoretical attacks were discovered, it was replaced by the Kalyna block ci-pher [5] selected through a national public cryptographic com-petition. Among other candidates, Kalyna offered a compact implementation and performance improvement. It is based on the substitution-permutation network (SPN) with an increased maximum distance separable (MDS) matrix size, four different S-boxes, pre- and post-whitening using 264 modulo addition, and a prominent key schedule construction. Although there are software implementations of Kalyna [6] and the algorithm has been deployed in practice, efforts to create hardware accelerators for Kalyna are not known. Hence, in this work, we target the implementation of the Kalyna block cipher, considering all its possible functions, i.e., encryption, decryption, and unified encryption/decryption, with all valid block sizes and key lengths, targeting an application-specific integrated circuit (ASIC) as a design platform. We introduce parallel and serial design architectures, where the trade-off between area and latency is explored. We propose hardware reduction techniques in its fundamental operations, such as the byte substitution and mix column operations, offer a fast addition operation, such as the Kogge-Stone adder (KSA) [7], and present design architectures that use a small number of operations, sharing common resources. On the design architec-ture that has the least area requirement, we introduce counter-measures against the side-channel analysis (SCA) attacks [8] using hiding and masking techniques. The same design is also protected against fault injection (FI) attacks [9] by duplication techniques. Finally, we validate various Kalyna designs in an ASIC chip under the 65 nm technology. Experimental results show that the proposed architectures lead to alternative designs with low area, latency, and energy consumption, enabling a designer to choose the one that best fits the specific require-ments of an application. The proposed hardware reduction techniques can reduce area, latency, and energy consumption arXiv:2607.22269v1 [cs.CR] 24 Jul 2026 TABLE I PARAMETERS OF THE KALYNA BLOCK CIPHER .Block Size ( l) Key Length ( k) #Rounds ( t) #Columns in ISM ( c)128 128 10 2256 14 256 256 14 4512 18 512 512 18 8
+
+significantly. The countermeasures used to mitigate the SCA and fault mitigation attacks can reduce the power SCA leakage confirmed by the test vector leakage assessment (TVLA) [10], increasing the hardware complexity for the sake of security. The ASIC implementations validated in silicon show similar results when compared to the pre-silicon results. The rest of this paper is organized as follows: Section II describes the Kalyna block cipher. Section III presents the design architectures and the countermeasures against both SCA and FI attacks. Experimental results related to front-end and back-end designs are given in Section IV, results related to fabricated chips are presented in Section V, and finally, the paper is concluded in Section VI. II. B ACKGROUND 
+
+This section describes the main functions of the Kalyna block cipher and its building blocks. The encryption transformation in the Kalyna block cipher is a mapping EKl,k : Vl → Vl, where K is the key, l
+
+and k are the block size and key length, respectively with 
+
+l, k ∈ { 128 , 256 , 512 }, such that k = l or k = 2 l, and Vj is a j-dimensional vector space over the Galois field GF with 
+
+j ≥ 1. While its inputs are l-bit plaintext and k-bit key, its output is l-bit ciphertext. This transformation is implemented as iterative rounds of several operations, where the input of these operations, denoted as x, including plaintext and round key, is represented as an 8 × c internal state matrix (ISM) where x ∈ Vl and c is the number of columns in ISM. Each entity of the ISM G is denoted as gi,j , where gi,j ∈ V8 with 
+
+0 ≤ i ≤ 7 and 0 ≤ j ≤ c − 1. Table I presents the parameters and their values in the Kalyna block cipher, and Fig. 1 presents the ISMs under all possible block sizes. The encryption transformation EKl,k is defined as follows: 
+
+EKl,k = ηKt 
+
+> l
+
+◦ ψl ◦ τl ◦ πl ◦
+
+> t−1
+
+Y
+
+> v=1
+
+(κKv 
+
+> l
+
+◦ ψl ◦ τl ◦ πl) ◦ ηK0 
+
+> l
+
+(1) where ηKv 
+
+> l
+
+is the modulo 264 addition of ISM with the round key Kv , where 0 ≤ v ≤ t, πl is the byte substitution operation using four different S-boxes, τl is the permutation of elements in ISM using right circular shift, ψl is the mix column operation, which multiplies ISM by a constant matrix, and κKv
+
+> l
+
+is the modulo 2 addition of ISM with the round key Kv . Note that Γ◦Λ denotes the sequential application of transformations, where Λ is applied first. The Kalyna S-boxes are constructed as non-linear per-mutations with high algebraic complexity, low differential uniformity, and high nonlinearity to resist linear, differential, g 0 ,0                                                                                                                  
+
+> g1 ,0
+> g2 ,0
+> g3 ,0
+> g4 ,0
+> g5 ,0
+> g6 ,0
+> g7 ,0
+> g0 ,1
+> g1 ,1
+> g2 ,1
+> g3 ,1
+> g4 ,1
+> g5 ,1
+> g6 ,1
+> g7 ,1
+> g0 ,0
+> g1 ,0
+> g2 ,0
+> g3 ,0
+> g4 ,0
+> g5 ,0
+> g6 ,0
+> g7 ,0
+> g0 ,1
+> g1 ,1
+> g2 ,1
+> g3 ,1
+> g4 ,1
+> g5 ,1
+> g6 ,1
+> g7 ,1
+> g0 ,2
+> g1 ,2
+> g2 ,2
+> g3 ,2
+> g4 ,2
+> g5 ,2
+> g6 ,2
+> g7 ,2
+> g0 ,3
+> g1 ,3
+> g2 ,3
+> g3 ,3
+> g4 ,3
+> g5 ,3
+> g6 ,3
+> g7 ,3
+> g0 ,0
+> g1 ,0
+> g2 ,0
+> g3 ,0
+> g4 ,0
+> g5 ,0
+> g6 ,0
+> g7 ,0
+> g0 ,1
+> g1 ,1
+> g2 ,1
+> g3 ,1
+> g4 ,1
+> g5 ,1
+> g6 ,1
+> g7 ,1
+> g0 ,2
+> g1 ,2
+> g2 ,2
+> g3 ,2
+> g4 ,2
+> g5 ,2
+> g6 ,2
+> g7 ,2
+> g0 ,3
+> g1 ,3
+> g2 ,3
+> g3 ,3
+> g4 ,3
+> g5 ,3
+> g6 ,3
+> g7 ,3
+> g0 ,4
+> g1 ,4
+> g2 ,4
+> g3 ,4
+> g4 ,4
+> g5 ,4
+> g6 ,4
+> g7 ,4
+> g0 ,5
+> g1 ,5
+> g2 ,5
+> g3 ,5
+> g4 ,5
+> g5 ,5
+> g6 ,5
+> g7 ,5
+> g0 ,6
+> g1 ,6
+> g2 ,6
+> g3 ,6
+> g4 ,6
+> g5 ,6
+> g6 ,6
+> g7 ,6
+> g0 ,7
+> g1 ,7
+> g2 ,7
+> g3 ,7
+> g4 ,7
+> g5 ,7
+> g6 ,7
+> g7 ,7
+> (a ) (b ) (c)
+
+Fig. 1. ISMs: (a) when l is 128; (b) when l is 256; (c) when l is 512. 
+
+and algebraic cryptanalysis. The deployment of multiple S-boxes is a design paradigm shared with several classical and contemporary symmetric primitives given as follows:  
+
+> •
+
+The foundational Data Encryption Standard [11] utilizes eight distinct 6 × 4 S-boxes ( S1 . . . S 8) within its Feistel network.  
+
+> •
+
+The original GOST 28147-89 block cipher [4] uses eight secret 4 × 4 S-boxes; later, several public sets of S-boxes for this cipher were published in different countries.  
+
+> •
+
+Twofish [12] uses four key-dependent 8 × 8 S-boxes.  
+
+> •
+
+Anubis [13] and Khazad [14] are involutional SPN ci-phers constructed using multi-layer heterogeneous sub-stitution units derived from smaller 4 × 4 S-boxes.  
+
+> •
+
+ARIA [15] is standardized in South Korea and employs two alternating substitution layer types, each utilizing four distinct 8 × 8 S-boxes ( S1, S 2, S −11 , S −12 ) in a dif-ferent order. The flexibility to employ various S-boxes in Kalyna enables the implementation of an additional long-term secret key, preserving communication security even under session key compromise. Deploying multiple distinct public S-boxes in Kalyna increases resistance to practical cryptanalysis, requir-ing a small memory overhead in a software implementation. The modulo 264 addition operation processes through the 64-bit columns of ISM G = (gi,j ) and of the round key, where 0 ≤ i ≤ 7 and 0 ≤ j ≤ c − 1. The byte substitution operation processes through each element of ISM G as πi mod 4(gi,j ), where πs : V8 → V8 with s ∈{0, 1, 2, 3}, using 4 different S-boxes. The permutation op-eration rotates each row of ISM G, Gi with 0 ≤ i ≤ 7,right by ⌊i · l/ 512 ⌋. The mix column operation processes through each column of ISM G as (υ ≫ i) ⊗ Gj , where 
+
+υ = {0x01 , 0x01 , 0x05 , 0x01 , 0x08 , 0x06 , 0x07 , 0x04 } is a vector that forms the circulant matrix with the MDS property and Gj is the jth column of ISM. Note that ⊗ denotes the scalar vector multiplication over GF( 28) using the irreducible polynomial x8 + x4 + x3 + x2 + 1 . The modulo 2 addition operation processes through each element of ISM G and of the round key using XOR operations. Kalyna is explicitly designed for modern 64-bit processor architectures. While the modular addition is typically the core non-linear operation in addition-rotation-XOR (ARX) primi-tives, such as SPECK [16] and Threefish [17], its inclusion in Kalyna’s pre- and post-whitening layers introduces extra non-linear key-mixing dependencies. This breaks the strictly affine key-injection paradigm of conventional SPNs like AES. The decryption transformation DKl,k is the inverse of EKl,k 
+
+and is defined as follows: 
+
+DKl,k = ( ηK0 
+
+> l
+
+)−1 ◦
+
+> 1
+
+Y
+
+> v=t−1
+
+(π−1 
+
+> l
+
+◦ τ −1 
+
+> l
+
+◦ ψ−1 
+
+> l
+
+◦ (κKv 
+
+> l
+
+)−1)
+
+◦ π−1 
+
+> l
+
+◦ τ −1 
+
+> l
+
+◦ ψ−1 
+
+> l
+
+◦ (ηKt 
+
+> l
+
+)−1
+
+(2) where ϕ−1 denotes the inverse of the ϕ operation. While its inputs are l-bit ciphertext and k-bit key, its output is l-bit plaintext. The inverse of the modulo 264 addition is the modulo 
+
+264 subtraction. The inverse of the byte substitution operation processes through each element of ISM G as π−1 
+
+> i mod 4
+
+(gi,j ),where π−1 
+
+> s
+
+: V8 → V8 with s ∈ { 0, 1, 2, 3}, using 4 different S-boxes. The inverse of the permutation operation rotates each row of ISM G, Gi with 0 ≤ i ≤ 7, left by ⌊i · l/ 512 ⌋. The inverse of the mix column operation processes through each column of ISM G as (υ−1 ≪ i) ⊗ Gj , where υ−1 =
+
+{0xAD, 0x95 , 0x76 , 0xA 8, 0x2F, 0x49 , 0xD 7, 0xCA } is avector that forms the circulant matrix with the MDS property and Gj is the jth column of ISM. In this case, the irreducible polynomial is the same as the one used in encryption. The inverse of the modulo 2 addition is the same as itself. The key schedule, which is common in both encryption and decryption, consists of three main steps: (i) intermediate key generation; (ii) round key generation with even indexes; and (iii) round key generation with odd indexes. The intermediate key Kσ is generated as follows: 
+
+ΘK = ψl ◦τl ◦πl ◦ηKα 
+
+> l
+
+◦ψl ◦τl ◦πl ◦κKω 
+
+> l
+
+◦ψl ◦τl ◦πl ◦ηKα 
+
+> l
+
+(3) where Kα = Kω = K when k = l and Kα|| Kω = K when 
+
+k = 2 l. The input to the ΘK transformation is a constant given as (l + k + 64) /64 . Thus, the transformation to obtain the even round key when i ∈ { 0, 2, . . . t } is defined as follows: 
+
+ΞK = ηφKσ i 
+
+> l
+
+◦ ψl ◦ τl ◦ πl ◦ κφKσ i 
+
+> l
+
+◦ ψl ◦ τl ◦ πl ◦ ηφKσ i 
+
+> l
+
+(4) where φKσ 
+
+> i
+
+returns the modulo 264 addition of the intermediate key Kσ with a constant shifted by the round index, and the input to the ΞK transformation is the key K rotated to the right based on the round index. Thus, the round key with an odd index is determined as Ki = Ki−1 ≪ (24 + l/ 4) when 
+
+i ∈ { 1, 3, . . . t − 1}.The Kalyna one-way key schedule is considered "strong" because it’s designed to prevent recovery of the main encryp-tion key even if one or more round keys are compromised. This one-way property is achieved by using two keys within the key generation procedure: the primary encryption key and the intermediate key derived from it. III. D ESIGN METHODOLOGY 
+
+This section introduces parallel and serial design architec-tures for Kalyna, aiming to explore the trade-off between area and latency, and presents hardware reduction techniques M O D 2 6 4 A D D S P M M O D 2 A D D K e y S ch e d u le b lo ck_ in b lo ck_ o u t K e y S ch e d u le S P M M O D 2 A D D K e y S ch e d u le S P M K e y S ch e d u le M O D 2 6 4 A D D 'd 0 'd 1 'd (t-1 ) 'd (t) ke y t-1  
+
+> ke y t
+> ke y 0
+> ke y 1
+> ke y_ in ke y_ in ke y_ in ke y_ in
+> Fig. 2. Parallel design architecture.
+
+proposed for its building blocks. It also describes countermea-sures against the SCA and FI attacks implemented in a design architecture that leads to the smallest area. 
+
+A. Design Architectures 
+
+This subsection initially describes the design architectures realizing the encryption function and then, summarizes the changes in these architectures realizing the decryption and unified encryption/decryption functions. First, we describe a parallel design architecture, denoted as parallel , where all rounds are computed at the same time. The encryption process under this architecture is illustrated in Fig. 2, where block_in , key_in , and block_out , denote the plaintext, key, and ciphertext, respectively, and the SPM block includes the byte substitution, permutation, and mix column operations for the sake of simplicity, and the key schedule block performs the generation of the intermediate key and round keys with even and odd indexes. Note that the parallel 
+
+architecture leads to an extensive combinational circuit due to many necessary rounds. However, common operations in the parallel architecture can be shared, reducing the hardware complexity at the ex-pense of latency. The serial design architecture, where two rounds are realized in one clock cycle, denoted as serial2rnd ,is given in Fig. 3. In this figure, ri denotes the round index, and the counter counts from 0 to the number of rounds t
+
+in steps of 2. Observe that the serial2rnd design architecture uses a single key schedule block, which generates both round keys with even and odd indexes, two SPM and modulo 2 addition operations, and one modulo 264 addition with a counter, register, and multiplexors to orchestrate the encryption process. Note that this architecture requires t/ 2 + 1 clock cycles to obtain the encrypted block, where the last clock cycle is used to store the encrypted block. Moreover, each round of the encryption process can be implemented in one clock cycle using more control logic and registers, but only one modulo 2 and 264 addition and SPM operation, as shown in Fig. 4. This design architecture, denoted as serial1rnd , uses one key schedule block and a counter that M O D 2 6 4       
+
+> A D D S P M M O D 2 A D D S P M M O D 2 A D D RK e y S ch e d u le ke y e ve n
+> ke y o d d
+> b lo ck_ in b lo ck_ o u t ri= = 0 ri= = 0 ri= = t 'd 0 C o u n t b y 2 ri clk clk 010101ke y_ in
+
+Fig. 3. The serial2rnd design architecture. M O D 2 6 4      
+
+> A D D S P M M O D 2 A D D RK e y S ch e d u le b lo ck_ in ri= = 0 ri= = 1 ri= = t 'd 0 C o u n t b y 1 ri clk clk 010101Rclk Rclk ke y ri
+> b lo ck_ o u t ke y_ in
+
+Fig. 4. The serial1rnd design architecture. 
+
+counts from 0 to the number of rounds t in steps of 1. The round key with an even index needs to be stored to determine the round key with the next odd index, and the output of the modulo 264 addition at round 0 needs to be stored for the input of the SPM block in the next round. This architecture requires t + 1 clock cycles to obtain the encrypted block. Furthermore, the hardware complexity of the encryption transformation can be reduced by sharing the common re-sources in the whole encryption process, including the key schedule and thus, only one modulo 2 and 264 addition and SPM operation can be used in each clock cycle. Fig. 5illustrates this architecture denoted as serial1opr , where the control logic includes a finite state machine to synchronize the process of each operation in each clock cycle, as shown in Fig. 6, and registers to store the round keys, round outputs, and the output of each operation. This architecture requires 
+
+(5 t + 13) + 1 clock cycles to obtain the encrypted block. To reduce the number of registers, these operations have the same input variable(s), since one operation is processed in each clock cycle. Finally, rather than using the modulo 2 and 264 addition and SPM operations handling l-bit computations in one clock cycle in the serial1opr architecture, only the 64-bit one column of ISM can be processed in each clock cycle. Fig. 7 illustrates these operations processing 64 bits at a time. In this figure, the counter counts from 0 to the number of columns in ISM, i.e., 
+
+c, in a step of 1. In the SPM block, the permutation operation is used before the byte substitution to handle the columns of ISM easily without changing the SPM functionality. This architecture is denoted as serial1col and requires (5 t+13)( c+1) + 1 clock cycles. In the serial1opr and serial1col architectures, the modulo 2 and 264 addition and SPM operations are controlled in such a way to execute only the required operation at the right time. The decryption transformation can be similarly imple-mented under the design architectures given for the encryp-tion transformation. Additionally, inverses of the modulo 264 
+
+addition and SPM operations are required. The unified Ka-M O D 2 6 4   
+
+> A D D S P M M O D 2 A D D C o n tro l L o g ic b lo ck_ in b lo ck_ o u t clk ke y_ in
+
+Fig. 5. The serial_1opr design architecture. M O D 2 6 4              
+
+> A D D S P M M O D 2A D D S P M S P M In te rm e d ia te K e y G e n e ra tio n S P M S P M S P M R o u n d 0 -1 S P M S P M R o u n d 0 -1 K e y G e n e ra tio n S P M R o u n d t R o u n d t K e y G e n e ra tio n M O D 26 4
+> A D D M O D 26 4
+> A D D M O D 26 4
+> A D D M O D 26 4
+> A D D M O D 26 4
+> A D D M O D 26 4
+> A D D M O D 26 4
+> A D D M O D 26 4
+> A D D M O D 26 4
+> A D D M O D 2A D D M O D 2A D D M O D 2A D D
+
+Fig. 6. Schedule of operations in the serial1opr design architecture. 
+
+lyna design, which can process encryption/decryption, can be implemented using common operations of both functions. In order to reduce the hardware complexity further, anumber of techniques are employed. For the modulo 264 
+
+addition and its inverse, in addition to a generic adder (GA) described in Verilog, the fast and area-efficient KSA [7], selected among other adder architectures, was used. For the substitution operation and its inverse, the S-box designs with different numbers and sizes of multiplexors are described in Verilog, synthesized, and the one with the smallest hardware complexity was chosen. For the mix column operation and its inverse, similar to the work in [18], a tool that finds a small number of XOR gates to realize the constant matrix vector multiplication over GF( 28) was developed, and its solutions on those circulant matrices were used. 
+
+B. Security Countermeasures 
+
+For the Kalyna block cipher with security countermeasures, the serial1col design architecture is considered since it leads to designs with the smallest area as shown in Section IV. Our countermeasures focus on the well-known SCA and FI attacks. To mitigate the SCA attacks, two prominent techniques, called hiding and masking, are used. To hide the operation running according to the schedule given in Fig 6, in the encryption and decryption processes, two and four 1 other operations are randomly executed, respectively. In this case, the execution of unnecessary operation(s) is randomized based on a different single bit of ISM at each time. To randomize an operation, first-order masking is used in the modulo 2 addition, modulo 264 addition/subtraction, and the byte substitution and mix column blocks of the SPM operation and its inverse. In this case, these blocks are initially implemented at gate-level using basic logic gates, e.g., AND , OR , XOR , NOT , NAND , NOR ,and XNOR , and then, Boolean masking [19] is applied. The XorShift technique of [20] is used as a pseudo-random number generator in the masked blocks. 
+
+> 1
+
+While the encryption function includes 3 operations, i.e., modulo 2 and 
+
+264 addition, and SPM, the decryption function uses 5 operations, i.e., the modulo 2 and 264 addition, SPM, modulo 264 subtraction, and inverse SPM. cc                          
+
+> P e rm u ta tio n B yte S u b stitu tio n M ix C o lu m n
+> l6 4 6 4 6 4
+> cc
+> X
+> cc
+> S P M (X )
+> l
+> M O D 2 A D D
+> 6 4
+> cc
+> M O D 2 A D D (X ,Y )
+> l6 4 6 4 6 4 6 4
+> cc
+> 6 4 6 4
+> Y[6 3 :0 ] Y[l-1 :l-6 4 ] X[l-1 :l-6 4 ] X[6 3 :0 ]
+> M O D 2 6 4 A D D
+> 6 4
+> cc
+> M O D 2 6 4 A D D (X ,Y )
+> l6 4 6 4 6 4 6 4
+> cc
+> 6 4 6 4
+> Y[6 3 :0 ] Y[l-1 :l-6 4 ] X[l-1 :l-6 4 ] X[6 3 :0 ]
+> C o u n t b y 1 clk Fig. 7. 64-bit operations used in the serial1col design architecture.
+
+To mitigate FI attacks, operations are duplicated, and a control logic that checks if these two operations generate the same output is implemented. Since such a spatial duplication increases the design area significantly, a temporal duplication that duplicates the execution of operations in time is also implemented, doubling the number of clock cycles with a smaller area overhead than the spatial duplication. Moreover, a control logic that checks if the operations are executed in the given order is implemented to mitigate a fault injection attack that aims to alter the order of execution (i.e., control flow integrity). Note that whenever a faulty behavior is observed, the execution of the cipher is halted. The Kalyna implementations are described in Verilog, con-sidering all possible functions with all possible parameter values. They are freely available at [21]. IV. E XPERIMENTAL RESULTS 
+
+This section initially presents the gate-level synthesis results of the Kalyna block cipher designs under the architectures given in Section III-A, including all combinations of block size l and key length k implemented for the realization of the encryption, decryption, and unified encryption/decryption functions. Then, it presents the gate-level synthesis results of the designs, including countermeasures against SCA and FI attacks as discussed in Section III-B. Moreover, it introduces the physical design results of the Kalyna block cipher without and with security countermeasures. Finally, it introduces the pre-silicon test vector leakage assessment on selected designs. 
+
+A. Designs without Security Countermeasures 
+
+Table II presents the number of clock cycles required for the encryption and decryption processes under the given design architectures. Observe that while the serial1col design archi-tecture requires the highest number of clock cycles since it processes each column of ISM in each clock cycle, depending on both the number of rounds t and the number of columns in ISM c, the number of clock cycles depends only on the number of rounds t in other serial architectures. For the encryption function, the gate-level synthesis results of designs under different architectures are given in Fig. 8, where area is the total area in μm 2, latency in ns is the product of the number of clock cycles and the delay in the critical path, and energy consumption in pJ is the product of latency and total power dissipation. Note that the values in the                                
+
+> TABLE II NUMBER OF CLOCK CYCLES IN KALYNA DESIGNS .Architecture l/k
+> 128/128 128/256 256/256 256/512 512/512 parallel 11111serial2rnd 57799serial1rnd 11 15 15 19 19 serial1opr 64 84 84 104 104 serial1col 190 250 416 516 928
+
+y-axis are given in log scale. These designs were synthesized by Cadence Genus using a commercial 65 nm cell library and were validated using 1000 randomly generated inputs in simulation. The switching activity data were also generated during simulation and used to determine the power dissipation. Observe from Fig. 8 that while the serial1col architecture leads to designs with the smallest area but the highest latency since it uses a minimum number of 64-bit operations but requires the highest number of clock cycles, the designs under the parallel architecture have the largest area but the smallest latency since it exploits all the necessary operations but only in one clock cycle. Moreover, the serial1opr architecture leads to designs with the smallest energy consumption since they have the smallest area and latency product while the designs under the parallel architecture consume the highest energy. Similar results are observed on these design architectures realizing decryption and unified encryption/decryption functions. To further analyze the hardware complexity of the Kalyna block cipher with the lowest area obtained under the serial1col 
+
+architecture, Table III presents the gate-level synthesis results of designs realizing encryption, decryption, and unified en-cryption/decryption. Observe from Table III that the area of designs does not increase proportionally to the increase in the block size l
+
+and key length k as observed in other design architectures. This is because of the use of 64-bit operations. However, the latency and energy consumption increase proportionally to the increase in l and k due to the increase in the number of clock cycles, which is a function of both the number of rounds t
+
+and the number of columns in ISM c (Table II). The area of designs realizing decryption is larger than that of designs realizing encryption since the decryption transformation needs the SPM and modulo 2 and 264 additions and their inverses. The unified designs have hardware complexity very close to that of designs realizing decryption since common operations are shared. It is interesting to mention that while the sequential logic occupies 33% of the total area when k and l are 128, it occupies 44% of the total area when k and l are 512 for the Kalyna designs realizing the encryption function. Note that similar results are observed for Kalyna designs realizing the decryption and unified encryption/decryption functions. To find the impact of hardware reduction techniques pre-sented in Section III-A on the hardware complexity, Table IV presents the gate-level synthesis results of Kalyna designs under the serial1col architecture when l and k are 128. Observe from Table IV that the use of KSA and hardware reduction techniques leads to 3.83% , 29 .52% , and 34 .44% 
+
+reduction in area, latency, and energy consumption, respec-10000 100000 1x10 61x10 7128/128 128/256 256/256 256/512 512/512 Area ( μm2)l/k parallel serial2rnd serial1rnd serial1opr serial1col 10 100 1000 10000 128/128 128/256 256/256 256/512 512/512 Latency (ns) l/k parallel serial2rnd serial1rnd serial1opr serial1col 100 1000 10000 100000 1x10 6128/128 128/256 256/256 256/512 512/512 Energy Consumption (pJ) l/k parallel serial2rnd serial1rnd serial1opr serial1col (a) (b) (c) 
+
+Fig. 8. Gate-level synthesis results of designs realizing encryption: (a) area; (b) latency; (c) energy consumption. TABLE III GATE -LEVEL SYNTHESIS RESULTS UNDER THE serial1col ARCHITECTURE .
+
+k l Encryption Decryption Unified area latency energy area latency energy area latency energy 128 128 23662 792 944 35946 845 1654 37172 854 1705 128 256 24323 1042 1237 36548 1108 2185 37975 1125 2263 256 256 39549 1782 3109 55286 1993 5228 57673 1997 5400 256 512 41999 2211 3880 57553 2519 6585 59331 2500 6701 512 512 73966 4441 13164 97411 4347 17921 101036 4322 18298 TABLE IV IMPACT OF HARDWARE REDUCTION TECHNIQUES UNDER THE serial1col ARCHITECTURE .HRT Encryption Decryption Unified area latency energy area latency energy area latency energy KSA-OPT 23662 792 944 35946 845 1654 37172 854 1705 GA-NOOPT 24606 1124 1440 38036 1141 2510 39297 1141 2565 TABLE V IMPACT OF A DELAY CONSTRAINT UNDER THE serial1col ARCHITECTURE .area delay latency power energy 23662 4.171 792 1.191 944 24103 2.053 390 1.143 446 24582 1.491 283 1.194 338 28479 1.228 233 1.291 301 31756 1.083 205 1.514 312 35010 1.029 195 1.671 327 TABLE VI GATE -LEVEL SYNTHESIS RESULTS OF AES AND KALYNA .Cipher area latency energy AES 187962 19673 9423 Kalyna 400166 44462 78748 
+
+tively, on the design realizing encryption when compared to the design using GA and substitution and mix column operations without optimizations. These values are obtained as 5.49% (5.40% ), 25 .94% (25 .14% ), and 34 .10% (33 .52% )in area, latency, and energy consumption, respectively, on the design realizing decryption (encryption/decryption). Observe that these techniques have more impact on latency and energy consumption than area since they reduce the delay signifi-cantly. Note that similar results are observed on designs with other l and k values. The maximum frequency of the Kalyna design realizing encryption under the serial1col architecture when l and k
+
+are 128 is determined by changing the delay constraint in a binary search manner. Table V presents the gate-level synthesis results of Kalyna designs found in this process, where delay 
+
+and power denote the delay in the critical path in ns and total power dissipation in mW .Observe from Table V that designs with different area, latency, and energy consumption values can be obtained by changing the delay constraint in the design requirement. The design latency can be reduced by 4.05 ×, leading to a 2.88 ×
+
+decrease in energy consumption but a 1.47 × increase in area. In this case, the clock frequency reaches up to 971 MHz, which is a rather high frequency of operation for a 65nm accelerator. In order to compare the hardware complexity of the Kalyna block cipher with that of the well-known AES, the parallel design architecture realizing the encryption function when l
+
+and k are 128 is considered, since there exist various hardware-efficient AES implementations and the parallel design archi-tecture, implemented as a full combinational circuit, executes all the operations in one clock cycle. Table VI presents the gate-level synthesis results of Kalyna and AES. Observe from Table VI that the hardware complexity of Kalyna is significantly larger than that of AES, i.e., 2.12 × in area, 2.26 × in latency, and 8.35 × in energy consumption. This is simply because of Kalyna’s requirement to have four different S-boxes, modulo 264 addition operation, and a complex mix column operation and key schedule. 
+
+B. Security Countermeasures 
+
+The countermeasures of hiding (HID), first-order masking and hiding (FOMHID), first-order masking, hiding, and spatial duplication (FOMHIDSDUP), and first-order masking, hiding, and temporal duplication (FOMHIDTDUP) are realized on the serial1col architecture, since it leads to designs with the smallest area. Fig. 9 presents the gate-level synthesis results of these designs in addition to the original design without any countermeasures (ORG) under the same design architecture realizing the encryption function. Observe from Fig. 9 that hiding (HID) can be applied with a slight increase in hardware complexity with respect to the 100 1000 10000 100000 128/128 128/256 256/256 256/512 512/512 Area ( μm2)l/k ORG HID FOMHID FOMHIDSDUP FOMHIDTDUP 100 1000 10000 100000 128/128 128/256 256/256 256/512 512/512 Latency (ns) l/k ORG HID FOMHID FOMHIDSDUP FOMHIDTDUP 100 1000 10000 100000 1x10 6128/128 128/256 256/256 256/512 512/512 Energy Consumption (pJ) l/k ORG HID FOMHID FOMHIDSDUP FOMHIDTDUP (a) (b) (c) 
+
+Fig. 9. Gate-level synthesis results of designs without and with countermeasures realizing encryption: (a) area; (b) latency; (c) energy consumption. TABLE VII GATE -LEVEL SYNTHESIS RESULTS OF DESIGNS WITH THE FOMHIDTDUP TECHNIQUES .
+
+k l Encryption Decryption Unified area latency energy area latency energy area latency energy 128 128 52034 2888 41174 80607 2397 83821 89928 2473 105831 128 256 52790 3876 57400 75468 3309 95925 85946 3264 122187 256 256 72248 6305 106340 111402 5989 236774 114390 5597 240024 256 512 73836 8021 133474 108953 7218 262354 117045 7484 325729 512 512 115216 13984 278790 162296 12529 633760 166601 12617 626716 TABLE VIII IMPACT OF A DELAY CONSTRAINT UNDER THE serial1col ARCHITECTURE WITH THE FOMHIDTDUP COUNTERMEASURES .area delay latency power energy 52034 7.600 2888 14.257 41174 52234 3.936 1495 14.597 21832 61393 1.921 729 24.944 18209 75933 1.641 623 32.266 20120 87492 1.548 588 39.646 23321 
+
+original design since available resources are used. Note that the power dissipation is increased up to 2.3× in this case since several operations are executed at the same time. The use of first-order masking in addition to hiding (FOMHID) increases area, latency, and energy consumption up to 1.9×, 1.5×, and 
+
+15 .5×, respectively, with respect to the original design. This is simply because of the addition of extra logic required by Boolean masking. The spatial duplication in addition to the countermeasures against the SCA attacks (FOMHIDSDUP) increases the area, latency, and energy consumption up to 
+
+2.5×, 1.5×, and 18 .4×, respectively, with respect to the original design due to the inherent duplication of operations. The temporal duplication, in addition to the countermeasures SCA attacks (FOMHIDTDUP), increases the area, latency, and energy consumption up to 2.2×, 3.7×, and 46 .4×, respec-tively, with respect to the original design. Observe that the area overhead in designs using the FOMHIDTDUP techniques is smaller than that in designs using the FOMHIDSDUP techniques since the temporal duplication re-uses the available operations, but doubles the number of clock cycles, increasing the latency and energy consumption. Table VII presents the gate-level synthesis results of the Ka-lyna designs with the FOMHIDTDUP countermeasures under the serial1col architecture realizing the encryption, decryption, and unified encryption/decryption functions. Observe from Table VII that the area and energy consump-tion of designs realizing the decryption function increase up to 1.5× and 2.2×, respectively, when compared to those of designs realizing the encryption function since they also in-clude the modulo 264 subtraction and inverse SPM operations. Moreover, the hardware complexity of designs realizing the unified encryption/decryption functions is increased slightly with respect to those realizing the decryption function since they use the same operations. Table VIII presents the gate-level synthesis results of Kalyna designs with the FOMHIDTDUP countermeasures under the 
+
+serial1col architecture realizing the encryption function when 
+
+l and k are 128, while the maximum frequency is explored by changing the delay constraint in a binary search manner. Observe from Table VIII that the design latency can be reduced by 4.9×, leading to a 1.76 × decrease in energy con-sumption, but a 1.68 × increase in area. In this case, the clock frequency reaches up to 645 MHz. Note that the maximum clock frequency decreases around 33% when compared to the original design without any countermeasures (Table V). 
+
+C. Physical Designs 
+
+To explore the hardware complexity of physical designs of Kalyna, the ones under the serial1col design architecture without and with FOMHIDTDUP countermeasures realizing the unified encryption/decryption function when l and k are 128, are considered. For the physical synthesis, Cadence Innovus was used along with a commercial 65 nm PDK. Fig. 10 presents layouts of the selected Kalyna designs under their routed views. To ensure a fair comparison between these two designs, the same initial placement density, i.e., 
+
+70% , was used during floorplanning. This consistent setup re-sults in noticeable differences in the overall layout dimensions, effectively illustrating the area disparity between these designs. These layouts highlight the impact of the FOMHIDTDUP countermeasures on the silicon area, indicating the trade-off between security enhancements and hardware overhead, visually. Observe from Tables III and VII that the area of the design with countermeasures is 2.4× larger than that 280.4 μ m   
+
+> 280.8 μ m
+> 406.4 μ m
+> 410.6 μ m
+> (a) (b)
+> Fig. 10. Layouts with routed view of the Kalyna block cipher: (a) without countermeasures; (b) with the FOMHIDTDUP countermeasures.
+> (a) (b)
+> Fig. 11. Layouts with placement view of the Kalyna block cipher: (a) without countermeasures; (b) with the FOMHIDTDUP countermeasures.
+
+of the design without countermeasures, while the physical design with countermeasures is 2.1× larger than that of the design without countermeasures. Fig. 11 shows the placement density of the physical designs given in Fig. 10. Although the overall layout dimensions differ due to variations in area, the uniformity in the placement cell density is clearly visible in this figure. Table IX presents the hardware complexity of these physical designs. It is important to note here that the total area is not the die size, instead it represents the sum of the area of all standard cells. Observe that these values are very close to those given in Tables III and VII. In this table, slack denotes the difference between the required clock period of 10 ns and the delay in the critical path. Note that these designs have positive slacks, confirming that they respect the given clock frequency. This table also presents various types of power dissipation values, indicating that the Kalyna design with countermeasures consumes 5.5× more power than the design without countermeasures. 
+
+D. Test Vector Leakage Assessment 
+
+In order to understand the leakage properties of our Kalyna implementations, a TVLA flow similar to [22] was developed. This process includes four main steps: (i) logic synthesis ,where the gate-level netlist and timing constraints are obtained by Cadence Genus; (ii) gate-level simulation , where the two groups of test vectors are applied and toggle values of all nets in the gate-level netlist are obtained in the value change dump (VCD) format by Cadence Xcelium; (iii) physical design ,               
+
+> TABLE IX PHYSICAL DESIGN RESULTS OF KALYNA REALIZING UNIFIED ENCRYPTION /DECRYPTION .Parameters without countermeasures with countermeasures Total area ( μm 2)38109 91920 Slack (ns) 3.526 1.993 Internal Power (mW) 2.692 10.947 Switching Power (mW) 2.239 16.279 Leakage Power (mW) 0.002 0.004 Total Power (mW) 4.933 27.230
+
+where the gate-level netlist is placed and routed, leading to a layout without any violations, and the power traces are generated for each test vector in two groups by Cadence Innovus using the related VCD files and timing constraints; (iv) leakage assessment , where the power leakage is computed using T-test as follows: 
+
+T = μ(S1) − μ(S2)
+
+q σ2(S1) 
+
+> |S1|
+
++ σ2(S2)
+
+> |S2|
+
+(5) where S1 and S2 are the power measurements in the first and second groups at a time sample, respectively and μ(M ),
+
+σ2(M ), and |M | denote the average, sample variance, and number of measurements M , respectively. If the absolute value of the T-test is greater than 4.5, it is confirmed that the design is leaking with 95% confidence. At the backend design stage, all possible corner cases of the design library are considered, and the power traces are sampled at each 1 ns when the clock period is 100 ns. At the leakage assessment stage, the power traces obtained at each time sample on both first and second groups are checked if they are normally distributed using the Jarque-Bera test [23]. In addition to all designs with countermeasures under the serial1col architecture, the original design without any countermeasures is considered for TVLA. Two groups of test vectors, (i) random and (ii) specific, are obtained, where the first group includes 10000 randomly generated plaintexts and keys, and the second group includes 10000 specific plaintexts and keys that generate at least 1 byte of zeros at the output of each operation at the fourth round. Fig. 12 presents the T-test values of designs without and with countermeasures realizing the encryption function when bs and kl are 128, where the red lines denote the threshold. Observe from Fig. 12 that while the original design leaks power, passing over the threshold, hiding (HID) and the first-order masking and hiding (FOMHID) countermeasures reduce the leakage by adding randomization in the execution of operations. It is interesting to note that the hiding counter-measure can reduce the power leakage with a slight increase in hardware complexity, as shown in Fig. 9. However, the spatial duplication with the countermeasures against FIA and SCA attacks (FOMHIDSDUP) increases the power leakage, making the block cipher vulnerable to the SCA attacks. This is simply because duplicating the operations amplifies the power dissipation at a certain time. This drawback is overcome by the temporal duplication in designs using the countermeasures against the SCA attacks (FOMHIDTDUP). -5 -4 -3 -2 -1 01234560 200 400 600 800 1000 1200 1400 1600 1800 T-test Time Sample -5 -4 -3 -2 -1 0123450 200 400 600 800 1000 T-test Time Sample -5 -4 -3 -2 -1 0123450 100 200 300 400 500 600 700 800 900 T-test Time Sample (a) (b) (c) -5 -4 -3 -2 -1 0123450 100 200 300 400 500 600 700 800 T-test Time Sample -5 -4 -3 -2 -1 0123450 200 400 600 800 1000 1200 1400 T-test Time Sample  
+
+> (d) (e)
+
+Fig. 12. TVLA results: (a) design without countermeasures; designs with countermeasures: (b) HID; (c) FOMHID; (d) FOMHIDSDUP; (e) FOMHIDTDUP. 
+
+V. S ILICON VALIDATION 
+
+This section discusses the test chip fabricated in a 65nm technology that contains a subset of the Kalyna implemen-tations described in Section III. The test chip itself and its measurement setup are described, along with measurements pertaining to the silicon implementations being evaluated. For comparison purposes, we also consider a 32-bit datapath AES encryption-only implementation with on-the-fly key schedule expansion [24]. The test chip is depicted in Fig. 13, showing a 1 mm by 2 mm die, which contains the Kalyna and AES implementations. The Kalyna designs under the serial1opr architecture realizing encryption and unified encryption/decryption functions, called 
+
+serial1opr_enc and serial1opr_uni , respectively, and those un-der the serial1col architecture realizing unified encryption/de-cryption with and without FOMHIDTDUP countermeasures, called serial1col_uni and serial1col_unisec , respectively, were selected to be implemented in the test chip. In these designs, 
+
+k and l were set to 128. In addition to the Kalyna and AES crypto cores, the test chip comprises a serial interface with control and status registers (CSRs) that facilitate data transfer to and from outside the chip, as well as a con-troller module that (i) orchestrates the start of operation for a chosen cryptographic block; (ii) performs the writing of results to a serial CSR; and (iii) signals that the chip is ready for a new operation. The controller module is clocked by an external “slow” 10 MHz clock pin ( clock_slow_i ), while the cryptographic blocks can be clocked by either the same slow clock or a faster clock on the “fast” clock pin (clock_fast_i ). The slow clock is used for initial cryp-tographic block correctness validation, while the fast clock is 
+
+Fig. 13. Test chip die. 
+
+used both for correctness validation and power measurements. Fig. 14 presents the block diagram of the test chip structure. Fig. 15 shows the bench measurement setup used in the bring-up process of the test chip. An STM32 board (white) is used to read and write values to and from the serial CSRs, as well as set control bits such as operation start and clock selection. An RF sine wave generator is used to drive the "fast" clock pin. Table X shows the sign-off frequencies at the worst pos-sible corner ( SS_1.08V_125C ) and measured frequencies at 1.2V and room temperature. The clock frequencies for the cryptographic blocks in the test chip were chosen in the fol-lowing manner: AES, serial1opr_enc , and serial1col_unisec 
+
+blocks were assigned their maximum clock frequency based on synthesis experiments with tentative clock periods being reduced at 0.25 ns steps until negative setup timing slack was observed. The serial1col_uni and serial1opr_uni blocks were assigned the 308 MHz maximum sign-off clock frequency to match serial1col_unisec . An average of 1.4x gain in measured Plaintext  Key  Ciphertext  Block      
+
+> Selector Control
+> FSM
+> AES
+> Kalyna
+> serial1opr
+> uni
+> Kalyna
+> serial1opr
+> enc
+> Kalyna
+> serial1col
+> uni
+> Kalyna
+> serial1col
+> unisec
+> Serial CSRs
+> clock_slow_i clock_fast_i
+> data_i data_o sel_i valid_i start_i finish_o
+
+Fig. 14. Test chip top-level block diagram. 
+
+ASIC 
+
+STM32 
+
+Clock delivery 
+
+Power delivery 
+
+Fig. 15. Test chip measurement setup using an STM32 controller to drive the ASIC chip. 
+
+maximum clock frequency versus sign-off frequency is ob-served, due to the corner being considered for setup timing pessimism. Comparing the similar AES and serial1opr_enc imple-mentations, the AES design shows a 1.2× higher maximum clock frequency, due to the modulo-64 adder and 4 different S-boxes necessary for Kalyna that are not required in the AES algorithm. The difference between measured and sign-off frequencies for the serial1col_uni , serial1opr_uni and 
+
+serial1col_unisec implementations can be explained by the complexity between these blocks as demonstrated by the difference in area in Section IV, with the less complex blocks showing a higher measured frequency also in silicon. Fig. 16 presents shmoo plots for all Kalyna and AES implementations in the test chip. The maximum frequency for each supply voltage level is determined by raising the tentative 
+
+TABLE X CRYPTOGRAPHIC CORE MAXIMUM MEASURED VS SIGNOFF 
+
+FREQUENCIES (MH Z). Crypto Core Measured Freq. Signoff Freq. Cell Area (um 2)AES 1160 800 24722.64 serial1opr_enc 920 666 82950.12 serial1col_uni 540 308 43906.32 serial1opr_uni 500 308 62028.36 serial1col_unisec 420 308 146856.6 TABLE XI ENERGY PER BLOCK ENCRYPTION @ 1.2 V / 200 MH Z.Crypto Core # Cycles Energy (nJ) Leakage (uW) AES 54 1.27 11.10 serial1opr_enc 66 5.53 51.17 serial1col_uni 192 8.180 4.32 serial1opr_uni 66 6.540 8.41 serial1col_unisec 381 11.57 48.25 
+
+clock frequency by 10 MHz until failures are observed. The shmoo curves predictably follow a steady increase in maximum frequency as supply voltage is increased. However, this is not observed on the upper end of the AES shmoo plots, where higher supply voltages do not translate to a linearly increasing maximum frequency. This is attributed to clipping/duty distortion at the IO cell that receives the fast clock signal rather than the behavior intrinsic to the AES crypto core itself. Table XI shows measured energy costs for an encryption operation in each of the Kalyna implementations, and AES for comparison, as well as the leakage power for each one of the cryptographic cores. Measurements were taken considering a 1.2 V supply voltage and a 200 MHz clock frequency. Latency values consider added cycles due to test chip wrap-pers. Comparing the encryption-only AES implementation with a 32-bit datapath and on-the-fly key schedule expansion with the closest similar encryption-only Kalyna architecture (serial1opr_enc ), the Kalyna encryption operations are found to be 4.12 × more costly in terms of energy, and 4.61 × more leaky in terms of static power consumption. Once again, this can be attributed to the depth of the Kalyna datapath. Table XII shows the total area and instance count for each crypto core, in terms of combinational, sequential, integrated clock gating (ICG), buffer and inverter cells. Note that the buffer and inverted logic overlap with the combinational logic. Contrasting the AES and serial1opr_enc crypto cores, the more complex nature of the Kalyna algorithm lends itself to a more costly implementation than AES. This disparity in algo-rithm complexity amounts to a 3.35 × bigger serial1opr_enc 
+
+implementation, in addition to the previously mentioned 1.26 ×
+
+difference in maximum frequency in favor of AES. Comparing the three 308 MHz implementations, the physical protection features of serial1col_unisec produce a 2.37 × bigger im-plementation when compared to the similar serial1col_uni 
+
+design. This difference is even greater in comparison to the architecturally dissimilar serial1opr_uni implementation, which translates to a 1.41 × bigger implementation with 2.9×
+
+better latency. 0.7 0.8 0.9 1.0 1.1 1.2 1.3 Core Voltage (V) 0100 200 300 400 500 600 700 800 900 1000 1100 1200 1300 1400 Max Frequency (MHz)                              
+
+> 120
+> 340
+> 600
+> 880
+> 1050
+> 1160 1200
+> AES
+> 0.7 0.8 0.9 1.0 1.1 1.2 1.3 1.4 Core Voltage (V) 0100 200 300 400 500 600 700 800 900 Max Frequency (MHz)
+> 40
+> 120
+> 230
+> 330
+> 440
+> 540
+> 630
+> 730
+> serial1col_uni
+> 0.7 0.8 0.9 1.0 1.1 1.2 1.3 1.4 Core Voltage (V) 0100 200 300 400 500 600 700 800 Max Frequency (MHz)
+> 50
+> 110
+> 200
+> 310
+> 410
+> 500
+> 580
+> 660
+> serial1opr_uni
+> 0.7 0.8 0.9 1.0 1.1 1.2 1.3 1.4 Core Voltage (V) 0100 200 300 400 500 600 700 800 900 1000 1100 1200 Max Frequency (MHz)
+> 100
+> 240
+> 400
+> 580
+> 790
+> 920
+> 1020
+> 1090
+> serial1opr_enc
+> 0.7 0.8 0.9 1.0 1.1 1.2 1.3 1.4 Core Voltage (V) 0100 200 300 400 500 600 700 Max Frequency (MHz)
+> 30
+> 80
+> 150
+> 240
+> 320
+> 420
+> 490
+> 550
+> serial1col_unisec
+
+Fig. 16. The shmoo plots of the test chip with various cryptographic blocks. TABLE XII CRYPTO CORE INSTANCE SUMMARY - Cell Area (# Instances). 
+
+Crypto Core (Signoff Freq.) Total Sequential Combinational ICG Buffer Inverter AES (800 MHz) 24722.64 (8201) 2840.4 (288) 21882.24 (7913) 72.72 (7) 1294.56 (698) 1979.28 (1403) serial1opr_enc (666 MHz) 82950.12 (25046) 6725.52 (788) 76224.6 (24258) 59.76 (7) 3263.76 (1690) 8716.68 (4948) serial1opr_uni (308 MHz) 62028.36 (23996) 6539.04 (788) 55489.32 (23208) 54.72 (7) 1437.84 (638) 5268.24 (4446) serial1col_uni (308 MHz) 43906.32 (15346) 11641.32 (1448) 32265.0 (13898) 118.44 (16) 1084.32 (471) 2485.44 (2132) serial1col_unisec (308 MHz) 146856.6 (56542) 14745.96 (1787) 132110.64 (54755) 160.92 (21) 6138.72 (2780) 13482.36 (10572) 
+
+VI. C ONCLUSIONS 
+
+This paper presents the design space exploration of the Kalyna block cipher targeting an ASIC design, introduces alternative design architectures to find the trade-off between area and latency, and proposes hardware reduction techniques. It explores Kalyna implementations with all possible block size and key length combinations, realizing all possible func-tions, i.e., encryption, decryption, and unified encryption/de-cryption. It also introduces hardware-efficient implementations of the Kalyna block cipher, including countermeasures against SCA and FI attacks, such as hiding, first-order masking, and duplication, and presents the power leakage of these designs. Furthermore, it presents the results from the ASIC chip realizing various Kalyna designs. Experimental results show that the proposed architectures lead to alternative designs with area, latency, and energy consumption that can satisfy the design requirements in a spe-cific application. The security countermeasures significantly increase the hardware complexity for the sake of resiliency against SCA and FI attacks. The Kalyna designs in the de-veloped ASIC test chip behave as expected, validated through simulation. REFERENCES [1] National Institute of Standards and Technology. (2001) Advanced Encryption Standard (AES). [Online]. Available: https://doi.org/10. 6028/NIST.FIPS.197-upd1 [2] ISO/IEC, “Information security - Lightweight cryptography Part2: Block Ciphers,” 2019. [Online]. Available: https://www.iso.org/standard/78477. html [3] M. Sönmez Turan, K. McKay, J. Kang, J. Kelsey, and D. Chang, “Ascon-Based Lightweight Cryptography Standards for Constrained Devices: Authenticated Encryption, Hash, and Extendable Output Functions,” 2025. [Online]. Available: https://doi.org/10.6028/NIST.SP.800-232 [4] Government Committee of the USSR for Standards, “Gost 28147-89,” 1990, (in Russian). [5] R. Oliynykov, I. Gorbenko, O. Kazymyrov, V. Ruzhentsev, O. Kuznetsov, Y. Gorbenko, O. Dyrda, V. Dolgov, A. Pushkaryov, R. Mordvinov, and D. Kaidalov, “A New Encryption Standard of Ukraine: The Kalyna Block Cipher,” Cryptology ePrint Archive, Paper 2015/650, 2015. [Online]. Available: https://eprint.iacr.org/2015/650 [6] T. Zaiats, V. Bilenko, and V. Hlukhov, “Features of Using Large Keys in Kalyna Algorithm,” Advances in Cyber-Physical Systems , vol. 7, no. 1, pp. 55–62, 2022. [7] T.-D. Han and D. A. Carlson, “Fast Area-Efficient VLSI Adders,” IEEE 8th Symposium on Computer Arithmetic , pp. 49–56, 1987. [8] F.-X. Standaert, Introduction to Side-Channel Attacks . Boston, MA: Springer US, 2010, pp. 27–42. [9] A. Barenghi, L. Breveglieri, I. Koren, and D. Naccache, “Fault Injection Attacks on Cryptographic Devices: Theory, Practice, and Countermea-sures,” Proceedings of the IEEE , vol. 100, no. 11, pp. 3056–3076, 2012. [10] G. Goodwill, B. Jun, J. Jaffe, and P. Rohatgi, “A Testing Methodology for Side-Channel Resistance Validation,” in NIST Non-Invasive Attack Testing Workshop , 2011, pp. 115–136. [11] F. Pub, “Data encryption standard (des),” FIPS PUB , vol. 463, 1999. [12] B. Schneier, J. Kelsey, D. Whiting, D. Wagner, C. Hall, and N. Ferguson, “Twofish: A 128-bit block cipher,” NIST AES Proposal , vol. 15, no. 1, pp. 23–91, 1998. [13] V. Rijmen and P. Barreto, “The anubis block cipher,” Submission to NESSIE , 2000. [14] A. Biryukov, “Analysis of involutional ciphers: Khazad and anubis,” in 
+
+International workshop on fast software encryption . Springer, 2003, pp. 45–53. [15] D. Kwon, J. Kim, S. Park, S. H. Sung, Y. Sohn, J. H. Song, Y. Yeom, E.-J. Yoon, S. Lee, J. Lee et al. , “New block cipher: Aria,” in International conference on information security and cryptology . Springer, 2003, pp. 432–445. [16] R. Beaulieu, D. Shors, J. Smith, S. Treatman-Clark, B. Weeks, and L. Wingers, “The SIMON and SPECK Families of Lightweight Block Ciphers,” IACR Cryptology ePrint Archive, Paper 2013/404 , 2013. [17] N. Ferguson, S. Lucks, B. Schneier, D. Whiting, M. Bellare, T. Kohno, J. Callas, and J. Walker, “The skein hash function family,” Submission to NIST (round 3) , vol. 7, no. 7.5, p. 3, 2010. [18] T. Kranz et al. , “Shorter Linear Straight-Line Programs for MDS Matrices,” IACR Transactions on Symmetric Cryptology , vol. 2017, no. 4, pp. 188–211, 2017. [19] W. Diehl and K. Gaj, “Implementation of a Boolean Masking Scheme for the SCREAM Cipher,” in Euromicro Conference on Digital System Design (DSD) , 2016, pp. 723–726. [20] G. Marsaglia, “Xorshift RNGs,” Journal of Statistical Software , vol. 8, no. 14, pp. 1–6, 2003. [21] C. Gewehr and L. Aksoy, “Kalyna chip github repository,” https://github. com/Centre-for-Hardware-Security/kalyna, Jul. 2026. [22] P. Kiaei et al. , “Gate-Level Side-Channel Leakage Assessment with Architecture Correlation Analysis,” arXiv, 2204.11972, 2022. [Online]. Available: https://arxiv.org/abs/2204.11972 [23] C. M. Jarque and A. K. Bera, “A Test for Normality of Observations and Regression Residuals,” International Statistical Review , vol. 55, no. 2, pp. 163–172, 1987. [24] J. Strömbergson, “AES on-the-fly keygen implementation,” 2025. [Online]. Available: https://github.com/secworks/aes/tree/on\_the\_fly\ _keygen

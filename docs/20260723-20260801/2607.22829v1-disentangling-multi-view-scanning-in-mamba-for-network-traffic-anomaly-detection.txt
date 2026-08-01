@@ -1,0 +1,751 @@
+Title: Disentangling Multi-View Scanning in Mamba for Network Traffic Anomaly Detection
+
+URL Source: https://arxiv.org/pdf/2607.22829v1
+
+Published Time: Tue, 28 Jul 2026 00:10:38 GMT
+
+Number of Pages: 12
+
+Markdown Content:
+# Disentangling Multi-View Scanning in Mamba for Network Traffic Anomaly Detection 
+
+# Xinglin Lian 
+
+kenshin.lian24@gmail.com University of Electronic Science and Technology of China Chengdu, Sichuan, China 
+
+# Chengtai Cao ∗
+
+chengtcao2-c@my.cityu.edu.hk University of Electronic Science and Technology of China Chengdu, Sichuan, China City University of Hong Kong Hong Kong SAR, China 
+
+# Ting Zhong 
+
+zhongting@uestc.edu.cn University of Electronic Science and Technology of China Chengdu, Sichuan, China 
+
+# Fan Zhou ∗
+
+fan.zhou@uestc.edu.cn University of Electronic Science and Technology of China Chengdu, Sichuan, China Key Laboratory of Intelligent Digital Media Technology of Sichuan Province Chengdu, Sichuan, China 
+
+## Abstract 
+
+Network Traffic Anomaly Detection (NTAD) is a critical task in cybersecurity, yet timely and accurate anomaly detection remains challenging. Mamba has emerged as a particularly promising back-bone for NTAD due to its linear-time complexity for long-sequence modeling. It further incorporates a dedicated multi-view scanning mechanism to enhance detection precision through complemen-tary contextual cues. However, we identify a previously overlooked structural deficiency in multi-view Mamba scanning for NTAD: redundancy accumulation. Specifically, distinct scanning branches capture substantial view-invariant information, which is repeatedly amplified during multi-view fusion; conversely, view-specific in-formation is diluted or even suppressed, leading to representation homogenization and multi-view degradation. To address this prob-lem, we propose DisenMamba , a novel disentangled multi-view Mamba framework. DisenMamba reformulates multi-view scan-ning as a two-stage disentangle-then-fuse process that explicitly separates view-invariant and view-specific components prior to fu-sion. This design prevents the invariant information accumulation while preserving complementary multi-view cues, yielding more discriminative representations for subtle traffic anomalies. Exten-sive experiments demonstrate the effectiveness of DisenMamba, establishing a new disentangled multi-view Mamba paradigm. Code is available at https://github.com/ikun0124/DisenMamba. 
+
+## CCS Concepts 
+
+• Security and privacy → Intrusion detection systems ; • In-formation systems → Traffic analysis ; • Computing method-ologies → Learning latent representations . 
+
+> ∗Corresponding Authors.
+> This work is licensed under a Creative Commons Attribution 4.0 International License.
+> KDD ’26, Jeju Island, Republic of Korea
+> ©2026 Copyright held by the owner/author(s). ACM ISBN 979-8-4007-2259-2/2026/08 https://doi.org/10.1145/3770855.3817980
+
+## Keywords 
+
+Network Traffic Anomaly Detection; Mamba; Multi-View Repre-sentation Redundancy; Disentangled Representation Learning 
+
+ACM Reference Format: 
+
+Xinglin Lian, Chengtai Cao, Ting Zhong, and Fan Zhou. 2026. Disentangling Multi-View Scanning in Mamba for Network Traffic Anomaly Detection. In 
+
+Proceedings of the 32nd ACM SIGKDD Conference on Knowledge Discovery and Data Mining V.2 (KDD ’26), August 09–13, 2026, Jeju Island, Republic of Korea. 
+
+ACM, New York, NY, USA, 12 pages. https://doi.org/10.1145/3770855.3817980 
+
+## 1 Introduction 
+
+Network Traffic Anomaly Detection (NTAD) is a fundamental task in modern cybersecurity, aiming to monitor real-time network traf-fic and identify unauthorized or malicious connections [ 51 , 61 ]. Effective anomaly detection plays a critical role in ensuring high-quality service availability, protected user privacy, and reliable data security [53, 62]. Despite its importance, the widespread adoption of payload encryption and the exponential growth of traffic volume make accurate and timely anomaly detection increasingly chal-lenging [ 44 , 49 ]. For example, signature-matching approaches have become largely ineffective, revealing the fundamental limitations of traditional rule-based solutions [17, 59]. Benefiting from strong representation learning capabilities, deep learning-based methods have become the dominant approach for NTAD. According to network architectures, existing approaches can be broadly categorized into multilayer perceptrons (MLPs) [ 50 , 63 ], convolutional neural networks (CNNs) [ 24 , 30 ], recurrent neural networks (RNNs) [ 32 , 43 ], and Transformers [ 5, 58 ]. Despite con-tinuous progress, these architectures still exhibit inherent limita-tions for NTAD. Specifically, MLP- and CNN-based methods strug-gle to capture multi-view and long-range dependencies, where anomalous traffic patterns are often embedded in flow-level and packet-level interactions [ 26 , 56 ]. Transformers incur prohibitive quadratic complexity, while RNN-based architectures suffer from limited parallelism, both of which hinder real-time deployment. Recently, State Space Model (SSM)–based Mamba enables efficient arXiv:2607.22829v1 [cs.AI] 24 Jul 2026 KDD ’26, August 09–13, 2026, Jeju Island, Republic of Korea Xinglin Lian, Chengtai Cao, Ting Zhong, and Fan Zhou (a) The Multi-View Degradation Problem (b) Our Disentangled-Based Framework View-Invariant View-Diluted View-Specific 1 View-Specific 2 Common Fusion Scanning View 1 Scanning View 2 View-Invariant Accumulation Homogenized Multi-View Disentangle Scanning View 1 Scanning View 2 Unbiased Fusion Complementary Multi-View 
+
+Figure 1: (a) Redundancy accumulation in conventional multi-view Mamba scanning. (b) The proposed disentangle-then-fuse scanning framework for mitigating this problem. 
+
+long-sequence modeling with linear-time complexity via selective state-space mechanisms [ 13 ]. Combined with its multi-view scan-ning design for complementary contextual modeling, Mamba be-comes a particularly promising backbone for NTAD. 
+
+Challenges. The multi-view scanning mechanism is a core and indispensable design in Mamba, enabling complementary contextual modeling while alleviating long-term dependency de-cay [ 12 , 28 ]. Nevertheless, recent studies on network traffic analy-sis show that naively applying this mechanism can unexpectedly degrade detection performance [ 41 ]. To avoid such degradation, subsequent works adopt simplified unidirectional Mamba architec-tures [ 10 , 45 ]. However, unidirectional scanning inherently intro-duces causal bias and limits global contextual modeling [ 36 ], which contradicts the multi-view nature of network traffic. Consequently, existing Mamba-based methods merely benefit from computational efficiency, while underutilizing their multi-view contextual mod-eling potential. This raises a critical question: Is Mamba inher-ently unsuitable for NTAD, or is the performance bottleneck caused by suboptimal multi-view scanning designs? Key Finding. To answer this question, we conduct extensive empirical investigations and uncover a previously overlooked struc-tural deficiency in multi-view scanning. This deficiency manifests as redundancy accumulation , which constitutes a fundamen-tal performance bottleneck for Mamba-based NTAD models. As illustrated in Figure 1(a), multi-view branches inevitably capture substantial inter-view invariant information. During conventional view fusion, these invariant components increasingly dominate the fused representation and are further amplified as more scanning branches are introduced. In contrast, view-specific information is gradually diluted and may even be suppressed, leading to the loss of directional semantics. As a result, the fused representations become progressively homogenized toward invariant patterns, caus-ing multi-view Mamba architectures to perform even worse than their single-view counterparts. We formally define this effect as the multi-view degradation problem and identify it as a key obstacle to fully unlocking Mamba’s potential for NTAD. 
+
+Our Solution. To address the multi-view degradation problem, we propose DisenMamba , a novel Disentangled Mamba frame-work for NTAD task. Considering the inherent multi-view nature of network traffic, we first design a multi-view scanning strategy along forward–backward flow-level and packet-level dimensions to capture complementary traffic characteristics. As shown in Fig-ure 1(b), we reformulate multi-view scanning as a two-stage pro-cess: (i) explicitly disentangling view-invariant and view-specific components, followed by (ii) fusing the disentangled component-level representations. This disentangle-then-fuse design balances the contributions of invariant and specific components, thereby preventing inter-view redundancy accumulation while preserving complementary multi-view information. As a result, the learned representations become more sensitive to subtle anomalous traffic patterns. To realize this design, we employ lightweight projection modules to extract view-invariant and view-specific information, and introduce a disentanglement constraint loss that facilitates their separation during training. The proposed framework introduces only negligible inference overhead compared to original Mamba-based models, while remaining easy to implement and deploy. In summary, our contributions are fourfold: 
+
+• We are the first to systematically identify a redundancy accu-mulation phenomenon and the resulting multi-view degra-dation problem in Mamba-based models for NTAD. 
+
+• We propose a multi-view scanning strategy and a novel dis-entangled Mamba framework that explicitly separates view-invariant and view-specific information, effectively alleviat-ing multi-view representation degradation. 
+
+• We introduce lightweight projection modules and a disen-tanglement constraint loss for efficient multi-view Mamba representation disentanglement. 
+
+• Extensive experiments on three real-world datasets show that DisenMamba outperforms state-of-the-art NTAD meth-ods in both effectiveness and efficiency. 
+
+## 2 Motivation 2.1 Multi-View Scanning 
+
+Multi-view scanning has been established as an essential compo-nent of Mamba-based models, with widespread adoption in com-puter vision [ 18 , 28 ] and time-series analysis [ 12 , 42 ]. This design is originally motivated by the inherent limitations of primitive uni-directional Mamba. Specifically, unidirectional selective scanning introduces causal bias and restricts global contextual modeling [ 36 ]. Moreover, its ability to preserve long-range dependencies is limited, which can lead to catastrophic forgetting under extremely long con-texts [ 40 ]. Yet, recent studies show that naive multi-view scanning degrades detection performance on network traffic, even under-performing single-view scanning [ 41 ]. In response, subsequent works adopt simplified unidirectional Mamba architectures [ 10 , 45 ]. However, unidirectional scanning fails to capture anomalous traffic patterns inherently embedded in multi-view interactions across flow-level and packet-level contexts [ 26 , 56 ]. This counterintuitive observation motivates a deeper investigation into the representa-tional behavior of Mamba for NTAD. 
+
+## 2.2 Redundancy Accumulation Phenomenon 
+
+Experimental Setup. To this end, we quantitatively analyze rep-resentation dynamics during multi-view fusion using two represen-tative Mamba-based methods, SMamba [ 42 ] and MambaAD [ 35 ], on three real-world network traffic datasets: CIC-IoT2023 [ 34 ], Do-HBrw2020 [ 33 ], and ISCX-Tor2016 [ 21 ]. Specifically, SMamba em-ploys two non-shared Mamba layers for bidirectional scanning, whereas MambaAD adopts a parameter-shared bidirectional design Disentangling Multi-View Scanning in Mamba for Network Traffic Anomaly Detection KDD ’26, August 09–13, 2026, Jeju Island, Republic of Korea CIC-IoT2023 DoHBrw2020 ISCX-Tor2016   
+
+> 0.65
+> 0.70
+> 0.75
+> 0.80
+> 0.85
+> 0.90
+> 0.95
+> CKA Similarity
+> View1-View2 View1-Fusion View2-Fusion
+
+(a) SMamba CIC-IoT2023 DoHBrw2020 ISCX-Tor2016    
+
+> 0.65
+> 0.70
+> 0.75
+> 0.80
+> 0.85
+> 0.90
+> 0.95
+> CKA Similarity
+> View1-View2 View1-Fusion View2-Fusion
+
+(b) MambaAD Figure 2: Inter-view redundancy statistics for baselines. 
+
+for multi-view modeling. We measure inter-view relationships be-fore and after fusion using linear centered kernel alignment (CKA) similarity, a widely used metric for quantifying subspace similarity and representational overlap [19, 20, 39]. 
+
+CKA ( ˆ𝑯 1, ˆ𝑯 2) =
+
+ˆ𝑯 ⊤ 
+
+> 1
+
+ˆ𝑯 2
+
+> 2
+> 𝐹𝑟𝑜
+
+ˆ𝑯 ⊤ 
+
+> 1
+
+ˆ𝑯 1 𝐹𝑟𝑜 
+
+ˆ𝑯 ⊤ 
+
+> 2
+
+ˆ𝑯 2 𝐹𝑟𝑜 
+
+, (1) where ˆ𝑯 1 and ˆ𝑯 2 denote the two feature matrices after decentral-ization, and || · || 𝐹𝑟𝑜 denotes the Frobenius norm. 
+
+Multi-View Degradation Problem. As shown in Figure 2, both SMamba and MambaAD exhibit consistently high inter-view simi-larity (View1–View2), indicating that distinct scanning branches capture highly overlapping representations dominated by view-invariant information. We further visualize the learned features us-ing t-distributed Stochastic Neighbor Embedding (t-SNE) in Figure 3. The highly symmetric inter-view distributions suggest that multi-view branches primarily encode view-invariant patterns rather than view-specific characteristics. The fused representations fur-ther remain similar to the individual views, indicating that invariant components are repeatedly reinforced during fusion, resulting in 
+
+redundancy accumulation . As evidenced in Figure 2, the fused representations exhibit substantially higher similarities to indi-vidual views (View1–Fusion and View2–Fusion) than the original inter-view similarity (View1–View2). This observation indicates that fusion introduces little genuinely view-specific information; instead, dominant invariant components are further amplified (if cross-view specific information were incorporated, fused similar-ity would decrease). Consequently, the fused representations be-come increasingly homogenized, progressively diluting the mar-ginal view-specific signals. As illustrated in Figure 1(a), each scan-ning branch gradually loses its original directional characteristics. We formally define this as the multi-view degradation problem .Ultimately, this leads to a counterintuitive outcome reported in prior studies [ 41 ]: introducing multi-view scanning can paradoxically underperform single-view scanning. 
+
+## 2.3 Conflict and Motivation 
+
+Mechanism-Level Conflict. Mamba relies on selective scanning to extract salient contextual information. In principle, multi-view scanning is intended to capture complementary representations by leveraging selective scanning across different views. However, existing methods typically fuse multi-view features via simple sum-mation or concatenation operations [ 28 , 36 , 42 ]. Such designs implic-itly encourage scanning branches to repeatedly attend to dominant View 1 Scanning   
+
+> View 2 Scanning View Fusion
+> (a) CIC-IoT2023 (b) DoHBrw2020
+> View 2 Scanning
+> View Fusion
+> View 1 Scanning
+
+Figure 3: t-SNE visualization of learned representations across different scanning views. 
+
+invariant patterns rather than discriminative view-specific cues. As evidenced by our empirical results, even when independently parameterized Mamba layers are used to model different views (e.g., SMamba [ 42 ]), this mechanism-level conflict between selectivity and multi-view fusion remains unresolved. Such representations become view-invariant and homogenized, failing to capture the heterogeneous multi-view anomalies of network traffic [26]. 
+
+Motivation. To address this issue, we propose a feature-disentangled Mamba architecture. Specifically, we reformulate multi-view scanning as a two-stage process: first, disentangling view-invariant and view-specific components, and then fusing the disentangled representations. Compared with existing fusion strate-gies, this disentangle-then-fuse design effectively mitigates invari-ant information accumulation. By facilitating complementary multi-view representation learning, the proposed approach improves sen-sitivity to subtle anomalous patterns in network traffic, thereby unlocking Mamba’s potential for NTAD. 
+
+## 3 Methodology 3.1 Problem Definition 
+
+This work addresses the Network Traffic Anomaly Detection (NTAD) task under the widely adopted zero-positive learning set-ting, where only normal samples are available for training. Com-pared with traditional supervised learning settings, this paradigm enables effective detection of previously unseen anomalies by measuring deviations from learned normal patterns [ 1 , 22 ]. For each test sample, the model outputs an anomaly score 𝑠 , where a larger value indicates a higher likelihood of anomalous activity. Let X = {𝒙 1, 𝒙 2, ..., 𝒙 𝑁 } denote a training set consisting of 𝑁 nor-mal samples. Each sample 𝒙 represents a network flow, defined as a sequence of packets exchanged between endpoints within a specific time window or connection session. We construct each flow sample by segmenting raw traffic into flows, anonymizing address fields, normalizing header lengths, and applying sequence padding/truncation. To capture multi-view traffic characteristics, each flow is formulated as a hierarchical matrix 𝒙 ∈ R𝐹 ×𝑃 , where 
+
+𝐹 denotes the number of packets and 𝑃 represents the packet size in bytes. More preprocessing details are provided in Appendix A. 
+
+## 3.2 Disentangled Multi-View Scanning Mamba 
+
+This section presents the proposed DisenMamba, whose overall architecture is illustrated in Figure 4(a). DisenMamba follows an KDD ’26, August 09–13, 2026, Jeju Island, Republic of Korea Xinglin Lian, Chengtai Cao, Ting Zhong, and Fan Zhou Input  
+
+> Output
+
+�𝑥𝑥  
+
+> Embedding
+> MVF
+> DMVS
+> LN
+> Conv
+> Conv
+> Decoder
+> FFN
+> Encoder
+> ×L
+> Relu
+
+(a) Disentangled Mamba 
+
+𝑥𝑥  Flow-View Forward 
+
+> Inter-View
+> Invariant
+> Inter-View
+> Specific
+
+(b) Disentangled Multi-View Scanning  (c) Multi-View Fusion            
+
+> Feature-Level Summation
+> Complementary Multi-View
+> Project Fuse
+> Fuse
+> Shared Branches
+> Feature-Level Concatenation Private
+> Branches
+> P1 P2 PN …
+> F1
+> F2
+> FN
+> …
+> P1 P2 PN …
+> F1
+> F2
+> FN
+> …
+> P1 P2 PN …
+> F1
+> F2
+> FN
+> …
+> Packet-View Forward Flow-View Backward Packet-View Backward
+> P1 P2 PN …
+> F1
+> F2
+> FN
+> …
+> Mamba Block
+> Project
+> Project
+> Unfold
+> Residual
+> Disentangled
+> Constraint
+> Stop Grad
+> V1-Private
+> V1-Shared
+> Mamba Block
+> Project
+> Project
+> Unfold
+> Residual
+> Disentangled
+> Constraint
+> Stop Grad
+> V4-Private
+> V4-Shared
+> Mamba Block
+> Project
+> Project
+> Unfold
+> Residual
+> Disentangled
+> Constraint
+> Stop Grad
+> V3-Private
+> V3-Shared
+> Mamba Block
+> Project
+> Project
+> Unfold
+> Residual
+> Disentangled
+> Constraint
+> Stop Grad
+> V2-Private
+> V2-Shared
+
+Figure 4: (a) Overview of DisenMamba. (b) Disentangled Multi-View Scanning (DMVS module): Decomposing each scanning view into shared and private branches. (c) Multi-View Fusion (MVF module): Integrating disentangled representations to form complementary multi-view features while preventing redundancy accumulation. 
+
+autoencoder-based paradigm, where the input traffic sequence is processed by an embedding module, an encoder, and a decoder to reconstruct the original input. The reconstruction error is used as the anomaly score 𝑠 . The encoder is the core component of DisenMamba and consists of stacked disentangled Mamba blocks and standard feed-forward network (FFN) layers [ 8, 48 ], as shown in Figure 4(b) and (c). Each disentangled Mamba block contains two key modules: Disentangled Multi-View Scanning (DMVS), which performs bidirectional flow-level and packet-level scanning while separating view-invariant and view-specific information, and Multi-View Fusion (MVF), which fuses the disentangled representations layer by layer to produce encoded features. 
+
+3.2.1 Traffic Embedding . Embedding is a fundamental opera-tion for preserving sequential structure and facilitating downstream modeling [ 3 , 4, 47 ]. Each traffic sample 𝒙 is tokenized at the byte level, and each byte token is mapped to a 𝐷 -dimensional embedding using two complementary components: a data embedding gener-ated by a Conv1D layer and a positional embedding produced by a 
+
+Sine -Cosine function to encode sequential order [ 48 ]. The resulting token representation is defined as: 
+
+𝒉 0 = Conv1D (𝒙 ) + Sine-Cosine (𝒙 ), (2) where 𝒉 0 ∈ R𝐹 ×𝑃 ×𝐷 encodes the hierarchical information of 𝒙 .
+
+3.2.2 Multi-View Scanning . The scanning strategy is a core com-ponent of Mamba-based models and has been extensively studied, particularly in the computer vision domain [ 18 , 28 ]. However, these approaches primarily leverage geometric, i.e., non-adjacent spa-tial properties, which are not directly applicable to network traffic data. Considering the inherent flow–packet structure of network traffic, we design a task-specific multi-view scanning strategy, as illustrated in Figure 4(b). Given the 𝑙 -th layer representation 𝒉 𝑙 , we rearrange the sequence along the flow and packet dimensions to construct forward flow-view and packet-view scanning sequences, denoted as 𝒉 𝑙  
+
+> ®F
+
+and 𝒉 𝑙 
+
+> ®P
+
+, respectively. However, relying solely on for-ward scanning is insufficient, as unidirectional scanning introduces causal bias and limits global contextual modeling [ 36 ]. To miti-gate this issue, we further perform backward scanning for both views, denoted as 𝒉 𝑙  
+
+> ©F
+
+and 𝒉 𝑙 
+
+> ©P
+
+. The resulting forward and backward representations are then passed to standard Mamba blocks [ 13 ]to encode flow-level and packet-level multi-view dependencies. Compared with existing Mamba-based methods for network traffic analysis [ 10 , 41 ], this design enables complementary multi-view modeling and more effective exposure of anomalous patterns. 
+
+˜𝒉 𝑙 𝑣 = MambaBlock 
+
+
+
+𝒉 𝑙 𝑣 
+
+
+
+, 𝑣 ∈ V = {® F, ®P, ©F, ©P}, (3) where ˜𝒉 𝑙 𝑣 is the Mamba-encoded representation of view 𝑣 , and 𝑣 
+
+indexes one scanning view in V = {® F, ®P, ©F, ©P}.
+
+3.2.3 Inter-View Disentanglement . Existing approaches typi-cally integrate these features using naive summation or concatena-tion operations [ 28 , 42 ]. As revealed in motivation analysis (Section 2), such fusion strategies overlook inter-view redundancy, leading to redundancy accumulation that suppresses informative view-specific cues and may even degrade detection performance. To ad-dress this problem, we disentangle view-invariant and view-specific components before fusion. Specifically, we propose a disentangled Mamba architecture with explicit structural inter-view disentan-glement. As illustrated in Figure 4(b), each scanning view is de-composed into a shared branch and a private branch. The shared branch captures view-invariant information (i.e., common patterns across views), whereas the private branch preserves view-specific information (i.e., complementary directional cues). As discussed in Section 2.2, view-invariant information domi-nates across scanning views and naturally tends to aggregate during fusion. Accordingly, we employ a parameter-shared projection ma-trix to extract inter-view shared representations: 
+
+˜𝒉 𝑙 𝑣,𝑠 = ˜𝒉 𝑙 𝑣 W𝑙 𝑠 , (4) where W𝑙 𝑠 ∈ R𝐷 ×𝐷 denotes the shared projection matrix. In contrast, private branches are designed to capture incremen-tal view-specific information. Since view-specific components are Disentangling Multi-View Scanning in Mamba for Network Traffic Anomaly Detection KDD ’26, August 09–13, 2026, Jeju Island, Republic of Korea 
+
+substantially weaker than view-invariant ones, directly project-ing private features is prone to severe interference from domi-nant shared patterns. To alleviate this interference, we introduce a residual-based extraction mechanism, as illustrated in Figure 4(b). Specifically, view-invariant components are first removed from each scanning representation, and the resulting residuals are then passed through independently parameterized projections to extract private features. Notably, we adopt branch-specific low-rank projections for the private branches. This design aligns with the sparse nature of view-specific information. It constrains information through-put and prevents unnecessary shared components from leaking into private branches. Our experiments further demonstrate that this operation is critical for effective feature disentanglement. The private branch is formulated as follows: 
+
+˜𝒉 𝑙 𝑣,𝑝 =   ˜𝒉 𝑙 𝑣 − StopGrad ( ˜𝒉 𝑙 𝑣,𝑠 )W𝑙 𝑣,𝑝, 1W𝑙 𝑣,𝑝, 2, (5) where W𝑙 𝑣,𝑝, 1 ∈ R𝐷 ×𝑅 and W𝑙 𝑣,𝑝, 2 ∈ R𝑅 ×𝐷 form a low-rank factor-ization with 𝑅 ≪ 𝐷 for the 𝑣 -th private branch, and StopGrad (·) 
+
+prevents gradient propagation from the shared branch during pri-vate representation extraction process. 
+
+3.2.4 Multi-View Fusion . The core of this work lies in integrat-ing multi-view scanning with explicit feature disentanglement. Un-like existing Mamba-based methods that fuse multi-view repre-sentations in an indiscriminate manner, our disentangle-then-fuse paradigm enforces balanced contributions from view-invariant and view-specific components through an explicit architectural design. This design avoids representation homogenization and enables ef-fective multi-view modeling. By preventing repeated accumulation of view-invariant components while preserving complementary multi-view information, our approach unlocks the representational capacity of multi-view Mamba. The disentangled fusion process is illustrated in Figure 4(c). For the shared branches, we apply feature-level summation to aggre-gate inter-view invariant representations. Since shared features are extracted using parameter-shared projection matrices, this sum-mation further reinforces and refines view-invariant information, which naturally dominates across scanning views. For the private branches, we concatenate view-specific representations and apply a projection matrix to integrate complementary inter-view informa-tion. Finally, the view-invariant (shared) and view-specific (private) representations are fused to generate the complementary multi-view representation 𝒉 𝑙 +1. The fusion process is defined as follows: 
+
+𝒉 𝑙 +1 = Sum 𝑣 ∈ V ( ˜𝒉 𝑙 𝑣,𝑠 )
+
+| {z }
+
+> Shared Branches
+
++ Concat 𝑣 ∈ V ( ˜𝒉 𝑙 𝑣,𝑝 )W𝑙 𝑝 
+
+| {z }
+
+> Private Branches
+
+, (6) where W𝑙 𝑝 ∈ R4𝐷 ×𝐷 denotes the private projection matrix. Notably, all disentangled transformations are implemented using lightweight projection matrices, which incur lower overhead than MLP layers and preserve the efficiency advantages of the Mamba architecture. 
+
+## 3.3 Training and Inference 
+
+3.3.1 Training Objective . While the proposed disentangled Mamba backbone structurally separates shared and private branches at the architectural level, disentanglement along feature pathways remains challenging during training. Without explicit constraints, shared information may still leak into private branches, causing representational crosstalk and undermining the disentan-glement objective. To address this issue, we incorporate a disentan-glement regularization term to explicitly regulate the separation between shared and private components. Specifically, a lightweight cross-covariance term is introduced to reduce statistical depen-dency between representation components [ 52 ]. This loss explicitly enforces the decoupling of view-invariant and view-specific repre-sentations, thereby stabilizing the disentangled fusion process. 
+
+LDIS = 1
+
+𝐿 |V | 
+
+> 𝐿 −1
+
+∑︁ 
+
+> 𝑙 =0
+
+∑︁ 𝑣 ∈ V 
+
+CrossCov 
+
+
+
+StopGrad ( ˜𝑯 𝑙 𝑣,𝑠 ), ˜𝑯 𝑙 𝑣,𝑝 
+
+
+
+, (7) 
+
+CrossCov (𝑯 1, 𝑯 2) = 1
+
+𝐵 − 1 ˆ𝑯 ⊤ 
+
+> 1
+
+ˆ𝑯 2
+
+> 2
+> 𝐹𝑟𝑜
+
+, (8) 
+
+ˆ𝑯 = 𝑯 − E[𝑯 ]√︁ 
+
+Var (𝑯 ) + 𝜀 , (9) where ˜𝑯 𝑙 𝑣,𝑠 and ˜𝑯 𝑙 𝑣,𝑝 denote batch-level shared and private embed-dings. 𝐿 , |V | , and 𝐵 denote the numbers of Mamba layers, scanning views, and batch samples, respectively. StopGrad (·) blocks gradi-ents to shared representations, and 𝜀 ensures numerical stability. Reconstruction loss plays a central role under the zero-positive training setting of NTAD. The final Mamba layer outputs the en-coded representation 𝒉 𝐿 . Following the standard autoencoder para-digm, we apply a linear projection [ 38 ] to map 𝒉 𝐿 back to the input space, yielding the reconstructed output ˆ𝒙 . To promote accurate reconstruction of normal traffic patterns, we adopt a cosine sim-ilarity loss LREC between the input traffic and its reconstruction. Thus, the overall training objective combines the reconstruction loss and the disentangled constraint: 
+
+LREC =
+
+> 𝐵
+
+∑︁ 
+
+> 𝑖 =1
+
+(1 − 𝒙 𝑻 𝒊 ˆ𝒙 𝑖 
+
+∥𝒙 𝑖 ∥∥ ˆ𝒙 𝑖 ∥ ), (10) 
+
+L = LREC + L DIS . (11) More model and training details are provided in Appendix B. 
+
+3.3.2 Anomaly Scoring . Under the zero-positive training para-digm, DisenMamba learns to accurately reconstruct normal traffic patterns. When anomalous traffic is encountered, the input deviates from the learned representations, leading to larger reconstruction errors. Accordingly, we compute the anomaly score using the cosine dissimilarity between the original input 𝒙 and its reconstruction 
+
+ˆ𝒙 , where higher scores indicate a higher likelihood of anomalous behavior for the test sample: 
+
+𝑠 = 1 − 𝒙 𝑇 ˆ𝒙 
+
+∥𝒙 ∥∥ ˆ𝒙 ∥ . (12) 
+
+## 4 Experiments 4.1 Experimental Setup 
+
+Datasets. We evaluate on three network traffic anomaly detection datasets featuring encrypted payload traffic and diverse network topologies. (1) CIC-IoT2023 : a large-scale intrusion detection dataset covering seven attack categories under Internet of Things topolo-gies [ 34 ]. (2) DoHBrw2020 : a malicious HTTPS traffic dataset cen-tered on DNS-over-HTTPS behaviors [ 33 ]. (3) ISCX-Tor2016 : an KDD ’26, August 09–13, 2026, Jeju Island, Republic of Korea Xinglin Lian, Chengtai Cao, Ting Zhong, and Fan Zhou 
+
+Table 1: Performance comparisons (%) on three public datasets. The best results are in bold font and the second underlined. Methods CIC-IoT2023 DoHBrw2020 ISCX-Tor2016 AUC(%) ACC(%) F1(%) AUC(%) ACC(%) F1(%) AUC(%) ACC(%) F1(%) 
+
+DAGMM 66.40 61.38 67.22 77.41 75.18 75.07 73.28 74.30 73.82 ARCADE 72.09 77.32 74.94 76.79 79.91 80.07 92.35 90.15 90.50 MFR 82.68 83.03 81.56 70.51 70.23 73.44 93.68 91.74 91.94 UnDiff 83.25 82.69 81.93 81.92 79.93 80.10 94.01 91.86 91.61 CountMamba 75.38 68.37 74.10 80.45 78.68 81.89 92.90 89.32 89.80 ConMD 83.76 83.11 81.80 83.44 80.14 82.09 94.35 91.79 91.23 Anomaly Transformer 64.63 67.15 71.86 78.86 78.55 78.87 92.27 90.19 90.52 TSLANet 81.64 76.62 80.04 77.04 68.93 73.10 93.63 90.97 90.71 iTransformer 81.32 82.07 81.95 82.44 78.66 78.26 82.65 81.34 83.97 SMamba 82.67 81.35 80.07 82.92 78.16 80.63 94.00 91.45 91.42 MambaAD 82.29 77.70 80.02 82.79 79.36 81.85 92.54 85.21 85.48 
+
+DisenMamba 86.81 84.66 83.82 87.34 83.27 83.86 96.40 92.95 93.00 
+
+anonymous Tor traffic dataset that captures traffic patterns beyond payload encryption, enabling evaluation under anonymity-network scenarios [ 21 ]. Following prior work [ 25 ], we randomly sample 10,000 normal flows for training and construct a balanced test set with 5,000 normal and 5,000 anomalous flows. 
+
+Evaluation Metrics. We assess model performance using three standard metrics: Area Under the Curve (AUC), Accuracy (ACC), and Macro F1-Score (F1), following recent studies [ 22 , 60 ]. We determine the anomaly-score threshold by maximizing the F1-score, which balances precision and recall. 
+
+Baselines. Considering the sequential nature of network traffic, we compare DisenMamba with eleven competitive baseline models, which can be divided into two groups: (1) Network traffic anomaly detection methods: DAGMM [ 63 ], ARCADE [ 30 ], MFR [ 25 ], Un-Diff [ 22 ], ConMD [ 26 ], and CountMamba [ 10 ]. (2) Time-series anom-aly detection methods: Anomaly Transformer [48], TSLANet [11], iTransformer [29], SMamba [42], and MambaAD [35]. 
+
+Testbeds. All experiments are conducted on a computational plat-form equipped with an Intel i5-14600KF 3.50 GHz CPU, an NVIDIA GeForce 4090 GPU, and Ubuntu 20.04. We implement all neural network models using the PyTorch framework. 
+
+Implementation Details. For the model setup, we set the number of disentangled Mamba blocks 𝐿 to 3, the token embedding dimen-sion 𝐷 to 32, and the low-rank dimension 𝑅 of private branches to 8. For traffic representation, we set 𝐹 = 4 packets per flow and 𝑃 = 600 
+
+bytes per packet. The same hyperparameter settings are used across the three datasets. We use the Adam optimizer with a learning rate of 1 × 10 −4 and a batch size of 128. Each model is trained for up to 50 epochs, with early stopping applied to prevent overfitting. We perform five independent runs with different random seeds and report the mean performance across runs. 
+
+## 4.2 Main Results 
+
+We compare DisenMamba with eleven strong baselines to evaluate its effectiveness. The quantitative results are reported in Table 1. Based on these results, we make the following observations. 
+
+(O1) : DisenMamba consistently outperforms all baseline methods across different datasets. In particular, DisenMamba achieves AUC Ours MambaAD  CountMamba Normal  
+
+> Ours MambaAD CountMamba Anomalous
+
+Figure 5: Reconstruction comparison on representative cases. 
+
+improvements of 3.1% on CIC-IoT2023 and 3.9% on DoHBrw2020. These improvements primarily arise from the proposed disen-tangled multi-view Mamba scanning structure. By adopting a disentangle-first design, DisenMamba effectively prevents the ac-cumulation of view-invariant redundancy as more scanning views are incorporated. This design preserves complementary multi-view contextual cues, enhancing sensitivity to subtle multi-view anoma-lous patterns in network traffic [ 26 ]. As shown in Figure 5, Dis-enMamba produces more deviated reconstructions for anomalous traffic while maintaining high-fidelity reconstructions for normal samples, thereby facilitating more reliable anomaly detection. 
+
+(O2) : Existing NTAD methods, such as MFR and ConMD, mainly im-prove detection performance through enhanced feature extraction, but are predominantly built on CNN-based architectures. Although CNNs exhibit strong local modeling capability, they are less effec-tive at capturing long-range dependencies and multi-view charac-teristics inherent in network traffic, which limits their detection performance. While the recent CountMamba introduces Mamba into NTAD, it is restricted to unidirectional scanning. This design introduces causal bias, constraining its ability to model multi-view traffic patterns and resulting in incomplete contextual modeling. 
+
+(O3) : Time-series-based approaches, including Anomaly Trans-former, TSLANet, and iTransformer, generally underperform com-pared to specialized NTAD methods. This is because these models primarily focus on temporal trends and fluctuations, which are less informative for payload-encrypted network traffic. Moreover, recent Mamba-based time-series models adopt multi-view scanning Disentangling Multi-View Scanning in Mamba for Network Traffic Anomaly Detection KDD ’26, August 09–13, 2026, Jeju Island, Republic of Korea 
+
+Table 2: Ablation results on main components (AUC). Variant IoT2023 DoHBrw2020 Tor2016 
+
+w/ Unidirectional 82.14 83.84 93.21 w/ Summation 77.30 84.11 93.52 w/o Disentangle 79.02 83.02 93.89 w/o Shared Branches 77.84 85.51 95.79 w/o Private Branches 75.15 83.43 94.36 w/o Disentanglement Loss 84.26 85.76 94.83 w/o Low-Rank Projection 84.40 85.12 94.38 w/o Stop-Gradient 85.77 87.01 95.98 
+
+DisenMamba 86.81 87.34 96.40 
+
+but typically overlook redundancy accumulation caused by naive fusion strategies. This leads to homogenized and degraded feature representations across views. As illustrated in Figure 5, although these methods reconstruct normal traffic with high fidelity, they tend to overgeneralize anomalous samples [ 26 ], producing similarly accurate reconstructions. This observation reflects the limited sen-sitivity of their homogenized representations to subtle multi-view anomalous patterns in network traffic. 
+
+## 4.3 Ablation Study 
+
+We evaluate our disentangled Mamba variants by removing key components. The results are reported in Table 2, and the main observations can be summarized in three aspects. 
+
+Effect of Multi-View Scanning: Replacing the proposed multi-view scanning with a simple unidirectional strategy (w/ Unidirec-tional) leads to noticeable performance degradation, indicating that unidirectional scanning is biased. It is insufficient for capturing the complementary multi-view characteristics of network traffic. In ad-dition, when adopting the commonly used feature-level summation for multi-view fusion (w/ Summation), the performance becomes comparable to the unidirectional setting, and even worse on the CIC-IoT2023 dataset. This result validates the existence and negative impact of multi-view redundancy accumulation. We further remove the entire disentanglement design while retaining the proposed projection modules (w/o Disentangle). The observed degradation demonstrates that the performance improvements stem from the proposed disentangled scanning mechanism rather than from the introduction of additional network layers. 
+
+Effect of Disentanglement Architecture: Removing either the shared branches (w/o Shared Branches) or the private branches (w/o Private Branches) results in substantial performance drops. This confirms that both view-invariant and view-specific components are indispensable for representation learning, with discriminative view-specific information playing a more critical role. Furthermore, removing the disentanglement constraint loss (w/o Disentangle-ment Loss) also leads to a clear performance degradation, indicating that structural disentanglement alone is insufficient without explicit optimization constraints during training. 
+
+Effect of Private-Branch Constraints: Removing the low-rank projection (w/o Low-Rank Projection) causes consistent perfor-mance drops, indicating that structural capacity restriction helps prevent invariant information from leaking into private representa-tions. Removing the stop-gradient operation (w/o Stop-Gradient) CIC-IoT2023 DoHBrw2020 ISCX-Tor2016 
+
+> 0.70
+> 0.75
+> 0.80
+> 0.85
+> 0.90
+> 0.95
+> Similarity
+> Common Views-Views
+> Common Fusion-Views
+> Our Views-Views
+> Our Fusion-Views
+
+Figure 6: CKA similarity before and after disentanglement. DoHBrw2020  ISCX-Tor2016  
+
+> Density
+> CKA Similarity
+> Private-Private
+> Shared-Private
+> CKA Similarity
+> Shared-Shared Shared-Shared
+> Private-Private
+> Shared-Private
+> Density
+
+Figure 7: Density distributions of CKA similarity for inter-private, private–shared, and inter-shared representations. 
+
+also degrades performance, showing that gradient isolation from the shared branch stabilizes private representation extraction. The redundancy analysis in Appendix D provides additional evidence that both constraints reduce inter-view redundancy, confirming their role in mitigating redundancy accumulation and improving view-specific representation learning. 
+
+## 4.4 Redundancy Reduction Analysis 
+
+Disentanglement Analysis : Figure 6 quantitatively demonstrates the redundancy reduction effect of DisenMamba. Consistent with the phenomenon observed in Figure 2, common feature-level sum-mation repeatedly reinforces view-invariant information in the fused representations, as reflected by increased CKA similarity after fusion (Common Fusion–Views) relative to before fusion (Common Views–Views). In contrast, under our disentangled design, the CKA similarity between the fused representation and the scanning views (Our Fusion–Views) is noticeably lower than that between different scanning views (Our Views–Views). This observation indicates that our framework effectively integrates complementary view-specific information rather than repeatedly amplifying view-invariant com-ponents, thereby alleviating multi-view representation homoge-nization and redundancy accumulation. Moreover, Figure 7 further verifies the effectiveness of the pro-posed disentanglement mechanism. The similarities among shared branches (Shared–Shared) exhibit a highly concentrated distribu-tion, with non-overlapping similarity distributions relative to other branch groups, indicating that view-invariant information is suc-cessfully isolated and consistently aggregated. In contrast, both inter-private (Private–Private) and shared–private (Shared–Private) similarities present low-value distributions. These results indicate that shared and private representations are effectively separated, KDD ’26, August 09–13, 2026, Jeju Island, Republic of Korea Xinglin Lian, Chengtai Cao, Ting Zhong, and Fan Zhou IoT2023 DoHBrw2020 Tor2016   
+
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> Similarity
+> Orthogonal Contrastive Ours
+
+(a) CKA similarity IoT2023 DoHBrw2020 Tor2016    
+
+> 0.6
+> 0.7
+> 0.8
+> 0.9
+> 1.0
+> AUC
+> Orthogonal Contrastive Ours
+
+(b) AUC performance Figure 8: Comparison with other disentanglement methods. 1 2 3 4  
+
+> 80
+> 84
+> 88
+> 92
+> 96
+> AUC (%)
+> IoT2023 DoH2020 Tor2016
+
+(a) Scanning View Number |V | 4 8 16 24 32    
+
+> 84
+> 87
+> 90
+> 93
+> 96
+> AUC (%)
+> IoT2023 DoH2020 Tor2016
+
+(b) Low-Rank Dimension 𝑅 
+
+Figure 9: Hyperparameter sensitivity analysis across datasets. 
+
+while each private branch consistently captures view-specific in-formation. Overall, DisenMamba achieves effective feature disen-tanglement and reduces redundancy accumulation. 
+
+Comparison with Other Disentanglement Methods : We fur-ther compare DisenMamba with representative feature disentangle-ment strategies, including orthogonal projection [ 2 ] and contrastive learning [ 31 ]. The CKA similarities between shared and private branches, along with the fusion AUC performance, are shown in Fig-ure 8(a) and (b). Orthogonality-based methods attempt to eliminate redundancy by enforcing strict orthogonality constraints between representations. Although this strategy achieves strong feature disentanglement, the overly rigid constraint disrupts inter-branch interactions. As a result, fusion effectiveness is degraded, leading to inferior detection performance. In contrast, contrastive-based methods construct positive and negative pairs to guide representa-tion alignment and disentanglement. However, experimental results show that this strategy fails to remove redundancy in the Mamba architecture. Our DisenMamba achieves a better balance between disentanglement quality and fusion effectiveness, leading to supe-rior anomaly detection performance. 
+
+## 4.5 Hyperparameter Analysis 
+
+Figure 9 presents the sensitivity analysis of two key hyperparame-ters in DisenMamba. Additional results are reported in Appendix E. The main observations are summarized as follows. 
+
+(O1) : The number of scanning views |V | controls the amount of encoded multi-view information. Results show that detection per-formance consistently improves as |V | increases, indicating that DisenMamba benefits from richer multi-view representations. With the proposed disentangle-then-fuse design, DisenMamba can effec-tively integrate complementary view cues, enabling more accurate detection of subtle traffic anomalies. 
+
+(O2) : The low-rank dimension 𝑅 regulates information throughput within private branches and is a critical structural hyperparameter. Ours UnDiff MambaAD TSLANet Anomaly Transformer CountMamba iTransformer MFR ARCADE ConMD SMamba 
+
+Figure 10: Inference overhead and performance comparison. 
+
+An excessively large 𝑅 leads to view-invariant information leak-age from shared branches, weakening the disentanglement effect. Conversely, an overly small 𝑅 severely restricts the throughput capacity of private branches, resulting in the loss of view-specific information and eventual disentanglement collapse. 
+
+## 4.6 Overhead Analysis 
+
+Inference overhead is a critical factor for practical deployment of NTAD systems. Figure 10 compares detection performance (aver-age AUC across three datasets) with per-sample inference latency for different model families. CNN-based methods (orange markers) exhibit linear computational complexity O(( 𝐹 · 𝑃 )𝐷 ) [ 12 ], but rely heavily on feature extraction engineering, which introduces non-negligible preprocessing overhead. Transformer-based approaches (blue markers) suffer from quadratic complexity O(( 𝐹 · 𝑃 )2𝐷 ),leading to substantial computational costs, especially for traffic sequences. In contrast, Mamba-based architectures (red markers) achieve linear complexity O(( 𝐹 · 𝑃 )𝐷 ), offering significantly im-proved efficiency. Building upon this efficient backbone, our dis-entangled Mamba framework introduces only lightweight projec-tion modules, incurring negligible additional overhead. As a result, DisenMamba achieves superior detection performance while main-taining millisecond-level inference latency. 
+
+## 5 Related Work 5.1 Network Traffic Anomaly Detection 
+
+Network Traffic Anomaly Detection (NTAD) aims to identify previously unseen anomalous traffic using only normal samples during training [ 9 , 55 ]. Most methods follow a reconstruction-based paradigm, where reconstruction errors are used as anom-aly indicators. They also rely heavily on feature extraction to improve detection performance. Representative methods such as MFAD [ 60 ] and MFR [ 25 ] exploit low-pass filtering to emphasize low-frequency texture-level patterns for better normal traffic mod-eling. ARCADE [ 30 ] incorporates adversarial training into autoen-coder architectures to enhance reconstruction quality. Trident [ 57 ]adopts a U-Net-based autoencoder to preserve fine-grained struc-tural characteristics of network traffic. unFlowS [ 50 ] projects recon-struction errors into spectral spaces to expose anomalous patterns. Disentangling Multi-View Scanning in Mamba for Network Traffic Anomaly Detection KDD ’26, August 09–13, 2026, Jeju Island, Republic of Korea 
+
+UnDiff [ 22 ] introduces the first distribution-aware anomaly scor-ing method, using uncertainty to evaluate anomalous deviations beyond deterministic reconstruction errors. FreeUp [ 23 ] proposes a frequency-decoupled reconstruction framework for modeling encrypted “full-frequency” network traffic. Despite these advances, most NTAD methods are built upon CNN-based architectures that primarily focus on local pattern modeling. They fail to capture long-range contextual dependen-cies and multi-view characteristics. To alleviate this limitation, ConMD [ 26 ] introduces a knowledge distillation–based feature ex-traction scheme to learn discriminative representations and adopts a CNN–Transformer hybrid architecture to enhance contextual mod-eling. Given the sequential nature of network traffic, time-series anomaly detection methods are also considered as competitive base-lines. These methods predominantly adopt Transformer-based ar-chitectures to model sequential trends and fluctuations [ 11 , 29 , 48 ]. However, Transformers inherently suffer from quadratic compu-tational complexity. In contrast, our DisenMamba is built upon State Space Models and captures sequential traffic dependencies with linear-time complexity. It further employs a lightweight disen-tangled multi-view scanning design, achieving superior detection performance with high inference efficiency. 
+
+## 5.2 Multi-View Scanning in Mamba 
+
+Mamba is built upon selective state-space sequence models and en-ables contextual representation learning with linear computational complexity. It has demonstrated a favorable efficiency–effectiveness trade-off in domains such as computer vision and time-series anal-ysis [ 35 , 54 ]. The core capability of Mamba lies in its multi-view scanning mechanism, which is typically customized for different application domains [ 12 , 18 , 42 ]. For example, in computer vision, representative scanning strategies such as Slanted Scan, Zigzag Scan, and Hilbert Scan arrange sequences in specific geometric orders [ 28 , 36 ]. By fusing representations from multiple scanning pathways, Mamba aggregates complementary directional infor-mation and constructs globally coherent contextual representa-tions [ 28 ]. However, recent studies on network traffic analysis re-port that directly adopting multi-view Mamba scanning can lead to performance degradation [ 41 ]. Consequently, several networking-oriented works resort to simplified unidirectional Mamba archi-tectures [ 10 , 45 ]. While this alleviates degradation issues, it also sacrifices critical multi-view contextual awareness required for anomaly detection in network traffic [ 26 ]. Notably, some studies in the computer vision domain have also reported representation redundancy induced by multi-view scanning and its adverse and detrimental impact on performance [ 16 , 37 , 46 ]. Nevertheless, these works remain at a largely intuitive level, lacking systematic mecha-nism analysis and quantitative evidence. In contrast, our work conducts comprehensive quantitative and qualitative analyses of scanning representations. We systematically identify a redundancy accumulation phenomenon and a multi-view degradation problem in network traffic scenarios. To address these, we propose a novel disentangled Mamba framework that explic-itly separates view-invariant and view-specific information. By jointly balancing invariant and view-specific components, Disen-Mamba mitigates redundancy-induced representation degradation while preserving multi-view cues, thereby unlocking Mamba’s rep-resentational capacity for NTAD. 
+
+## 5.3 Disentangled Representation Learning 
+
+Disentangled representation learning aims to decompose complex representations into semantically distinct factors, thereby improv-ing interpretability, robustness, and generalization [ 6]. A common strategy is to separate representations into shared and private components: shared components capture invariant information across views or domains, whereas private components preserve view-specific or domain-specific characteristics [ 27 ]. Representa-tive studies achieve this separation through four types of strategies: orthogonality-based [ 2], contrastive-learning-based [ 31 ], causality-inspired [ 7], and information-theoretic methods [ 27 ]. Specifically, they reduce representation entanglement through orthogonal sub-space constraints, contrastive factor separation, causal invariance modeling, or mutual-information regularization. While shared-private decomposition appears suitable for addressing redundancy in multi-view Mamba scanning, directly applying existing disentan-glement methods remains non-trivial. This is because they mainly target generic factor separation, while overlooking the dominant view-invariant information shared across scanning views and am-plified during fusion. Directly applying these methods may either lead to over-separation that disrupts semantic consistency or fail to sufficiently separate shared and private components in Mamba representations. In contrast, DisenMamba constructs an efficient disentangled framework through lightweight projection modules and structural constraints. It further reformulates multi-view scan-ning in Mamba as a disentangle-then-fuse process, facilitating more effective representation learning. 
+
+## 6 Conclusions 
+
+In this paper, we identify, for the first time, a critical redundancy accumulation phenomenon in applying Mamba to NTAD, reveal-ing a previously overlooked structural deficiency in multi-view Mamba scanning. Specifically, naive multi-view extensions repeat-edly amplify view-invariant information, leading to multi-view representation degradation. To address this deficiency, we pro-pose DisenMamba, a disentangled multi-view Mamba framework that reformulates multi-view scanning as a disentangle-then-fuse process. By explicitly separating view-invariant and view-specific representations before fusion, DisenMamba mitigates redundancy accumulation while preserving complementary multi-view cues, thereby improving sensitivity to subtle anomalous traffic patterns. Extensive experiments demonstrate the effectiveness of our Dis-enMamba, achieving consistently superior detection performance with millisecond-level inference efficiency. Overall, this work estab-lishes a disentangle-then-fuse paradigm for multi-view scanning in Mamba, opening new opportunities for Mamba architecture design. In future work, we will explore extending this framework beyond NTAD to broader application scenarios, such as computer vision, time-series analysis, and language modeling. 
+
+## Acknowledgments 
+
+This work was supported by the National Natural Science Founda-tion of China (Grant No. 62572097). KDD ’26, August 09–13, 2026, Jeju Island, Republic of Korea Xinglin Lian, Chengtai Cao, Ting Zhong, and Fan Zhou 
+
+## References 
+
+[1] Jiati Cai, Yuxun Zhao, Yan Liu, Ting Zhong, and Fan Zhou. 2026. SCOPE-Diff: A spatiotemporal comprehensive perception diffusion framework for video anomaly detection. Neurocomputing 678 (2026), 133157. [2] Jaehoon Cha and Jeyan Thiyagalingam. 2023. Orthogonality-Enforced Latent Space in Autoencoders: An Approach to Learning Disentangled Representations. In International Conference on Machine Learning (ICML) . 3913–3948. [3] Bin Chen, Hanting Shen, Zhangtao Cheng, Xueting Liu, Ting Zhong, and Fan Zhou. 2026. Unveiling cross-modal consistency: Taming inter- and intra-modal noise for robust multi-modal knowledge graph completion. Information Processing & Management 63, 2 (2026), 104472. [4] Bin Chen, Yi Yang, Zhangtao Cheng, Xueting Liu, Yicheng Xin, Kunpeng Zhang, and Fan Zhou. 2026. Semantic duality in hypergraphs: Uncertainty-aware bipolar evidence aggregation for temporal knowledge graph reasoning. Expert Systems with Applications 299 (2026), 130162. [5] Xu-Yang Chen, Lu Han, De-Chuan Zhan, and Han-Jia Ye. 2025. MIETT: Multi-Instance Encrypted Traffic Transformer for Encrypted Traffic Classification. In 
+
+AAAI conference on artificial intelligence (AAAI) . 15922–15929. [6] Zhangtao Cheng, Yang Liu, Ting Zhong, Kunpeng Zhang, Fan Zhou, and Philip S. Yu. 2025. Disentangling Inter- and Intra-Cascades Dynamics for Information Diffusion Prediction. IEEE Transactions on Knowledge and Data Engineering 37, 8 (2025), 4548–4563. [7] Zhangtao Cheng, Wenxue Ye, Leyuan Liu, Wenxin Tai, and Fan Zhou. 2023. Enhancing Information Diffusion Prediction with Self-Supervised Disentangled User and Cascade Representations. In International Conference on Information and Knowledge Management (CIKM) . ACM, 3808–3812. [8] Zhangtao Cheng, Jienan Zhang, Xovee Xu, Goce Trajcevski, Ting Zhong, and Fan Zhou. 2024. Retrieval-Augmented Hypergraph for Multimodal Social Media Popularity Prediction. In ACM SIGKDD Conference on Knowledge Discovery and Data Mining (KDD) . 445–455. [9] Zhangxuan Dang, Yu Zheng, Xinglin Lian, Chunlei Peng, Qiuyu Chen, and Xinbo Gao. 2025. Semi-Supervised Learning for Anomaly Traffic Detection via Bidirectional Normalizing Flows. IEEE Transactions on Network and Service Management 22, 5 (2025), 5106–5117. [10] Xianwen Deng, Ruijie Zhao, Yanhao Wang, Mingwei Zhan, Zhi Xue, and Yijun Wang. 2025. Countmamba: A Generalized Website Fingerprinting Attack via Coarse-Grained Representation and Fine-Grained Prediction. In IEEE Symposium on Security and Privacy (S&P) . 1419–1437. [11] Emadeldeen Eldele, Mohamed Ragab, Zhenghua Chen, Min Wu, and Xiaoli Li. 2024. TSLANet: Rethinking Transformers for Time Series Representation Learn-ing. In International Conference on Machine Learning (ICML) . 12409–12428. [12] Hongfan Gao, Wangmeng Shen, Xiangfei Qiu, Ronghui Xu, Bin Yang, and Jilin Hu. 2025. SSD-TS: Exploring the potential of linear state space models for diffusion models in time series imputation. In ACM SIGKDD Conference on Knowledge Discovery and Data Mining (KDD) . 649–660. [13] Albert Gu and Tri Dao. 2024. Mamba: Linear-time sequence modeling with selective state spaces. In Conference on Language Modeling (COLM) .[14] Albert Gu, Tri Dao, Stefano Ermon, Atri Rudra, and Christopher Ré. 2020. Hippo: Recurrent memory with optimal polynomial projections. In Annual Conference on Neural Information Processing Systems (NeurIPS) . 1474–1487. [15] Albert Gu, Karan Goel, and Christopher Ré. 2022. Efficiently modeling long sequences with structured state spaces. In International Conference on Learning Representations (ICLR) .[16] Hang Guo, Jinmin Li, Tao Dai, Zhihao Ouyang, Xudong Ren, and Shu-Tao Xia. 2024. Mambair: A simple baseline for image restoration with state-space model. In European Conference on Computer Vision (ECCV) . 222–241. [17] Yaru He, Jiaqi Gao, Daoqi Han, Yueming Lu, and Yaojun Qiao. 2026. Hierar-chical traffic fingerprint-assisted Graph Neural Networks for encrypted traffic classification in Internet of Vehicles. Knowledge-Based Systems 343 (2026), 116027. [18] Tao Huang, Xiaohuan Pei, Shan You, Fei Wang, Chen Qian, and Chang Xu. 2024. Localmamba: Visual state space model with windowed selective scan. In European Conference on Computer Vision (ECCV) . Springer, 12–22. [19] Simon Kornblith, Mohammad Norouzi, Honglak Lee, and Geoffrey Hinton. 2019. Similarity of neural network representations revisited. In International Conference on Machine Learning (ICML) . 3519–3529. [20] Alexander Lappe and Martin A Giese. 2025. Register and [CLS] tokens induce a decoupling of local and global features in large ViTs. In Annual Conference on Neural Information Processing Systems (NeurIPS) .[21] Arash Habibi Lashkari, Gerard Draper-Gil, Mohammad Saiful Islam Mamun, and Ali A. Ghorbani. 2017. Characterization of Tor Traffic using Time based Features. In ICISSP . SciTePress, 253–262. [22] Xinglin Lian, Chengtai Cao, Yan Liu, Xovee Xu, Yu Zheng, and Fan Zhou. 2025. Facing Anomalies Head-On: Network Traffic Anomaly Detection via Uncertainty-Inspired Inter-Sample Differences. In the ACM on Web Conference (WWW) . 3908– 3917. [23] Xinglin Lian, Chengtai Cao, Ting Zhong, Yong Wang, Kai Chen, and Fan Zhou. 2026. Decompose to Understand, Fuse to Detect: Frequency-Decoupled Anomaly Detection for Encrypted Network Traffic. arXiv: 2605.02970 (2026). [24] Xinglin Lian, Yang Liu, Shanfeng Wang, and Yu Zheng. 2024. Payload Level Anomaly Network Traffic Detection via Semi-Supervised Contrastive Learning. In Trust, Security and Privacy in Computing and Communications (TrustCom) .2559–2566. [25] Xinglin Lian, Yu Zheng, Zhangxuan Dang, Chunlei Peng, and Xinbo Gao. 2025. Semi-supervised anomaly traffic detection via multi-frequency reconstruction. 
+
+Pattern Recognition 161 (2025), 111215. [26] Xinglin Lian, Yu Zheng, Yan Liu, Fan Zhou, Chunlei Peng, and Xinbo Gao. 2026. Contextual Masking Distillation for Network Traffic Anomaly Detection. IEEE Transactions on Information Forensics and Security 21 (2026), 1273–1286. [27] Zhuomin Liang, Liang Bai, Xian Yang, and Jiye Liang. 2025. Multi-Channel Disentangled Graph Neural Networks With Different Types of Self-Constraints. 
+
+IEEE Transactions on Pattern Analysis and Machine Intelligence 47, 9 (2025), 8001– 8012. [28] Xiao Liu, Chenxu Zhang, Fuxiang Huang, Shuyin Xia, Guoyin Wang, and Lei Zhang. 2025. Vision mamba: A comprehensive survey and taxonomy. IEEE Transactions on Neural Networks and Learning Systems (2025). [29] Yong Liu, Tengge Hu, Haoran Zhang, Haixu Wu, Shiyu Wang, Lintao Ma, and Mingsheng Long. 2024. iTransformer: Inverted Transformers Are Effective for Time Series Forecasting. In International Conference on Learning Representations (ICLR) .[30] Willian Tessaro Lunardi, Martin Andreoni Lopez, and Jean Pierre Giacalone. 2023. ARCADE: Adversarially Regularized Convolutional Autoencoder for Network Anomaly Detection. Transactions on Network and Service Management 20, 2 (2023), 1305–1318. [31] Stefan Matthes, Zhiwei Han, and Hao Shen. 2023. Towards a Unified Framework of Contrastive Learning for Disentangled Representations. In Annual Conference on Neural Information Processing Systems (NeurIPS) .[32] Gongxun Miao, Guohua Wu, Zhen Zhang, Yongjie Tong, and Bing Lu. 2024. Boosting Encrypted Traffic Classification Using Feature-Enhanced Recurrent Neural Network with Angle Constraint. IEEE Transactions on Big Data (2024). [33] Mohammadreza MontazeriShatoori, Logan Davidson, Gurdip Kaur, and Arash Habibi Lashkari. 2020. Detection of DoH Tunnels using Time-series Classification of Encrypted Traffic. In IEEE DASC/PiCom/CBDCom/CyberSciTech .63–70. [34] Euclides Carlos Pinto Neto, Sajjad Dadkhah, Raphael Ferreira, Alireza Zohourian, Rongxing Lu, and Ali A. Ghorbani. 2023. CICIoT2023: A Real-Time Dataset and Benchmark for Large-Scale Attacks in IoT Environment. Sensors 23, 13 (2023), 5941. [35] Shuxin Qin, Jing Zhu, Aipeng Guo, Yansong Yang, Lu Wang, and Gaofeng Tao. 2025. MambaAD: Multivariate time series anomaly detection in IoT via multi-view Mamba. Neurocomputing 655 (2025), 131385. [36] Haohao Qu, Liangbo Ning, Rui An, Wenqi Fan, Tyler Derr, Hui Liu, Xin Xu, and Qing Li. 2024. A survey of mamba. arXiv preprint arXiv:2408.01129 (2024). [37] Yuheng Shi, Minjing Dong, and Chang Xu. 2024. Multi-scale vmamba: Hierarchy in hierarchy visual state space model. In Annual Conference on Neural Information Processing Systems (NeurIPS) , Vol. 37. 25687–25708. [38] Zexi Tan, Tao Xie, Binbin Sun, Xiang Zhang, Yiqun Zhang, and Yiu-Ming Cheung. 2025. MEET-Sepsis: Multi-Endogenous-View Enhanced Time-Series Representa-tion Learning for Early Sepsis Prediction. In PRICAI: Trends in Artificial Intelligence (PRICAI) .[39] Hoan My Tran, Damien Lolive, Aghilas Sini, Arnaud Delhay, Pierre-François Marteau, and David Guennec. 2025. Multi-level SSL Feature Gating for Audio Deepfake Detection. In ACM International Conference on Multimedia (MM) . 11766– 11775. [40] Peihao Wang, Ruisi Cai, Yuehao Wang, Jiajun Zhu, Pragya Srivastava, Zhangyang Wang, and Pan Li. 2025. Understanding and Mitigating Bottlenecks of State Space Models through the Lens of Recency and Over-smoothing. In International Conference on Learning Representations (ICLR) .[41] Tongze Wang, Xiaohui Xie, Wenduo Wang, Chuyi Wang, Youjian Zhao, and Yong Cui. 2024. Netmamba: Efficient Network Traffic Classification Via Pre-Training Unidirectional Mamba. In International Conference on Network Protocols (ICNP) .1–11. [42] Zihan Wang, Fanheng Kong, Shi Feng, Ming Wang, Xiaocui Yang, Han Zhao, Dal-ing Wang, and Yifei Zhang. 2025. Is Mamba effective for time series forecasting? 
+
+Neurocomputing 619 (2025), 129178. [43] Charles Westphal, Stephen Hailes, and Mirco Musolesi. 2025. Feature Selection for Network Intrusion Detection. In ACM SIGKDD Conference on Knowledge Discovery and Data Mining (KDD) . 1599–1610. [44] Nimesha Wickramasinghe, Arash Shaghaghi, Gene Tsudik, and Sanjay K. Jha. 2025. SoK: Decoding the Enigma of Encrypted Network Traffic Classifiers. In 
+
+IEEE Symposium on Security and Privacy (S&P) . IEEE, 1825–1843. [45] Linhan Xia, Mingzhan Yang, Jingjing Wang, Ziwei Yan, Yakun Ren, Guo Yu, and Kai Lei. 2025. Mamba4Net: Distilled Hybrid Mamba Large Language Models For Networking. In International Conference on Network Protocols (ICNP) . 1–10. [46] Haoke Xiao, Lv Tang, Peng-tao Jiang, Hao Zhang, Jinwei Chen, and Bo Li. 2025. Boosting Vision State Space Model with Fractal Scanning. In AAAI Conference on Artificial Intelligence (AAAI) . 8646–8654. Disentangling Multi-View Scanning in Mamba for Network Traffic Anomaly Detection KDD ’26, August 09–13, 2026, Jeju Island, Republic of Korea 
+
+[47] Tao Xie, Zexi Tan, Haoyi Xiao, Binbin Sun, and Yiqun Zhang. 2025. DE3S: Dual-Enhanced Soft-Sparse Shape Learning for Medical Early Time Series Clas-sification. In IEEE International Conference on Bioinformatics and Biomedicine (BIBM) . 1891–1896. [48] Jiehui Xu, Haixu Wu, Jianmin Wang, and Mingsheng Long. 2022. Anomaly Transformer: Time Series Anomaly Detection with Association Discrepancy. In 
+
+International Conference on Learning Representations (ICLR) .[49] Luming Yang, Lin Liu, Junjie Huang, Zhuotao Liu, Shiyu Liang, Shaojing Fu, and Yongjun Wang. 2025. MM4flow: A Pre-trained Multi-modal Model for Versatile Network Traffic Analysis. In ACM SIGSAC Conference on Computer and Communications Security (CCS) . ACM, 1664–1678. [50] Luming Yang, Yongjun Wang, Lin Liu, Junjie Huang, Jiangyong Shi, Shaojing Fu, and Shize Guo. 2025. unFlowS: An Unsupervised Construction Scheme of Flow Spectrum for Network Traffic Detection. IEEE Transactions on Information Forensics and Security 20 (2025), 3330–3345. [51] Shuo Yang, Xinran Zheng, Jinze Li, Jinfeng Xu, Xingjun Wang, and Edith C. H. Ngai. 2024. ReCDA: Concept Drift Adaptation with Representation Enhancement for Network Intrusion Detection. In ACM SIGKDD Conference on Knowledge Discovery and Data Mining (KDD) . 3818–3828. [52] Jure Zbontar, Li Jing, Ishan Misra, Yann LeCun, and Stéphane Deny. 2021. Barlow Twins: Self-Supervised Learning via Redundancy Reduction. In International Conference on Machine Learning (ICML) . 12310–12320. [53] Haozhen Zhang, Haodong Yue, Xi Xiao, Le Yu, Qing Li, Zhen Ling, and Ye Zhang. 2025. Revolutionizing Encrypted Traffic Classification with MH-Net: A Multi-View Heterogeneous Graph Model. In AAAI conference on artificial intelligence (AAAI) . 1048–1056. [54] Qiao Zhang, Mingwen Shao, Xinyuan Chen, Xiang Lv, and Kai Xu. 2025. Wave-MambaAD: Wavelet-driven State Space Model for Multi-class Unsupervised Anomaly Detection. In IEEE/CVF International Conference on Computer Vision (CVPR) . 20868–20877. [55] Xinchen Zhang, Running Zhao, Zhihan Jiang, Zhicong Sun, Yulong Ding, Edith C. H. Ngai, and Shuang-Hua Yang. 2024. AOC-IDS: Autonomous Online Frame-work with Contrastive Learning for Intrusion Detection. In IEEE Conference on Computer Communications (INFOCOM) . 581–590. [56] Ruijie Zhao, Mingwei Zhan, Xianwen Deng, Fangqi Li, Yanhao Wang, Yijun Wang, Guan Gui, and Zhi Xue. 2024. A Novel Self-Supervised Framework Based on Masked Autoencoder for Traffic Classification. IEEE/ACM Transactions on Networking 32, 3 (2024), 2012–2025. [57] Ziming Zhao, Zhaoxuan Li, Zhuoxue Song, Wenhao Li, and Fan Zhang. 2024. Tri-dent: A Universal Framework for Fine-Grained and Class-Incremental Unknown Traffic Detection. In the ACM on Web Conference (WWW) . 1608–1619. [58] Ziming Zhao, Zhuoxue Song, Xiaofei Xie, Zhaoxuan Li, Jiongchi Yu, Fan Zhang, and Tingting Li. 2025. Towards Context-Aware Traffic Classification via Time-Wavelet Fusion Network. In ACM SIGKDD Conference on Knowledge Discovery and Data Mining (KDD) . 2089–2100. [59] Yu Zheng, Zhangxuan Dang, Xinglin Lian, Chunlei Peng, and Xinbo Gao. 2024. Multi-view multi-label network traffic classification based on MLP-Mixer neural network. Computer Networks 253 (2024), 110746. [60] Yu Zheng, Xinglin Lian, Zhangxuan Dang, Chunlei Peng, Chao Yang, and Jianfeng Ma. 2023. A Semi-Supervised Anomaly Network Traffic Detection Framework via Multimodal Traffic Information Fusion. In International Conference on Information and Knowledge Management (CIKM) . 4455–4459. [61] Meihui Zhong, Chengtai Cao, Wenxin Tai, and Fan Zhou. 2026. Shattering Weak Facades: Trustworthy Detection of Encrypted Malicious Traffic via Uncertainty-Aware Fusion. IEEE Transactions on Dependable and Secure Computing (2026). [62] Meihui Zhong, Ting Zhong, Yong Wang, Kai Chen, and Fan Zhou. 2026. Noise Resistant Encrypted Malicious Traffic Detection Through Kernel-Enhanced Con-trastive View Alignment. IEEE Transactions on Networking 34 (2026), 1511–1523. [63] Bo Zong, Qi Song, Martin Renqiang Min, Wei Cheng, Cristian Lumezanu, Dae-ki Cho, and Haifeng Chen. 2018. Deep Autoencoding Gaussian Mixture Model for Unsupervised Anomaly Detection. In International Conference on Learning Representations (ICLR) .
+
+## A Traffic Data Preprocessing 
+
+The basic unit of network traffic is a flow, which consists of a sequence of ordered packets. Typically, a traffic sample is defined as a flow whose packets share the same 5-tuple, including the transport-layer protocol, source IP address, destination IP address, source port, and destination port [ 25 ]. Following this definition, we first segment raw traffic into flows based on the 5-tuple, and then preprocess each flow through address anonymization, header-length normalization, and sequence padding/truncation. Specifically, we remove the Ethernet header and set IP addresses to zero to prevent the model from overfitting to address-specific patterns. Since the header lengths of User Datagram Protocol (UDP) and Transmission Control Protocol (TCP) segments are inconsistent, we pad the UDP header with zero bytes (0x00) to match the TCP header length, thereby alleviating the negative impact of transport-layer length discrepancies. Finally, following prior work [ 25 ], we apply standard truncation and padding operations to unify flow and packet lengths. Based on our hyperparameter study, the flow length and packet length are set to 𝐹 = 4 and 𝑃 = 600 , respectively. 
+
+## B Algorithm Description 
+
+Algorithm 1 presents the DisenMamba training pipeline, including the disentangle-then-fuse process. 
+
+Algorithm 1 DisenMamba Training Pipeline 
+
+Input: Mini-batch traffic samples 𝑿 ∈ R𝐵 ×𝐹 ×𝑃 , where 𝐵 is the batch size, 𝐹 is the number of packets in each flow, and 𝑃 is the number of bytes in each packet 
+
+1: Traffic Embedding 
+
+2: 𝑯 0 = Conv1D (𝑿 ) + Sine-Cosine (𝑿 ), 𝑯 0 ∈ R𝐵 ×𝐹 ×𝑃 ×𝐷 
+
+3: Disentangled Multi-View Mamba Encoder 
+
+4: for 𝑙 = 0 to 𝐿 − 1 do 
+
+5: /*Multi-View Scanning*/ 
+
+6: for each 𝑣 ∈ V = {® F, ®P, ©F, ©P} do 
+
+7: Rearrange multi-view: 𝑯 𝑙 𝑣 
+
+8: Construct representation: ˜𝑯 𝑙 𝑣 = MambaBlock  𝑯 𝑙 𝑣 
+
+
+
+9: end for 
+
+10: /*Shared Branch Extraction*/ 
+
+11: ˜𝑯 𝑙 𝑣,𝑠 = ˜𝑯 𝑙 𝑣 W𝑙 𝑠 
+
+12: /*Private Branch Extraction*/ 
+
+13: ˜𝑯 𝑙 𝑣,𝑝 = ( ˜𝑯 𝑙 𝑣 − StopGrad ( ˜𝑯 𝑙 𝑣,𝑠 )) W𝑙 𝑣,𝑝, 1W𝑙 𝑣,𝑝, 2
+
+14: /*Disentangled Multi-View Fusion*/ 
+
+15: Shared aggregation: ˜𝑯 𝑙 𝑠 = Í𝑣 ∈ V ˜𝑯 𝑙 𝑣,𝑠 
+
+16: Private aggregation: ˜𝑯 𝑙 𝑝 = Concat ({ ˜𝑯 𝑙 𝑣,𝑝 }𝑣 ∈ V )W𝑙 𝑝 
+
+17: Final fusion: ˜𝑯 𝑙 = ˜𝑯 𝑙 𝑠 + ˜𝑯 𝑙 𝑝 
+
+18: /*Feed-Forward Network Layer*/ 
+
+19: 𝑯 𝑙 +1 = Conv1D (ReLU (Conv1D (LN ( ˜𝑯 𝑙 )))) 
+
+20: end for 
+
+21: Decoder Projection 
+
+22: ˆ𝑿 = Linear (𝑯 𝐿 )
+
+23: Loss Computation 
+
+24: Reconstruction loss: 
+
+LREC = 1 − 𝑿 ⊤ ˆ𝑿 
+
+∥𝑿 ∥∥ ˆ𝑿 ∥
+
+25: Disentanglement loss: 
+
+LDIS = 1
+
+𝐿 |V | 
+
+> 𝐿 −1
+
+∑︁ 
+
+> 𝑙 =0
+
+∑︁ 𝑣 ∈ V 
+
+CrossCov   StopGrad ( ˜𝑯 𝑙 𝑣,𝑠 ), ˜𝑯 𝑙 𝑣,𝑝 
+
+
+
+26: Total loss: 
+
+L = LREC + L DIS 
+
+27: Update parameters via Adam optimizer 
+
+Output: Trained DisenMamba KDD ’26, August 09–13, 2026, Jeju Island, Republic of Korea Xinglin Lian, Chengtai Cao, Ting Zhong, and Fan Zhou CIC-IoT2023 DoHBrw2020 ISCX-Tor2016 
+
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> Similarity
+> w/o Stop-Gradient
+> w/o Low-Rank Projection
+> w/o Disentanglement Loss
+> Our DisenMamba
+
+(a) CKA Similarity between Shared and Private Branches CIC-IoT2023 DoHBrw2020 ISCX-Tor2016  
+
+> 0.0
+> 0.2
+> 0.4
+> 0.6
+> 0.8
+> 1.0
+> Similarity
+> w/o Stop-Gradient
+> w/o Low-Rank Projection
+> w/o Disentanglement Loss
+> Our DisenMamba
+
+(b) CKA Similarity between Inter-Private Branches 
+
+Figure 11: CKA-based inter-branch redundancy statistics under different ablation variants. 2 4 6 8 10   
+
+> 50
+> 60
+> 70
+> 80
+> 90
+> AUC (%)
+> IoT2023 DoH2020 Tor2016
+
+(a) Packet Instance Number 𝐹 200 400 600 800 1000    
+
+> 84
+> 87
+> 90
+> 93
+> 96
+> AUC (%)
+> IoT2023 DoH2020 Tor2016
+
+(b) Packet Instance Length 𝑃 
+
+Figure 12: Supplementary hyperparameter sensitivity analy-sis across three datasets. 
+
+## C State Space Models 
+
+Mamba is an emerging sequence modeling architecture built upon State Space Models (SSMs) for efficient long-range modeling. SSMs are a class of models for sequential data that characterize the rela-tionship between input and output sequences through latent state representations. Given a one-dimensional input sequence 𝒙 ∈ R𝑂 ,an SSM produces a corresponding output sequence 𝒚 ∈ R𝑄 . In continuous time, an SSM is defined as: 
+
+¤𝒉 (𝑡 ) = 𝑨𝒉 (𝑡 ) + 𝑩𝒙 (𝑡 ),
+
+𝒚 (𝑡 ) = 𝑪𝒉 (𝑡 ) + 𝑫𝒙 (𝑡 ), (13) where 𝒙 (𝑡 ) ∈ R𝑂 and 𝒚 (𝑡 ) ∈ R𝑄 denote the input and output at time 𝑡 , respectively; 𝒉 (𝑡 ) ∈ R𝑆 and ¤𝒉 (𝑡 ) ∈ R𝑆 represent the hidden state and its time derivative. 𝑨 ∈ R𝑆 ×𝑆 , 𝑩 ∈ R𝑆 ×𝑂 , 𝑪 ∈ R𝑄 ×𝑆 , and 
+
+𝑫 ∈ R𝑄 ×𝑂 are learnable parameters. In practice, input sequences are discretely sampled. Follow-ing [ 15 ], applying the zero-order hold discretization to Equation (13) yields the discrete formulation: 
+
+𝒉 𝑘 = ¯𝑨𝒉 𝑘 −1 + ¯𝑩𝒙 𝑘 ,
+
+𝒚 𝑘 = 𝑪𝒉 𝑘 , (14) where ¯𝑨 = 𝑒 Δ𝑨 , ¯𝑩 = (Δ𝑨 )−1 (𝑒 Δ𝑨 − 𝑰 ) · ( Δ𝑩 ), and Δ is the learnable step size. As shown in Equation (14) , the hidden state 𝒉 𝑘 is updated recursively based on the current input and the previous state, while the output 𝒚 𝑘 depends on both the discrete parameters 𝑨 , 𝑩 , 𝑪 
+
+and the input. Since the discretized parameters remain constant across sequence positions, SSMs support parallel training. Prior work introduces the High-Order Polynomial Projection Operator (HiPPO) framework [ 14 ] to enhance long-range sequence modeling over continuous input histories. However, in classical SSMs, the parameters 𝑨 , 𝑩 , and 𝑪 are time-invariant and input-independent. Consequently, the model cannot adaptively assign position-specific importance across the se-quence. To overcome this limitation, Mamba [ 13 ] introduces input-dependent parameterization to enable selective state-space model-ing, significantly enhancing modeling flexibility: 
+
+𝑩 = 𝑾 𝐵 𝒙 𝑘 , (15) 
+
+𝑪 = 𝑾 𝐶 𝒙 𝑘 , (16) 
+
+Δ = 𝜏 Δ (𝑾 Δ𝒙 𝑘 ), (17) where 𝑾 𝐵 , 𝑾 𝐶 , and 𝑾 Δ denote input-dependent selective param-eter matrices, and 𝜏 Δ (·) denotes the softplus activation function. To further address the computational inefficiency of sequential recurrence, Mamba employs a selective scan mechanism that en-ables efficient parallel computation in linear time while preserving sequence modeling fidelity [28]. 
+
+## D Supplementary Redundancy Analysis 
+
+This section presents a supplementary redundancy analysis of three critical ablation variants in Table 2: w/o Stop-Gradient, w/o Low-Rank Projection, and w/o Disentanglement Loss. As shown in Fig-ure 11, Figure 11(a) reports the CKA similarity between shared and private branches, indicating shared-private separation, while Figure 11(b) reports the CKA similarity among private branches, reflecting inter-view redundancy within private representations. 
+
+## E Supplementary Hyperparameter Analysis 
+
+The data-level representation is crucial for traffic modeling and depends on two key hyperparameters: the number of packets 𝐹 and the packet byte length 𝑃 . To further analyze their effects, supple-mentary hyperparameter experiments are conducted, with results reported in detail in Figure 12.

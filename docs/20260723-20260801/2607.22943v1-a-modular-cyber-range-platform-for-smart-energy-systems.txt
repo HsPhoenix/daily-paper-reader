@@ -1,0 +1,193 @@
+Title: A Modular Cyber Range Platform for Smart Energy Systems
+
+URL Source: https://arxiv.org/pdf/2607.22943v1
+
+Published Time: Tue, 28 Jul 2026 00:18:20 GMT
+
+Number of Pages: 6
+
+Markdown Content:
+# A Modular Cyber Range Platform for Smart Energy Systems 
+
+> ∗
+
+Vasilis Ieropoulos, ∗Theofanis Eleftheriadis, ∗Kyriakos Christou, ∗Philippos Isaia, ∗Maria Michalopoulou, 
+
+> ∗†
+
+Angelos K. Marnerides, ∗Christos Laoudias, ∗† Maria K. Michael 
+
+> ∗
+
+KIOS Research and Innovation Center of Excellence, University of Cyprus, Cyprus 
+
+> †
+
+Department of Electrical and Computer Engineering, University of Cyprus, Cyprus 
+
+Abstract —Modern critical infrastructure requires realistic training tools that bridge the gap between digital vulnerabilities and physical consequences. This paper introduces a lightweight, modular Cyber Range (CR) designed to simulate Information Technology (IT) and Operational Technology (OT) environments with high fidelity. Using the FastAPI framework as backend and Quick Emulator (QEMU)/Kernel-based Virtual Machine (KVM) virtualisation, the platform employs a YAML-based engine to automatically deploy complex networks on standard hardware with minimal overhead. To demonstrate its capabilities, we present a Photovoltaic (PV) Plant scenario set in a fictional smart city. The scenario follows a multi-stage attack that begins with the compromise of a home Internet of Things (IoT) device and escalates into a major power outage at a military base. The proposed CR, natively supports industrial protocols such as Modbus/TCP and Message Queuing Telemetry Transport (MQTT) and includes a ”Green Team” framework for evaluating human performance during crisis situations. This paper describes the system architecture, automated setup, protocol-simulation capabilities, and scenario design. 
+
+Index Terms —Cyber Range; Cybersecurity Training; System Architecture; Smart Grid; Protocol Simulation; 
+
+I. I NTRODUCTION 
+
+The increasing sophistication of cyber threats has made cy-ber readiness a critical requirement across the public, private, and critical infrastructure sectors [1]. Smart cities increasingly depend on interconnected energy, water, transportation, health-care, telecommunication, cloud, and IoT systems. However, this connectivity expands the attack surface and introduces dependencies between digital services and physical processes. Cybersecurity is no longer only a matter of protecting data; it is a prerequisite for public safety, economic stability, and operational continuity. Modern adversaries conduct persistent, multi-vector oper-ations targeting not only information systems but also op-erational technologies, supply chains, and interconnected in-frastructure. Real-world incidents, such as attacks on power systems, ransomware affecting fuel distribution, and disrup-tions to healthcare services, demonstrate how cyber incidents 
+
+> This work was supported by the ACTING Project, Co-funded by the European Union through the European Defence Fund (EDF) and in part by the European Union’s Horizon 2020 research and innovation programme under Grant Agreement No 739551 (KIOS CoE-TEAMING) and from the Republic of Cyprus through the Deputy Ministry of Research, Innovation and Digital Policy. Views and opinions expressed are however those of the author(s) only and do not necessarily reflect those of the European Union or European Commission. Neither the European Union nor the granting authority can be held responsible for them.
+
+can propagate across essential services [2]. Consequently, or-ganisations require realistic environments for training, testing, and evaluating incident response. Cyber Ranges (CRs) provide controlled, reproducible environments for defenders, operators, and decision-makers to conduct exercises and validate proce-dures [3]. These platforms are especially relevant for cyber-physical environments where testing on operational infrastruc-ture is unsafe or impractical. A Cyber-Physical System (CPS) 
+
+integrates computation, networking, and physical processes. The type of CR examined in this research is specifically de-signed for CPS, in which both cyber actions and their physical consequences must be simulated in a realistic environment. This capability is termed high-fidelity simulation, meaning the platform accurately models both low-level network protocols (e.g., Modbus/TCP) and the operational impact on physical processes (e.g., changes in power output). Recent work has highlighted that CRs are not merely tech-nical testbeds, but complex socio-technical ecosystems that combine infrastructure resources, orchestration mechanisms, learning services, assessment processes, and human-in-the-loop activities [4]. This broader understanding is important for platforms targeting critical infrastructure, where realistic training requires both technical fidelity and meaningful repre-sentation of operational roles, workflows, and decision-making processes. Despite their value, standalone CRs often lack the scale, diversity, and interoperability needed to represent modern digital ecosystems [5]. The absence of common architectural principles and standardised representations also makes it diffi-cult to compare, integrate, and evaluate different CR platforms. To address this gap, recent research has proposed reference architectures that organise CR components across structural, functional, and informational dimensions, providing a more systematic basis for CR design, development, and evalua-tion [6]. In parallel, ontology-based approaches have been introduced to semantically represent CR concepts, roles, re-sources, scenarios, and capabilities, supporting more consistent reasoning about CR ecosystems and their configurations [4]. Federated CRs overcome the limitations of isolated plat-forms [7] by interconnecting independent ranges to share resources and jointly execute coordinated scenarios [8]. This approach is essential for cross-sector, cyber-physical scenar-ios where a single platform cannot reproduce the complex dependencies among energy, communication, transport, cloud, arXiv:2607.22943v1 [cs.CR] 24 Jul 2026 and operational control systems. Consequently, federation am-plifies the need for clear architectural models, interoperable descriptions, and systematic evaluation methods. Beyond technical fidelity, effective cyber training must address human and organisational factors across all roles, from engineers to managers. Training environments must support protocol experimentation and attack simulation while assessing awareness, coordination, decision-making, and re-sponse procedures. Recent work on explainable CR evaluation emphasises structured assessment criteria covering technical fidelity, training capabilities, scalability, usability, and mission relevance [9]. These structured perspectives ensure that CRs provide measurable improvements in overall cyber readiness. A well-designed CR evaluates both technical and human dimensions through distinct roles: the Red Team emulates adversaries to generate realistic attack scenarios [10], the Blue Team monitors and defends to demonstrate organisational detection capabilities [11]; and the Green Team represents operational personnel to measure resilience against anomalies and social engineering [12]. This interaction provides a holistic readiness assessment framework. The interaction among the Red, Blue, and Green Teams pro-vides a holistic evaluation framework that assesses technical exploit validation alongside human resilience, communication, and decision-making under stress. Within this context, this paper introduces a modular CR platform designed for realistic cyber-physical training and experimentation. The platform supports the automated deployment of complex Information and Communication Technology (ICT) and OT scenarios in-volving interconnected systems, industrial protocols, and cas-cading operational effects. The following sections describe the system architecture, orchestration engine, protocol-simulation capabilities, and a representative smart-energy scenario, while empirical validation of team-based evaluation is reserved for future work. The remainder of the paper is organised as follows. Sec-tion II reviews related work. Section III presents the proposed CR system architecture and scenario design. Section IV details the evaluation of the system’s usability and functionality through the PV Plant scenario. Section V concludes and outlines future directions. II. R ELATED WORK 
+
+CRs vary across academic, government, and commercial do-mains, each prioritizing different levels of openness, automa-tion, and specificity. In academia, the open-source KYPO [13] leverages infrastructure-as-code principles via YAML for au-tomated deployment but focuses heavily on IT environments. Similarly, CyTrONE [14] automates range instantiation using its CyRIS component but lacks native industrial protocol support or human-centric assessment frameworks. Government-supported infrastructure like the AIT CR [15] delivers high-fidelity IT/OT simulations for Industrial Control Systems (ICS) environments, though its technical implemen-tations remain proprietary. In the commercial sphere, Cyber-bit [16] features realistic environments mapped to the MITRE ATT&CK framework but requires significant investment and remains closed-source. Domain-specific platforms like the 
+
+Healthcare Cyber Range (HCCR) [16] and SPIDER [16] offer high-fidelity niche environments (e.g., medical devices, 5G security) but lack broader architectural modularity. Bader et al. [17] introduced PowerRange, a high-fidelity power-grid CR that integrates hardware-in-the-loop, realistic control-room interaction, and automated scenario derivation via PowerOwl [17], combining ICT emulation, OT commu-nication, and power simulation. In contrast, the proposed CR is a lightweight, modular smart-energy CR featuring YAML-driven orchestration, QEMU/KVM virtualisation, native Mod-bus/TCP and MQTT simulation, and a Red–Blue–Green Team framework for technical and human-centric assessment. As shown in Table I, existing open-source platforms typ-ically lack native OT/ICS support, while operational, high-fidelity ranges are rarely open or modular. The proposed CR bridges this gap as a lightweight, modular platform providing native IT/OT protocol simulation (Modbus/TCP, MQTT) and automated YAML-driven orchestration on commodity hard-ware. Critically, it is the only platform in this comparison to explicitly integrate a tri-team framework (Red, Blue, and 
+
+Green Team ) to address both technical training and organi-sational readiness. III. S YSTEM ARCHITECTURE AND SCENARIO DESIGN 
+
+A. Platform Architecture and Design Rationale 
+
+The internal architecture of the proposed CR follows a mod-ular, tiered approach for scalable virtualisation and seamless interaction, as illustrated in Fig. 1. The system comprises four primary layers:  
+
+> •
+
+Frontend Layer: A React-based web application provid-ing a dashboard for topology management. A NoVNC client enables direct console access via WebSockets.  
+
+> •
+
+Backend Layer: A FastAPI framework core that man-ages business logic via REST APIs, including an image extraction service and a YAML engine for automated deployment.  
+
+> •
+
+Storage Layer: A persistent layer for Virtual Machine (VM) images (ISOs) and YAML-based scenario defini-tions.  
+
+> •
+
+Virtualisation Host: Utilises the Libvirt daemon and QEMU/KVM to manage VM lifecycles. Nodes are ex-posed through VNC/WebSockets for remote trainee ac-cess. 
+
+B. Design Rationale and Key Differentiators 
+
+Our architectural choices are directly motivated by the limitations of the existing platforms identified in Section II. Unlike monolithic or resource-intensive platforms, the pro-posed CR enables lightweight, automated deployment on commodity hardware. Its FastAPI-based backend and YAML-driven orchestration reduce the barrier to entry for educators compared to closed-source alternatives. This infrastructure-as-code approach provides version-controlled, reproducible, and TABLE I COMPARATIVE ANALYSIS OF SELECTED CR S AND PLATFORMS 
+
+Range Openness & Automation IT/OT & ICS Support Monitoring & Threat Realism Domain-Specific Testbed Academic / Training Operational / Specialised KYPO [13] ✓ – ✓ – ✓ –
+
+AIT [15] – ✓ – ✓ – ✓
+
+CyTrONE [14] ✓ – – – ✓ –
+
+Cyberbit [16] – – ✓ – ✓ ✓
+
+HCCR [16] – – – ✓ – ✓
+
+SPIDER [16] – – – ✓ – ✓
+
+PowerRange [17] – ✓ ✓ Smart Energy/Power Grid ✓ –
+
+Proposed CR ✓ ✓ ✓ Smart Energy/Power Grid ✓ –               
+
+> Notes: Openness/Automation includes open-source, IaC, or YAML config. Monitoring/Threat Realism covers MITRE ATT&CK alignment or team exercises.
+> Domain-Specific denotes sector-tailored environments (e.g., healthcare, 5G, energy).
+> Fig. 1. System architecture and component interactions of the cyber range platform, illustrating the workflow from the user-facing frontend to the hypervisor-level virtualisation layer.
+
+shareable scenarios that are often absent from operational ranges. Although containerization offers lower overhead, QEMU/KVM was selected to provide high-fidelity kernel-level isolation, realistic malware execution environments, and native network-stack manipulation required for accurate OT emulation, which container runtime cannot safely replicate. Furthermore, while platforms like KYPO excel at IT au-tomation, they lack native support for OT protocols. Our explicit layering of protocol simulation such as Modbus/TCP and MQTT is a core differentiator. By co-locating these protocol simulators within the same virtualised environment as standard IT services, we enable realistic cascading attack chains from IT (e.g. WiFi compromise) to OT (e.g., Modbus command injection). This directly contrasts with siloed IT and OT training environments. 
+
+> Fig. 2. Use-case diagram showing interaction of Red, Blue, and Green Teams
+
+Finally, the architecture’s support for distinct Red, Blue, and Green Team interfaces is a key design choice for human-centric assessment. As illustrated in Figure 2 which enables the structured evaluation not only of technical exploits but also of human factors like operator situational awareness and decision-making under stress, moving beyond the purely technical focus of most existing ranges. 
+
+C. Scalability and Resource Management 
+
+The platform is designed with a strong emphasis on minimal resource consumption. Its core system runs as a set of con-tainerised services, including a FastAPI backend, React fron-tend, and a noVNC browser-based Virtual Network Computing (VNC) proxy, while Virtual Machines (VMs) are orchestrated by the host’s native KVM hypervisor. Individual scenarios allocate CPU and memory resources on demand through YAML definitions (e.g., cpu: 2, ram: 4096), controlable based on needs. Entire training topologies can be started and stopped as needed, avoiding the need for large, continuously running infrastructure. D. Scenario Overview: The PV Plant Attack 
+
+The platform is used to deploy complex scenarios and topologies for simulation and training. While validated here via the PV Plant topology, the underlying YAML orchestra-tion engine is completely decoupled from this use case. It parses arbitrary node definitions, networking configurations, and vulnerability states, allowing administrators to instantiate completely different IT/OT topologies without modifying the platform core. Can be modeled into segments of civilian and military ICT/OT infrastructures, including Smart Energy Grids com-prising Supervisory Control and Data Acquisition (SCADA) systems with Remote Terminal Units (RTUs), Communication Networks (5G for IoT), and Military Systems such as Com-mand and Control (C2) systems. The core scenario is the PV Plant attack chain, set in a fictional smart city, which models a cascading attack from a civilian residence to a military camp. The scenario is designed to involve all three teams, as shown in Fig. 2. The complete cascading cyber-attack chain is illustrated in Figure 3. 
+
+E. Attack Vector Decomposition and MITRE ATT&CK Map-ping 
+
+To provide a structured and realistic training environment, the attack vectors in the PV Plant scenario are decomposed according to standardised adversary behaviour models. Ta-ble II details the specific vulnerabilities, exploits, and MITRE ATT&CK mappings for each level. This decomposition allows the Red Team to follow a realistic, multi-stage attack path and enables the Blue Team to correlate alerts to specific tactics and techniques.             
+
+> TABLE II DECOMPOSITION OF ATTACK VECTORS WITH MITRE ATT&CK MAPPING
+> Level Initial Vulnerability Attack Path / Exploit MITRE ATT&CK Tactic (ID)
+> L1: Smart Home Weak WiFi password 1. Reconnaissance (scanning for open ports on PV inverter) 2. Exploitation (Modbus com-mand injection) Initial Access (TA0001) Command & Control (TA0011) L2: Grid Disr Unencrypted MQTT traffic & Default credentials
+> Path A (MQTT Hijack): In-tercept and inject fake power telemetry Collection (TA0009) Impact (TA0040) Weak API rate limiting & logging
+> Path B (API Hijack): Creden-tial stuffing on REST API to reduce grid allocation Credential Access (TA0006) Defense Evasion (TA0005) MQTT broker misconfig. (anon. publish)
+> Path C(Dictionary): Brute-force MQTT topic write access to alter commands Privilege Esc. (TA0004) Lateral Mvmt. (TA0008)
+
+F. Full Attack Path Description  
+
+> •
+
+Level 1: Smart Home Attack (Unauthorised shutdown of a residential PV system). – Initial Access: The Red Team conducts network reconnaissance to identify and gain unauthorised access to the residence’s Wi-Fi network by cracking a weak Wi-Fi Protected Access 2 Pre-Shared Key (WPA2-PSK) password. 
+
+– Exploitation: From the compromised network, the Red Team scans for the PV inverter, identifies an open Modbus Transmission Control Protocol (Mod-bus/TCP) port (502), and sends a malicious write-coil command to halt energy production. The Green Team observes a sudden drop in power output to zero on its dashboard.  
+
+> •
+
+Level 2: Smart Grid Disruption (Causing a power shortage in a military area). – Initial Access (Alternative Paths): Using the residen-tial compromise as a pivot, the Red Team attacks the central IoT platform via three vectors: 1) MQTT Session Hijacking: Intercepting unen-crypted MQTT traffic to manipulate power dis-tribution data. 2) REST API Hijacking: Using credentials ob-tained from a phishing attack (injected by the platform) to command the grid to reduce power allocation directly. 3) Dictionary Attack: Cracking weak packet en-cryption keys for the MQTT broker to inject malicious commands. 
+
+– Impact: Successful exploitation leads to a significant, targeted power shortage in the military area. The Blue Team must correlate alerts (e.g., failed MQTT auth, API rate violations) across the network, appli-cation, and ICS layers to identify the attack. 
+
+G. Expanded Smart Energy Testbed Topology 
+
+Figure 4 presents the complete testbed for the PV Plant scenario, extending beyond the residential inverter to include a wind farm, a Battery Energy Storage System (BESS) using Modbus/TCP, energy-market and weather Application Programming Interfaces (APIs), and Information Technology (IT) services such as Zimbra, WordPress, OpenVPN, and Wazuh. Two Kali Linux Virtual Machines (VMs) support Red Team operations, while the Blue Team monitors net-work traffic through the switch. This configuration enables IT →OT →market attack chains, such as compromising Word-Press to manipulate market APIs and inject Modbus commands into generation assets, while the Green Team observes physi-cal and economic anomalies through operational dashboards. These capabilities are further described by Christou et al. [18]. IV. E VALUATION 
+
+As depicted in Figure 3, the proposed CR simulates indus-trial and IoT protocols essential to the PV Plant cascading attack scenario. For Level 1 , the range deploys virtualised inverters that communicate via Modbus/TCP, a standard ICS protocol that, when unsecured, is vulnerable to various forms Fig. 3. Cyber attack chains in a smart energy systems, showing the progression from residential compromise to grid disruption for the proposed scenario.  
+
+> Fig. 4. Expanded Smart Energy Testbed: IT, OT, market APIs, and team vantage points.
+
+of exploitation. Trainees (Red Team) can conduct network reconnaissance and execute unauthorised commands. Blue Team monitors Modbus traffic for anomalies (e.g., function code violations or write-coil attacks). For Level 2, the proposed CR uses an MQTT broker architecture that simulates a dense network of sensors and controllers exchanging power telemetry data. By intentionally simulating these exchanges over unsecured channels, the plat-form facilitates training in MQTT session hijacking and traffic interception. These vectors enable participants to manipulate energy output data and observe the resulting power shortages. 
+
+A. Red Team Design 
+
+The Red Team acts as the adversary, executing the attack chains described in Section III-E. CR supports Red Team operations through:  
+
+> •
+
+Scenario injection points: The YAML orchestration engine pre-configures vulnerabilities (e.g., default creden-tials, open MQTT ports, weak API authentication) that the Red Team can discover and exploit.  
+
+> •
+
+Protocol exploitation tools: The platform includes virtu-alised instances of common penetration testing tools (e.g., 
+
+modbus-cli , MQTT explorers, curl for REST API) accessible from dedicated attacker VMs.  
+
+> •
+
+Multi-vector attack execution: Red Team members can simultaneously launch MQTT session hijacking, dictio-nary attacks against MQTT write-keys, and phishing campaigns targeting Green Team dashboards.  
+
+> •
+
+Stealth and persistence: The platform logs all Red Team actions for after-action review but does not artificially constrain them, allowing trainees to practice evasion techniques. The Red Team’s primary goal is to achieve the cascading failure (residential PV shutdown followed by military grid disruption) while avoiding detection by the Blue Team. 
+
+B. Blue Team Design 
+
+The Blue Team monitors, detects, and responds to ongoing threats, with all network traffic routed through their vantage point for full-visibility surveillance. The platform provides integrated defensive capabilities including:  
+
+> •
+
+Centralised logging and alerting : Ntopng aggregates logs from all virtualised assets, covering Modbus queries, MQTT messages, API calls, and system authentication attempts  
+
+> •
+
+Network traffic analysis : Packet capture (PCAP) archives are available across all network segments, al-lowing defenders to use built-in tools like Zeek and Wireshark to investigate suspicious flows.  
+
+> •
+
+Anomaly detection : Ntopng and PiHole serve as de-tection mechanisms to highlight Modbus function code violations, MQTT authentication failures, REST API rate limits, and unauthorized access to operational dashboards Blue Team performance is evaluated based on detection latency, alert accuracy, response effectiveness, and commu-nication with the Green Team. 
+
+C. Green Team Framework 
+
+In the proposed CR, the Green Team is designed to assume the operational role of PV plant engineers, serving as the primary monitoring entity for the energy infrastructure. This design enables future assessment of human operators’ defensive posture and situational awareness. The framework includes:  
+
+> •
+
+Operational Monitoring Dashboard: A functional PV dashboard visualising real-time telemetry (inverter volt-age, power output, MQTT broker status). Green Team participants monitor these data streams to distinguish routine fluctuations from malicious activity.  
+
+> •
+
+Social Engineering Vector Simulation: The environ-ment injects deceptive communications mimicking ad-ministrative or maintenance requests. Participants are tasked with identifying attempts at credential theft and unauthorised access. This pedagogical design moves beyond technical validation to enable analysis of the ”human element” in critical infras-tructure protection [19], though empirical validation remains future work. Together, Red, Blue, and Green Teams provide a complete evaluation ecosystem: Red challenges defences, Blue measures detection and response, Green assesses operational awareness. V. C ONCLUSIONS AND FUTURE DIRECTIONS 
+
+This paper presented a modular CR platform for simulating smart energy systems and cyber-physical infrastructures. The platform combines a FastAPI backend, KVM-based virtual-isation, and YAML-based orchestration to support the auto-mated deployment of complex training environments. It also integrates protocol simulation for Modbus/TCP and MQTT, enabling realistic cascading attack scenarios across intercon-nected ICT and OT components. Through the representative PV Plant scenario, the paper demonstrated how multi-stage attack chains can propagate from residential IoT environments to wider operational disruptions. The paper also introduced a Green Team framework for human-centric assessment. To better represent segmented or air-gapped operational environments, future iterations will quantify this assessment via integrated dashboard analyt-ics that log key performance metrics, including detection time( Tdet ), operator reporting latency, and checklist compli-ance rates. By complementing Red and Blue Team activities, this framework aims to support the evaluation of awareness, coor-dination, decision-making, and response behaviour in cyber-physical training scenarios. This extends the role of the CR beyond technical exploitation and detection, positioning it as a broader environment for assessing cyber readiness. Transitioning the proposed CR to a production-grade plat-form involves several key directions. Future work will imple-ment role-based access control for all team personas and en-hance industrial network emulation through software-defined networking, Virtual Local Area Network (VLAN) tagging, and multi-homed interfaces to better represent segmented or air-gapped operational environments. The integration of Large Language Models (LLMs) through local inference, such as Ollama, for dynamic scenario generation and real-time guidance will also be explored, alongside cross-domain federation across multiple hardware-in-the-loop deployments and international CRs. Future work will also include a comprehensive performance benchmark to empirically measure VM provisioning latency, CPU and RAM utilisation under peak training loads, and the hardware overhead introduced by the QEMU/KVM virtualisa-tion layer. REFERENCES [1] W. S. Admass, Y. Y. Munaye, and A. A. Diro, “Cyber security: State of the art, challenges and future directions,” Cyber Security and Applications , vol. 2, p. 100031, 2024. [2] Z. Yu, H. Gao, X. Cong, N. Wu, and H. H. Song, “A survey on cyber– physical systems security,” IEEE Internet of Things Journal , vol. 10, no. 24, pp. 21 670–21 686, 2023. [3] M. M. Yamin, B. Katt, and V. Gkioulos, “Cyber ranges and security testbeds: Scenarios, functions, tools and architecture,” Computers & Security , vol. 88, p. 101636, 2020. [4] V. Kampourakis, M. Takaronis, V. Gkioulos, and S. Katsikas, “An ontology-based framework for semantic representation of the cyber range domain,” Journal of Cybersecurity and Privacy , vol. 6, no. 2, p. 76, 2026. [Online]. Available: https://doi.org/10.3390/jcp6020076 [5] M. Park, H. Lee, Y. Kim, K. Kim, and D. Shin, “Design and imple-mentation of multi-cyber range for cyber training and testing,” Applied Sciences , vol. 12, no. 24, 2022. [6] V. Kampourakis, V. Gkioulos, and S. Katsikas, “A step-by-step definition of a reference architecture for cyber ranges,” Journal of Information Security and Applications , vol. 88, p. 103917, 11 2024. [7] C. Vir´ ag, J. ˇ Cegan, T. Lieskovan, and M. Merialdo, “The current state of the art and future of european cyber range ecosystem,” in 2021 IEEE International Conference on Cyber Security and Resilience (CSR) , 2021, pp. 390–395. [8] E. C. S. O. (ECSO), “Understanding cyber ranges: From hype to reality,” European Cyber Security Organisation, Tech. Rep., Mar. 2020, white Paper. [9] V. Kampourakis, G. Kavallieratos, G. P. Spathoulas, V. Gkioulos, and S. K. Katsikas, “Llm-assisted ahp for explainable cyber range evaluation,” ArXiv , vol. abs/2512.10487, 2025. [Online]. Available: https://api.semanticscholar.org/CorpusID:283737288 [10] S. Yulianto, B. Soewito, F. L. Gaol, and A. Kurniawan, “Enhancing cybersecurity resilience through advanced red-teaming exercises and mitre att&ck framework integration: A paradigm shift in cybersecurity assessment,” Cyber Security and Applications , vol. 3, p. 100077, 2025. [Online]. Available: https://www.sciencedirect.com/science/article/pii/ S2772918424000432 [11] T. Kokkonen and S. Puuska, “Blue team communication and reporting for enhancing situational awareness from white team perspective in cyber security exercises,” in Internet of Things, Smart Spaces, and Next Generation Networks and Systems , O. Galinina, S. Andreev, S. Balandin, and Y. Koucheryavy, Eds. Cham: Springer International Publishing, 2018, pp. 277–288. [12] J. Pr¨ ummer, T. van Steen, and B. van den Berg, “Assessing the effect of cybersecurity training on end-users: A meta-analysis,” 
+
+Computers & Security , vol. 150, p. 104206, 2025. [Online]. Available: https://www.sciencedirect.com/science/article/pii/S016740482400511X [13] J. Vykopal, P. ˇ Celeda, P. Seda, V. ˇ Sv´ abensk´ y, and D. Tovarˇ n´ ak, “Scalable learning environments for teaching cybersecurity hands-on,” in 2021 IEEE Frontiers in Education Conference (FIE) , 2021, pp. 1–9. [14] C. Pham, D. Tang, K.-i. Chinen, and R. Beuran, “Cyris: a cyber range instantiation system for facilitating security training,” in 
+
+Proceedings of the 7th Symposium on Information and Communication Technology , ser. SoICT ’16. New York, NY, USA: Association for Computing Machinery, 2016, p. 251–258. [Online]. Available: https://doi.org/10.1145/3011077.3011087 [15] M. Leitner, M. Frank, W. Hotwagner, G. Langner, O. Maurhart, T. Pahi, L. Reuter, F. Skopik, P. Smith, and M. Warum, “Ait cyber range: Flexible cyber security environment for exercises, training and research,” in Proceedings of the 2020 European Interdisciplinary Cybersecurity Conference , ser. EICC ’20. New York, NY, USA: Association for Computing Machinery, 2021. [Online]. Available: https://doi.org/10.1145/3424954.3424959 [16] R. Beuran, Cyber Ranges . Singapore: Springer Nature Singapore, 2025, pp. 221–259. [Online]. Available: https://doi.org/10.1007/ 978-981-96-0555-2 11 [17] L. Bader, E. Wagner, and M. Serror, “Powerrange: An immersive cyber range for power grid operators,” International Journal of Critical Infrastructure Protection , vol. 53, p. 100845, 2026. [Online]. Available: https://www.sciencedirect.com/science/article/pii/S187454822600017X [18] K. Christou et al. , “Acting: A platform for cyber ranges federation,” 2026. [Online]. Available: https://arxiv.org/abs/2605.12170 [19] I. Yiangou and E. Stavrou, “Developing green it and cybersecurity com-petencies through virtualization: Upskilling learners across disciplines,” in HCI International 2025 Posters , C. Stephanidis, M. Antona, S. Ntoa, and G. Salvendy, Eds. Cham: Springer Nature Switzerland, 2025, pp. 129–139.

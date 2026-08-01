@@ -1,0 +1,349 @@
+Title: ReCon: A Resource-Constrained Benchmark for LLM-Based Cybersecurity Compliance Across Ingestion and Retrieval Pipelines
+
+URL Source: https://arxiv.org/pdf/2607.22885v1
+
+Published Time: Tue, 28 Jul 2026 00:14:33 GMT
+
+Number of Pages: 22
+
+Markdown Content:
+# ReCon: A Resource-Constrained Benchmark for LLM-Based Cybersecurity Compliance Across Ingestion and Retrieval Pipelines 
+
+Rohit Negi 1[0000 −0002 −4211 −5637] , Rishik Jain 2[0009 −0008 −6267 −180 X], Soumyo V Chakarborty 2[0009 −0008 −8078 −0196] , Amit Negi 2[0009 −0005 −6016 −5725] , and Sandeep K Shukla 2[0000 −0001 −5525 −7426]  
+
+> 1
+
+Indian Institute of Technology Kanpur, India  
+
+> 2
+
+International Institute of Information Technology Hyderabad, India 
+
+rohit@cse.iitk.ac.in 
+
+Abstract. With the increasingly aggressive cyber threat landscape for governments, businesses, and institutions, as information and/or cyber security implementations are increasingly under scrutiny by regulators, it has been pointed out that governance failure is one of the major rea-sons for a weakened cyber security posture. A major component of Cy-ber/information security governance is the development, adoption, and implementation of a comprehensive information and/or cyber security policy document. The policy document must be in compliance with in-ternational or national standards and, if possible, with regulatory guide-lines. However, it is often observed that policy documents are often in-complete with respect to industry standards or regulations and require revision when subjected to a thorough audit. Identifying the gaps be-tween the controls and processes documented in the policy and those required in the regulations or standards necessitates extensive manual effort. The advent of Generative AI tools such as Large Language Mod-els (LLMs) led to use of LLMs and Agentic AI tools to automate such compliance checks, as seen in a few research publications in recent times. However, such reported use of LLMs are experimented with high resource environments such as expensive GPUs and memory based servers. For smaller organizations such expensive compute platform may not be easily available. In addition, policy documents are often changed and improved and every iteration would require a compliance assessment. Therefore, it would be helpful if such compliance checks can be done as often as required without paying high price of GPU and memory expensive com-pute. In this article, we benchmark the compliance checking tasks on LLMs that do not require GPU and high memory usage and the effec-tiveness of such resource constrained LLMs in compliance checking. Our experiments demonstrated that the low resource LLMs can provide good agreement/accuracy in compliance checking of policy documents against standards by experimenting with ISO 27002:2022 controls against mul-tiple policy documents. 
+
+Keywords: Cybersecurity Compliance · Cybersecurity Audit · Cyber-security Policy · ISO 27002 · Large Language Models. arXiv:2607.22885v1 [cs.CR] 24 Jul 2026 2 Negi et al. 
+
+1 Introduction 
+
+Increasing use of digitalization of power grid, manufacturing, transportation sys-tems, communication systems, banking and financial organizations, government institutions has been extending the cyber attack surface, rapidly as evidenced by a large number of cyber attacks every year in all sectors of the economy. The extensive use of 5G communication, generative and agentic AI based tools and Industry 4.0 has further aggravated the big cybersecurity challenge [1]. In various studies, weak information and/or cyber security governance and a lack of skilled workers have been found to contribute greatly to the weak cyber se-curity posture. For example, the FICCI-EY 2026 risk survey shows that Indian companies are increasingly concerned about cybersecurity[2]. This survey fur-ther reveals that effective governance pressures are intensifying, with 45% of respondents indicating that non-compliance with governance requirements has had a direct impact on their organizations. In addition, workforce challenges persist, as 64% of organizations report that there are talent shortages and skill gaps that affect performance and long-term capability planning. At the gover-nance level, organizations implement structured frameworks such as the NIST cybersecurity framework[3] and/or the ISO/IEC 27001 standard[4] to standard-ize risk identification, assessment and control processes. These frameworks help organizations establish information/cyber security policies in accordance with these standards. Sector specific regulators often require that regulated entities document and implement policies based on sector specific guidelines or widely adopted standards such as NIST SP 800-53 or ISO 27002 etc. The policy doc-uments also define roles and responsibilities and ensure continuous monitoring and compliance. Many countries also provide guidance in the form of policies[5], and guidelines [6] & [7] [8], which are issued from time to time to reinforce cybersecurity management. However, a recent survey [9] with 90 experts was conducted to identify the ISMS core processes and unfortunately “the informa-tion security governance process" was not clearly identified as a core process. In [10] consolidated standards and best practices and identified that organiza-tions can use structured processes from the Strategic Enterprise Cybersecurity Governance Model (ECyG-M) to identify, evaluate, prioritize and manage cyber risks to achieve their strategic goals. NIST realized that cybersecurity is not just a technical exercise, it’s fundamentally an organizational responsibility. That’s why in CSF 2.0 [3], there is an explicit function for governance, leadership, risk oversight, policy enforcement; the overarching influence across all functions. Cy-ber risk also arise internally, due to employee errors, insider threats, or lapses in security policies and processes, and not just due to technical inadequacy. In [11], it has been mentioned that a key instrument for reducing the threats to information security associated with employees is to create, deploy, and enforce information security policies. In addition to this, [12] also argues that employees who do not comply with IS security procedures are a key concern for organiza-tions today. In summary, it is amply clear that cyber security works effectively only if governance is strong and strong technology based controls alone do not suffice. ReCon 3
+
+To mitigate cyber risks, organizations must implement a mature [13] Infor-mation/Cyber security Management System (ISMS/CSMS) that covers assets, configuration, vulnerability, patch and control management, as well as audits, incident response and recovery. Equally important are the effectiveness and qual-ity of the ISMS/CSMS. The ISO standards [4] identify nine key elements for evaluation: planning, leadership, risk management, policy management, resource management, communication, management review, documentation, and audit. CERT-In, a leading regulatory body in India, has mentioned in its guidelines [8] for government organizations that internal cyber audit should be conducted twice a year and third party audit should be conducted at least once a year. However, A cyber audit is a time-consuming and participatory process - it requires the active participation and time of not only the cyber security department but also other departments within the organization. All audit activities must be aligned with organizational policies that provide the framework and guidance for consistent and reliable information/cyber security operations. In essence, well-documented policies are critical to ensuring a resilient and high-performing ISMS/CSMS. The methodology used to audit an organization’s ISMS/CSMS may vary from one organization to another. Some may adopt standard frameworks such as ISO 27001 [4] or NIST CSF [3], while others may use customized approaches tailored to their specific needs [14]. According to industry best practices, an effective ISMS/CSMS follows three repeating phases: Define, Implement, and Manage. First, the organization defines its information/cyber security approach through policies approved and communicated by the top management. Next, these policies are implemented through processes, technical and administrative controls, along with training and awareness programs. However, some aspects may be missed during the initial definition, and the requirements may change over time due to new regulations, standards, or evolving threats. In the manage-ment phase, ISMS/CSMS is reviewed against updated requirements to identify gaps. These gaps are then addressed in the next cycle by refining policies and controls. This continuous and iterative process ensures that cybersecurity is up to date with changing risks, technologies, and regulatory expectations. In a ISM-S/CSMS, auditors, auditees, and regulatory bodies all play important roles in ensuring compliance. The review process helps organizations identify gaps and improvement opportunities, supports auditors in assessing business continuity, and enables regulators to evaluate how well standards and guidelines are being followed across organizations and sectors. This requires all three stakeholders to carefully analyze the policy documents in accordance with relevant frameworks and regulations. However, this process is often challenging due to limited availability of trained human resources[2] and the time required to review extensive documentation. For example, ISO 27002:2022 contains a total of 93 controls. Policy documents are typically written in a subjective and complex manner, making them subject to human interpretation, especially when the human auditor is inexperienced or has language difficulties. As a result, auditors, auditees, and regulators face a high cognitive burden when trying to extract meaning, context, and insight from 4 Negi et al. 
+
+large volumes of text during assessments. In [1], researchers show that cyberse-curity technology, staff confidence in cybersecurity, and processes all influence cybersecurity transformation. Therefore, businesses need a clear information and cybersecurity policy and the right tools to support review and audit processes. Similarly, [2] shows that 59% of respondents to their survey believe that the limited adoption of emerging technologies such as AI hinders operational effec-tiveness. Given the scarcity of experienced human resources, especially in the small-and medium scale industry and organizations, the creation, update, review, and compliance check against regulatory requirements is resource expensive and con-sequently ignored by such organizations. It is therefore desirable that a resource economic and automated compliance check tool be made available that could either be applied against a policy document to generate a compliance report or as assistant to the human expert. This will reduce the time spent review-ing policy documents. In this way, the current capacity gap could be addressed significantly. In the recent past, quite a few tools have been discussed in the literature which use agentic AI for automating audit and compliance tasks. Most of these agents run on LLMs, and report that API calls to closed source LLMs do quite well. However, not all organizations can afford the cost of too many API calls or token costs. Most medium- and small scale organizations do not possess their own high-capacity infrastructures, such as GPUs and servers with large memory. The target users for this work are the medium- and small scale organizations who need low cost cyber security to protect their data, better cyber hygiene of their employees, administrative controls for securing business processes and data flow, and possibly open source models and tools for securing their infrastructure. This work investigates whether policy conformity and violations analysis leveraging open source LLMs can be carried out effectively without having to procure ex-pensive GPU servers or high-memory configuration systems. This work analyzes multiple open weight LLMs and various configurations for policy compliance task and determines the configuration and LLMs that can be used such that the resource usage is within the budget of small/medium organizations. For the purpose of this analysis, conformity refers only to documentary coverage of the control requirements and not to operational implementation or effectiveness. In this paper, we make the following main contributions: 1. We demonstrate that even under resource constraints such as unavailability of GPU, and low memory, one could run open-weight LLMs with appropri-ate RAG architecture to get reasonably acceptable agreement in automated compliance checking for organizational information/cyber security policies against standards or guidelines. 2. We carry out a series of experiments with 8 well known open weight LLM models for the compliance check automation. We evaluate the agreement and disagreement against human expert determined check for compliance. Such experiments help us choose appropriate LLM for the task. ReCon 5
+
+3. We carry out a series of experiments with 2 different vector embedding models, 2 different re-ranking models and different retrieval configurations for the best agreement score. Such experiments help us choose appropriate embedding/re-ranking model, and retrieval configurations for the task. 4. We also benchmark different LLM and configurations in terms of latency, throughput, CPU utilization and memory usages while assessing agreement and disagreement. 
+
+1.1 Organization 
+
+This paper is organized as follows. Section 2 presents a comprehensive review of the existing literature, focusing on prior work related to LLMs, and their applications in cybersecurity governance. Section 3 describes the methodology adopted in this study, including the overall system architecture, pre-processing such as chunking, intelligent retrieval, and LLM-based reasoning. Section 4 de-scribes the experiment, detailing the computational environment, datasets used, retrieval strategies for prompt construction, and combinations of runs. Section 5 presents the results obtained from the experiment. Finally, Section 6 concludes the paper by summarizing the key findings, limitations and directions for future research. 
+
+2 Literature Review 
+
+Cybersecurity compliance and audits have traditionally been labor - intensive processes that often involve a degree of subjectivity. Auditors are required to in-terpret relevant standards, examine organizational policies, and assess whether security controls have been properly implemented. During a compliance assess-ment, regulatory bodies ensure that the organization has properly adopted and implemented the guidelines and standards they set. Furthermore, auditee con-ducts an internal audit, it also has to review various policies, procedures, records and other related documents. LLMs are increasingly being investigated for ap-plications in governance, risk, and compliance (GRC) and have significantly transformed ISMS/CSMS practices [15] [16] [17] [18] [19] [20] [21]. As policy review is time-consuming, One can either use commercial tools such as Servi-ceNow GRC [22], MetricStream [23], etc., or opt for policy compliance using closed source LLM’s[24]. AI-driven solutions rely on API-based services with token-based pricing models, which can become costly when deployed at scale. Agentic AI-based solutions [24] have demonstrated satisfactory accuracy across various tasks. However, many organizations are hesitant to share their policies and sensitive documents with cloud-based closed-source models. Therefore, they often prefer on-premises solutions, which allow them to maintain complete con-trol over the data. Running such solutions on-premises using dedicated GPUs entails substantial upfront hardware investments as well as ongoing operational and maintenance expenses. 6 Negi et al. 
+
+A conceptual framework has demonstrated that BART-based semantic anal-ysis can be used for policy compliance assessment [25]. However, this approach assumes that the auditee has access to the required ISO standard documents. In practice, this may not always be the case, as access to these documents often requires a paid subscription. This raises an important question: Is it possible to conduct policy compliance analysis using LLMs prior knowledge when the auditee does not have access to the full ISO standards? If a model contains sufficient prior knowledge of auditing or compliance stan-dards, repeatedly incorporating detailed guidelines into the prompt can result in unnecessary token expenditure. In this context, In [26] present an evaluation and comparative analysis of various low-computation open-weight models. The study tested 16 open-weight models and one closed-weight model, demonstrating that many open-weight models also possess sufficient knowledge of compliance and auditing topics. Table 1 summarizes existing research on the use of LLMs and AI in the field of policy. These studies aim to understand how AI-based techniques can make policy formulation, document analysis, compliance assessment, and auditing processes more effective, accurate, and automated. However, using LLMs in an on-premises environment often requires high com-putational resources, especially GPU infrastructure. Since it is not necessary for every organization to have GPU-based resources available, low-compute solu-tions become increasingly important. On the other hand, models with relatively few parameters can be run on standard CPUs. The context window of such mod-els is a crucial factor in their use, as the limited context window also limits the size of the prompt. Consequently, careful use of each token used in the prompt becomes essential. The primary motivation of this work is to develop an automated compliance gap analysis approach that is accessible to organizations of all sizes and resource levels. By designing a solution capable of operating efficiently on standard com-mercial computing systems, potentially relying solely on CPU resources, we aim to minimize dependence on expensive cloud-based APIs and specialized hard-ware infrastructure. Such an approach enables cybersecurity teams to identify compliance deficiencies more rapidly, update policies effectively, and maintain secure IT environments while keeping operational costs low. Additionally, exist-ing research lacks a comprehensive benchmark on the use of LLMs leveraging the prior knowledge of the LLM itself for cybersecurity policy compliance assess-ment, as well as standardized performance evaluations and comparative analyses across different combinations of rerankers and embedding models. By addressing these limitations, this study seeks to advance the practicality, affordability, and widespread adoption of LLM-based compliance analysis solutions. 
+
+3 Methodology 
+
+In this section we describe the design and key components of methodology. It analyzes an organization’s cybersecurity policies and procedures, validates them against the security standards such as ISO 27002:2022 standard, determines if ReCon 7
+
+Table 1: Comparative Analysis of LLM-based Approaches for Cybersecurity Compli-ance 
+
+Citation Primary Task AI / LLM 
+
+Work in progress: Leveraging LLMs for cybersecurity compliance [15] Statement of Applicability (SOA) generation, audit scope definition, and compliance checklist develop-ment Sonnet 3.5, Chat-GPT 4o, and Llama 3.1 PolicyGPT: Automated Analysis of Privacy Policies with LLMs [16] Specific to classification of privacy policies ChatGPT, GPT-4, and claude2 Enhancing privacy policy compre-hension through Privacify: A user-centric approach using advanced language models [17] To enhance the accessibility and un-derstandability of privacy policies Mistral 7B Instruct PARAG: Proactive Answering Framework using Retrieval-Augmented Generation [18] Proactive Q&A; compliance guid-ance retrieval GPT-4o-mini, Mistral-7B AutoPGT: LLM-Driven Auto-mated Policy Generation for Securing Industrial Control Sys-tems [19] Automated security policy genera-tion for ICS environments GPT-4o Mini, Deepseek-chat Position Paper: Leveraging LLMs for Cybersecurity Compliance [27] Conceptual framing; outline a com-prehensive roadmap for studying the utility of LLMs in cybersecurity compliance No implementation MACAW: Automating Organiza-tional Cyber Security Policy Com-pliance Against Industry Standards Using Agentic AI [24] Policy compliance analysis using closed source models GPT-4o Mini Automated Information Security Policy Analysis: A Conceptual Framework [25] automatic assessment of informa-tion security policies against the ISO/IEC 27001:2022 standard. BERT, Distil-BERT, ALBERT, RoBERTA, T5, Fal-con, and BART ReCon Automatic assessment of infor-mation/cyber security policy documents against the ISO/IEC 27002:2022 standard without re-quiring the ISO document, using LLM prior knowledge Open Weight CPU-Deployable LLM’s 8 Negi et al. 
+
+relevant controls have been properly addressed by the organization’s policies, identifies any gaps in the policies, and generates easy to understand and inter-pretable justifications in natural language of the alignments and gaps between the policies and standard controls. We utilize RAG (Retrieval-Augmented Gen-eration) for capturing the organization’s policies and procedures and intelligent retrieval of relevant policy information to build appropriate context for each standard cybersecurity control query. Using LLM for reasoning, improvement of decisions, and generation of justification and gap text. The overall high-level architecture of the proposed framework is illustrated in Figure 1. The key com-ponents include: 
+
+Fig. 1: "ReCon" Framework Architecture and Components 
+
+3.1 Pre-processor of cybersecurity policies 
+
+The Pre-processor component ingests checklist data and policy documents from that can be in various file formats such as .pdf, .docx and .csv (checklist). We have used the tiktoken tokenizer [28] with GPT-4 encoding. We first load the document and extract each paragraph as a separate string, which gives us the raw text blocks. We then clean this text by removing empty paragraphs, normalizing whitespace, and filtering out non-ASCII characters. After cleaning, we count the tokens for each strings. 
+
+3.2 Chunking 
+
+For chunking, we have used the generated tokens to split the text into smaller overlapping sections for embedding. We accumulate paragraphs into a buffer until adding another would exceed a defined token limit. At that point, we store the buffer as a chunk and carry forward a small overlap into the next chunk. This overlap ensures continuity of information across chunks. ReCon 9
+
+3.3 Embedding & Reranking 
+
+Vector embedding: We have used an embedding model to convert each chunk generated into a numerical representation. Each chunk of text is passed through the selected embedding model (as listed in Table 2), which transforms it into a vector. These vectors are then stored in ChromaDB [29], a vector database that allows efficient storage and retrieval. Reranking: An approach is used to identify the relevance of chunks for each compliance clause in the checklist. Each clause–chunk pair evaluated using a reranker such as the BAAI/bge-reranker-base model for relevance assessment and assigns a relevance score based on their semantic relationship. 
+
+3.4 Intelligent retrieval & Prompt Queue Builder 
+
+Fig. 2: Four retrieval strategies The prompt has been constructed using the retrieval strategy as depicted in Figure 2. In the retrieval strategy, four cases are defined. For Case 1, we retrieve the top-K results based on similarity and then select the top-N from these. In Case 2, we rerank the top-K results using a cross-encoder and then select the top-N. In Case 3, we retrieve the top-K results based on relevance, rerank them using similarity, and then select the top-N. In Case 4, we retrieve the top-K results based on relevance. As we are using multiple embedding models and multiple cross-encoders, Table 2 presents twelve unique retrieval configurations, each determining how the selected chunks are organized. These strategies allow 10 Negi et al. 
+
+Table 2: Retrieval configurations across embedding and reranker combinations. 
+
+Case Embedding Reranker 
+
+1 BAAI/bge-base-en-v1.5 [31] –all-MiniLM-L6-v2 [32] –2BAAI/bge-base-en-v1.5 cross-encoder/ms-marco-MiniLM-L-12-v2 [33] BAAI/bge-base-en-v1.5 BAAI/bge-reranker-base [34] all-MiniLM-L6-v2 cross-encoder/ms-marco-MiniLM-L-12-v2 all-MiniLM-L6-v2 BAAI/bge-reranker-base 3BAAI/bge-base-en-v1.5 cross-encoder/ms-marco-MiniLM-L-12-v2 BAAI/bge-base-en-v1.5 BAAI/bge-reranker-base all-MiniLM-L6-v2 cross-encoder/ms-marco-MiniLM-L-12-v2 all-MiniLM-L6-v2 BAAI/bge-reranker-base 4 – cross-encoder/ms-marco-MiniLM-L-12-v2 – BAAI/bge-reranker-base 
+
+Summary of experimental scale 
+
+Retrieval configurations (Unique) 12 LLM models 8Policy datasets 3Total experimental runs 12 × 8 × 3 = 288 
+
+Controls per run 93 Total evaluations (Unique) 288 × 93 = 26 ,784 
+
+us to experiment with different ways of providing context and to evaluate the agreement of the model’s responses. 
+
+3.5 LLM for reasoning and compliance assessment 
+
+For LLM reasoning and compliance assessment, we have used the Ollama tool [30] for local deployment of models on the Ubuntu operating system. The de-ployment is designed to work in a low-compute environment, where CPU-based execution is sufficient for running selected models without requiring dedicated GPU resources. The focus is on enabling local experimentation and evaluation of reasoning and compliance behaviors in a cost-effective manner with default configurations. 
+
+3.6 Evaluation Metrics 
+
+The performance of each large language model (LLM) was evaluated by com-paring its response with the corresponding human annotations, which served ReCon 11 
+
+as the ground truth. Since the policy datasets exhibit substantial class imbal-ance, conventional classification accuracy alone is not an appropriate measure of model performance. Specifically, one dataset (Set-B) consists entirely of conform-ing policies (100% conformity), while the other datasets contain approximately 59.13% (Set-C) and 22.58% (Set-A) conforming policies, respectively. Owing to this imbalance, the evaluation focused on measuring the agreement between LLM predictions and human annotations rather than relying solely on overall classification performance. Accordingly, four complementary metrics were used to assess model performance: Agreement, Cohen’s Kappa, Matthews Correlation Coefficient (MCC), and Balanced Accuracy. 
+
+Agreement Observed ( Ao): (Ao) or “agreement" or “accuracy" represents the proportion of evaluations in which the model response matched the human de-cision. In this study, agreement is defined as the percentage of evaluations for which both the human and the model assigned the same label (i.e., conformity 
+
+or nonconformity ). It is calculated as 
+
+Ao = Accuracy = T P + T N N
+
+Cohen’s Kappa ( κ): It measures the level of agreement ( Ao) between the model predictions and the human annotations after correcting for “agreement expected by chance ( Ae)". The statistic ranges from −1 to 1, where a value of 1 indicates perfect agreement ( Ao), 0 indicates agreement ( Ao) equivalent to chance, and negative values indicate agreement ( Ao) worse than chance. 
+
+Ae = (T P + F P )( T P + F N ) + ( F N + T N )( F P + T N )
+
+N 2
+
+κ = Ao − Ae
+
+1 − Ae
+
+Matthews Correlation Coefficient ( MCC ): It is a balanced measure of binary classification performance that incorporates true positives, true negatives, false positives, and false negatives. Unlike overall accuracy, MCC remains informative even when the class distribution is imbalanced. Its values range from −1 to 1,where 1 indicates perfect prediction, 0 indicates performance no better than random prediction, and −1 indicates complete disagreement. 
+
+MCC = T P × T N − F P × F N 
+
+p(T P + F P )( T P + F N )( T N + F P )( T N + F N )
+
+Balanced Accuracy ( BA ): It is used to evaluate classification performance while accounting for class imbalance. It is defined as the average of sensitivity (true positive rate) and specificity (true negative rate): 
+
+BA = 12
+
+ T P T P + F N + T N T N + F P 
+
+12 Negi et al.                                               
+
+> Table 3: Language Models compatible with Ollama
+> S.No Model Params Size Max Context Default Context
+> 1Llama 3.2 3b 2.0 GB 131072 4096 2Mistral 7b 4.4 GB 32768 4096 3Granite 3.3 8b 4.9 GB 131072 4096 4Granite 4.1 3b 2.1 GB 131072 4096 5Granite 4.1 8b 5.3 GB 131072 4096 6Gemma 3 4b 3.3 GB 131072 4096 7Gemma 3n e2b 5.6 GB 32768 4096 8Phi-4 14b 9.1 GB 16384 4096
+
+4 Experiment 
+
+We experimented with eight open-weight, low-compute, CPU-deployable lan-guage models (as listed in Table 3). All models are deployed locally using the Ollama framework. The generation temperature is set to 0 to ensure determinis-tic outputs, with a maximum response time constraint of 120 seconds per query. All experiments are executed in a controlled offline environment on the system equipped with an Intel Core i9-14900 CPU, capable of a maximum clock fre-quency of 5.5 GHz, 31 GB of RAM, integrated Intel UHD Graphics 770, and NVMe SSD storage (Phison-based, model ABSNE191TB). 
+
+4.1 Datasets & Ground Truth 
+
+We use the most recent cybersecurity controls from ISO/IEC 27002:2022, in-corporating the full set of controls defined in the standard. To analyze orga-nizational cybersecurity policies and identify potential gaps, we collected three different sets of cybersecurity policy documents from independent CISA/ISMS LA-certified auditors. All three policies are real-world documents We also obtained their conformity assessments directly from the three certi-fied auditors, which is treated as ground truth. As listed in Table 4, The first policy set (Set A) contains 21 conformities and 72 non-conformities. The second policy set (Set B) contains all conformities. The third policy set (Set C) contains 55 conformities and 38 non-conformities. 
+
+4.2 Chunking, Storing, Retrieval & Prompts Queue Generation 
+
+For prompt preparation, the input documents are preprocessed and segmented into chunks using a token window of 250 tokens with a 50-token overlap. These chunks are subsequently processed using embedding / cross-encoder models and indexed for retrieval. ReCon 13                                              
+
+> Table 4: Ground Truth for ISO Set-A: Majority NC Set-B: All C Set-C: Majority C
+> Clause Category Controls CNC CNC CNC
+> Organizational (A.5) 37 631 37 023 14 People (A.6) 8358017Physical (A.7) 14 212 14 014 0Technological (A.8) 34 10 24 34 017 17
+> Sub-total 93 21 72 93 055 38
+> Note: C = Conformity, NC = Non-Conformity
+
+For intelligent information retrieval, both embedding-based similarity search and cross-encoder re-ranking strategies are employed. A total of 12 retrieval con-figurations are defined, combining different embedding and cross-encoder models as summarized in Table 2. Along with eight language models, three policy datasets, four embedding–re-ranker combinations, and four retrieval strategies, this resulted in 384 possible combinations. However, there is redundancy; for example, the Top-N chunks re-trieved using Embedding-1 without Cross Encoder-1 and Embedding-1 without Cross Encoder-2 are identical. As a result, the total number of unique experi-mental configurations is reduced to 288. Each configuration is evaluated using 93 controlled prompts, leading to a total of 26,784 prompt-level evaluations. These redundant runs have been used to check the consistency of the responses of the LLMs at temperature 0. For this experiment, the retrieval parameters were set to Top-K = 15 and Top-N = 5. 
+
+LLM Selection Eight different models were selected and deployed using Ollama [30], a local inference framework for running open-weight LLMs on consumer hardware, as listed in Table 3. The selection was motivated by their accessibility & cost-effectiveness. The choice of models was informed by the study conducted by [26], which benchmarked 16 low-compute LLMs based on their ability to recall guidance associated with the 93 controls of ISO 27002:2022. From these 16 models, we selected the six highest-performing models in terms of coverage: phi4:14b (83%), gemma3:4b (80.66%), granite4.1:3b (80.26%), gemma3n:e2b (79.72%), granite4.1:8b (78.25%) and mistral:7b (78.10%). In addition, we included two representa-tive models that achieved coverage above 70%, namely , granite3.3:3b, and llama3.2:3b. 
+
+5 Results 
+
+This section presents the benchmarking results for eight LLMs evaluated as auto-mated ISMS Lead Auditor across 93 ISO/IEC 27002:2022 controls. Each model 14 Negi et al. 
+
+received a structured prompt specifying audit role, evaluation criteria, output format, and policy evidence, and produced a JSON verdict of CONFORMITY or NON-CONFORMITY and justification. 
+
+5.1 Overall Model Performance 
+
+Table 5 presents the performance comparison of the selected LLMs. Among all evaluated models, Granite4.1:8B achieved the best overall performance with a balanced accuracy of 75.0%, MCC of 0.548, and Cohen’s Kappa of 0.528. All variants of Granite demonstrated competitive performance followed by llama3.2. Remaining all models has a balanced accuracy below than 60%.                           
+
+> Table 5: Performance comparison of different language models using Balanced Accu-racy, MCC, and Cohen’s Kappa.
+> Model Balanced Accuracy (%) MCC Cohen’s Kappa
+> Gemma3 54.3 0.145 0.069 Gemma3n 52.4 0.094 0.038 Granite3.3 68.0 0.462 0.398 Granite4.1:3B 73.4 0.460 0.458 Granite4.1:8B 75.0 0.548 0.528 Llama3.2 64.4 0.328 0.308 Mistral 54.6 0.210 0.109 Phi4 59.9 0.291 0.163
+
+5.2 Mean Agreement analysis with Ground truth 
+
+We calculated the mean agreement for each retrieval strategy and observed that all variants of Granite consistently achieved higher agreement scores than the other models. As depicted in Figure 3, Granite 4.1:8B performed the best, achiev-ing an agreement of 80.65%, followed by Granite 4.1:3B (76.34%) and Granite 3.3:8B (75.98%). The next best-performing model was Llama 3.2:3B, with an agreement of 71.32%, followed by Mistral:7B, which achieved 65.59% agreement. 
+
+5.3 Contribution of Retrieval Strategy (Case) 
+
+Four retrieval strategies were evaluated: CE (cross-encoder only), CE →Cosine (cross-encoder retrieval followed by cosine re-scoring), Cosine →CE (cosine re-trieval followed by cross-encoder re-scoring), and Cosine (cosine similarity only). As depicted in Figure 4, the highest mean agreement across all 16 pipeline com-binations for Granite 4.1:8B (80.64%) was achieved using the all-MiniLM-L6-v2 with ms-marco-MiniLM-L-12-v2 (Case 2) pipeline. In contrast, performance was notably lower (75.62%) when using the bge-base embedder with the bge-reranker-base re-ranker (Case 1) and the ms-marco re-ranker (Case 1). This analysis helps ReCon 15           
+
+> all-MiniLM-L6-v2 ·bge-reranker-base ·C1
+> all-MiniLM-L6-v2 ·bge-reranker-base ·C2
+> all-MiniLM-L6-v2 ·bge-reranker-base ·C3
+> all-MiniLM-L6-v2 ·bge-reranker-base ·C4
+> all-MiniLM-L6-v2 ·ms-marco-MiniLM-L-12-v2 ·C1
+> all-MiniLM-L6-v2 ·ms-marco-MiniLM-L-12-v2 ·C2
+> all-MiniLM-L6-v2 ·ms-marco-MiniLM-L-12-v2 ·C3
+> all-MiniLM-L6-v2 ·ms-marco-MiniLM-L-12-v2 ·C4
+> bge-base ·bge-reranker-base ·C1
+> bge-base ·bge-reranker-base ·C2
+> bge-base ·bge-reranker-base ·C3
+> bge-base ·bge-reranker-base ·C4
+> bge-base ·ms-marco-MiniLM-L-12-v2 ·C1
+> bge-base ·ms-marco-MiniLM-L-12-v2 ·C2
+> bge-base ·ms-marco-MiniLM-L-12-v2 ·C3
+> bge-base ·ms-marco-MiniLM-L-12-v2 ·C4
+> 40
+> 50
+> 60
+> 70
+> 80
+> 90
+> Pipeline combination (Embedder ·Reranker ·Case) Mean agreement
+> gemma3:4b gemma3n:e2b granite3.3:8b granite4.1:3b
+> granite4.1:8b llama3.2:3b mistral:7b phi4:14b
+
+Fig. 3: Mean of agreement of all evaluated LLMs across 16 pipeline combinations (embedder × reranker × case). identify the embedding model and re-ranker combination that achieves the high-est agreement. 
+
+5.4 Hardware Resource Benchmarks 
+
+Figure 5 presents hardware resource utilisation per model, measured on a CPU-only x86_64 machine. We benchmarked each model in terms of throughput (classifications per minute), wall-clock execution time, CPU utilization, and peak RAM usage. We observed that Llama3.2:3b demonstrated the highest throughput with the lowest memory requirement. However, Granite 4.1:8b required the highest memory, Granite 4.1:3b consumed the highest computational resources (i.e. >
+
+400% which means all four cores saturated at 100%), and Phi-4:14b exhibited the highest response time. These observations indicate that different models exhibit different performance characteristics across various evaluation metrics. 
+
+5.5 Error Analysis 
+
+Since the recommended prompt structure varies across models, we used a generic prompt, which is demonstrated in the sample available in the Appendix. For the example, we chose two clauses (i.e. A.5.11 & A.8.11). In the first example, our ground truth is Conformity, while in the second example, the ground truth is Non-Conformity. According to our ground truth, the result for A.5.11 is Confor-mity, while the result for A.8.11 is Non-Conformity. 16 Negi et al.     
+
+> all-MiniLM-L6-v2 ·bge-reranker-base ·C1
+> all-MiniLM-L6-v2 ·bge-reranker-base ·C2
+> all-MiniLM-L6-v2 ·bge-reranker-base ·C3
+> all-MiniLM-L6-v2 ·bge-reranker-base ·C4
+> all-MiniLM-L6-v2 ·ms-marco-MiniLM-L-12-v2 ·C1
+> all-MiniLM-L6-v2 ·ms-marco-MiniLM-L-12-v2 ·C2
+> all-MiniLM-L6-v2 ·ms-marco-MiniLM-L-12-v2 ·C3
+> all-MiniLM-L6-v2 ·ms-marco-MiniLM-L-12-v2 ·C4
+> bge-base ·bge-reranker-base ·C1
+> bge-base ·bge-reranker-base ·C2
+> bge-base ·bge-reranker-base ·C3
+> bge-base ·bge-reranker-base ·C4
+> bge-base ·ms-marco-MiniLM-L-12-v2 ·C1
+> bge-base ·ms-marco-MiniLM-L-12-v2 ·C2
+> bge-base ·ms-marco-MiniLM-L-12-v2 ·C3
+> bge-base ·ms-marco-MiniLM-L-12-v2 ·C4
+> 76
+> 78
+> 80
+> 82
+> Pipeline combination (Embedder ·Reranker ·Case) Mean agreement granite4.1:8b
+
+Fig. 4: granite4.1:8b mean agreement across all 16 pipeline combinations. In this example, we have shown how different models respond if the prompt is generated based on the Top-k = 5 retrieved chunks for the relevant clause. The analysis found that Mistral responded Conformity to both clauses, while the second example was actually Non-Conformity. Llama3.2:3b, on the other hand, when given a relatively loose prompt, repeated the question. By making the prompt more strict, Llama3.2:3b provided properly structured answers, but did not include the evidence that was explicitly requested. Additionally, a signifi-cant effect of the strict prompt was that it became easier to answer for relatively weak models because the prompt contained the instruction "when uncertain, then Non-Conformity". Another important observation was that the prompt included the text of the ISO requirement. Many models mistook this requirement text for part of the policy and presented it as if it were actually in the policy. For example, Gemma3n:e2b responded that the policy mentioned data masking, even though the actual policy did not mention it. This is not only a limitation of the model, but also a problem with the prompt design, as the relatively weak models are unable to clearly distinguish between the requirement text and policy evidence due to both being in the same context window. Analysis of the confidence scores also revealed that the model gave a con-fidence score of 30 for each non-conformity answer, while giving a confidence score of 90 or 95 for each conformity answer. Specifically, Gemma3:4B gave a confidence score of 65 in both instances—once when her answer was correct and once when it was wrong. This makes it clear that the confidence score was not actually a measure of the model’s certainty, but merely a reflection of its final verdict. Granite4.1:8b and Phi4:14b, which had good coverage in previous research[26], provided relatively clean and easily checkable answers. ReCon 17 
+
+> llama3.2:3b
+> granite4.1:3b
+> gemma3n:e2b
+> gemma3:4b
+> granite4.1:8b
+> mistral:7b
+> granite3.3:8b
+> phi4:14b
+> 0
+> 50
+> 100
+> 150
+> Minutes
+
+(a) Wall-clock time 
+
+> llama3.2:3b
+> granite4.1:3b
+> gemma3n:e2b
+> gemma3:4b
+> granite4.1:8b
+> mistral:7b
+> granite3.3:8b
+> phi4:14b
+> 0
+> 0.5
+> 1
+> 1.5
+> 2
+> Clauses/min
+
+(b) Throughput 
+
+> llama3.2:3b
+> granite4.1:3b
+> gemma3n:e2b
+> gemma3:4b
+> granite4.1:8b
+> mistral:7b
+> granite3.3:8b
+> phi4:14b
+> 0
+> 2,000
+> 4,000
+> 6,000
+> 8,000
+> RAM (MB)
+
+(c) Peak RAM 
+
+> llama3.2:3b
+> granite4.1:3b
+> gemma3n:e2b
+> gemma3:4b
+> granite4.1:8b
+> mistral:7b
+> granite3.3:8b
+> phi4:14b
+> 0
+> 200
+> 400
+> CPU Peak (%)
+
+(d) Peak CPU 
+
+Fig. 5: Hardware resource benchmark across evaluated LLMs: (a) wall-clock ex-ecution time, (b) throughput, (c) peak RAM, and (d) peak CPU utilization. 
+
+6 Conclusion 
+
+In conclusion, This work demonstrates a Resource-Constrained Benchmark for Evaluating Large Language Models Under Varying Ingestion and Retrieval Con-figurations. First, it demonstrates a structured approach for integrating embed-ding models, cross-encoders, and retrieval strategies to perform automated com-pliance gap analysis. By systematically evaluating 384 combinations, of which 288 represent unique model- and retrieval strategy-specific prompt configura-tions, with each unique configuration evaluated against 93 controls, the study produced a total of 26,784 unique prompt evaluations. An additional 98 runs, each consisting of 93 control evaluations, were repeated to validate the consis-tency of LLM responses when using a temperature of 0. Second, the research establishes a benchmark methodology for eight well known open weight LLM models for the compliance check automation against human expert consensus. Easing the selection of the LLM’s for AI in cybersecurity. Third, the research establishes the benchmark for the selection between embedding or cross encod-ing or hybrid approaches and retrieval strategies. which will ease the selection of approach specific to the model. Fourth, the study highlights the practical im-plications of running LLM-based compliance analysis on commercially available CPU resources, providing insights into the trade-offs between computational re-quirements and agreement performance. For example, organizations with limited processing capacity or memory resources may choose Llama 3.2 because of its lower computational demands. However, this choice comes with a trade-off in agreement performance compared with larger models such as Granite4.1:8B. 18 Negi et al. 
+
+The findings of this study have significant practical implications for multi-ple stakeholders in cybersecurity compliance. For auditors, The proposed tool enhances the scalability of the auditing process by enabling a single auditor to efficiently analyze multiple policy documents, rather than being limited to one policy set at a time. This automation reduces cognitive fatigue associated with repetitive manual review. For auditees (organizations being assessed), the sys-tem enables rapid identification of gaps in their cybersecurity policies against standards such as ISO 27002:2022, allowing timely remediation and proactive management of compliance risks. The tool can be installed locally at the au-ditee’s site, allowing auditors to run assessments in front of the organization without any policy data leaving their environment. Auditees can also use this approach for audit monitoring and for comparing the auditor’s findings. For reg-ulatory bodies, this tool enhances scalability and reduces cognitive fatigue. This facilitates better oversight, and evaluation of industry-wide adherence to cyber-security standards. Additionally, the tool is designed to run on standard commer-cial computing systems without relying on costly cloud-based APIs or specialized HPC/GPU infrastructure, making advanced compliance gap analysis accessible to organizations of all sizes. Overall, the study demonstrates a cost-effective, and practical approach to improving cybersecurity governance and compliance while preserving privacy, as no data leaves the organizational premises due to the use of locally deployed open-source LLMs. Although the framework evaluated 384 pipeline configurations, exhaustive exploration of additional parameters was kept for future work. First, all experi-ments were conducted using a fixed temperature of 0 to ensure deterministic and reproducible responses; the effects of varying temperature on compliance analysis accuracy and consistency needs to be investigated. Second, the retrieval pipeline employed a fixed top-(k) value, and the impact of different retrieval depths on agreement and computational performance needs to be explored. Third, the max-imum context length and token limits were held constant, and the influence of larger context windows on retrieval quality and reasoning performance need to be evaluated. Fourth, the proposed framework relies on zero-shot prompting, and the potential benefits of few-shot or chain-of-thought prompting needs to be examined. Fifth, conformity decisions were based on a fixed agreement thresh-old; future work should investigate adaptive or statistically derived threshold selection methods to improve the robustness of compliance classification. Future work will focus on enhancing the system through fine-tuning, few-shot learning, and model distillation techniques to further improve assessment precision and contextual understanding. 
+
+Conflict of Interest 
+
+The authors declare that they have no known competing financial interests or personal relationships that could have appeared to influence the work reported in this paper. ReCon 19 
+
+Data Availability 
+
+The masked dataset will be made available upon reasonable request from the corresponding author. 
+
+Funding 
+
+This research received no specific grant from any funding agency, commercial, or not-for-profit sectors. 
+
+AI-assisted copy editing 
+
+The authors declare that AI-assisted copy editing was utilized in the preparation of this manuscript to enhance clarity and readability. AI tools only be applied with human oversight and control. However, all intellectual content, expertise, and conclusions remain solely the responsibility of the authors. Bibliography 
+
+[1] Abhik Chaudhuri, Rajat Kumar Behera, and Pradip Kumar Bala. Fac-tors impacting cybersecurity transformation: An industry 5.0 perspective. 
+
+Computers & Security , 150:104267, 2025. [2] EY India & FICCI. Risk outlook: A compass to india’s risk landscape. 
+
+https://www .ey .com/content/dam/ey-unified-site/ey-com/en-in/ insights/risk/documents/ey-risk-outlook-a-compass-to-indias-risk-landscape-ficci-ey-risk-survey-2026 .pdf , Feb 26. [3] National Institute of Standards and Technology. The nist cybersecurity framework (csf) 2.0. Cybersecurity White Paper NIST CSWP 29, National Institute of Standards and Technology, Gaithersburg, MD, 2024. https: //nvlpubs .nist .gov/nistpubs/CSWP/NIST .CSWP .29 .pdf .[4] International Organization for Standardization (ISO). Information security, cybersecurity and privacy protection – information security management systems – requirements. https://www .iso .org/standard/27001 , 2022. [5] Indian Computer Emergency Response Team (CERT-In). Cert-in advi-sory (id: 170). https://www .cert-in .org .in/s2cMainServlet?pageid= PUBISP02&id=170 , n.d. Accessed: 2026-03-27. [6] Insurance Regulatory and Development Authority of India (IRDAI). Ir-dai information and cyber security guidelines, 2023. Guidelines document, IRDAI, 2023. https://irdai .gov .in/document-detail?documentId= 3314780 . Accessed: 2026-03-27. [7] Indian Computer Emergency Response Team (CERT-In). Cert-in security guidelines listing. https://www .cert-in .org .in/ s2cMainServlet?pageid=GUIDLNVIEW01 , 2026. Accessed: 2026-03-27. [8] Indian Computer Emergency Response Team (CERT-In). Guidelines on in-formation security practices for government entities. Guideline document, Ministry of Electronics and Information Technology, Government of India, 2023. https://www .cert-in .org .in/PDF/guidelinesgovtentities .pdf .Accessed: 2026-03-27. [9] Knut Haufe, Ricardo Colomo-Palacios, Srdan Dzombeta, Knud Brandis, and Vladimir Stantchev. Isms core processes: A study. Procedia Computer Science , 100:339–346, 2016. https://www .sciencedirect .com/science/ article/pii/S1877050916323353 .[10] Kok Boon Oh, Giang Hoang, John Sturdy, and Sarah Shuaiqi Guo. Cy-bersecurity Governance: An Enterprise Risk Management Strategy for Cy-ber Risk Control . Springer Singapore, Singapore, 1 edition, 2025. https: //link .springer .com/book/10 .1007/978-981-95-3865-2 .[11] Lennart Jaeger, Andreas Eckhardt, and Julia Kroenung. The role of deterra-bility for the effect of multi-level sanctions on information security policy compliance: Results of a multigroup analysis. Information & Management ,58(3):103318, 2021. https://www .sciencedirect .com/science/article/ pii/S0378720620302512 .ReCon 21 
+
+[12] Anthony Vance, Mikko Siponen, and Seppo Pahnila. Motivating is se-curity compliance: Insights from habit and protection motivation the-ory. Information & Management , 49(3):190–198, 2012. https:// www .sciencedirect .com/science/article/pii/S0378720612000328 .[13] U.S. Department of Energy. Cybersecurity capability maturity model (c2m2). https://c2m2 .doe .gov/ , 2026. Accessed: 2026-03-27. [14] Rohit Negi, Amit Negi, Manish Sharma, S. Venkatesan, Prem K Gau-tam, and Sandeep K. Shukla. Cyber security of mega events: A case study of securing the digital infrastructure for mahakumbh 2025 – a 45-day mega event of 600 million footfalls. In 2025 Conference on Building a Secure & Empowered Cyberspace (BuildSEC) , pages 1–9, 2025. https: //ieeexplore .ieee .org/document/11416280 .[15] Ahmed Salman, Yara Alsiyat, Sadie Creese, and Michael Goldsmith. Work in progress: Leveraging large language models for cybersecurity compliance: A pilot study in iso 27001 audit planning. In 2025 IEEE European Sym-posium on Security and Privacy Workshops (EuroS&PW) , pages 351–359, 2025. https://ieeexplore .ieee .org/abstract/document/11129535 .[16] Chenhao Tang, Zhengliang Liu, Chong Ma, Zihao Wu, Yiwei Li, Wei Liu, Dajiang Zhu, Quanzheng Li, Xiang Li, Tianming Liu, and Lei Fan. Poli-cygpt: Automated analysis of privacy policies with large language models. 
+
+CoRR , abs/2309.10238, 2023. https://arxiv .org/abs/2309 .10238 .[17] Justin Woodring, Katherine Perez, and Aisha Ali-Gombe. Enhanc-ing privacy policy comprehension through privacify: A user-centric ap-proach using advanced language models. Computers & Security ,145:103997, 2024. https://www .sciencedirect .com/science/article/ pii/S016740482400302X .[18] Bikash Saha, Nanda Rani, Joheen Chakraborty, Divyanshu Singh, Soumyo V Chakraborty, and Sandeep Kumar Shukla. Parag: Proactive answering framework integrating llms with retrieval-augmented genera-tion. In European Interdisciplinary Cybersecurity Conference , pages 20– 37. Springer, 2025. https://link .springer .com/chapter/10 .1007/978-3-031-94855-8_2 .[19] Rochelle Xenia Mendoza Santos, Ertem Esiner, Utku Tefek, Matthew Cae-sar, and Daisuke Mashima. Autopgt: Llm-driven automated policy gen-eration for securing industrial control systems. In 2025 IEEE Inter-national Conference on Communications, Control, and Computing Tech-nologies for Smart Grids (SmartGridComm) , pages 1–7, 2025. https: //ieeexplore .ieee .org/abstract/document/11204572 .[20] Brennan Lodge. Rage against the machine with bert for proactive cy-bersecurity posture. In 2024 IEEE International Conference on Big Data (BigData) , pages 3579–3588. IEEE, 2024. https://ieeexplore .ieee .org/ abstract/document/10825122 .[21] Timothy R. McIntosh, Teo Susnjak, Tong Liu, Paul Watters, Dan Xu, Dong-wei Liu, Raza Nowrozy, and Malka N. Halgamuge. From cobit to iso 42001: Evaluating cybersecurity frameworks for opportunities, risks, and regula-tory compliance in commercializing large language models. Computers 22 Negi et al. 
+
+& Security , 144:103964, 2024. https://www .sciencedirect .com/science/ article/pii/S0167404824002694 .[22] Servicenow. https://www .servicenow .com/ . Accessed: 2026-06-13. [23] Metricstream governance, risk and compliance platform. https:// www .metricstream .com/ . Accessed: 2026-06-13. [24] Rohit Negi, Soumyo V Chakraborty, Amit Negi, and Sandeep K. Shukla. Automating organizational cyber security policy compliance against in-dustry standards using agentic ai. In 2026 14th International Sympo-sium on Digital Forensics and Security (ISDFS) , pages 1–6, 2026. https: //ieeexplore .ieee .org/abstract/document/11458951 .[25] Cătălina-Mihaela Priescu, Mihnea-Alexandru Moisescu, and Radu Nicolae Pietraru. Automated information security policy analysis: A conceptual framework. In 2026 IEEE International Conference on Automation, Quality and Testing, Robotics (AQTR) , pages 1–6. IEEE, 2026. [26] Rohit Negi, Rishik Jain, and Sandeep K. Shukla. Small models, big stan-dards: Can low-compute llms recall iso 27002:2022 control guidance? In 
+
+Proceedings of the 21st International Conference on Availability, Reliability and Security (ARES 2026) . LNCS, 2026. [27] Ahmed Salman, Sadie Creese, and Michael Goldsmith. Position pa-per: Leveraging large language models for cybersecurity compliance. In 
+
+2024 IEEE European Symposium on Security and Privacy Workshops (EuroS&PW) , pages 496–503, 2024. https://ieeexplore .ieee .org/ abstract/document/10628537 .[28] OpenAI. tiktoken: Fast bpe tokenizer for openai models. https:// github .com/openai/tiktoken , 2023. GitHub repository. [29] Chroma Core. Chroma: Search infrastructure for ai. https://github .com/ chroma-core/chroma , 2026. Open-source vector database for AI applica-tions, Apache-2.0 licensed. [30] Ollama Inc. Ollama: Run large language models locally, 2026. Accessed: 2026-06-15. [31] BAAI. BAAI/bge-base-en-v1.5. https://huggingface .co/BAAI/bge-base-en-v1 .5, 2024. Hugging Face model repository. Accessed: 2026-07-01. [32] Sentence Transformers. sentence-transformers/all-MiniLM-L6-v2. 
+
+https://huggingface .co/sentence-transformers/all-MiniLM-L6-v2 ,2021. Hugging Face model repository. Accessed: 2026-07-01. [33] Sentence Transformers. cross-encoder/ms-marco-MiniLM-L12-v2. 
+
+https://huggingface .co/cross-encoder/ms-marco-MiniLM-L12-v2 ,2021. Hugging Face model repository. Accessed: 2026-07-01. [34] BAAI. BAAI/bge-reranker-base. https://huggingface .co/BAAI/bge-reranker-base , 2024. Hugging Face model repository. Accessed: 2026-07-01.

@@ -1,0 +1,1236 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-01T11:14:46.071330+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 1,
+    "deep_divecandidates": 40,
+    "deep_cap": 6,
+    "deep_selected": 21,
+    "quick_candidates": 43,
+    "quick_skim_target": 11,
+    "quick_selected": 11
+  },
+  "deep_dive": [
+    {
+      "id": "2607.21811v2",
+      "source": "arxiv",
+      "title": "Efficient Unclonable Encryption from Pauli Eigenstates",
+      "abstract": "We give, to our knowledge, the first plain-model, one-time information-theoretically secure, efficient unclonable encryption scheme for one classical bit. Previous work by Bhattacharyya and Culf (Nature Physics, 2026) and Bhattacharyya, Broadbent, and Culf either only showed $1/\\mathsf{poly}(λ)$ security loss or required inefficient encryption/decryption operations. We avoid both of these caveats; in doing so, we obtain (to our knowledge) the first plain-model construction of many-time secure $1 \\to 2$ unclonable encryption for arbitrary polynomial-length messages, assuming the existence of pseudorandom function-like states (Bartusek and Goldin).   The key is a uniformly random non-identity phase-free Pauli on $n$ qubits, and bit $a$ is encrypted as a random $(-1)^a$ eigenstate of that Pauli. The scheme is exponentially secure; we prove that the probability that both receivers recover the bit is at most $\\frac{1}{2}+\\frac{1}{2}\\sqrt{{2^n}/({4^n-1})} = \\frac{1}{2} + O\\left(2^{-n/2}\\right).$ By a lower bound due to Broadbent, Culf, and Rochette, this is the best probability bound achievable with $n$-qubit ciphertexts (up to the constant hidden in the $O(\\cdot)$).   The main conceptual idea is to leverage, in a precise spectral sense, the balanced commutation-anticommutation structure of the Pauli group. The proof is intricate but completely elementary and makes use of standard spectral bound techniques. The main technical workhorse is a standalone linear-algebraic lemma that informally relates the positivity of two different operators, each capturing the intuition that if the two receivers can individually decrypt unusually often then they must also disagree often.   GPT-5.6 Sol Ultra found this proof in an extended conversation with the author and drafted a preliminary version of this paper. The author is fully accountable for the correctness of this paper.",
+      "authors": [
+        "Seyoon Ragavan"
+      ],
+      "primary_category": "quant-ph",
+      "categories": [
+        "quant-ph",
+        "cs.CR"
+      ],
+      "published": "2026-07-23T20:53:24+00:00",
+      "link": "https://arxiv.org/pdf/2607.21811v2",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 10.0,
+      "llm_evidence_en": "proposes efficient unclonable encryption based on Pauli eigenstates, advancing cryptographic algorithms",
+      "llm_evidence_cn": "提出基于泡利本征态的高效不可克隆加密，推进密码算法",
+      "llm_evidence": "提出基于泡利本征态的高效不可克隆加密，推进密码算法",
+      "canonical_evidence": "提出基于泡利本征态的高效不可克隆加密，推进密码算法",
+      "llm_tldr_en": "This work gives the first plain-model one-time information-theoretically secure efficient unclonable encryption for one bit, and extends to many-time secure encryption for polynomial-length messages assuming pseudorandom function-like states.",
+      "llm_tldr_cn": "不可克隆加密现有构造存在安全损失大或加解密效率低的问题。本文以均匀随机的非平凡无相位泡利算符为密钥，对经典比特实现一次性信息论安全的高效不可克隆加密，避免了两类缺陷。进一步在伪随机函数类量子态假设下，方案可扩展为任意多项式长度消息的多重安全加密。该结果填补了明文模型中高效不可克隆加密的空白，推动量子密码学的发展。",
+      "llm_tldr": "不可克隆加密现有构造存在安全损失大或加解密效率低的问题。本文以均匀随机的非平凡无相位泡利算符为密钥，对经典比特实现一次性信息论安全的高效不可克隆加密，避免了两类缺陷。进一步在伪随机函数类量子态假设下，方案可扩展为任意多项式长度消息的多重安全加密。该结果填补了明文模型中高效不可克隆加密的空白，推动量子密码学的发展。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "cryptographic algorithms and applications",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.20832v1",
+      "source": "arxiv",
+      "title": "Beyond Heavy Log Curation: Perplexity-Based APT Detection via Unsupervised, Context-Augmented Language Models",
+      "abstract": "Advanced Persistent Threats (APTs) remain difficult to detect because only a small fraction of events in large-scale logs are attack-related, and investigation is expensive and hard to scale. Prior machine-learning approaches can reduce analyst workload, but they often rely on heavily curated training data and sophisticated preprocessing pipelines. Building and maintaining such pipelines require substantial domain expertise and engineering cost. Motivated by insights from a study of a strong APT detection baseline, we propose CAPTAIN (Context-Augmented Perplexity-based Threat Activity log detectIoN), a perplexity-based detector that leverages general, pre-trained language models with minimal, domain-agnostic preprocessing, enabling robust scoring of long, minimally processed log entries. CAPTAIN encodes recent history with an encoder model and a Q-Former-style bridge, then injects the compact context tokens into the decoder input so that perplexity reflects temporal context. To improve stability, CAPTAIN additionally applies smoothing filters to the perplexity time series. Across APT-oriented benchmarks, CAPTAIN competes with strong existing baselines and remains robust under substantially less curated inputs, that reduces the development and operational cost of advanced log preprocessing.",
+      "authors": [
+        "Shoya Otsu",
+        "Kei Suzuki",
+        "Toshiaki Koike-Akino",
+        "Jing Liu",
+        "Ye Wang"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AI",
+        "cs.CL",
+        "cs.CR"
+      ],
+      "published": "2026-07-23T01:38:25+00:00",
+      "link": "https://arxiv.org/pdf/2607.20832v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "unsupervised APT detection via perplexity",
+      "llm_evidence_cn": "基于困惑度的无监督APT检测",
+      "llm_evidence": "基于困惑度的无监督APT检测",
+      "canonical_evidence": "基于困惑度的无监督APT检测",
+      "llm_tldr_en": "The paper presents CAPTAIN, an unsupervised perplexity-based APT detector that uses pre-trained language models with minimal preprocessing to identify attack-related events in large-scale logs, reducing analyst workload.",
+      "llm_tldr_cn": "高级持续性威胁(APT)在大规模日志中仅占极小比例，传统检测方法依赖重度数据预处理和领域知识。该论文提出CAPTAIN，一种基于困惑度的检测器，利用通用预训练语言模型，结合轻量上下文增强，以无监督方式从原始日志中识别可疑事件。在真实场景数据集上的实验显示，CAPTAIN能在降低分析人员工作负担的同时保持高检测性能。该工作展示了无监督语言模型在入侵检测中的应用潜力，为APT检测提供了一条低工程成本的可行路径。",
+      "llm_tldr": "高级持续性威胁(APT)在大规模日志中仅占极小比例，传统检测方法依赖重度数据预处理和领域知识。该论文提出CAPTAIN，一种基于困惑度的检测器，利用通用预训练语言模型，结合轻量上下文增强，以无监督方式从原始日志中识别可疑事件。在真实场景数据集上的实验显示，CAPTAIN能在降低分析人员工作负担的同时保持高检测性能。该工作展示了无监督语言模型在入侵检测中的应用潜力，为APT检测提供了一条低工程成本的可行路径。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "intrusion detection systems and techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.21824v1",
+      "source": "arxiv",
+      "title": "Protocol-Level Attacks on Agentic Commerce Platforms: A Cross-Platform Taxonomy, AIP-Bench, and Unified Defense",
+      "abstract": "Agentic commerce platforms let AI agents autonomously discover services, move payments, and wield user credentials on their users' behalf, and they already handle real money. Their security has so far been studied almost entirely at the level of the AI model, through prompt injection and misalignment. We show that the more consequential risks lie one layer down, in the protocol between agents and commerce services. There, vulnerabilities are structural : exploitation is deterministic and ndependent of which model an agent runs, so no model improvement removes them. Across three leading platforms we identify 33 such vulnerabilities, each succeeding deterministically regardless of the deployed model, at a 100% attack-success rate (ASR) wherever live-measured. The same failure modes recur across independently built codebases, a systemic pattern rather than isolated bugs. Three of them chain into an end-to-end payment hijack. We contribute a taxonomy separating these structural attacks from model-dependent semantic ones. We also build two artifacts: AIP-Bench (Agent Interaction Protocol Benchmark), to our knowledge the first deterministic benchmark for agentic commerce security, and PCAT (Protocol-level Commerce Agent Trust), a platform-agnostic defense that drives the structural attack-success rate to zero for four of the five structural classes (RC-1, RC-2, RC-4, RC-5), with RC-3 (observable credential channels) reduced to warn-only, without modifying any platform. Agentic commerce must be secured at the protocol layer, not only the model.",
+      "authors": [
+        "Yedidel Louck"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR"
+      ],
+      "published": "2026-07-23T21:21:01+00:00",
+      "link": "https://arxiv.org/pdf/2607.21824v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "reveals structural protocol-level vulnerabilities in agentic commerce platforms and proposes a unified defense",
+      "llm_evidence_cn": "揭示代理商务平台的协议级结构性漏洞，并提出统一防御",
+      "llm_evidence": "揭示代理商务平台的协议级结构性漏洞，并提出统一防御",
+      "canonical_evidence": "揭示代理商务平台的协议级结构性漏洞，并提出统一防御",
+      "llm_tldr_en": "This paper identifies 33 deterministic protocol-level vulnerabilities across three agentic commerce platforms that succeed regardless of the AI model, and contributes AIP-Bench and a unified defense to shift security focus to the protocol layer.",
+      "llm_tldr_cn": "代理商务平台已处理真实资金，但安全研究多聚焦模型层面的提示注入。本文发现更深层风险在代理与商务服务间的协议层，三个平台上存在33种结构性漏洞，且与所部署模型无关，均可100%确定性利用。作者构建跨平台漏洞分类体系AIP-Bench并提出统一防御方法。该工作指出仅改进模型无法消除这些漏洞，需将安全焦点转向协议层。",
+      "llm_tldr": "代理商务平台已处理真实资金，但安全研究多聚焦模型层面的提示注入。本文发现更深层风险在代理与商务服务间的协议层，三个平台上存在33种结构性漏洞，且与所部署模型无关，均可100%确定性利用。作者构建跨平台漏洞分类体系AIP-Bench并提出统一防御方法。该工作指出仅改进模型无法消除这些漏洞，需将安全焦点转向协议层。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "security vulnerability assessment and mitigation",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.21903v2",
+      "source": "arxiv",
+      "title": "Cleaning the NTP Pool: Detecting and Mitigating NTP-Sourced IPv6 Scanning",
+      "abstract": "The ephemeral and random nature of IPv6 client addresses presents a practical challenge to attacks that depend on Internet-wide scanning or reconnaissance -- the adversary must first \\emph{find} the client's IPv6 address. While a well-positioned passive adversary can potentially harvest some active IPv6 client addresses, such power is typically reserved for e.g. large CDN or Internet exchange points. In contrast, prior work has shown the feasibility of a low-power entity to easily join the volunteer-based NTP Pool and harvest large quantities of active IPv6 client addresses.   In this work, we develop a methodology to not only rigorously identify such IPv6 address harvesting and the entities gathering addresses, but also characterize \\emph{what} these entities subsequently do with the addresses. Specifically, we query all NTP Pool servers across the global Internet over the course of one-year using unique IPv6 client addresses, and monitor and correlate any later activity targeting these addresses. In sum, we identify 22 NTP Pool servers, within 4 primary clusters, that are part of larger monitoring infrastructures that utilize the gathered addresses for reconnaissance, port scanning, and service and vulnerability enumeration. To better understand the legal and ethical gray area of such behavior, we both engage with the NTP Pool operators and a cybersecurity insurance firm running one of the harvesting and scanning clusters. We are in discussions with the NTP Pool to integrate our system into their monitoring infrastructure to remove such NTP servers, and the cybersecurity insurance firm changed its operational policy to be more transparent and provide clear opt-out mechanisms.",
+      "authors": [
+        "Erik Rye",
+        "Robert Beverly"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "cs.NI"
+      ],
+      "published": "2026-07-24T02:15:27+00:00",
+      "link": "https://arxiv.org/pdf/2607.21903v2",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "detects and mitigates NTP-sourced IPv6 scanning, a network intrusion reconnaissance technique",
+      "llm_evidence_cn": "检测并缓解NTP源IPv6扫描，属于网络入侵侦察技术",
+      "llm_evidence": "检测并缓解NTP源IPv6扫描，属于网络入侵侦察技术",
+      "canonical_evidence": "检测并缓解NTP源IPv6扫描，属于网络入侵侦察技术",
+      "llm_tldr_en": "Develops a methodology to identify NTP-sourced IPv6 address harvesting and scanning, characterizing adversaries and enabling mitigation of this network reconnaissance threat.",
+      "llm_tldr_cn": "IPv6地址的临时性和随机性给依赖全网扫描的攻击造成困难，但低资源实体可加入NTP Pool大量收集活跃IPv6地址。本文提出一套方法学，能够严格识别此类IPv6地址收集行为及其发起者，并刻画其利用方式。该方法有助于检测和缓解NTP源IPv6扫描，保护网络免受基于地址勘察的攻击，为网络防御提供了重要支撑。",
+      "llm_tldr": "IPv6地址的临时性和随机性给依赖全网扫描的攻击造成困难，但低资源实体可加入NTP Pool大量收集活跃IPv6地址。本文提出一套方法学，能够严格识别此类IPv6地址收集行为及其发起者，并刻画其利用方式。该方法有助于检测和缓解NTP源IPv6扫描，保护网络免受基于地址勘察的攻击，为网络防御提供了重要支撑。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "effective methods for detecting and preventing network intrusions",
+      "matched_requirement_id": "req-8",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.22009v1",
+      "source": "arxiv",
+      "title": "Practical Graph Optimisation and AI-Driven Models for Active Directory Security Hardening",
+      "abstract": "Microsoft's Active Directory (AD) is a directory service that enables the IT admin to manage security permissions and control access within a Windows domain network. As a core management system in many of organisation, AD has become a primary target for adversaries. While many solutions for hardening attack graphs exist, these efforts fall short in addressing several key practical challenges specific to the AD attack graph. First, existing models often assume the graph is static, whereas a real-world AD environment is highly dynamic. Second, most proposed solutions are limited to the defensive measure of revoking vulnerabilities (edge removal), while more active defence mechanisms are largely unstudied. Third, because not all remediations are implementable, a practical end-to-end model must incorporate system admin feedback into the prioritisation process. This thesis aims to address these limitations by studying and proposing a number of game-theoretic and optimisation-based decision-making models. First, we propose a honeypot/decoy placement model based on the principle of minimising the number of shortest paths and the number of Domain Admin-reachable nodes. Second, building on this model, we introduce a defence strategy that considers the dynamic/temporal nature of the AD graph, where the objective is to find the location to deploy decoys that maximises the worst-case incident response time. Third, we introduce an adaptive prioritisation model that queries each high-risk attack path to the IT administrator for mediation. Finally, we introduce an end-to-end adaptive prioritisation model that minimises the approval effort of the system admin by finding a general adaptive edge-removal policy that generalises the system admin's decisions to edges with similar risk features. We show that the problems underlying all of the contributed models are computationally intractable.",
+      "authors": [
+        "Huy Q. Ngo"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "cs.AI"
+      ],
+      "published": "2026-07-24T06:14:59+00:00",
+      "link": "https://arxiv.org/pdf/2607.22009v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Active Directory hardening, attack graph optimization, vulnerability remediation",
+      "llm_evidence_cn": "活动目录攻击图优化与安全加固，涉及漏洞修复决策",
+      "llm_evidence": "活动目录攻击图优化与安全加固，涉及漏洞修复决策",
+      "canonical_evidence": "活动目录攻击图优化与安全加固，涉及漏洞修复决策",
+      "llm_tldr_en": "This paper proposes practical graph optimization and AI-driven models for Active Directory security hardening, addressing dynamic attack graphs, active defense, and partial remediation beyond simple edge removal, to help organizations prioritize vulnerability mitigation.",
+      "llm_tldr_cn": "活动目录是Windows域网络的核心管理服务，也是攻击者的主要目标。现有攻击图加固方法多假设静态图且只能撤销漏洞边，无法满足真实动态环境中的主动防御需求。本文提出实用图优化和AI驱动模型，支持动态AD攻击图上的边撤销、主动加固及非完全修复等多种操作，并结合实际约束来提升防御决策的可行性。该研究为AD安全管理员提供了更实用和智能化的漏洞缓解方案。",
+      "llm_tldr": "活动目录是Windows域网络的核心管理服务，也是攻击者的主要目标。现有攻击图加固方法多假设静态图且只能撤销漏洞边，无法满足真实动态环境中的主动防御需求。本文提出实用图优化和AI驱动模型，支持动态AD攻击图上的边撤销、主动加固及非完全修复等多种操作，并结合实际约束来提升防御决策的可行性。该研究为AD安全管理员提供了更实用和智能化的漏洞缓解方案。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "security vulnerability assessment and mitigation",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.22065v1",
+      "source": "arxiv",
+      "title": "BioZKFHE: Scalable Encrypted Biometric Identification via Verifiable Homomorphic Similarity Evaluation",
+      "abstract": "Large-scale biometric identification in outsourced settings requires two properties simultaneously: biometric templates and queries must remain protected during computation, and the encrypted similarity outputs produced by an untrusted compute node must be verifiably correct before any application result is released. Existing FHE-based biometric systems primarily address confidentiality, while practical verifiability introduces two bottlenecks in the underlying encrypted 1:N matching layer: rotation- and bandwidth-heavy similarity evaluation and the high cost of proving repeated homomorphic similarity traces. We present BioZKFHE, a framework for scalable encrypted biometric identification via verifiable homomorphic similarity evaluation that combines BGV homomorphic computation with committee-mediated proof opening/decryption and smart-contract verification of opened proof batches. To reduce encrypted storage and avoid rotation-heavy encrypted 1:N matching, we propose Single-Coefficient Multi-Value (SCMV) packing, which binds multiple quantized embedding values into each plaintext entry through base-T expansion. To make proof generation practical, we propose Parallelizable and Verifiable Similarity Computation (PVSC), which exploits the Double-CRT execution structure of BGV to decompose each blockwise similarity trace into parallel proof instances that are opened and checked before result release. Under standard lattice assumptions and explicit committee/verifier assumptions, we analyze recoverability, noise growth, confidentiality, encrypted-output integrity, and finalized-result integrity. Experiments on FaceNet and MobileFaceNet show near-lossless biometric utility, up to 67 percent encrypted-storage reduction, and about 22 to 44 seconds end-to-end proof-verified runtime for 10k to 40k templates.",
+      "authors": [
+        "Rundong Xin",
+        "Taotao Wang",
+        "Xiaoxiao Wu",
+        "Weizhi Meng",
+        "Shengli Zhang",
+        "Shui Yu"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR"
+      ],
+      "published": "2026-07-24T08:08:54+00:00",
+      "link": "https://arxiv.org/pdf/2607.22065v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "verifiable homomorphic encryption for encrypted biometric identification",
+      "llm_evidence_cn": "结合同态加密与零知识证明的可验证加密生物识别",
+      "llm_evidence": "结合同态加密与零知识证明的可验证加密生物识别",
+      "canonical_evidence": "结合同态加密与零知识证明的可验证加密生物识别",
+      "llm_tldr_en": "BioZKFHE combines FHE with zero-knowledge proofs to enable scalable and verifiable encrypted biometric identification, reducing compute and bandwidth costs.",
+      "llm_tldr_cn": "在云端外包的生物识别场景中，用户的生物模板和查询需要全程加密保护，同时加密计算结果还必须可验证，以防不可信节点返回错误结果。本文提出BioZKFHE框架，融合全同态加密与零知识证明，针对加密1:N匹配中的旋转、带宽与重复证明开销进行优化。实验结果证明该框架在不暴露明文信息的前提下实现可验证的相似度计算，显著降低了性能瓶颈。这一工作为隐私保护的生物识别与应用系统的可信计算提供了新思路。",
+      "llm_tldr": "在云端外包的生物识别场景中，用户的生物模板和查询需要全程加密保护，同时加密计算结果还必须可验证，以防不可信节点返回错误结果。本文提出BioZKFHE框架，融合全同态加密与零知识证明，针对加密1:N匹配中的旋转、带宽与重复证明开销进行优化。实验结果证明该框架在不暴露明文信息的前提下实现可验证的相似度计算，显著降低了性能瓶颈。这一工作为隐私保护的生物识别与应用系统的可信计算提供了新思路。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "cryptographic algorithms and applications",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.22269v1",
+      "source": "arxiv",
+      "title": "Kalyna Block Cipher: From Design Space Exploration to ASIC Design",
+      "abstract": "The Kalyna block cipher is a Ukrainian cryptography standard, selected through a national competition held between 2007 and 2010 and approved in 2015. Although its software implementations have been introduced, hardware-efficient implementations of the algorithm, i.e., accelerators, do not exist. In this paper, we explore various design architectures to implement its encryption, decryption, and unified encryption/decryption functions, considering the trade-off between area and latency. We present hardware reduction techniques and introduce alternative designs with low area, latency, and energy consumption, targeting an application-specific integrated circuit (ASIC). We present hardware-efficient designs that include countermeasures against side-channel analysis (SCA) and fault injection (FI) attacks, such as hiding, masking, and duplication techniques. We validate these implementations in a 65\\;nm ASIC chip. Experimental results confirm the need for alternative designs that explore the design search space for different requirements. The proposed architectures enable hiding the power SCA leakage by randomizing the execution of operations, and the temporal duplication in designs with countermeasures against the SCA attacks can mitigate the FI attacks. The functionality of the ASIC test chip, including various Kalyna designs, is validated through measurements.",
+      "authors": [
+        "Carlos Gewehr",
+        "Levent Aksoy",
+        "Mariia Rodinko",
+        "Roman Oliynykov",
+        "Samuel Pagliarini"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR"
+      ],
+      "published": "2026-07-24T13:07:45+00:00",
+      "link": "https://arxiv.org/pdf/2607.22269v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "hardware implementation and design-space exploration of a cryptographic algorithm with side-channel countermeasures",
+      "llm_evidence_cn": "密码算法的硬件实现与设计空间探索，含侧信道防护",
+      "llm_evidence": "密码算法的硬件实现与设计空间探索，含侧信道防护",
+      "canonical_evidence": "密码算法的硬件实现与设计空间探索，含侧信道防护",
+      "llm_tldr_en": "This paper presents the first hardware accelerators for the Kalyna block cipher on ASIC, exploring area-latency trade-offs, reducing hardware cost, and adding side-channel countermeasures.",
+      "llm_tldr_cn": "Kalyna是乌克兰国家密码标准，但此前缺少专用的硬件加速实现。本文面向ASIC探索了加密、解密和统一加解密等不同架构，提出硬件缩减技术以降低面积和延迟，同时集成侧信道攻击防护措施。实验结果表明，所提出的设计在面积、延迟与能耗之间取得了良好权衡，为Kalyna在资源受限场景中的部署提供了基础。该项工作填补了Kalyna硬件实现的空白，其设计空间探索方法也具有通用参考价值。",
+      "llm_tldr": "Kalyna是乌克兰国家密码标准，但此前缺少专用的硬件加速实现。本文面向ASIC探索了加密、解密和统一加解密等不同架构，提出硬件缩减技术以降低面积和延迟，同时集成侧信道攻击防护措施。实验结果表明，所提出的设计在面积、延迟与能耗之间取得了良好权衡，为Kalyna在资源受限场景中的部署提供了基础。该项工作填补了Kalyna硬件实现的空白，其设计空间探索方法也具有通用参考价值。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "cryptographic algorithms and applications",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.22829v1",
+      "source": "arxiv",
+      "title": "Disentangling Multi-View Scanning in Mamba for Network Traffic Anomaly Detection",
+      "abstract": "Network Traffic Anomaly Detection (NTAD) is a critical task in cybersecurity, yet timely and accurate anomaly detection remains challenging. Mamba has emerged as a particularly promising backbone for NTAD due to its linear-time complexity for long-sequence modeling. It further incorporates a dedicated multi-view scanning mechanism to enhance detection precision through complementary contextual cues. However, we identify a previously overlooked structural deficiency in multi-view Mamba scanning for NTAD: redundancy accumulation. Specifically, distinct scanning branches capture substantial view-invariant information, which is repeatedly amplified during multi-view fusion; conversely, view-specific information is diluted or even suppressed, leading to representation homogenization and multi-view degradation. To address this problem, we propose DisenMamba, a novel disentangled multi-view Mamba framework. DisenMamba reformulates multi-view scanning as a two-stage disentangle-then-fuse process that explicitly separates view-invariant and view-specific components prior to fusion. This design prevents the invariant information accumulation while preserving complementary multi-view cues, yielding more discriminative representations for subtle traffic anomalies. Extensive experiments demonstrate the effectiveness of DisenMamba, establishing a new disentangled multi-view Mamba paradigm. Code is available at https://github.com/ikun0124/DisenMamba.",
+      "authors": [
+        "Xinglin Lian",
+        "Chengtai Cao",
+        "Ting Zhong",
+        "Fan Zhou"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-24T18:08:21+00:00",
+      "link": "https://arxiv.org/pdf/2607.22829v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "network traffic anomaly detection using Mamba with disentangled multi-view scanning",
+      "llm_evidence_cn": "利用解耦多视角扫描的Mamba网络流量异常检测",
+      "llm_evidence": "利用解耦多视角扫描的Mamba网络流量异常检测",
+      "canonical_evidence": "利用解耦多视角扫描的Mamba网络流量异常检测",
+      "llm_tldr_en": "This paper improves Mamba-based network traffic anomaly detection by disentangling multi-view scanning to reduce redundancy and enhance view-specific information, boosting detection precision.",
+      "llm_tldr_cn": "本文针对网络流量异常检测中Mamba多视角扫描存在冗余累积、视角特有信息被稀释的问题，提出解耦多视角扫描方法，减少视角间无效信息重复放大，增强互补线索利用，从而提升异常检测的准确性和及时性。实验验证了该方法在网络安全监控中的有效性。",
+      "llm_tldr": "本文针对网络流量异常检测中Mamba多视角扫描存在冗余累积、视角特有信息被稀释的问题，提出解耦多视角扫描方法，减少视角间无效信息重复放大，增强互补线索利用，从而提升异常检测的准确性和及时性。实验验证了该方法在网络安全监控中的有效性。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "intrusion detection systems and techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.23007v1",
+      "source": "arxiv",
+      "title": "Practical Post-Quantum Cryptography for Bandwidth Constrained or Non-Terrestrial Networks, and Power Constrained Devices",
+      "abstract": "Post-quantum (PQ) cryptographic algorithms, particularly for authentication, are more complex than classical algorithms and require larger certificates, signatures, and keys. Establishing a PQ-secure network connection increases bandwidth, memory, computation time, and energy consumption. These costs are especially severe in Non-Terrestrial Networks (NTNs), where long propagation delays, intermittent connectivity, constrained link budgets, satellite handovers, limited terminal resources, and bandwidth-constrained satellite-to-ground links amplify the overhead of certificate-based PQ authentication. Consequently, applications such as key rotation and key management may be unable to achieve acceptable handshake reliability or support NIST PQ Security Categories above Category 1. Similar limitations affect low-power IoT devices and bandwidth- or energy-constrained terrestrial networks, where PQ authentication may restrict devices to Category 1 security or prevent ambient-powered endpoints from supporting PQ authentication altogether.   This paper investigates an alternative cryptographic framework that replaces PQ digital certificates with shared secret keys (SSKs). The framework leverages shared-secret ecosystems that do not rely on asymmetric key distribution, such as 5G/6G, and combines a Key Distribution Center (KDC) (e.g., Kerberos) with a preshared-key PQ handshake (e.g., DTLS-PSK) and ephemeral PQ key establishment (e.g., ML-KEM). Compared with certificate-based PQ authentication (e.g., ML-DSA), the proposed approach reduces handshake bandwidth, endpoint RAM, computation time, and energy use while preserving PQ-secure AEAD, including forward secrecy and replay resistance. Applications include NTN-based key rotation and management, uncrewed aerial vehicle (UAV) command-and-control systems, embedded medical sensors, and supply-chain monitoring and asset-tracking platforms.",
+      "authors": [
+        "Elliot Eichen",
+        "Sylvia Llosa",
+        "Yueqi Chen",
+        "Sangtae Ha"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR"
+      ],
+      "published": "2026-07-25T02:51:15+00:00",
+      "link": "https://arxiv.org/pdf/2607.23007v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "post-quantum cryptography optimizations for secure communications over constrained and non-terrestrial networks",
+      "llm_evidence_cn": "针对受限与非地面网络安全通信的后量子密码优化",
+      "llm_evidence": "针对受限与非地面网络安全通信的后量子密码优化",
+      "canonical_evidence": "针对受限与非地面网络安全通信的后量子密码优化",
+      "llm_tldr_en": "This work addresses the high overhead of post-quantum authentication in bandwidth-constrained and non-terrestrial networks, proposing optimizations to make PQ-secure connections practical on power-constrained devices.",
+      "llm_tldr_cn": "后量子认证因证书和签名较大，在非地面网络、带宽受限链路和功耗受限设备上会造成严重的带宽、内存和能耗开销。本文面向这些场景优化认证与密钥管理流程，减少后量子密码的传输和计算负担。实验结果表明，优化后即使在卫星链路和低功耗终端上也能建立可接受的后量子安全连接，保障密钥轮换等关键操作。该工作推动了后量子密码在空天地一体化网络中的实际应用，是量子安全通信的重要进展。",
+      "llm_tldr": "后量子认证因证书和签名较大，在非地面网络、带宽受限链路和功耗受限设备上会造成严重的带宽、内存和能耗开销。本文面向这些场景优化认证与密钥管理流程，减少后量子密码的传输和计算负担。实验结果表明，优化后即使在卫星链路和低功耗终端上也能建立可接受的后量子安全连接，保障密钥轮换等关键操作。该工作推动了后量子密码在空天地一体化网络中的实际应用，是量子安全通信的重要进展。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "applications of cryptography in secure communications",
+      "matched_requirement_id": "req-9",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.23272v1",
+      "source": "arxiv",
+      "title": "From Signals to Behaviors: Evidence-Based Android Malware Detection",
+      "abstract": "Android malware remains a persistent threat, and detecting it accurately is a long-standing open problem. Whether an app is malicious depends on what it actually does and the context in which it does it, not on the surface signals it happens to exhibit. Existing detectors instead reason about proxies for behavior, such as learned features or local code slices, and flag whatever deviates from these proxies as malicious. But deviation is not maliciousness: benign apps that merely look unusual are over-flagged, evolving malware that looks ordinary slips through. We argue that detection should be behavior-oriented: recover an app's potentially malicious behaviors and judge which are truly malicious. To realize this, we present Praxis, which structures detection as a hypothesize-confirm-judge pipeline: it hypothesizes candidate behaviors from coarse static signals, confirms each by grounding it in code evidence verified with program analysis, and judges the confirmed behaviors in context: the user's awareness, the app's functional context, and how they compose into an attack. For a malicious app, Praxis returns a verdict and the supported behaviors. We evaluate Praxis against seven baselines across three challenging settings. It achieves the best overall detection performance (87.4% F1), outperforming the baselines by 18.6-34.8 percentage points. On high-permission benign apps, it reduces the false-positive rate to 13.0%, a reduction of 41.1-67.0 percentage points compared with the baselines. Beyond binary detection, Praxis recovers fine-grained malicious behaviors at 87.3% F1, outperforming prior behavior-level approaches by 56.5-73.4 percentage points. Ablation studies show that each stage of the pipeline contributes to the final performance.",
+      "authors": [
+        "Shiwen Song",
+        "Yiheng Xiong",
+        "Sen Chen",
+        "Xiaofei Xie"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "cs.SE"
+      ],
+      "published": "2026-07-25T16:16:42+00:00",
+      "link": "https://arxiv.org/pdf/2607.23272v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "behavior-based Android malware detection technique",
+      "llm_evidence_cn": "基于行为证据的Android恶意软件检测方法",
+      "llm_evidence": "基于行为证据的Android恶意软件检测方法",
+      "canonical_evidence": "基于行为证据的Android恶意软件检测方法",
+      "llm_tldr_en": "Praxis is an evidence-based Android malware detector that recovers actual app behaviors and judges malice from behavioral evidence, reducing false positives and catching evolving malware.",
+      "llm_tldr_cn": "Android恶意软件检测长期以来依赖表面特征或局部代码片段等代理信号，导致看似异常的良性应用被误报，而外观正常的演化恶意软件却可能漏检。本文提出以行为为中心的证据检测框架Praxis，先恢复应用潜在恶意行为，再基于行为上下文判断其恶意性。实验表明该方法能显著降低误报率并提升对演化恶意家族的识别能力，为Android安全检测提供了更可靠的行为证据驱动思路。",
+      "llm_tldr": "Android恶意软件检测长期以来依赖表面特征或局部代码片段等代理信号，导致看似异常的良性应用被误报，而外观正常的演化恶意软件却可能漏检。本文提出以行为为中心的证据检测框架Praxis，先恢复应用潜在恶意行为，再基于行为上下文判断其恶意性。实验表明该方法能显著降低误报率并提升对演化恶意家族的识别能力，为Android安全检测提供了更可靠的行为证据驱动思路。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "intrusion detection systems and techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.23710v1",
+      "source": "arxiv",
+      "title": "The Illusion of Secure LLM Code: Closing the Security Gap via Iterative Reprompting",
+      "abstract": "Large Language Models (LLMs) are increasingly integrated into software development workflows, yet their ability to autonomously generate secure authentication code remains uncertain. This paper evaluates the security architecture of authentication systems generated by five prominent AI coding assistants through a bi-modal assessment framework combining static code analysis and dynamic penetration testing, mapped to NIST SP 800-63B guidelines. The study examines model behavior across four prompting strategies Basic, Secure, NIST-Based, and Reprompting to reflect varying levels of developer guidance. Empirical results demonstrate that code generated from functional or generically secure prompts consistently omits critical protections, particularly concerning brute-force resistance, session management, and robust password handling. While providing explicit, single-shot NIST context significantly improves compliance, the findings reveal that this remains structurally inadequate. Instead, iterative Reprompting: forcing models into a contextual self-auditing loop is strictly required to achieve a comprehensive, defense-in-depth security architecture. Ultimately, this study proves that current AI coding assistants do not produce secure-by-default applications, dictating that enterprise deployments must transition from single-shot prompt engineering to continuous, standards-driven verification pipelines.",
+      "authors": [
+        "Ishpuneet Singh",
+        "Shreyas Mahajan",
+        "Gurjot Singh",
+        "Maninder Singh"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "cs.AI",
+        "cs.HC",
+        "cs.LG",
+        "cs.MA"
+      ],
+      "published": "2026-07-26T15:16:44+00:00",
+      "link": "https://arxiv.org/pdf/2607.23710v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "assesses LLM-generated authentication code with static analysis and dynamic penetration testing against NIST guidelines",
+      "llm_evidence_cn": "使用静态分析与动态渗透测试评估LLM生成认证代码，并映射到NIST规范",
+      "llm_evidence": "使用静态分析与动态渗透测试评估LLM生成认证代码，并映射到NIST规范",
+      "canonical_evidence": "使用静态分析与动态渗透测试评估LLM生成认证代码，并映射到NIST规范",
+      "llm_tldr_en": "This paper evaluates five AI coding assistants via static code analysis and dynamic penetration testing mapped to NIST SP 800-63B, showing that functional or generic prompts omit critical protections and that iterative reprompting narrows the security gap.",
+      "llm_tldr_cn": "大语言模型生成的认证代码安全性不明，本文对五种AI编程助手生成的安全架构进行双模评估，结合静态代码分析与动态渗透测试，并依据NIST SP 800-63B规范。结果显示，功能型或通用安全提示生成的代码普遍缺少关键防护；而迭代重提示能显著缩短安全差距。该研究为开发者安全使用LLM编码提供实证依据。",
+      "llm_tldr": "大语言模型生成的认证代码安全性不明，本文对五种AI编程助手生成的安全架构进行双模评估，结合静态代码分析与动态渗透测试，并依据NIST SP 800-63B规范。结果显示，功能型或通用安全提示生成的代码普遍缺少关键防护；而迭代重提示能显著缩短安全差距。该研究为开发者安全使用LLM编码提供实证依据。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "penetration testing methodologies and tools",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.24006v1",
+      "source": "arxiv",
+      "title": "Agentic Cloud Decoys: A Deception-Driven Framework for Autonomous Intrusion Investigation",
+      "abstract": "Cloud telemetry arrives at a scale that, paradoxically, makes intrusion understanding harder rather than easier. Attackers operate through legitimate identity, federated session tokens, and cloud native APIs indistinguishable from routine administration, and analysts spend an incident reconstructing context the logs already contain. We present Cloud Decoy AI Agent, a framework pairing a high fidelity cloud decoy with an autonomous language model agent that compresses the path from suspicious activity to an analyst ready report. Connecting a decoy to an agent is not a wiring exercise. The unit of investigation is the session rather than the event, and the session key is obscured by the identity layering federated credentials introduce. The agent's evidence horizon must be bounded, since an agent free to query full control plane history inherits the cost and false positive profile deception was meant to remove. And cloud telemetry is partly adversary authored, since object keys and user agent strings are attacker chosen values providers record verbatim, which makes any log to prompt path an indirect prompt injection channel that a decoy widens rather than narrows. We address the first two with a session aggregation operator over a pivot tuple drawn only from provider derived fields, and with dynamic prompt generation, a two stage prompt assembly enforcing a grounding invariant by carrying only fields the agent observed. We identify the third as an unaddressed exposure in this class of system, specify the mitigation it requires, and note our prototype does not implement it. Across ten controlled AWS S3 scenarios, nine were reconstructed completely, no report contained an assertion untraceable to an observed artifact, and latency was four to five minutes. We also state what this evaluation does not establish and name the comparisons that would settle it.",
+      "authors": [
+        "Mohan Manivannan",
+        "Dalal Alharthi"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "cs.AI",
+        "cs.DC"
+      ],
+      "published": "2026-07-27T05:05:57+00:00",
+      "link": "https://arxiv.org/pdf/2607.24006v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "autonomous intrusion investigation framework using cloud decoys and AI agent",
+      "llm_evidence_cn": "使用云蜜罐和AI智能体的自主入侵调查框架",
+      "llm_evidence": "使用云蜜罐和AI智能体的自主入侵调查框架",
+      "canonical_evidence": "使用云蜜罐和AI智能体的自主入侵调查框架",
+      "llm_tldr_en": "Introduces Cloud Decoy AI Agent, pairing high-fidelity cloud decoys with an autonomous language model agent to compress suspicious activity into analyst-ready reports, enabling efficient intrusion investigation.",
+      "llm_tldr_cn": "云遥测规模庞大，反而使入侵理解更加困难，攻击者常利用合法身份和云原生API隐藏活动，分析师需重构日志上下文。本文提出Cloud Decoy AI Agent框架，将高保真云蜜罐与自主语言模型智能体配对，以会话为调查单元，自动从可疑活动生成分析报告。该框架显著缩短了从检测到报告的过程，提高了云环境入侵调查的自动化水平和效率。",
+      "llm_tldr": "云遥测规模庞大，反而使入侵理解更加困难，攻击者常利用合法身份和云原生API隐藏活动，分析师需重构日志上下文。本文提出Cloud Decoy AI Agent框架，将高保真云蜜罐与自主语言模型智能体配对，以会话为调查单元，自动从可疑活动生成分析报告。该框架显著缩短了从检测到报告的过程，提高了云环境入侵调查的自动化水平和效率。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "intrusion detection systems and techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.24552v1",
+      "source": "arxiv",
+      "title": "VulnGym: Evaluating Vulnerability Management Strategies against Advanced Persistent Threats",
+      "abstract": "Enterprise networks are continuously targeted by Advanced Persistent Threats (APTs), attack campaigns exploiting software vulnerabilities to compromise critical assets over time. As disclosed vulnerabilities grow, resource-constrained organizations must prioritize which ones to patch. Existing prioritization standards score vulnerabilities individually and cannot capture how a patching policy performs against an adversary that progresses through the network over time. Previous tools have simulated attack campaigns through Reinforcement Learning (RL), but either omit vulnerability management, leaving the attacker unopposed, or rely on synthetic networks disconnected from real threat data, and so cannot assess how a policy would fare against a realistic adversary. To fill this gap, we propose VulnGym, a simulation tool to evaluate vulnerability management policies. VulnGym simulates an RL-trained attacker, calibrated on real APT profiles, against a defender executing a configurable patching policy over a network with real Common Vulnerabilities and Exposures (CVEs). Both agents act on a shared, evolving network representation, so the attacker's progress is directly shaped by the defender's patching activity, allowing a given policy to be stress-tested against a realistic attack campaign. Experiments based on real-world vulnerabilities and two APTs show that vulnerability management must be tailored to organizational context, adversarial behavior, network topology, and asset criticality.",
+      "authors": [
+        "Sofia Della Penna",
+        "Lorenzo Parracino",
+        "Luciano Pianese",
+        "Vittorio Orbinato",
+        "Roberto Natella"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR"
+      ],
+      "published": "2026-07-27T15:27:43+00:00",
+      "link": "https://arxiv.org/pdf/2607.24552v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "vulnerability management and patching policy evaluation under APT",
+      "llm_evidence_cn": "面向高级持续性威胁的漏洞修复策略评估框架",
+      "llm_evidence": "面向高级持续性威胁的漏洞修复策略评估框架",
+      "canonical_evidence": "面向高级持续性威胁的漏洞修复策略评估框架",
+      "llm_tldr_en": "VulnGym simulates APT campaigns with reinforcement learning and real threat data to evaluate patching policies over time, overcoming previous tools that ignored vulnerability management or used synthetic networks; it enables realistic assessment of vulnerability prioritization strategies.",
+      "llm_tldr_cn": "企业网络频繁遭受高级持续性威胁，漏洞修复优先级决策需考虑攻击随时间的推进。VulnGym将强化学习攻击模拟与真实漏洞数据结合，引入漏洞管理策略，在动态环境下评估不同修复策略的表现。该框架弥补了已有工具要么不设防御、要么使用合成网络脱离真实威胁的局限，为资源受限组织提供更贴近实际的漏洞修复优先级评估支持。",
+      "llm_tldr": "企业网络频繁遭受高级持续性威胁，漏洞修复优先级决策需考虑攻击随时间的推进。VulnGym将强化学习攻击模拟与真实漏洞数据结合，引入漏洞管理策略，在动态环境下评估不同修复策略的表现。该框架弥补了已有工具要么不设防御、要么使用合成网络脱离真实威胁的局限，为资源受限组织提供更贴近实际的漏洞修复优先级评估支持。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "security vulnerability assessment and mitigation",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.24578v1",
+      "source": "arxiv",
+      "title": "Communication Security via Temporal Dependency",
+      "abstract": "Communication security has traditionally been built upon one of two external resources: shared secret keys or a communication advantage over the eavesdropper. However, many practical wireless scenarios, including infrastructure-less, emergency, and highly dynamic networks, cannot guarantee either resource, motivating the need for a new communication security principle. This paper introduces a new communication security paradigm that exploits temporal dependency as a security resource. Unlike conventional secrecy techniques that prevent an eavesdropper from recovering transmitted bits, the proposed paradigm allows packet decoding but prevents correct interpretation by making original and dummy packets computationally indistinguishable. Rather than protecting individual transmissions, successive transmissions are intentionally coupled so that future communication depends on correctly interpreting previous ones. As one realization, we develop a state-chained random linear network coding (RLNC) framework in which the synchronization state required to interpret each transmission block is embedded in the previous block. Therefore, synchronization failures propagate across future transmissions, resulting in persistent eavesdropper asynchronization. We analytically characterize the probability and persistence of eavesdropper asynchronization, together with the computational complexity of resynchronization, and develop transmission strategies based on transmit power and intentional-interference optimization. Numerical results demonstrate sub-second eavesdropper asynchronization under a worst- case adversarial model with no channel advantage, no secret assumptions, complete protocol knowledge, and an arbitrarily stronger eavesdropper.",
+      "authors": [
+        "Mohsen Abedi",
+        "Ahmed Badawy",
+        "Amr Mohamed"
+      ],
+      "primary_category": "math.OC",
+      "categories": [
+        "math.OC",
+        "cs.IT"
+      ],
+      "published": "2026-07-27T15:47:26+00:00",
+      "link": "https://arxiv.org/pdf/2607.24578v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "new communication security paradigm exploiting temporal dependency, a network security mechanism",
+      "llm_evidence_cn": "利用时间依赖性的新型通信安全机制，属网络安全机制与协议",
+      "llm_evidence": "利用时间依赖性的新型通信安全机制，属网络安全机制与协议",
+      "canonical_evidence": "利用时间依赖性的新型通信安全机制，属网络安全机制与协议",
+      "llm_tldr_en": "This paper introduces a communication security paradigm using temporal dependency as a security resource, allowing packet decoding but preventing correct interpretation by making original and dummy packets computationally indistinguishable, for scenarios lacking shared keys or communication advantage.",
+      "llm_tldr_cn": "在许多无基础设施或高度动态的无线网络中，共享密钥和通信优势难以保证，传统通信保密面临瓶颈。本文提出将时间依赖性作为新的安全资源，不阻止数据包被解码，而是通过使原始包和哑包在计算上不可区分来阻止窃听者恢复正确语义。该范式不依赖传统密钥或信道优势，为紧急通信和动态组网提供了新的安全原理与实现途径。",
+      "llm_tldr": "在许多无基础设施或高度动态的无线网络中，共享密钥和通信优势难以保证，传统通信保密面临瓶颈。本文提出将时间依赖性作为新的安全资源，不阻止数据包被解码，而是通过使原始包和哑包在计算上不可区分来阻止窃听者恢复正确语义。该范式不依赖传统密钥或信道优势，为紧急通信和动态组网提供了新的安全原理与实现途径。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "network security mechanisms and protocols",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.24618v1",
+      "source": "arxiv",
+      "title": "Modeling Local Exploit Hazard - A Bayesian Framework for Quantifying Exploit Risk and Operational Efficiency",
+      "abstract": "This paper presents a local exploit hazard model : a Bayesian framework that converts the global probabilities produced by an exploit likelihood model (ELM), such as the Exploit Prediction Scoring System (EPSS), into a daily exploit hazard rate for an organization's own assets. The model measures the exploit-prevention effectiveness of deployed controls as a probability distribution. That distribution is seeded from a subject-matter-expert opinion pool and updated through Beta-Binomial inference from telemetry, breach-and-attack simulation, or penetration testing, then applied to ELM scores by attack-vector alignment. The resulting per-vulnerability exploitation likelihoods are converted into hazard rates using standard survival-analysis techniques, supporting both a constant exponential hazard and a Weibull hazard whose shape parameter, calibrated from Known Exploited Vulnerabilities catalog timing, captures the empirical decay of exploitation risk as a vulnerability ages. Because hazards are additive under independence, per-vulnerability rates aggregate by summation up to host, network, business unit, and organization. Candidate remediation actions are simulated and ranked by projected hazard reduction, giving defenders a defensible, quantitative basis for prioritization under fixed capacity. Future work includes extensions for incident likelihood and financial loss modeling.",
+      "authors": [
+        "Stephen Shaffer",
+        "Laura Voicu"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR"
+      ],
+      "published": "2026-07-27T16:15:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.24618v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "Bayesian exploit hazard quantification",
+      "llm_evidence_cn": "贝叶斯局部漏洞利用风险量化",
+      "llm_evidence": "贝叶斯局部漏洞利用风险量化",
+      "canonical_evidence": "贝叶斯局部漏洞利用风险量化",
+      "llm_tldr_en": "The paper introduces a local exploit hazard model, a Bayesian framework converting global exploit likelihood scores into daily hazard rates for an organization's assets, informed by telemetry, simulation, and penetration testing.",
+      "llm_tldr_cn": "组织在漏洞管理中需要将EPSS等全局利用预测分数转化为针对自身资产的日常风险指标。该论文提出局部漏洞利用危害模型，基于贝叶斯框架，融合专家意见、安全遥测、攻防模拟和渗透测试数据，度量已部署控件对漏洞利用的预防能力。针对每个漏洞的输出可转换为按攻击向量对齐的日危害率，支持风险优先级排序。该方法弥补了全局评分与本地风险量化之间的空白，提升了漏洞评估和风险缓解的运营效率。",
+      "llm_tldr": "组织在漏洞管理中需要将EPSS等全局利用预测分数转化为针对自身资产的日常风险指标。该论文提出局部漏洞利用危害模型，基于贝叶斯框架，融合专家意见、安全遥测、攻防模拟和渗透测试数据，度量已部署控件对漏洞利用的预防能力。针对每个漏洞的输出可转换为按攻击向量对齐的日危害率，支持风险优先级排序。该方法弥补了全局评分与本地风险量化之间的空白，提升了漏洞评估和风险缓解的运营效率。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "assessment of vulnerabilities and risk mitigation in information systems",
+      "matched_requirement_id": "req-10",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.25439v1",
+      "source": "arxiv",
+      "title": "Robust Unsupervised Network Intrusion Detection via Federated Learning with Selective Aggregation under Anomalous Sample Contamination",
+      "abstract": "Network intrusion detection systems (NIDS) have become essential for Internet of Things (IoT) environments, as malware targeting IoT devices continues to evolve in sophistication. Unsupervised learning approaches offer a promising direction by removing the dependency on labeled datasets. However, the common assumption that training data are entirely clean is often violated in practice, particularly when data samples are collected directly from deployed network devices, where anomalies are likely to be present in the training datasets. Such contamination degrades detection performance and highlights the need for robust unsupervised NIDS methods capable of operating effectively under contaminated unlabeled training data.   To address this issue, we propose a robust training methodology for anomaly detection (AD) that remains effective even in the presence of unlabeled anomalies. Our method consists of two primary components. First, we exploit a known limitation of federated learning (FL), namely its tendency to underrepresent minority data. By leveraging this characteristic, we attenuate the influence of anomalous data originating from a small number of compromised clients. Second, we introduce a selective aggregation mechanism during model aggregation, which quantifies the \"distance\" between local client models and a global reference. Specifically, we employ the Expectation-Maximization (EM) algorithm to detect and exclude client groups whose model updates significantly diverge from the majority. This selective aggregation ensures that anomalous updates do not compromise the global model.   Experiments conducted on multiple NIDS datasets demonstrate that our method outperforms existing approaches in environments contaminated with anomalous data. Furthermore, the proposed method maintains its detection performance even as the proportion of anomalies increases.",
+      "authors": [
+        "Shohei Kamiguchi",
+        "Takayuki Nishio"
+      ],
+      "primary_category": "cs.NI",
+      "categories": [
+        "cs.NI",
+        "cs.LG"
+      ],
+      "published": "2026-07-28T08:32:41+00:00",
+      "link": "https://arxiv.org/pdf/2607.25439v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "robust unsupervised network intrusion detection via federated learning with selective aggregation under contamination",
+      "llm_evidence_cn": "基于选择性聚合联邦学习在异常样本污染下的鲁棒无监督网络入侵检测",
+      "llm_evidence": "基于选择性聚合联邦学习在异常样本污染下的鲁棒无监督网络入侵检测",
+      "canonical_evidence": "基于选择性聚合联邦学习在异常样本污染下的鲁棒无监督网络入侵检测",
+      "llm_tldr_en": "This paper proposes a robust unsupervised NIDS using federated learning with selective aggregation, addressing training-data contamination by anomalies in IoT network intrusion detection.",
+      "llm_tldr_cn": "物联网恶意软件日益复杂，网络入侵检测系统至关重要，但无监督方法常假设训练数据完全干净，实际部署中污染会降低检测性能。论文提出在联邦学习框架下使用选择性聚合的鲁棒无监督NIDS，缓解异常样本污染带来的性能退化。该方法不依赖标注数据，且能在训练数据受污染场景下保持强健的入侵检测能力，适合物联网环境。",
+      "llm_tldr": "物联网恶意软件日益复杂，网络入侵检测系统至关重要，但无监督方法常假设训练数据完全干净，实际部署中污染会降低检测性能。论文提出在联邦学习框架下使用选择性聚合的鲁棒无监督NIDS，缓解异常样本污染带来的性能退化。该方法不依赖标注数据，且能在训练数据受污染场景下保持强健的入侵检测能力，适合物联网环境。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "intrusion detection systems and techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.26379v1",
+      "source": "arxiv",
+      "title": "QUIC-TRIP: A Triple-Redundant Journey Toward Secure Substation Communications",
+      "abstract": "Modern power systems rely on real-time substation communication protocols, such as the Routable Generic Object-Oriented Substation Event (R-GOOSE), for critical control and protection functions. However, these protocols often lack built-in security features and prioritize availability over confidentiality and integrity, making them susceptible to false data injection and denial-of-service attacks. This vulnerability is exacerbated when communications are transmitted over wide-area or public networks. Addressing these cyber threats is essential to comply with current security mandates, including the DOE's defense-in-depth and zero-trust guidelines. This paper introduces QUIC-TRIP, a transparent security methodology for low-latency IP-based industrial communications. By operating at the Open Systems Interconnection (OSI) Transport Layer (Layer 4), the solution encapsulates and protects data flows without affecting the operation of existing protocol endpoints. Baseline echo Round-Trip Time (RTT) results over a Frankfurt-Amsterdam communication path show that the underlying transport-layer proxy used by QUIC-TRIP achieves a lower average RTT than OpenVPN and only 2.88% higher average RTT than integrated DTLS 1.2, even with DTLS session reuse. We evaluate the resilience of QUIC-TRIP multipath communication under DoS flooding by securing R-GOOSE communications. In these tests, traffic is transparently delivered through three different paths, and QUIC-TRIP forwards the earliest-arriving duplicate while discarding later copies. The framework provides a triple-redundant defense scheme with a measured communication overhead of 32.18% per enabled proxied path, offering a bounded trade-off between resilience and bandwidth cost for time-critical grid operations.",
+      "authors": [
+        "Jorge David de Hoz Diego",
+        "Ioannis Zografopoulos",
+        "Anca Jurcut"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "eess.SY"
+      ],
+      "published": "2026-07-29T01:28:36+00:00",
+      "link": "https://arxiv.org/pdf/2607.26379v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "security protocol for substation communications",
+      "llm_evidence_cn": "变电站通信安全协议设计",
+      "llm_evidence": "变电站通信安全协议设计",
+      "canonical_evidence": "变电站通信安全协议设计",
+      "llm_tldr_en": "The paper presents QUIC-TRIP, a transparent security methodology for low-latency IP-based industrial substation communications, addressing the lack of built-in security in R-GOOSE protocols against false data injection and DoS attacks.",
+      "llm_tldr_cn": "现代电力系统关键控制功能依赖的R-GOOSE等变电站通信协议缺少内建安全机制，容易遭受虚假数据注入和拒绝服务攻击。该论文提出QUIC-TRIP透明安全方法，为低时延IP工业通信提供三重冗余的安全防护。方法遵循深度防御与零信任原则，在不牺牲可用性的前提下增强协议的安全能力，满足能源部（DOE）的安全指令要求。该工作为关键基础设施的安全通信提供了可行方案，有助于保障电力系统的可靠运行。",
+      "llm_tldr": "现代电力系统关键控制功能依赖的R-GOOSE等变电站通信协议缺少内建安全机制，容易遭受虚假数据注入和拒绝服务攻击。该论文提出QUIC-TRIP透明安全方法，为低时延IP工业通信提供三重冗余的安全防护。方法遵循深度防御与零信任原则，在不牺牲可用性的前提下增强协议的安全能力，满足能源部（DOE）的安全指令要求。该工作为关键基础设施的安全通信提供了可行方案，有助于保障电力系统的可靠运行。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "network security mechanisms and protocols",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.26998v1",
+      "source": "arxiv",
+      "title": "AgentSnare: Learning to Delay, Divert, and Defuse Autonomous Penetration Agents",
+      "abstract": "Large language model (LLM) agents automate penetration testing through an observation-action loop, selecting actions based on observations returned by tools. This dependence allows defenders to inject deceptive observations that can mislead the agent's decision-making process. However, existing defenses rely heavily on static, isolated artifacts planted in the environment prior to an attack. Advanced agents can progressively recognize and bypass these artifacts, ultimately refocusing their exploitation attempts on the real target. To address this issue, we introduce AgentSnare, a trajectory-adaptive deception system that dynamically unfolds a decoy environment to continually steer the penetration agent away from the real target. Specifically, AgentSnare employs an artifact-construction policy model that constructs candidate artifacts conditioned on the agent's interaction history and decoy state. AgentSnare then validates these candidates and incrementally incorporates valid artifacts into a factually consistent decoy environment, thereby delaying the attack by absorbing its tool calls, diverting its post-entry trajectory within the decoy, and defusing it by inducing completion reports grounded in decoy evidence. Across 15 CVE-Bench web applications and three attacker models, AgentSnare absorbs 46.8% of the agent's tool calls in the decoy and retains 55.9% of post-entry actions there, while 90.0% of completion attempts are grounded in decoy evidence; across all 45 attacker-CVE pairs, no real target is successfully exploited at pass@3.",
+      "authors": [
+        "Ruoyu Wang",
+        "Heng Zhao",
+        "Renjie Wu",
+        "Mengnan Zhao",
+        "Zhixuan Chu",
+        "Wanyu Lin",
+        "Tianhang Zheng"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "cs.CL",
+        "cs.LG"
+      ],
+      "published": "2026-07-29T14:56:31+00:00",
+      "link": "https://arxiv.org/pdf/2607.26998v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "develops a deceptive defense system against autonomous LLM penetration testing agents, advancing penetration testing methodology",
+      "llm_evidence_cn": "开发针对自主LLM渗透代理的欺骗防御系统，推进渗透测试方法学",
+      "llm_evidence": "开发针对自主LLM渗透代理的欺骗防御系统，推进渗透测试方法学",
+      "canonical_evidence": "开发针对自主LLM渗透代理的欺骗防御系统，推进渗透测试方法学",
+      "llm_tldr_en": "This paper introduces AgentSnare, a trajectory-adaptive deception system that dynamically unfolds decoy environments to continuously mislead LLM-based penetration agents, overcoming static defenses and adaptive attackers.",
+      "llm_tldr_cn": "LLM代理自动化渗透测试依赖观察-行动循环，现有静态诱饵易被逐步识别绕过。本文提出AgentSnare，一种轨迹自适应欺骗系统，能根据代理行为动态展开诱饵环境，持续将攻击者引离真实目标。通过学习拖延、转移和化解策略，该系统显著提升对自主渗透代理的防御能力。该研究为对抗智能化渗透攻击提供了可学习的动态防护新思路。",
+      "llm_tldr": "LLM代理自动化渗透测试依赖观察-行动循环，现有静态诱饵易被逐步识别绕过。本文提出AgentSnare，一种轨迹自适应欺骗系统，能根据代理行为动态展开诱饵环境，持续将攻击者引离真实目标。通过学习拖延、转移和化解策略，该系统显著提升对自主渗透代理的防御能力。该研究为对抗智能化渗透攻击提供了可学习的动态防护新思路。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "penetration testing methodologies and tools",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.27661v1",
+      "source": "arxiv",
+      "title": "Strategy Phasing of Cyber Attacks on Digital Substations",
+      "abstract": "Digital substations that comply with IEC 61850 have improved the operational efficiency of modern power systems. However, adversaries can abuse IEC 61850 communication to manipulate circuit breaker operations in substations, which can result in severe system impacts. These cyber attacks are crafted based on broader multi-phase strategies. The existing intrusion detection systems (IDSs) often flag only isolated symptoms. Thus, there is a lack of context in the attack phase to support the deployment of mitigation measures. This paper proposes Substation Cyber Attack Strategy Phasing (SubCASP), a Hidden Markov Model(HMM)- based method that fuses IDS data logs to infer the current attack phase, next attack phase, and retrospective attack path. The attack phases are derived from an ATT&CK-based threat modeling. The SubCASP model is trained and evaluated on a reproducible attack-graph dataset. Test results are presented to demonstrate the robustness of SubCASP for various IDS observability levels and missing IDS data logs scenarios.",
+      "authors": [
+        "Akila Herath",
+        "Chen-Ching Liu",
+        "Junho Hong",
+        "Kuchan Park"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "eess.SY"
+      ],
+      "published": "2026-07-30T04:17:40+00:00",
+      "link": "https://arxiv.org/pdf/2607.27661v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "HMM-based IDS log fusion to infer cyber attack phases",
+      "llm_evidence_cn": "基于HMM融合IDS日志推断网络攻击阶段",
+      "llm_evidence": "基于HMM融合IDS日志推断网络攻击阶段",
+      "canonical_evidence": "基于HMM融合IDS日志推断网络攻击阶段",
+      "llm_tldr_en": "This paper proposes SubCASP, an HMM-based method that fuses IDS data logs to infer the current, next, and retrospective attack phases in IEC 61850 digital substations, supporting context-aware mitigation.",
+      "llm_tldr_cn": "针对现有入侵检测系统（IDS）只能标记孤立症状而缺乏攻击阶段上下文的问题，论文提出SubCASP方法，基于隐马尔可夫模型融合IDS日志，推断数字变电站当前攻击阶段、下一阶段以及回溯攻击路径。该方法利用IEC 61850通信特性刻画多阶段攻击策略，为部署针对性缓解措施提供上下文支持，提升关键基础设施网络安全防护能力。",
+      "llm_tldr": "针对现有入侵检测系统（IDS）只能标记孤立症状而缺乏攻击阶段上下文的问题，论文提出SubCASP方法，基于隐马尔可夫模型融合IDS日志，推断数字变电站当前攻击阶段、下一阶段以及回溯攻击路径。该方法利用IEC 61850通信特性刻画多阶段攻击策略，为部署针对性缓解措施提供上下文支持，提升关键基础设施网络安全防护能力。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "intrusion detection systems and techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.27696v1",
+      "source": "arxiv",
+      "title": "Distributed Point Functions and Function Secret Sharing",
+      "abstract": "A distributed point function (DPF) is a cryptographic primitive that enables compressed additive sharing of a secret weight-1 vector (equivalently, a point function) across two or more parties. The appealing lightweight structure of DPF constructions has enabled a wide range of applications. These include private information retrieval, anonymous messaging, secure computation with preprocessing, and pseudorandom correlation generators for expanding small correlated seeds into large pseudorandom instances of cryptographic correlations.   In this article, we survey definitions, constructions, and applications of DPFs. We also discuss the extension of DPF to function secret sharing (FSS), which generalizes point functions to support richer function classes. Efficient FSS schemes yield a similar generalization for most of the applications of DPFs.",
+      "authors": [
+        "Elette Boyle",
+        "Niv Gilboa",
+        "Yuval Ishai",
+        "Peter Scholl"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR"
+      ],
+      "published": "2026-07-30T05:27:27+00:00",
+      "link": "https://arxiv.org/pdf/2607.27696v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "survey of distributed point functions and function secret sharing, cryptographic primitives",
+      "llm_evidence_cn": "分布式点函数与函数秘密共享的综述，属密码学基础与构造",
+      "llm_evidence": "分布式点函数与函数秘密共享的综述，属密码学基础与构造",
+      "canonical_evidence": "分布式点函数与函数秘密共享的综述，属密码学基础与构造",
+      "llm_tldr_en": "This survey covers definitions, constructions, and applications of distributed point functions (DPF) and function secret sharing (FSS), including private information retrieval, anonymous messaging, secure computation with preprocessing, and pseudorandom correlation generators.",
+      "llm_tldr_cn": "分布式点函数（DPF）通过压缩加法共享实现秘密权重为1向量的轻量共享，是许多密码协议的基础构件。本文系统综述了DPF的定义、构建方法及其在私有信息检索、匿名消息、预计算安全计算和伪随机相关生成器中的广泛应用，并讨论扩展后的函数秘密共享（FSS）如何支持更富函数类。该综述梳理了该方向的进展，为密码学应用设计提供了重要参考。",
+      "llm_tldr": "分布式点函数（DPF）通过压缩加法共享实现秘密权重为1向量的轻量共享，是许多密码协议的基础构件。本文系统综述了DPF的定义、构建方法及其在私有信息检索、匿名消息、预计算安全计算和伪随机相关生成器中的广泛应用，并讨论扩展后的函数秘密共享（FSS）如何支持更富函数类。该综述梳理了该方向的进展，为密码学应用设计提供了重要参考。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "cryptographic algorithms and applications",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch"
+    },
+    {
+      "id": "2607.28088v1",
+      "source": "arxiv",
+      "title": "Checking Information Flow in Cloud-based IoT Access Control Policies (Extended Version)",
+      "abstract": "Many cloud providers for IoT technologies offer access control mechanisms whose proper configuration is critical for security. However, verifying permissions in isolation is insufficient in a setting where devices have different levels of trust or are compartmentalised in various subsystems. This work analyses IoT access control policies to identify potential security vulnerabilities from unwanted information flow between devices. To this end, we formally model AWS IoT Core's components and define an information flow graph to capture the communication among devices permitted by the access control policies. We build a finite representation of the graph by leveraging an SMT solver, thus enabling the verification of information flow between devices. We implement our approach in a tool called IOT:POKER, and assess it on a realistic scenario and several real-world policies.",
+      "authors": [
+        "Lorenzo Ceragioli",
+        "Letterio Galletta",
+        "Edoardo Lunati"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "cs.LO",
+        "cs.SE"
+      ],
+      "published": "2026-07-30T11:54:36+00:00",
+      "link": "https://arxiv.org/pdf/2607.28088v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 9.0,
+      "llm_evidence_en": "formal analysis of IoT access control policies to detect information-flow vulnerabilities",
+      "llm_evidence_cn": "对物联网访问控制策略进行形式化分析以检测信息流漏洞",
+      "llm_evidence": "对物联网访问控制策略进行形式化分析以检测信息流漏洞",
+      "canonical_evidence": "对物联网访问控制策略进行形式化分析以检测信息流漏洞",
+      "llm_tldr_en": "Models AWS IoT Core access control policies as an information flow graph and uses SMT solving to verify unwanted information flows, identifying security vulnerabilities.",
+      "llm_tldr_cn": "云物联网环境中访问控制策略的配置对安全至关重要，但仅验证单个权限不足以发现跨设备和子系统的信息泄露风险。本文形式化建模AWS IoT Core组件，定义信息流图刻画设备间允许的通信，并利用SMT求解器构建有限表示以验证信息流。该方法能自动识别因策略配置不当导致的安全漏洞，帮助加强物联网系统的访问控制安全。",
+      "llm_tldr": "云物联网环境中访问控制策略的配置对安全至关重要，但仅验证单个权限不足以发现跨设备和子系统的信息泄露风险。本文形式化建模AWS IoT Core组件，定义信息流图刻画设备间允许的通信，并利用SMT求解器构建有限表示以验证信息流。该方法能自动识别因策略配置不当导致的安全漏洞，帮助加强物联网系统的访问控制安全。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "security vulnerability assessment and mitigation",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.21014v1",
+      "source": "arxiv",
+      "title": "Weak Private Information Retrieval for Graph-based Storage",
+      "abstract": "A distributed storage system with graph-based replication consists of a collection of databases and the files they contain. The databases (or servers) are represented as the vertices of a graph, while each file is stored in a distinct pair of servers and is represented by an edge of this graph. Private information retrieval (G-PIR) on such a graph-based storage system involves a client which seeks to retrieve a desired file via a query-response protocol, without leaking the identity of the desired file index to any database. The goal of G-PIR is to maximize the rate (reciprocal of the total normalized download) under the privacy constraint. Prior work on G-PIR has involved perfect information-theoretic privacy (i.e., null leakage). However, if the privacy constraint is relaxed, then PIR protocols could be designed that have even higher rates. We term such protocols as Graph-based Weak Private Information Retrieval (G-WPIR) protocols and initiate their formal study in this work. We propose a G-WPIR scheme for arbitrary graphs, and identify the trade-offs it achieves between rate and privacy, under two well known leakage metrics: mutual information leakage and maximal leakage. Our protocol employs minimal subpacketization (representing a file-size constraint) and employs a simple probabilistic query realization to obtain the smooth trade-off. We extend this protocol with some modifications to two special classes of graphs, the complete graphs and the complete bipartite graphs, and identify the corresponding rate-privacy trade-offs achieved.",
+      "authors": [
+        "Shodasakshari Vidya",
+        "Chandan Anand",
+        "Prasad Krishnan"
+      ],
+      "primary_category": "cs.IT",
+      "categories": [
+        "cs.IT",
+        "cs.CR"
+      ],
+      "published": "2026-07-23T07:55:59+00:00",
+      "link": "https://arxiv.org/pdf/2607.21014v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Private information retrieval protocol with weakened privacy constraint; cryptographic privacy application.",
+      "llm_evidence_cn": "具有弱化隐私约束的私有信息检索协议，属于密码学隐私应用。",
+      "llm_evidence": "具有弱化隐私约束的私有信息检索协议，属于密码学隐私应用。",
+      "canonical_evidence": "具有弱化隐私约束的私有信息检索协议，属于密码学隐私应用。",
+      "llm_tldr_en": "This paper studies private information retrieval on graph-based distributed storage under weak privacy constraints. It allows bounded leakage of the file identity to achieve higher retrieval rates, extending G-PIR theory toward privacy-efficiency trade-offs.",
+      "llm_tldr_cn": "图结构分布式存储中的私有信息检索（G-PIR）通常要求完全信息论隐私，导致下载代价较高。本文研究弱隐私条件下的G-PIR，允许文件标识符存在有界泄露，以换取更高的检索速率。作者在松弛隐私约束下分析协议的最优速率，扩展了传统G-PIR的理论边界。该成果为需要在隐私与效率之间折中的存储系统提供了新的检索方案，属于密码学与隐私计算的应用研究。",
+      "llm_tldr": "图结构分布式存储中的私有信息检索（G-PIR）通常要求完全信息论隐私，导致下载代价较高。本文研究弱隐私条件下的G-PIR，允许文件标识符存在有界泄露，以换取更高的检索速率。作者在松弛隐私约束下分析协议的最优速率，扩展了传统G-PIR的理论边界。该成果为需要在隐私与效率之间折中的存储系统提供了新的检索方案，属于密码学与隐私计算的应用研究。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "cryptographic algorithms and applications",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.20890v1",
+      "source": "arxiv",
+      "title": "Information-Theoretically Secure Aggregation for Lightweight Federated Learning: Resilient to Dropouts and Adversaries",
+      "abstract": "On-device federated learning (FL) enables privacy-preserving and personalized model training on resource-constrained devices such as smartphones and IoT nodes. To reduce communication cost, sign-based methods (e.g., signSGD) transmit one-bit gradients. However, exposing gradient signs makes them vulnerable to inference attacks, while existing secure aggregation schemes are often incompatible with such methods or incur significant computational and communication overhead. We propose a lightweight and information-theoretically secure aggregation framework tailored for sign-based FL. The framework securely computes the majority vote (MV) polynomial through single-round secure multiplication, ensuring end-to-end information-theoretic security under the honest-majority assumption while revealing only the final aggregated sign to the server. To enhance efficiency and scalability, we introduce two key techniques. First, inverse-form exponent reduction halves the effective MV polynomial degree, reducing both communication and computation costs. Second, we propose single-round secure multiplication, achieving linear offline complexity and storage with only a single online communication. Together, these techniques reduce online communication by up to 99.5% and latency by up to 85.7% compared to conventional approaches. Also, by leveraging inherent MDS-code-based decoding, the framework achieves robustness against both dropouts and adversarial behaviors, yielding accuracy gains of up to 20.65% and 10.74%, respectively. Overall, the proposed framework establishes a practical foundation for large-scale, low-latency, and information-theoretically secure aggregation in sign-based FL.",
+      "authors": [
+        "Hyeong-Gun Joo",
+        "Songnam Hong",
+        "Dong-Joon Shin"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG"
+      ],
+      "published": "2026-07-23T03:26:41+00:00",
+      "link": "https://arxiv.org/pdf/2607.20890v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "information-theoretically secure aggregation protocol for sign-based federated learning",
+      "llm_evidence_cn": "用于基于符号的联邦学习的信息论安全聚合协议",
+      "llm_evidence": "用于基于符号的联邦学习的信息论安全聚合协议",
+      "canonical_evidence": "用于基于符号的联邦学习的信息论安全聚合协议",
+      "llm_tldr_en": "Proposes a lightweight information-theoretically secure aggregation framework for sign-based federated learning, computing majority vote securely through single-round secure multiplication.",
+      "llm_tldr_cn": "设备端联邦学习需要隐私保护，但符号型方法（如signSGD）暴露梯度符号，易受推理攻击，已有安全聚合方案不兼容且开销大。本文提出一种面向符号联邦学习的轻量级信息论安全聚合框架，通过单轮安全乘法计算多数投票多项式，实现端到端安全。该方案在抵抗推理攻击的同时显著降低计算和通信开销，适用于资源受限设备。",
+      "llm_tldr": "设备端联邦学习需要隐私保护，但符号型方法（如signSGD）暴露梯度符号，易受推理攻击，已有安全聚合方案不兼容且开销大。本文提出一种面向符号联邦学习的轻量级信息论安全聚合框架，通过单轮安全乘法计算多数投票多项式，实现端到端安全。该方案在抵抗推理攻击的同时显著降低计算和通信开销，适用于资源受限设备。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "cryptographic algorithms and applications",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.21136v1",
+      "source": "arxiv",
+      "title": "Safety and Security: Experimental Validation of Encrypted Model Predictive Control",
+      "abstract": "In this paper, we revisit the problem of an encrypted model predictive control (MPC) design, representing a significant challenge in the recent field of secure process control. Existing methods in secure optimization-based control are non-existent and even partial implementation fails to address the closed-loop system stability and recursive feasibility properties of the constrained MPC. To overcome these limitations, we propose a novel approach that utilizes a polynomial approximation of the optimal control law. This method evaluates the explicit control law within a fully homomorphic encryption framework, ensuring that the controller is securely deployed on any third-party or cloud-based platform, with both process data and controller coefficients protected. Experimental results from a laboratory-scale implementation and validation of the proposed privacy-aware control method demonstrate its advantages.",
+      "authors": [
+        "Juraj Holaza",
+        "Martin Kalúz",
+        "Matúš Furka",
+        "Martin Klaučo",
+        "Juraj Oravec"
+      ],
+      "primary_category": "eess.SY",
+      "categories": [
+        "eess.SY"
+      ],
+      "published": "2026-07-23T10:14:29+00:00",
+      "link": "https://arxiv.org/pdf/2607.21136v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "application of fully homomorphic encryption to secure model predictive control",
+      "llm_evidence_cn": "将全同态加密应用于安全模型预测控制",
+      "llm_evidence": "将全同态加密应用于安全模型预测控制",
+      "canonical_evidence": "将全同态加密应用于安全模型预测控制",
+      "llm_tldr_en": "This paper proposes a polynomial approximation of the explicit MPC control law evaluated under fully homomorphic encryption, enabling secure controller deployment on third-party platforms while preserving stability and recursive feasibility.",
+      "llm_tldr_cn": "安全优化控制领域中，现有加密MPC方法缺失且部分实现无法保证闭环稳定性和递推可行性。论文提出对最优控制律的多项式近似，并在全同态加密框架内评估显式控制律，从而在云端等第三方平台安全部署控制器。实验验证表明该方法在保护过程数据和控制参数的同时维持控制性能，推进了加密控制在实际系统中的应用。",
+      "llm_tldr": "安全优化控制领域中，现有加密MPC方法缺失且部分实现无法保证闭环稳定性和递推可行性。论文提出对最优控制律的多项式近似，并在全同态加密框架内评估显式控制律，从而在云端等第三方平台安全部署控制器。实验验证表明该方法在保护过程数据和控制参数的同时维持控制性能，推进了加密控制在实际系统中的应用。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "cryptographic algorithms and applications",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.22076v1",
+      "source": "arxiv",
+      "title": "PoCEvolve: Generating Proof-of-Concept Exploits from Security Patches with Vulnerability-Aware Prompt Evolution",
+      "abstract": "Ideally, the detailed information about a vulnerability should be made available together with the fixing commit. In practice, however, such details often become available only long after the commit, even when a CVE has already been published. During this window, the patch is already public, so attackers can reverse-engineer it, yet defenders lack the details needed to assess exposure, prioritize, and validate the fix. Executable evidence, such as a proof-of-concept (PoC) exploit, could fill this gap. Prior work has automated PoC generation, but the state-of-the-art approach, PoCGen, assumes that a detailed vulnerability report is already available, which is precisely what is missing during this window. In this paper, we first present an empirical study quantifying the long delay between the fixing commit and the availability of a detailed vulnerability report. We then introduce PoCEvolve, a vulnerability-aware prompt-evolution framework that generates PoCs directly from vulnerability-fixing commits. Given a vulnerability-fixing commit, PoCEvolve synthesizes a corresponding PoC exploit. To learn from unsuccessful generation attempts, PoCEvolve assesses the usefulness of different dimensions of vulnerability-related context, including the inferred vulnerable API and code-coverage information. These assessments guide prompt evolution towards more effective exploit-generation prompts. We evaluate PoCEvolve on SecBench.VFC.js, where PoCEvolve achieves a PoC generation success rate of 58.4%, corresponding to relative improvements of 20.7% over PoCGen and 200.0% over the LLM baseline with GPT-4o-mini. With a recent model, Qwen3.7-Plus, PoCEvolve achieves a higher success rate of 85.3%. When detailed vulnerability reports are available, PoCEvolve achieves a success rate of 71.7%, improving over PoCGen by 11.1%.",
+      "authors": [
+        "Duc Manh Tran",
+        "Ratnadira Widyasari",
+        "Ivana Clairine Irsan",
+        "Huihui Huang",
+        "Ting Zhang",
+        "Shar Lwin Khin",
+        "Ouh Eng Lieh",
+        "Hong Jin Kang",
+        "David Lo"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "cs.SE"
+      ],
+      "published": "2026-07-24T08:20:28+00:00",
+      "link": "https://arxiv.org/pdf/2607.22076v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "generating proof-of-concept exploits from security patches for vulnerability assessment",
+      "llm_evidence_cn": "从安全补丁生成概念验证利用以支持漏洞评估",
+      "llm_evidence": "从安全补丁生成概念验证利用以支持漏洞评估",
+      "canonical_evidence": "从安全补丁生成概念验证利用以支持漏洞评估",
+      "llm_tldr_en": "PoCEvolve automatically generates proof-of-concept exploits from public patches by vulnerability-aware prompt evolution, filling the window where no detailed vulnerability report exists to assess exposure and validate fixes.",
+      "llm_tldr_cn": "安全补丁公开后攻击者可逆向利用，而防御者往往缺少详细漏洞信息来评估风险。PoCEvolve提出一种漏洞感知提示演化方法，直接从补丁生成概念验证利用(PoC)。与依赖详细漏洞报告的PoCGen不同，PoCEvolve在漏洞报告缺失的窗口期内也能工作，为防御者提供可执行证据，用于评估暴露面、确定优先级和验证修复，应对现实场景中的紧急需求。",
+      "llm_tldr": "安全补丁公开后攻击者可逆向利用，而防御者往往缺少详细漏洞信息来评估风险。PoCEvolve提出一种漏洞感知提示演化方法，直接从补丁生成概念验证利用(PoC)。与依赖详细漏洞报告的PoCGen不同，PoCEvolve在漏洞报告缺失的窗口期内也能工作，为防御者提供可执行证据，用于评估暴露面、确定优先级和验证修复，应对现实场景中的紧急需求。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "security vulnerability assessment and mitigation",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.22885v1",
+      "source": "arxiv",
+      "title": "ReCon: A Resource-Constrained Benchmark for LLM-Based Cybersecurity Compliance Across Ingestion and Retrieval Pipelines",
+      "abstract": "With the increasingly aggressive cyber threat landscape for governments, businesses, and institutions, as information and/or cybersecurity implementations are increasingly under scrutiny by regulators, it has been pointed out that governance failure is one of the major reasons for a weakened cybersecurity posture. A major component of Cyber/information security governance is the development, adoption, and implementation of a comprehensive information and/or cyber security policy document. The policy document must be in compliance with international or national standards and, if possible, with regulatory guidelines. However, it is often observed that policy documents are often incomplete with respect to industry standards or regulations and require revision when subjected to a thorough audit. Identifying the gaps between the controls and processes documented in the policy and those required in the regulations or standards necessitates extensive manual effort. The advent of Generative AI tools such as Large Language Models (LLMs) led to use of LLMs and Agentic AI tools to automate such compliance checks, as seen in a few research publications in recent times. However, such reported use of LLMs are experimented with high resource environments such as expensive GPUs and memory based servers. For smaller organizations such expensive compute platform may not be easily available. In this article, we benchmark the compliance checking tasks on LLMs that do not require GPU and high memory usage and the effectiveness of such resource constrained LLMs in compliance checking. Our experiments demonstrated that the low resource LLMs can provide good agreement/accuracy in compliance checking of policy documents against standards by experimenting with ISO 27002:2022 controls against multiple policy documents.",
+      "authors": [
+        "Rohit Negi",
+        "Rishik Jain",
+        "Soumyo V Chakarborty",
+        "Amit Negi",
+        "Sandeep K Shukla"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR"
+      ],
+      "published": "2026-07-24T19:53:00+00:00",
+      "link": "https://arxiv.org/pdf/2607.22885v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "cybersecurity compliance benchmark for policy documents",
+      "llm_evidence_cn": "网络安全合规基准，面向策略文档",
+      "llm_evidence": "网络安全合规基准，面向策略文档",
+      "canonical_evidence": "网络安全合规基准，面向策略文档",
+      "llm_tldr_en": "ReCon is a resource-constrained benchmark evaluating LLM-based cybersecurity compliance across ingestion and retrieval pipelines, addressing incomplete governance policy documents and supporting compliance assessment.",
+      "llm_tldr_cn": "针对网络威胁加剧和治理失效导致网络安全态势弱化的问题，ReCon提出了一个资源受限基准，用于评估基于大语言模型的网络安全合规系统在文档摄取与检索管道中的表现。该基准聚焦政策文档与国际标准及监管指南的一致性，弥补现有合规评估不足。实验表明ReCon能有效衡量LLM合规能力的差距，为提升网络安全治理和合规实践提供评测依据。",
+      "llm_tldr": "针对网络威胁加剧和治理失效导致网络安全态势弱化的问题，ReCon提出了一个资源受限基准，用于评估基于大语言模型的网络安全合规系统在文档摄取与检索管道中的表现。该基准聚焦政策文档与国际标准及监管指南的一致性，弥补现有合规评估不足。实验表明ReCon能有效衡量LLM合规能力的差距，为提升网络安全治理和合规实践提供评测依据。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "cyber security principles and practices",
+      "matched_requirement_id": "req-2",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.21325v1",
+      "source": "arxiv",
+      "title": "Toward cryptographically verifiable authorization for autonomous AI agents: A security hypothesis, preliminary formal model, and proof-of-concept implementation",
+      "abstract": "Autonomous AI agents increasingly execute actions, invoke tools, and operate on protected resources with limited human oversight. Existing authentication and authorization mechanisms establish identity and delegate authority, but do not inherently provide cryptographic evidence that a concrete request issued by a specific agent satisfies the applicable policy in a specific execution context. This paper hypothesizes that agent authorization can be formalized as a cryptographically verifiable relation, denoted $R_{CVA}$, that jointly binds an agent principal, a concrete authorization request, an execution context, and the satisfaction of an applicable policy, while selectively preserving the confidentiality of private authorization attributes. We introduce a preliminary formal abstraction for Cryptographically Verifiable Agent Authorization (CVA), define a compact set of candidate security properties including authorization soundness, principal binding, request binding, policy binding, and replay resistance, and provide an executable zero-knowledge proof of concept that instantiates selected elements of the model over a Groth16 zk-SNARK construction. We further identify and formalize the structural separation among identity binding, authorization-request binding, and runtime execution binding as a central open problem in the design of secure agentic systems (a distinction {not explicitly addressed by} current agentic security frameworks) and present a falsifiable research agenda for its resolution.",
+      "authors": [
+        "M. Llambí-Morillas",
+        "D. Fernández-Fernández"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "cs.AI"
+      ],
+      "published": "2026-07-23T13:55:02+00:00",
+      "link": "https://arxiv.org/pdf/2607.21325v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "uses cryptography to create verifiable authorization relation for AI agents",
+      "llm_evidence_cn": "应用密码学构造AI智能体可验证授权关系",
+      "llm_evidence": "应用密码学构造AI智能体可验证授权关系",
+      "canonical_evidence": "应用密码学构造AI智能体可验证授权关系",
+      "llm_tldr_en": "This paper formalizes agent authorization as a cryptographically verifiable relation R_CVA binding agent, request, context, and policy satisfaction, with a preliminary formal model and proof-of-concept implementation.",
+      "llm_tldr_cn": "本文针对自主AI智能体执行操作缺乏可验证授权证据的问题，提出了将授权建模为密码学可验证关系R_CVA的假设，并给出初步形式模型和概念验证实现。该关系联合绑定智能体主体、具体请求、执行上下文与策略满足性，为受限环境下的合法操作提供密码学证明，增强安全性与可审计性。",
+      "llm_tldr": "本文针对自主AI智能体执行操作缺乏可验证授权证据的问题，提出了将授权建模为密码学可验证关系R_CVA的假设，并给出初步形式模型和概念验证实现。该关系联合绑定智能体主体、具体请求、执行上下文与策略满足性，为受限环境下的合法操作提供密码学证明，增强安全性与可审计性。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "cryptographic algorithms and applications",
+      "matched_requirement_id": "req-4",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.22943v1",
+      "source": "arxiv",
+      "title": "A Modular Cyber Range Platform for Smart Energy Systems",
+      "abstract": "Modern critical infrastructure requires realistic training tools that bridge the gap between digital vulnerabilities and physical consequences. This paper introduces a lightweight, modular Cyber Range (CR) designed to simulate Information Technology (IT) and Operational Technology (OT) environments with high fidelity. Using the FastAPI framework as backend and Quick Emulator (QEMU)/Kernel-based Virtual Machine (KVM) virtualisation, the platform employs a YAML-based engine to automatically deploy complex networks on standard hardware with minimal overhead. To demonstrate its capabilities, we present a Photovoltaic (PV) Plant scenario set in a fictional smart city. The scenario follows a multi-stage attack that begins with the compromise of a home Internet of Things (IoT) device and escalates into a major power outage at a military base. The proposed CR, natively supports industrial protocols such as Modbus/TCP and Message Queuing Telemetry Transport (MQTT) and includes a \"Green Team\" framework for evaluating human performance during crisis situations. This paper describes the system architecture, automated setup, protocol-simulation capabilities, and scenario design.",
+      "authors": [
+        "Vasilis Ieropoulos",
+        "Theofanis Eleftheriadis",
+        "Kyriakos Christou",
+        "Philippos Isaia",
+        "Maria Michalopoulou",
+        "Angelos K. Marnerides",
+        "Christos Laoudias",
+        "Maria K. Michael"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR"
+      ],
+      "published": "2026-07-24T23:03:05+00:00",
+      "link": "https://arxiv.org/pdf/2607.22943v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "cyber range platform for simulating attack scenarios and security training",
+      "llm_evidence_cn": "面向智能能源系统的网络靶场与攻击模拟平台",
+      "llm_evidence": "面向智能能源系统的网络靶场与攻击模拟平台",
+      "canonical_evidence": "面向智能能源系统的网络靶场与攻击模拟平台",
+      "llm_tldr_en": "Introduces a lightweight modular cyber range using QEMU/KVM and YAML-based engine to simulate IT/OT environments and multi-stage attacks for smart energy systems.",
+      "llm_tldr_cn": "关键基础设施安全培训需要既能反映数字漏洞又能体现物理后果的真实仿真环境。本文设计了一个轻量级模块化网络靶场，后端基于FastAPI与QEMU/KVM虚拟化，通过YAML配置引擎自动部署IT/OT融合网络。为验证能力，平台搭建了智慧城市光伏电站场景，并成功演示从家庭物联网设备入侵开始的网络攻击链。该平台以较低硬件开销实现了高保真仿真，为能源系统的安全演练与测试提供了实用工具。",
+      "llm_tldr": "关键基础设施安全培训需要既能反映数字漏洞又能体现物理后果的真实仿真环境。本文设计了一个轻量级模块化网络靶场，后端基于FastAPI与QEMU/KVM虚拟化，通过YAML配置引擎自动部署IT/OT融合网络。为验证能力，平台搭建了智慧城市光伏电站场景，并成功演示从家庭物联网设备入侵开始的网络攻击链。该平台以较低硬件开销实现了高保真仿真，为能源系统的安全演练与测试提供了实用工具。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "penetration testing methodologies and tools",
+      "matched_requirement_id": "req-6",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.23312v1",
+      "source": "arxiv",
+      "title": "A Structured Cyber Threat Intelligence Dataset Using STIX 2.1 Entities and MITRE ATT&CK Mappings",
+      "abstract": "Cyber threat intelligence (CTI) reports are typically written in unstructured formats, which complicates the extraction and analysis of important entities and adversarial behaviors. Although existing CTI research provides extraction tools, knowledge-graph frameworks, and MITRE ATT&CK mapped datasets, curated report-level datasets that preserve complex entity relationships and normalized adversarial behaviors remain limited. To address this limitation, this study presents a manually constructed dataset of 150 English-language CTI reports, each represented as STIX 2.1 based graphs, which includes 4,777 STIX entities, 5,817 STIX relationships in total, and 1,273 STIX attack-pattern entities (adversarial behaviors) mapped to 269 unique MITRE ATT&CK Enterprise techniques and sub-techniques. Twenty five randomly sampled reports were independently assessed by two cybersecurity researchers, which shows substantial inter-rater agreement. Disagreements were subsequently adjudicated to establish a gold-standard reference dataset. Four locally deployed open-source LLMs were evaluated as automated judges against this adjudicated reference sample. Qwen3.6:27B achieved the strongest overall performance, with a maximum kappa score of 0.803, micro-F1 scores exceeding 92%, and false-positive rates below 5%. The dataset provides a benchmark for CTI information extraction, knowledge-graph construction, incident analysis, and threat attribution. The findings further indicate that locally deployed LLMs can support human reviewers in identifying annotation inconsistencies, but expert validation remains essential.",
+      "authors": [
+        "Dipshikha Das",
+        "Arnab Banik",
+        "Md. Shariful Islam",
+        "Md Rayhanur Rahman"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR"
+      ],
+      "published": "2026-07-25T17:59:35+00:00",
+      "link": "https://arxiv.org/pdf/2607.23312v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "structured CTI dataset with STIX and MITRE ATT&CK mappings supports intrusion detection",
+      "llm_evidence_cn": "结构化威胁情报数据集，映射攻击行为，支持入侵检测",
+      "llm_evidence": "结构化威胁情报数据集，映射攻击行为，支持入侵检测",
+      "canonical_evidence": "结构化威胁情报数据集，映射攻击行为，支持入侵检测",
+      "llm_tldr_en": "This paper presents a manually curated dataset of 150 CTI reports as STIX 2.1 graphs with 4,777 entities and 1,273 attack patterns mapped to MITRE ATT&CK, enabling advanced threat analysis.",
+      "llm_tldr_cn": "本文构建了一个包含150份英文CTI报告的结构化数据集，以STIX 2.1图表示，包含4777个实体、5817条关系以及1273个映射到MITRE ATT&CK的攻击模式实体，弥补了现有数据集在复杂实体关系与标准化攻击行为方面的不足，为网络威胁情报分析和入侵检测研究提供了高质量资源。",
+      "llm_tldr": "本文构建了一个包含150份英文CTI报告的结构化数据集，以STIX 2.1图表示，包含4777个实体、5817条关系以及1273个映射到MITRE ATT&CK的攻击模式实体，弥补了现有数据集在复杂实体关系与标准化攻击行为方面的不足，为网络威胁情报分析和入侵检测研究提供了高质量资源。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "intrusion detection systems and techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    },
+    {
+      "id": "2607.23825v1",
+      "source": "arxiv",
+      "title": "Bridging the Epistemic Gap in the Invisible Internet: Extended Mathematical Modeling and Empirical Characterization of I2P Topology",
+      "abstract": "The Invisible Internet Project (I2P) is a decentralized, peer-to-peer network underpinning secure and adversarial communications with major implications for cybersecurity and national security. Its global topology emerges from thousands of independent peer-selection decisions, producing a hub-dominated, complex structure that resists external observation. Prior models based on protocol documentation failed to capture real-world behavior. We close this gap with an Extended Mathematical Model (EMM) derived from production code and validated on a six-router, geographically distributed testbed over thirty days. Results reveal limited router visibility (~25% of nodes), relativistic tier allocations, strong Fast-tier tunnel preference, and overrepresented High Capacity-tier exploratory tunnels. The model accurately predicts emergent topological asymmetries and defines the adversarial resources required to compromise privacy, providing a principled foundation for cyber deterrence and secure decentralized network design.",
+      "authors": [
+        "Siddique Abubakr Muntaka",
+        "Jacques Bou Abdo",
+        "Liaquat Hossain"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR"
+      ],
+      "published": "2026-07-26T20:18:02+00:00",
+      "link": "https://arxiv.org/pdf/2607.23825v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 6.0,
+      "llm_evidence_en": "models I2P anonymity network topology, relevant to understanding secure network protocols",
+      "llm_evidence_cn": "对I2P匿名网络拓扑进行建模，有助于理解安全网络协议",
+      "llm_evidence": "对I2P匿名网络拓扑进行建模，有助于理解安全网络协议",
+      "canonical_evidence": "对I2P匿名网络拓扑进行建模，有助于理解安全网络协议",
+      "llm_tldr_en": "This paper presents an Extended Mathematical Model of I2P topology derived from production code and validated on a distributed testbed, revealing limited router visibility and complex tier structure, with implications for cybersecurity and national security.",
+      "llm_tldr_cn": "I2P是用于安全通信的去中心化匿名网络，以往基于文档的模型无法刻画真实行为。本文基于生产代码提出扩展数学模型，并在六路由器分布式测试平台验证30天。结果显示路由器可见性仅约25%，层级分配具有相对性，从而弥合了协议文档与真实网络之间的认知鸿沟。该工作对理解匿名网络及网络空间安全具有重要意义。",
+      "llm_tldr": "I2P是用于安全通信的去中心化匿名网络，以往基于文档的模型无法刻画真实行为。本文基于生产代码提出扩展数学模型，并在六路由器分布式测试平台验证30天。结果显示路由器可见性仅约25%，层级分配具有相对性，从而弥合了协议文档与真实网络之间的认知鸿沟。该工作对理解匿名网络及网络空间安全具有重要意义。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "network security mechanisms and protocols",
+      "matched_requirement_id": "req-1",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "6"
+    },
+    {
+      "id": "2607.23088v1",
+      "source": "arxiv",
+      "title": "Poster: Rethinking Security in LLM Code Generation through Real-World Risk Scenarios",
+      "abstract": "Large Language Models (LLMs) are widely used for code generation, yet their security behavior in realistic development workflows remains underexplored. Existing benchmarks often rely on explicitly specified security requirements, failing to capture real-world scenarios where prompts are frequently ambiguous or incomplete. In this paper, we adopt a developer-centric perspective and identify three representative risk scenarios that commonly lead to security vulnerabilities in LLM-generated code: Ambiguous Requirements, Under-Specified Operational Context, and Security--Functionality Conflict. Based on these scenarios, we construct a large-scale benchmark comprising 2,700 test cases, enabling fine-grained evaluation of LLM security under realistic conditions. Extensive evaluation of eight state-of-the-art LLMs reveals that all models exhibit average vulnerability rates exceeding 56\\% across risk scenarios. We further demonstrate that security-aware prompting can substantially mitigate these risks, achieving up to 45\\% improvement.",
+      "authors": [
+        "Lixun Ma",
+        "Ruolong Ma",
+        "Bei Wang",
+        "Feng Wei",
+        "Zhenguang Liu",
+        "Lorenzo Cavallaro",
+        "Wentao Chen"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "cs.AI"
+      ],
+      "published": "2026-07-25T07:46:13+00:00",
+      "link": "https://arxiv.org/pdf/2607.23088v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Benchmark evaluating security vulnerabilities in LLM-generated code under ambiguous and conflicting scenarios; supports vulnerability assessment.",
+      "llm_evidence_cn": "构建基准评估LLM生成代码在歧义与冲突场景下的安全漏洞，支持漏洞评估。",
+      "llm_evidence": "构建基准评估LLM生成代码在歧义与冲突场景下的安全漏洞，支持漏洞评估。",
+      "canonical_evidence": "构建基准评估LLM生成代码在歧义与冲突场景下的安全漏洞，支持漏洞评估。",
+      "llm_tldr_en": "The paper identifies three realistic scenarios where ambiguous or conflicting prompts cause security vulnerabilities in LLM-generated code. It builds a 2700-case benchmark that evaluates LLM security more realistically than explicit-requirement tests, enabling fine-grained assessment of code-generation safety.",
+      "llm_tldr_cn": "现有LLM代码安全基准多依赖明确的安全需求，难以反映真实开发中提示含糊或冲突的情况。作者从开发者视角归纳三个风险场景：需求歧义、运行上下文欠指定、安全与功能冲突，并构建2700个测试用例的基准。细粒度评测揭示了LLM在真实场景下的安全弱点，为提升生成代码安全性提供了评测基础。这推进了人工智能代码生成中的漏洞评估与缓解研究。",
+      "llm_tldr": "现有LLM代码安全基准多依赖明确的安全需求，难以反映真实开发中提示含糊或冲突的情况。作者从开发者视角归纳三个风险场景：需求歧义、运行上下文欠指定、安全与功能冲突，并构建2700个测试用例的基准。细粒度评测揭示了LLM在真实场景下的安全弱点，为提升生成代码安全性提供了评测基础。这推进了人工智能代码生成中的漏洞评估与缓解研究。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "security vulnerability assessment and mitigation",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.23882v1",
+      "source": "arxiv",
+      "title": "ADVERSARIAL: And-Inverter Graph-Assisted Hardware Trojan Detection At Scale",
+      "abstract": "Modern System-on-Chip (SoCs) often contain hundreds of millions to tens of billions of gates, making existing Hardware Trojan (HT) detection methods impractical due to their immense scale. The proposed approach incorporates symbolically enabled learning by modeling flattened gate-level netlists as Boolean networks represented as And-Inverter Graphs (AIGs), where all internal nodes are 2-input AND gates and inversions reside on the edges. Each directed connection is expressed as a triple within a Knowledge Graph Embedding (KGE) framework, producing compact, constant-size per-node representations that retain multi-hop structural context. The AIG's bounded fan-in and uniform semantics ensure training and inference complexity scale linearly with edge count, addressing major scalability bottlenecks in HT detection. Symbolically enabled learning across deep datapaths enables the model to differentiate circuit structures from rare and functionally inconsistent connections that signify potential Trojan triggers and payloads. Experiments on large-scale SoC benchmarks demonstrate clear geometric separation between Trojan and benign nodes and practical scalability.",
+      "authors": [
+        "Yaroslav Popryho",
+        "Debjit Pal",
+        "Inna Partin-Vaisband"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.AR",
+        "cs.CR"
+      ],
+      "published": "2026-07-26T23:00:09+00:00",
+      "link": "https://arxiv.org/pdf/2607.23882v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 7.0,
+      "llm_evidence_en": "scalable hardware Trojan detection",
+      "llm_evidence_cn": "大规模硬件木马检测方法",
+      "llm_evidence": "大规模硬件木马检测方法",
+      "canonical_evidence": "大规模硬件木马检测方法",
+      "llm_tldr_en": "The paper proposes an And-Inverter Graph-based knowledge graph embedding approach for large-scale hardware Trojan detection, achieving linear complexity and constant-size per-node representations.",
+      "llm_tldr_cn": "现代SoC动辄包含数十亿逻辑门，使得现有硬件木马检测方法难以扩展到实际规模。该论文提出将门级网表建模为与逆变图(AIG)，并在知识图嵌入框架中将边表示为三元组，学习紧凑的节点表示。由于AIG的有界扇入和统一语义，训练与推理复杂度与边数线性相关，能够支撑超大规模设计。结果表明，该方法在大规模电路中可高效识别硬件木马，为硬件供应链安全提供了可扩展的漏洞检测技术。",
+      "llm_tldr": "现代SoC动辄包含数十亿逻辑门，使得现有硬件木马检测方法难以扩展到实际规模。该论文提出将门级网表建模为与逆变图(AIG)，并在知识图嵌入框架中将边表示为三元组，学习紧凑的节点表示。由于AIG的有界扇入和统一语义，训练与推理复杂度与边数线性相关，能够支撑超大规模设计。结果表明，该方法在大规模电路中可高效识别硬件木马，为硬件供应链安全提供了可扩展的漏洞检测技术。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "security vulnerability assessment and mitigation",
+      "matched_requirement_id": "req-5",
+      "selection_source": "fresh_fetch",
+      "quick_tier": "7"
+    }
+  ]
+}

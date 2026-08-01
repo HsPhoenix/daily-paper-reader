@@ -1,0 +1,521 @@
+{
+  "date": "20260723-20260801",
+  "date_label": "2026-07-23 ~ 2026-08-01",
+  "generated_at": "2026-08-01 11:31:16 UTC",
+  "recommend_exists": true,
+  "run_count": 1,
+  "papers": [
+    {
+      "paper_id": "2607.21811v2",
+      "route": "20260723-20260801/2607.21811v2-efficient-unclonable-encryption-from-pauli-eigenstates",
+      "title": "Efficient Unclonable Encryption from Pauli Eigenstates",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 10.0,
+      "evidence": "提出基于泡利本征态的高效不可克隆加密，推进密码算法",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.20832v1",
+      "route": "20260723-20260801/2607.20832v1-beyond-heavy-log-curation-perplexity-based-apt-detection-via-unsupervised-context-augmented-language-models",
+      "title": "Beyond Heavy Log Curation: Perplexity-Based APT Detection via Unsupervised, Context-Augmented Language Models",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基于困惑度的无监督APT检测",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.21824v1",
+      "route": "20260723-20260801/2607.21824v1-protocol-level-attacks-on-agentic-commerce-platforms-a-cross-platform-taxonomy-aip-bench-and-unified-defense",
+      "title": "Protocol-Level Attacks on Agentic Commerce Platforms: A Cross-Platform Taxonomy, AIP-Bench, and Unified Defense",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "揭示代理商务平台的协议级结构性漏洞，并提出统一防御",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.21903v2",
+      "route": "20260723-20260801/2607.21903v2-cleaning-the-ntp-pool-detecting-and-mitigating-ntp-sourced-ipv6-scanning",
+      "title": "Cleaning the NTP Pool: Detecting and Mitigating NTP-Sourced IPv6 Scanning",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "检测并缓解NTP源IPv6扫描，属于网络入侵侦察技术",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.22009v1",
+      "route": "20260723-20260801/2607.22009v1-practical-graph-optimisation-and-ai-driven-models-for-active-directory-security-hardening",
+      "title": "Practical Graph Optimisation and AI-Driven Models for Active Directory Security Hardening",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "活动目录攻击图优化与安全加固，涉及漏洞修复决策",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.22065v1",
+      "route": "20260723-20260801/2607.22065v1-biozkfhe-scalable-encrypted-biometric-identification-via-verifiable-homomorphic-similarity-evaluation",
+      "title": "BioZKFHE: Scalable Encrypted Biometric Identification via Verifiable Homomorphic Similarity Evaluation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "结合同态加密与零知识证明的可验证加密生物识别",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.22269v1",
+      "route": "20260723-20260801/2607.22269v1-kalyna-block-cipher-from-design-space-exploration-to-asic-design",
+      "title": "Kalyna Block Cipher: From Design Space Exploration to ASIC Design",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "密码算法的硬件实现与设计空间探索，含侧信道防护",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.22829v1",
+      "route": "20260723-20260801/2607.22829v1-disentangling-multi-view-scanning-in-mamba-for-network-traffic-anomaly-detection",
+      "title": "Disentangling Multi-View Scanning in Mamba for Network Traffic Anomaly Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "利用解耦多视角扫描的Mamba网络流量异常检测",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.23007v1",
+      "route": "20260723-20260801/2607.23007v1-practical-post-quantum-cryptography-for-bandwidth-constrained-or-non-terrestrial-networks-and-power-constrained-devices",
+      "title": "Practical Post-Quantum Cryptography for Bandwidth Constrained or Non-Terrestrial Networks, and Power Constrained Devices",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "针对受限与非地面网络安全通信的后量子密码优化",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.23272v1",
+      "route": "20260723-20260801/2607.23272v1-from-signals-to-behaviors-evidence-based-android-malware-detection",
+      "title": "From Signals to Behaviors: Evidence-Based Android Malware Detection",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基于行为证据的Android恶意软件检测方法",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.23710v1",
+      "route": "20260723-20260801/2607.23710v1-the-illusion-of-secure-llm-code-closing-the-security-gap-via-iterative-reprompting",
+      "title": "The Illusion of Secure LLM Code: Closing the Security Gap via Iterative Reprompting",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "使用静态分析与动态渗透测试评估LLM生成认证代码，并映射到NIST规范",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.24006v1",
+      "route": "20260723-20260801/2607.24006v1-agentic-cloud-decoys-a-deception-driven-framework-for-autonomous-intrusion-investigation",
+      "title": "Agentic Cloud Decoys: A Deception-Driven Framework for Autonomous Intrusion Investigation",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "使用云蜜罐和AI智能体的自主入侵调查框架",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.24552v1",
+      "route": "20260723-20260801/2607.24552v1-vulngym-evaluating-vulnerability-management-strategies-against-advanced-persistent-threats",
+      "title": "VulnGym: Evaluating Vulnerability Management Strategies against Advanced Persistent Threats",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "面向高级持续性威胁的漏洞修复策略评估框架",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.24578v1",
+      "route": "20260723-20260801/2607.24578v1-communication-security-via-temporal-dependency",
+      "title": "Communication Security via Temporal Dependency",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "利用时间依赖性的新型通信安全机制，属网络安全机制与协议",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.24618v1",
+      "route": "20260723-20260801/2607.24618v1-modeling-local-exploit-hazard---a-bayesian-framework-for-quantifying-exploit-risk-and-operational-efficiency",
+      "title": "Modeling Local Exploit Hazard - A Bayesian Framework for Quantifying Exploit Risk and Operational Efficiency",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "贝叶斯局部漏洞利用风险量化",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.25439v1",
+      "route": "20260723-20260801/2607.25439v1-robust-unsupervised-network-intrusion-detection-via-federated-learning-with-selective-aggregation-under-anomalous-sample-contamination",
+      "title": "Robust Unsupervised Network Intrusion Detection via Federated Learning with Selective Aggregation under Anomalous Sample Contamination",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基于选择性聚合联邦学习在异常样本污染下的鲁棒无监督网络入侵检测",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.26379v1",
+      "route": "20260723-20260801/2607.26379v1-quic-trip-a-triple-redundant-journey-toward-secure-substation-communications",
+      "title": "QUIC-TRIP: A Triple-Redundant Journey Toward Secure Substation Communications",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "变电站通信安全协议设计",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.26998v1",
+      "route": "20260723-20260801/2607.26998v1-agentsnare-learning-to-delay-divert-and-defuse-autonomous-penetration-agents",
+      "title": "AgentSnare: Learning to Delay, Divert, and Defuse Autonomous Penetration Agents",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "开发针对自主LLM渗透代理的欺骗防御系统，推进渗透测试方法学",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.27661v1",
+      "route": "20260723-20260801/2607.27661v1-strategy-phasing-of-cyber-attacks-on-digital-substations",
+      "title": "Strategy Phasing of Cyber Attacks on Digital Substations",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "基于HMM融合IDS日志推断网络攻击阶段",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.27696v1",
+      "route": "20260723-20260801/2607.27696v1-distributed-point-functions-and-function-secret-sharing",
+      "title": "Distributed Point Functions and Function Secret Sharing",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "分布式点函数与函数秘密共享的综述，属密码学基础与构造",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.28088v1",
+      "route": "20260723-20260801/2607.28088v1-checking-information-flow-in-cloud-based-iot-access-control-policies-extended-version",
+      "title": "Checking Information Flow in Cloud-based IoT Access Control Policies (Extended Version)",
+      "section": "deep",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 9.0,
+      "evidence": "对物联网访问控制策略进行形式化分析以检测信息流漏洞",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.21014v1",
+      "route": "20260723-20260801/2607.21014v1-weak-private-information-retrieval-for-graph-based-storage",
+      "title": "Weak Private Information Retrieval for Graph-based Storage",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "具有弱化隐私约束的私有信息检索协议，属于密码学隐私应用。",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.22076v1",
+      "route": "20260723-20260801/2607.22076v1-pocevolve-generating-proof-of-concept-exploits-from-security-patches-with-vulnerability-aware-prompt-evolution",
+      "title": "PoCEvolve: Generating Proof-of-Concept Exploits from Security Patches with Vulnerability-Aware Prompt Evolution",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "从安全补丁生成概念验证利用以支持漏洞评估",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.22943v1",
+      "route": "20260723-20260801/2607.22943v1-a-modular-cyber-range-platform-for-smart-energy-systems",
+      "title": "A Modular Cyber Range Platform for Smart Energy Systems",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "面向智能能源系统的网络靶场与攻击模拟平台",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.23088v1",
+      "route": "20260723-20260801/2607.23088v1-poster-rethinking-security-in-llm-code-generation-through-real-world-risk-scenarios",
+      "title": "Poster: Rethinking Security in LLM Code Generation through Real-World Risk Scenarios",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 8.0,
+      "evidence": "构建基准评估LLM生成代码在歧义与冲突场景下的安全漏洞，支持漏洞评估。",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.20890v1",
+      "route": "20260723-20260801/2607.20890v1-information-theoretically-secure-aggregation-for-lightweight-federated-learning-resilient-to-dropouts-and-adversaries",
+      "title": "Information-Theoretically Secure Aggregation for Lightweight Federated Learning: Resilient to Dropouts and Adversaries",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "用于基于符号的联邦学习的信息论安全聚合协议",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.22885v1",
+      "route": "20260723-20260801/2607.22885v1-recon-a-resource-constrained-benchmark-for-llm-based-cybersecurity-compliance-across-ingestion-and-retrieval-pipelines",
+      "title": "ReCon: A Resource-Constrained Benchmark for LLM-Based Cybersecurity Compliance Across Ingestion and Retrieval Pipelines",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "网络安全合规基准，面向策略文档",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.23312v1",
+      "route": "20260723-20260801/2607.23312v1-a-structured-cyber-threat-intelligence-dataset-using-stix-21-entities-and-mitre-attck-mappings",
+      "title": "A Structured Cyber Threat Intelligence Dataset Using STIX 2.1 Entities and MITRE ATT&CK Mappings",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "结构化威胁情报数据集，映射攻击行为，支持入侵检测",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.23882v1",
+      "route": "20260723-20260801/2607.23882v1-adversarial-and-inverter-graph-assisted-hardware-trojan-detection-at-scale",
+      "title": "ADVERSARIAL: And-Inverter Graph-Assisted Hardware Trojan Detection At Scale",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 7.0,
+      "evidence": "大规模硬件木马检测方法",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.21136v1",
+      "route": "20260723-20260801/2607.21136v1-safety-and-security-experimental-validation-of-encrypted-model-predictive-control",
+      "title": "Safety and Security: Experimental Validation of Encrypted Model Predictive Control",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "将全同态加密应用于安全模型预测控制",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.21325v1",
+      "route": "20260723-20260801/2607.21325v1-toward-cryptographically-verifiable-authorization-for-autonomous-ai-agents-a-security-hypothesis-preliminary-formal-model-and-proof-of-concept-implementation",
+      "title": "Toward cryptographically verifiable authorization for autonomous AI agents: A security hypothesis, preliminary formal model, and proof-of-concept implementation",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "应用密码学构造AI智能体可验证授权关系",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    },
+    {
+      "paper_id": "2607.23825v1",
+      "route": "20260723-20260801/2607.23825v1-bridging-the-epistemic-gap-in-the-invisible-internet-extended-mathematical-modeling-and-empirical-characterization-of-i2p-topology",
+      "title": "Bridging the Epistemic Gap in the Invisible Internet: Extended Mathematical Modeling and Empirical Characterization of I2P Topology",
+      "section": "quick",
+      "tags": [
+        {
+          "kind": "query",
+          "label": "ns"
+        }
+      ],
+      "score": 6.0,
+      "evidence": "对I2P匿名网络拓扑进行建模，有助于理解安全网络协议",
+      "first_seen_at": "2026-08-01 11:31:16 UTC",
+      "updated_at": "2026-08-01 11:31:16 UTC"
+    }
+  ]
+}
