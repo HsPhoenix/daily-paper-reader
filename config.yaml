@@ -209,7 +209,7 @@ subscriptions:
           source: manual
           note: ''
       updated_at: '2026-08-01T11:42:46.665Z'
-      paused: false
+      paused: true
 source_backends:
   arxiv:
     papers_table: arxiv_papers
