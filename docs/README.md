@@ -41,17 +41,17 @@
 <section class="dpr-home-dashboard-card dpr-home-report-card">
   <div class="dpr-home-dashboard-header">
     <div>
-      <span class="dpr-home-dashboard-kicker">2026-08-01</span>
+      <span class="dpr-home-dashboard-kicker">2026-08-02</span>
       <h3 class="dpr-home-dashboard-title">今日汇总</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">共 18 篇</strong>
+    <strong class="dpr-home-dashboard-count">共 13 篇</strong>
   </div>
   <dl class="dpr-home-dashboard-stats">
     <div class="dpr-home-dashboard-stat"><dt>累计更新</dt><dd>1 次</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>7</dd></div>
-    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>11</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>精读</dt><dd>5</dd></div>
+    <div class="dpr-home-dashboard-stat"><dt>速读</dt><dd>8</dd></div>
   </dl>
-  <p class="dpr-home-dashboard-body">最近更新：2026-08-01 20:37:48 UTC<br>状态：成功</p>
+  <p class="dpr-home-dashboard-body">最近更新：2026-08-02 20:11:58 UTC<br>状态：成功</p>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-brief-card">
   <div class="dpr-home-dashboard-header">
@@ -62,7 +62,9 @@
     <strong class="dpr-home-dashboard-count">AI</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<p>今日精读7篇、速读11篇，共18篇论文，重点关注电力系统协同隐蔽攻击检测与隐私保护框架两大方向。最值得看的是《Functional Subspace Projection》与《MOSAIC-FL》，分别提出针对协同攻击的降维检测法及微服务基因隐私保护方案。建议普通读者优先浏览速读中的键盘声学窃听和LLM内存提取攻击，了解现实威胁。</p>
+<p>今日聚焦13篇前沿研究，精读AI代理安全与无线对抗检测，速读覆盖恶意软件、Git后门及事件响应基准。</p>
+<p>最值得关注：AI代理的漏洞评估与防御（8.0分），以及图神经网络恶意软件检测（8.0分），均指向智能化攻防新趋势。</p>
+<p>建议普通读者优先了解“AI代理安全”方向，关注未来自动化攻击的防御策略与检测工具落地。</p>
   </div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-deep-card">
@@ -71,12 +73,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">精读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">7 篇</strong>
+    <strong class="dpr-home-dashboard-count">5 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Functional Subspace Projection for Detection of Coordinated Stealthy Attacks in Power Systems">Functional Subspace Projection for Detection of Coordinated Stealthy Attacks in Power Systems</span></li><li><span class="dpr-home-dashboard-paper-title" title="MOSAIC-FL, a micro-service based privacy-preserving framework with application to genomics">MOSAIC-FL, a micro-service based privacy-preserving framework with application to genomics</span></li><li><span class="dpr-home-dashboard-paper-title" title="How to Watermark the RLWE Homomorphic Ciphertexts">How to Watermark the RLWE Homomorphic Ciphertexts</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Cyber-Capable AI Agents: Vulnerabilities, Evaluation Containment, and Defensive Response">Cyber-Capable AI Agents: Vulnerabilities, Evaluation Containment, and Defensive Response</span></li><li><span class="dpr-home-dashboard-paper-title" title="Bayesian-Guided Cooperative RL Beamforming for Wireless Adversarial User Detection">Bayesian-Guided Cooperative RL Beamforming for Wireless Adversarial User Detection</span></li><li><span class="dpr-home-dashboard-paper-title" title="SafeStats: Efficient 2PC Protocols for Data Statistic-Related Functions">SafeStats: Efficient 2PC Protocols for Data Statistic-Related Functions</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ns <strong>7</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ns <strong>5</strong></span></div>
 </section>
 <section class="dpr-home-dashboard-card dpr-home-skim-card">
   <div class="dpr-home-dashboard-header">
@@ -84,12 +86,12 @@
       <span class="dpr-home-dashboard-kicker">今日累计</span>
       <h3 class="dpr-home-dashboard-title">速读推荐</h3>
     </div>
-    <strong class="dpr-home-dashboard-count">11 篇</strong>
+    <strong class="dpr-home-dashboard-count">8 篇</strong>
   </div>
   <div class="dpr-home-dashboard-body">
-<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Transforming Keystroke Noise to Text: Self-Supervised Acoustic Eavesdropping Attacks on Keyboards">Transforming Keystroke Noise to Text: Self-Supervised Acoustic Eavesdropping Attacks on Keyboards</span></li><li><span class="dpr-home-dashboard-paper-title" title="Isolated but Exposed: Persistence-Based Memory Extraction Attack on LLM Agents">Isolated but Exposed: Persistence-Based Memory Extraction Attack on LLM Agents</span></li><li><span class="dpr-home-dashboard-paper-title" title="ZKP Security Tools and Verification: Coverage, Effectiveness, Adoption, and Challenges">ZKP Security Tools and Verification: Coverage, Effectiveness, Adoption, and Challenges</span></li></ul>
+<ul class="dpr-home-dashboard-paper-list"><li><span class="dpr-home-dashboard-paper-title" title="Guarding Organizations Against Malware Risk: A Novel Graph-Based Malware Detection Method">Guarding Organizations Against Malware Risk: A Novel Graph-Based Malware Detection Method</span></li><li><span class="dpr-home-dashboard-paper-title" title="Not In My Git Yard: Catching Backdoors at Commit and Release Time">Not In My Git Yard: Catching Backdoors at Commit and Release Time</span></li><li><span class="dpr-home-dashboard-paper-title" title="SecRespond: Benchmarking AI Agents for Real-World Post-Compromise Incident Response">SecRespond: Benchmarking AI Agents for Real-World Post-Compromise Incident Response</span></li></ul>
   </div>
-  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ns <strong>11</strong></span></div>
+  <div class="dpr-home-dashboard-tags"><span class="dpr-home-dashboard-tag">ns <strong>8</strong></span></div>
 </section>
 </div>
 

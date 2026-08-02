@@ -1,0 +1,285 @@
+Title: PCAP-LM: An LLM-Native Text Representation for TLS Bulk Traffic Analysis
+
+URL Source: https://arxiv.org/pdf/2607.28100v1
+
+Published Time: Fri, 31 Jul 2026 00:57:35 GMT
+
+Number of Pages: 6
+
+Markdown Content:
+# PCAP-LM: An LLM-Native Text Representation for TLS Bulk Traffic Analysis 
+
+Xavier Marjou, Lucas Tamic, Ilan Jaffeux-Cheniout 
+
+Orange 
+
+{xavier.marjou,lucas.tamic,ilan.jaffeux--cheniout}@orange.com 
+
+Abstract —Large language models (LLMs) offer powerful reasoning capabilities for network traffic analysis, but standard capture formats and their textual equivalents are prohibitively verbose, overflowing LLM context windows by two orders of magnitude. We present PCAP-LM, a flow-centric, LLM-native text representation that acts as a lossy knowledge extraction 
+
+step rather than a standard compression tool: raw captures are transcoded into semantic summaries using PacketGlyphs—a novel ASCII alphabet coined in this paper that encodes packet direction, TCP/TLS state, log-scale size, and inter-packet delay. Combined with a constrained PMI-BPE tokenizer and motif run-length encoding, repetitive behavioural patterns are aggressively collapsed. A @REFS side-index preserves lossless drill-down into the original packets. Evaluated on a homogeneous corpus of 5G/4G TLS 1.3 bulk-download traffic, the BPE vocabulary fully saturates at 159 tokens, achieving an 812 × size reduction over 
+
+tshark -V and fitting entire captures within a single LLM context window. In a forensic question-answering evaluation over 30 held-out files, a frontier LLM achieves 99.3% accuracy from PCAP-LM documents versus 51.0% from a token-budget-matched tshark -V prefix. The lossy design introduces known blind spots—most notably a 24% false-negative rate for TCP retransmissions—and extending to heterogeneous mixed-protocol environments will require vocabulary retraining. 
+
+Index Terms —network traffic analysis, large language models, PCAP, byte-pair encoding, TLS, 5G, forensics 
+
+I. Introduction 
+
+Network traffic analysis is a cornerstone of security opera-tions, performance engineering, and network research. Analysts routinely need to answer questions such as: Was this host performing a TLS downgrade attack? What explains the throughput collapse at 14:32? Which of these 200 flows shows anomalous retransmit behaviour? Answering these questions today requires expertise in Wireshark filters, tshark scripting, or bespoke parser code—a high barrier that limits how quickly hypotheses can be formed and tested. Large language models are well-suited, in principle, to this kind of structured-evidence reasoning: frontier LLMs can parse semi-structured text, identify anomalies, correlate events, and produce natural-language explanations. The obstacle is representational. PCAP, the de-facto standard capture format, is a byte-level, packet-major binary format designed for full-fidelity storage and Wireshark dissection—not for LLM consumption. The gap is vast. On the captures in our corpus (mean 3.4 MB), tshark -V yields a mean of 18.7 million tokens and tshark -T json 22.1 million tokens ; a raw hex dump of a 10 MB capture would require roughly 40 million. All of these formats overflow any current LLM context window by one to two orders of magnitude, and none organises the information in a way that is naturally amenable to language-model reasoning. We argue that the right approach is not to compress the existing format but to transcode it: to build a representa-tion that discards byte-level redundancy carrying no forensic value, organises the remainder flow-centrically rather than chronologically, encodes behavioural structure in symbols that map naturally to LLM representations, and preserves enough metadata that any packet can be retrieved on demand. 
+
+Contributions. (i) The PCAP-LM format (§III): a four-layer text format comprising a session header, per-flow statistical summaries, a compressed event stream, and an anomaly annex. (ii) The PacketGlyphs alphabet (§IV), in which each packet is encoded as a compact ASCII glyph capturing direction, TCP/TLS state, log-scale size, and inter-packet delay. (iii) Constrained PMI-BPE (§V): a byte-pair encoding variant with protocol-boundary constraints and PMI-weighted merge selection that learns behavioural motifs as single composite tokens. (iv) Motif run-length encoding (§VI): a flow-bounded RLE pass that collapses adjacent identical packet patterns into 
+
+(motif) ×N. (v) An empirical evaluation (§VII) on 150 PCAP pairs from a production 5G/4G network, demonstrating context-window fit and 99.3% LLM forensic Q&A accuracy. The result is a pipeline that transforms a 3.4 MB PCAP file into approximately 102 KB of structured text—a document that an LLM can read directly, reason about, and use as the basis for diagnosis and explanation. 
+
+II. Background and Related Work 
+
+PCAP and textual representations. The PCAP format [ 1 ] stores packets as binary records with per-packet metadata followed by raw frame bytes. It is lossless, compact, and universally supported, but opaque to any tool that cannot parse binary network protocols. tshark [ 2 ], the CLI companion to Wireshark, provides textual dissection: -V emits a verbose multi-line decode of every field, -T json emits structured JSON. Both are LLM-parseable in principle, but they scale with packet count—a single packet’s -V output can exceed 200 lines—and neither groups related packets into flows, making temporal reasoning difficult. 
+
+LLMs for network analysis. Meng et al. [3] propose a generative pretrained transformer for joint traffic understanding and generation, encoding packet flows as token sequences by shuffling header fields. Lin et al. [4] pre-train a BERT-style arXiv:2607.28100v1 [cs.NI] 30 Jul 2026 model on encrypted traffic by converting raw packet bytes to hex strings and applying subword tokenization. Tulczyjew et al. [5] apply masked language modelling to PCAP files for unsupervised failure detection in 5G/4G VoLTE and VoNR captures. Cui et al. [6] introduce a dual-stage fine-tuning framework to adapt open-source LLMs to heterogeneous traffic analysis tasks. These approaches predominantly feed LLMs raw hex bytes or CSV-formatted feature vectors, operating at the packet level without flow-centric summarisation. None proposes a systematic domain-specific transcoding that simultaneously achieves LLM context-window fit, semantic richness, and lossless per-packet drill-down. 
+
+BPE and RLE. BPE [ 7] is the standard subword tokenization method for LLMs; applied to a symbol vocabulary, it iteratively merges the most frequent adjacent pair until a target vocabulary size is reached. Our constrained PMI-BPE (§V) adapts it to glyph sequences with flow-boundary sentinels, a directionality predicate, and PMI-based merge ranking. Run-length encoding has long been used in protocol-level compression (SSH com-pression, HTTP/2 HPACK header encoding); to our knowledge, applying RLE at the level of per-packet behavioural motifs— rather than individual bytes or headers—has not been previously proposed. 
+
+III. The PCAP-LM Format 
+
+PCAP-LM is a UTF-8 text format. A capture is rendered as a single document structured in four layers, each introduced by a @-prefixed section header. 
+
+A. Layer 1 — Session Header 
+
+The header establishes the capture context and defines reusable symbolic aliases.                                                
+
+> @CAP v1 t0=2026-02-12T14:44:34Z dur=97.2s pkts=28417 src=20260212_144434_node07_...pcap @HOSTS A=2001:db8::1 B=203.0.113.10(foo-10gb.r-op.fr) @PORTS h=443 @FLOWS f1: A:40986 -> B:h proto=TLS1.3 SNI=foo-10gb.r-op.fr f2: A:40988 -> B:h proto=TLS1.3 SNI=foo-10gb.r-op.fr @LEGEND direction: >=client->server <=server->client tcp-flags: S=SYN A=ACK F=FIN R=RST P=PSH U=URG tls: ~=app-data (encrypted) h=handshake size: +0=<=64B +1=<=128B ... +9=>16KB delay: :u=<1ms :m=<1s :s=<10s :S=>=10s run-length: (motif)xN =motif repeats Ntimes
+
+@HOSTS maps IP addresses to short aliases, @PORTS maps port numbers to mnemonic labels, and @FLOWS indexes all flows with TLS metadata. These dictionaries amortise the cost of verbose IP/port repetition across the rest of the document. 
+
+@LEGEND closes the header with an inline glyph key, making every PCAP-LM document self-describing: a reader—human or LLM—can parse the event stream without any external reference. Addresses, hostnames, and capture filenames in every example in this paper are pseudonymised into reserved documentation ranges (RFC 5737, RFC 3849, RFC 2606) by the tooling described in §VIII. 
+
+B. Layer 2 — Flow Summaries 
+
+One line per flow provides a statistical fingerprint sufficient for most analysis tasks.                           
+
+> #Flow Summaries f1 |0.0s..97.1s |pkts=14208 |74KB ↑1932KB ↓
+> |ja3=abc123.. |cert=*.r-op.fr |ok f2 |0.1s..97.0s |pkts=14209 |73KB ↑1930KB ↓
+> |ja3=abc123.. |cert=*.r-op.fr |ok
+
+Each line captures flow id, time span, packet and byte counts (upload / download), JA3 fingerprint [ 8 ], certificate subject, an 8-bin packet-size sparkline, and an anomaly flag ( ok / RST /
+
+retr / asym ). 
+
+C. Layer 3 — Event Stream 
+
+The event stream is the core of the format. Each packet is represented as a compact glyph sequence (§IV); adjacent identical motifs are collapsed by RLE (§VI); and composite BPE tokens replace common sub-sequences (§V).                         
+
+> #Event Stream f1: ⟨BOF ⟩>S+0 <SA+0:u >A+0:u >h+3:m <h+6:m <h+3:u (>~+6:u <~+6:u)x8712 >F+0:u <FA+0:u ⟨EOF ⟩
+> f2: ⟨BOF ⟩>S+0 <SA+0:u >A+0:u >h+3:m <h+6:m <h+3:u (>~+6:u <~+6:u)x8711 >F+0:u <FA+0:u ⟨EOF ⟩
+
+A reader can immediately infer two parallel TLS 1.3 sessions, a symmetric bulk-download pattern of 8 700+ identical data-exchange motifs, and clean teardown—in 2 lines of text, regardless of whether the download contained 100 or 100 000 packets. 
+
+D. Layer 4 — Anomaly Annex 
+
+Flows with detected anomalies receive an expanded entry:                 
+
+> #Anomaly Annex f3 [RST]: RST at t=12.4s after 0data packets f7 [retr]: 3retransmits at t=44.1-44.3s; seq=0x1a2b3c4d
+
+IV. PacketGlyphs Encoding 
+
+A. Atomic Symbol Vocabulary 
+
+The PacketGlyphs alphabet maps each packet property to a short, visually distinctive ASCII symbol (Table I). The size bucket function maps payload length 𝑛 to min (9, ⌊log 2 𝑛 ⌋) ;the delay function maps the inter-packet gap to one of four logarithmic bands.                                         
+
+> TABLE I
+> PacketGlyphs atomic symbol vocabulary.
+> Symbol Layer Meaning
+> >/<Direction Client →server / reverse
+> SAFRPUTCP SYN, ACK, FIN, RST, PSH, URG
+> ~/hTLS Application data / handshake
+> ?/!DNS Query / response
+> +0 –+9 Size Log 2bucket: +0 ≤64 B,
+> +3 ≈512 B, +6 ≈4 KB
+> :u :m :s :S Delay Gap <1 ms, <1 s, <10 s, ≥10 s
+> ⟨BOF ⟩/⟨EOF ⟩Boundary Begin / end of flow
+
+B. Encoding Algorithm 
+
+For each PCAP file, the encoder parses all packets using Scapy [ 9], groups them by canonicalized 4-tuple (min/max of (src-IP, src-port) so that both directions map to one flow), sorts each group by timestamp, and encodes each packet as a sequence of atomic symbols: the direction glyph; the TCP flag glyphs for all set flags in order S, A, F, R, P, U; ~ or 
+
+h if the packet carries a TLS payload; ? or ! if it is DNS; the size bucket; and the delay bucket for the gap since the previous packet (omitted for the first packet in the flow). The flow is bracketed by ⟨BOF ⟩ and ⟨EOF ⟩ sentinels, and the glyph sequence for a single packet is typically 3–6 symbols. The client IP is inferred as the source address of the first SYN packet in each flow; for flows with no SYN, the lower IP address is taken as the client by convention. The encoder handles both 
+
+IP and IPv6 Scapy layers transparently, including the Linux cooked captures (SLL link layer) used by our corpus. 
+
+C. Semantic Density 
+
+The alphabet is designed so that the most information-carrying patterns fit in 3–5 ASCII characters: >S+0 (client SYN, small packet) is 4 characters, <~+6:u (server TLS data, 
+
+≈4 KB, sub-millisecond gap) is 7, and a complete TCP three-way handshake takes 15. The equivalent tshark -V output spans 150–300 lines. 
+
+V. Constrained PMI-BPE Training 
+
+Standard BPE applied naively to glyph sequences would merge symbols across flow boundaries and would prefer raw frequency, merging the most ubiquitous symbols ( A, :u )regardless of structural meaning. We introduce two constraints and a modified scoring function. 
+
+A. Merge Constraints 
+
+Each flow’s glyph sequence is treated as an independent training example, and ⟨BOF ⟩/⟨EOF ⟩ sentinels are never permit-ted as the left or right element of any merge, so BPE tokens never span flow boundaries. Direction symbols always mark the start of a new packet motif, so they may only appear as the left 
+
+element of a merge. Formally, a pair (𝑎, 𝑏 ) is compatible 
+
+iff 𝑎 [− 1] ∉ {⟨ BOF ⟩, ⟨EOF ⟩} , 𝑏 [0] ∉ {⟨ BOF ⟩, ⟨EOF ⟩} , and 
+
+𝑏 [0] ∉ {>, <}.
+
+B. PMI-Weighted Merge Selection 
+
+Instead of selecting the most frequent compatible pair, we score each candidate merge (𝑎, 𝑏 ) by score (𝑎, 𝑏 ) = log 
+
+ 𝑃 (𝑎, 𝑏 )
+
+𝑃 (𝑎 ) · 𝑃 (𝑏 )
+
+
+
+· log  1 + count (𝑎, 𝑏 ), (1) where 𝑃 (𝑎, 𝑏 ) is the co-occurrence frequency and 𝑃 (𝑎 ), 𝑃 (𝑏 )
+
+are unigram frequencies estimated over the current corpus state. The log (1 + count ) factor moderates extremely rare high-PMI pairs while still rewarding structural co-occurrence. Naive BPE requires rescanning the full corpus after each merge. We instead maintain an incremental pair-index: when a merge (𝑎, 𝑏 ) → 𝑎𝑏 is applied at position 𝑖 , only the pairs adjacent to that position are updated, reducing the per-merge cost from 𝑂 (𝑁 ) to 𝑂 (𝐾 𝑖 ) where 𝐾 𝑖 is the number of tokens adjacent to occurrences of the merged pair. Empirically this achieves a 10–100 × speedup over the naive approach at vocabulary sizes ≥ 256 .
+
+C. Training Corpus and Results 
+
+We train on 100 PCAP files (50 pairs) drawn from the training set by stratified sampling (§ VII-A ), yielding 260 glyph sequences totalling 6 685 613 raw symbols, with a vocabulary ceiling of 512 and a minimum pair co-occurrence count of 1. Training produces a base atomic vocabulary of 19 symbols 
+
+and 140 learned composite tokens (final vocabulary: 159 ), completing in 90.5 s on a single CPU core (mean 609 ms per merge, p95 1 271 ms). Training halts before the 512 ceiling because the corpus is fully saturated: no uncollapsed adjacent pair appears even once after 140 merges. This is itself a substantive finding—the complete behavioural vocabulary of 5G/4G HTTPS bulk-download traffic fits in 140 composite tokens on top of 19 atomic glyphs. The compression curve (Table II) plateaus sharply at vocab = 128 and gains nothing from merges 109–140.                                                         
+
+> TABLE II
+> BPE compression curve on the training corpus (260 sequences, 6.7M raw symbols).
+> Vocab size Merges Compression ratio Tokens 64 45 2.11 ×3 165 732 128 109 4.13 ×1 619 507 159 (final) 140 4.13 ×1 618 841 TABLE III
+> Ten highest-ranked BPE merges. Rank reflects selection order; count is the pair co-occurrence count when the merge was chosen.
+> Rank Left Right Count Rendered 1P+3 171 081 P+3
+> 2P~30 321 P~
+> 4P~ +3 29 960 P~+3
+> 7<A904 663 <A
+> 9>A711 535 >A
+> 11 <S A124 <SA
+> 13 >A +3 283 737 >A+3
+> 16 <A P+3 164 134 <AP+3
+> 24 <A +1 664 575 <A+1
+> 25 <A P7 879 <AP
+
+Table III reveals that the dominant patterns are not protocol state machines but flag+size combinations from ACK-heavy bulk transfer: <A (server ACK, 905K), >A (client ACK, 712K), 
+
+<A+1 (server ACK with small payload, 665K), <AP+3 (server PSH+ACK with 512 B, 164K). TCP handshake tokens ( <S ,
+
+<SA , >S ) appear only at ranks 8, 11, and 12 because they occur far less often in a corpus dominated by long bulk flows. 
+
+D. Communicating the Learned Vocabulary to the LLM 
+
+Our BPE is a pre-processing step that produces a more com-pact text document—entirely separate from the LLM’s internal tokenizer. Three strategies exist for communicating composite tokens to the LLM. Strategy A (current approach, zero cost) renders composite tokens as concatenations of their constituent atomic glyph strings (e.g. >S+0<SA+0:u>A+0:u ); because 
+
+@LEGEND is embedded in every document, a capable LLM can decompose any composite token by parsing left-to-right over the fixed atomic vocabulary, and removing inter-glyph spaces makes composite sequences tokenize into fewer tokens in the LLM’s own tokenizer. Strategy B (low cost) lists the top-𝑁 
+
+composites in an explicit @VOCAB section at ≈20–50 tokens per named motif, appropriate when the deployment requires the LLM to name recurring motifs. Strategy C (highest cost and fluency) fine-tunes the LLM on PCAP-LM documents, in the strongest variant extending the tokenizer with composite tokens as new atomic units; this requires a labelled corpus that does not yet exist publicly. We recommend Strategy A for current-generation LLMs, and have verified empirically that a frontier LLM correctly parses and reasons about PCAP-LM event streams with no composite vocabulary dictionary. 
+
+VI. Motif Run-Length Encoding 
+
+Bulk-download and streaming traffic—which dominates our corpus—consists almost entirely of long runs of identical packet motifs: alternating >~+6:u <~+6:u pairs repeated thousands of times per connection. Even after BPE reduces each motif to a composite token, the event stream still contains thousands of repetitions. We define a motif as the atomic glyph sequence for a single packet (from one direction symbol to the next). The segmentation algorithm scans a flow’s glyph sequence and splits on direction tokens, with ⟨BOF ⟩ and ⟨EOF ⟩ each forming singleton motifs, producing a non-overlapping partition of the sequence. Adjacent identical motifs are then collapsed into (motif) ×N; the ⟨BOF ⟩/⟨EOF ⟩ singletons prevent RLE from spanning flow boundaries. Losslessness is guaranteed: 
+
+expand_rle() is the exact inverse of segmentation +RLE. When both RLE and BPE are active, BPE is applied per-motif —each motif is independently encoded before RLE grouping— which preserves the readability of the run at the cost of a small amount of BPE efficiency. On the test set (§ VII-B ), motif RLE reduces the mean PCAP-LM event stream from 44 591 to 25 424 estimated tokens—a 
+
+1.75 × reduction in a single pass. For high-throughput flows the reduction can exceed 10 ×: a flow with 8 712 identical 
+
+>~+6:u <~+6:u pairs becomes the single entry (>~+6:u <~+6:u) ×8712 .
+
+VII. Experimental Evaluation 
+
+A. Dataset 
+
+We use an internal 5G/4G network measurement campaign (February 2026), a production dataset consisting of 301 PCAP files collected during HTTPS throughput tests over a multi-gigabit backbone link to a fixed content server. Files are organised as 150 near-simultaneous pairs: one capture at the server side and one at the monitoring node. Monitoring is distributed over multiple distinct nodes spanning both 5G SA and 4G LTE technologies, with achieved throughput varying by roughly 20 × across captures. We hold out 30 pairs (60 files) as a test set, selected by stratified sampling to ensure balanced representation across the different node types and network technologies (seed 42). The remaining 120 pairs form the training set; a 50-pair stratified subsample is used for BPE training to prevent test-set contamination. Test-set PCAP files range from 627 KB to 13.0 MB (mean 3.4 MB, median 2.1 MB) and contain a mean of 2.6 flows (1–3), all TLS 1.3 HTTPS. 
+
+B. Compression Results 
+
+Table IV summarises the compression pipeline on the 60-file test set. Token counts are estimated as character count ÷ 4, consistent with standard LLM tokenizer throughput.                              
+
+> TABLE IV
+> Compression pipeline on 60 test files (mean token counts, estimated as chars ÷4). Ratios are relative to PCAP-LM+RLE+BPE.
+> Representation Mean tokens vs. PCAP-LM+RLE+BPE
+> tshark -T json 22 050 813 955 ×larger
+> tshark -V 18 738 238 812 ×larger Raw PCAP (bytes ÷4) 852 750 37 ×larger PCAP + gzip-9 415 780 18 ×larger PCAP-LM raw glyphs 44 591 1.9 ×larger PCAP-LM + RLE 25 424 1.1 ×larger
+> PCAP-LM + RLE + BPE 23 091 1×
+
+Three observations stand out. First, gzip achieves only 2.1 × over raw PCAP, confirming that packet captures are already information-dense at the byte level (TLS-encrypted payloads have near-maximum entropy). Second, BPE adds only a 1.1 × improvement over RLE alone because the corpus is behaviourally saturated—the 140-merge vocabulary covers all recurring patterns. Third, tshark -T json is larger 
+
+than tshark -V (22.1M vs. 18.7M tokens) because JSON field-name repetition per packet offsets the gain from omitting human-readable formatting. 
+
+C. Semantic Preservation 
+
+We evaluate whether PCAP-LM anomaly annotations agree with tshark ground truth on the 60 test files. For each file we compute a binary flag for three anomaly types— RST events, TCP retransmissions, and asymmetric traffic— using both pipelines, then compute per-type precision, re-call, and F1. Ground truth is tcp.flags.reset==1 for RSTs, tcp.analysis.retransmission for retransmis-sions, and a tshark -z conv,tcp downstream/upstream byte ratio >100 for asymmetry; on the PCAP-LM side, 
+
+summarize_flow() annotates anomaly strings and file-level flags are the disjunction over all flows. 
+
+RST detection is perfect (P = R = 1): the glyph alphabet encodes the RST flag as R, so detection reduces to a string search. Retransmission detection is precise but not complete 
+
+(P = 1.000, R = 0.761). The 11 false negatives all come from one node class, where retransmitted segments arrive with modified sequence numbers due to an upstream TCP proxy in the data TABLE V                         
+
+> Semantic preservation over 60 test files. PCAP-LM is the predicted system; tshark is the oracle.
+> Anomaly type PRF1 TP FP FN RST 1.000 1.000 1.000 30 00Retransmission 1.000 0.761 0.864 35 011 Asymmetric N/A N/A N/A 000
+
+path; tshark’s stream-state tracker catches these variants, PCAP-LM’s single-pass duplicate-seq detector does not. Asymmetric traffic never occurs in this corpus. The PCAP-LM detector flags a flow as asymmetric only when one direction exceeds the other by more than 100 × in bytes—a threshold chosen to catch data exfiltration or amplification, not normal downloads. Both tshark and PCAP-LM therefore flag zero files; the detection logic is implemented and verified on synthetic captures, but the corpus does not contain the traffic it targets. 
+
+D. LLM Utility 
+
+Methodology. tshark -V is infeasible as a direct baseline: the smallest capture in our corpus produces 2.9 million tokens— 14 × beyond a 200K-token context limit. We therefore construct a token-budget-matched comparison: for each test file we generate the full PCAP-LM document (which fits in context by design) and a prefix of tshark -V output truncated to the same number of characters. The truncated prefix typically covers only the first 1–3% of packets (4–66 packets out of 4 683–58 846 per file). We evaluate Claude Sonnet 4.6 [ 10 ] on all 30 held-out server-side files, presenting both representations in separate API calls with all 10 questions asked at once; the model returns a JSON object with all answers.                                    
+
+> TABLE VI
+> Forensic Q&A: per-question accuracy over 30 test files (300 question–answer pairs per condition).
+> Q# Question PCAP-LM tshark (trunc.) Q1 RST events? 1.00 0.45 Q2 Retransmissions? 1.00 0.10 Q3 TLS used? 1.00 0.86 Q4 Handshake present? 1.00 0.86 Q5 Flow count 1.00 0.55 Q6 Dominant direction 0.93 0.62 Q7 Duration (s) 1.00 0.00 Q8 Packet count 1.00 0.00 Q9 Server port 1.00 0.86 Q10 SNI hostname 1.00 0.79
+> Overall 0.993 0.510
+
+PCAP-LM achieves 99.3% accuracy (297/300 answers correct), scoring perfectly on 9 of 10 questions: the @CAP 
+
+metadata block directly encodes duration, packet count, and flow count; @FLOWS provides server port and SNI; the flow summary line carries anomaly flags and the byte-direction ratio ( ↑/↓); and the event stream glyph prefix ( >S <SA~... )confirms the handshake. The 2 misses (0.7%) both occur on 
+
+dominant_direction in the two largest 2-flow captures, where the LLM inferred “upload” rather than “download”—likely because PCAP-LM presents per-flow byte totals separately and one flow had higher ↑ than ↓ bytes. A session-level byte-direction aggregate in the @CAP header would close this gap. 
+
+The token-budget-matched tshark prefix achieves 51.0% accuracy. Duration and packet count score 0% because prefix timestamps and frame numbers cover only the beginning of the capture. Retransmission detection scores 10%: retransmissions appear in 25 of 30 captures but almost never within the first 1–3% of packets. RST detection (45%) and flow count (55%) score modestly higher because some RSTs occur near the start of a capture and single-flow captures (21 of 30) are correctly identified when the second flow is simply absent from the prefix. Questions inherently visible in the first SYN/ClientHello— server port, TLS detection, SNI—score 79–86%. The contrast illustrates PCAP-LM’s core contribution: com-pression and semantic density are produced by the same operation . The 60-character @CAP header encodes what thou-sands of frame.number and frame.time_relative 
+
+field extractions would be required to answer Q7 and Q8 from tshark . A representation that pre-computes flow-level summaries enables LLM forensic analysis that a verbatim transcript cannot support at any feasible context size. 
+
+VIII. Discussion 
+
+A. Semantic Transcoding vs. Compression 
+
+The 812 × reduction over tshark -V invites the framing “compression for network captures”, but the gzip comparison shows why that analogy misleads: gzip achieves only 2.1 × over raw PCAP because captures are dominated by TLS-encrypted payloads with near-maximum entropy, so entropy coders on the raw byte stream are already near the theoretical limit. PCAP-LM’s gain comes from a different operation—where gzip asks “what byte sequences repeat?” , PCAP-LM asks 
+
+“what information does an analyst actually need?” , discarding Ethernet framing, IP headers, exact sequence numbers, sub-millisecond timestamps, and payload bytes, and re-encoding the remainder in a domain-specific alphabet. PCAP-LM is to a raw PCAP as a radiology report is to a raw MRI scan: it is a 
+
+knowledge extraction step, not an entropy coder. The practical consequence for LLM applications is that a lossless compressor delivers an opaque byte stream, whereas PCAP-LM delivers a readable document with the right abstractions precomputed— anomalies surfaced in the annex, size distributions rendered as sparklines, TLS session parameters on a single line—that an LLM can parse directly with no decompression step. 
+
+B. Lossy-but-Recoverable Design 
+
+PCAP-LM is lossy by design: exact TCP sequence numbers, sub-millisecond timestamp precision, and payload bytes are not preserved in the main document. However, the @REFS 
+
+side-index (emitted by pcap2lm convert -refs ) maps every flow to its global PCAP frame numbers, enabling lossless drill-down: an LLM analysis can cite f1#142 and a tool call can retrieve the raw bytes from the original PCAP via tshark -Y "frame.number == 843" . This makes PCAP-LM suitable for investigative workflows where the analyst starts with the compressed summary and expands specific packets on demand. Because production captures embed identifying information (host IPs, SNI and DNS names, capture filenames encoding node names), the recommended deployment pseudonymises the document before submission to a cloud LLM and de-anonymises the response afterwards. pcap2lm anonymize 
+
+substitutes IPs, domains, and filenames into reserved documen-tation ranges (RFC 5737, RFC 3849, RFC 2606) while leaving forensically load-bearing fields—JA3 fingerprints, sparklines, glyph streams, counts, ports, @LEGEND , @REFS —untouched, and writes the reverse mapping to a local file that never leaves the analyst’s environment. 
+
+C. Limitations 
+
+Corpus homogeneity and BPE saturation. Our evaluation corpus consists exclusively of HTTPS bulk-download tests between fixed endpoints. BPE training consequently exhausted at 140 merges (final vocabulary: 159 tokens): the model is maximally efficient for this traffic type, but will not generalise to heterogeneous environments (mixed enterprise protocols such as DNS, SMTP, HTTP/2) without retraining, likely requiring 2 000–4 000 composite tokens. Beyond vocabulary growth, three pressures compound: the glyph alphabet must grow to encode protocol-specific state (QUIC stream boundaries, SMTP command phases, HTTP/2 frame types); cross-protocol queries involve correlations an in-context legend cannot convey; and @LEGEND overhead grows with each protocol family. Under those conditions fine-tuning (Strategy C, § V-D ) becomes substantially more attractive, since it eliminates the legend overhead, internalises the composite vocabulary, and supports cross-protocol reasoning without additional scaffolding. We estimate the threshold at ≥4 distinct protocol families, a stable glyph alphabet, and a sufficiently diverse labelled (PCAP-LM, question, answer) dataset; until then Strategy A remains the lower-cost, more maintainable choice. 
+
+Skewed baseline comparison. The 51.0% baseline accuracy is heavily skewed by truncation: counting packets, measuring duration, and detecting late retransmissions failed because the model was denied the data, not because tshark represents it poorly. The comparison establishes that PCAP-LM solves the context-window bottleneck, but it penalises the baseline for its size rather than for any representational deficiency. 
+
+Algorithmic blind spots. Discarding exact sequence num-bers and sub-millisecond timestamps blinds PCAP-LM to certain nuances—most notably a 24% false-negative rate for TCP retransmissions, because the simplified single-pass duplicate-sequence detector fails when an upstream TCP proxy modifies sequence numbers between sender and receiver. 
+
+Untested anomaly heuristics. The asymmetric-traffic heuris-tic ( >100 × byte ratio) was never exercised on real data: our bulk-download corpus never triggers the threshold, so its efficacy remains verified only on synthetic captures. 
+
+Extensions. Planned work includes delta-encoded delays (emitting the delay glyph only when it changes, a further 10– 20% reduction), ACK-run collapsing (5–15%), fine-tuning on PCAP-LM documents, and an MCP companion server exposing 
+
+expand_flow , get_packet , and search for interactive drill-down over one or many captures. 
+
+IX. Conclusion 
+
+We have presented PCAP-LM, a flow-centric, four-layer LLM-native text format that acts as a lossy knowledge extraction 
+
+step for network captures, together with the PacketGlyphs encoding alphabet, a constrained PMI-BPE tokenizer, and a motif run-length encoder. On a 60-file held-out test set of 5G/4G HTTPS production captures, the pipeline achieves an 
+
+812 × token reduction over tshark -V , fitting the largest captures within a single LLM context window. In a forensic question-answering evaluation over 30 files, a frontier LLM achieves 99.3% accuracy from PCAP-LM documents versus 51.0% from the token-budget-matched tshark -V prefix, demonstrating that PCAP-LM’s semantic richness—flow topol-ogy, TLS metadata, anomaly annotations, and behavioural patterns in plain text—enables LLM analysis that verbatim packet transcripts cannot support at any feasible context size. This compression is inherently lossy: exact sequence numbers and raw payload bytes are discarded, introducing blind spots such as a 24% false-negative rate for TCP retransmissions. The 
+
+@REFS side-index mitigates this by mapping every summarised flow back to its original PCAP frame numbers, enabling lossless drill-down via a companion MCP server—a capability whose full validation remains future work. Our pipeline is currently optimised for homogeneous TLS bulk-download traffic; ex-tending PCAP-LM to heterogeneous mixed-protocol enterprise environments will require expanding the BPE vocabulary and potentially fine-tuning LLMs for cross-protocol reasoning. We believe PCAP-LM represents a crucial step toward making network traffic analysis a first-class task for large language models. 
+
+References

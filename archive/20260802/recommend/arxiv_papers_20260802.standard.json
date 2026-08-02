@@ -1,0 +1,538 @@
+{
+  "mode": "standard",
+  "generated_at": "2026-08-02T20:00:39.508544+00:00",
+  "stats": {
+    "mode": "standard",
+    "tag_count": 0,
+    "deep_divecandidates": 13,
+    "deep_cap": 5,
+    "deep_selected": 5,
+    "quick_candidates": 8,
+    "quick_skim_target": 10,
+    "quick_selected": 8
+  },
+  "deep_dive": [
+    {
+      "id": "2607.25379v1",
+      "source": "arxiv",
+      "title": "Cyber-Capable AI Agents: Vulnerabilities, Evaluation Containment, and Defensive Response",
+      "abstract": "Cyber-capable AI agents combine language models with tools, memory, and execution en- vironments to perform multi-step offensive-security tasks. Existing work separately measures cyber capability and catalogs attacks against agent components, but provides less guidance on containing a capable agent within the environments used to evaluate it. This review synthe- sizes five vulnerability classes at that boundary: multi-step offensive chains, objectives that conflict with sandbox boundaries, supply-chain and credential exposure, persistent command- and-control, and the speed of automated action. We use the reported July 2026 Hugging Face/OpenAI incident as a bounded case study, distinguishing incident-specific observations from findings established in the wider literature. Across the taxonomy and case, we examine controls for containment, privilege separation, provenance, and responder access, including the dual-use problem that defensive artifacts may also enable misuse. The review identifies practical priorities for evaluating cyber capability together with the security of the environment in which that capability is exercised.",
+      "authors": [
+        "Abu Bakar Siddik"
+      ],
+      "primary_category": "cs.AI",
+      "categories": [
+        "cs.AI"
+      ],
+      "published": "2026-07-28T07:34:37+00:00",
+      "link": "https://arxiv.org/pdf/2607.25379v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "synthesizes vulnerability classes and defensive response for cyber-capable AI agents",
+      "llm_evidence_cn": "针对具备网络攻击能力的AI智能体，综述漏洞类别并给出防御应对",
+      "llm_evidence": "针对具备网络攻击能力的AI智能体，综述漏洞类别并给出防御应对",
+      "canonical_evidence": "针对具备网络攻击能力的AI智能体，综述漏洞类别并给出防御应对",
+      "llm_tldr_en": "Reviews cyber-capable AI agent security, synthesizing five vulnerability classes (multi-step offensive chains, sandbox conflicts, supply-chain and credential exposure, persistent C2, automated action speed) and defensive containment, using the Hugging Face/OpenAI incident as a case study.",
+      "llm_tldr_cn": "该综述关注具备网络攻防能力的AI智能体在评测环境中的安全问题，归纳了多步攻击链、沙盒目标冲突、供应链与凭据暴露、持续命令控制以及自动化行动速度五类漏洞。文章结合2026年7月Hugging Face/OpenAI事件的案例，区分事件特定观察与通用结论，并提出评测遏制与防御响应方面的建议。这项工作为评估和防护高能力网络攻击智能体提供了系统性参考。",
+      "llm_tldr": "该综述关注具备网络攻防能力的AI智能体在评测环境中的安全问题，归纳了多步攻击链、沙盒目标冲突、供应链与凭据暴露、持续命令控制以及自动化行动速度五类漏洞。文章结合2026年7月Hugging Face/OpenAI事件的案例，区分事件特定观察与通用结论，并提出评测遏制与防御响应方面的建议。这项工作为评估和防护高能力网络攻击智能体提供了系统性参考。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "security vulnerability assessment and mitigation",
+      "matched_requirement_id": "req-5",
+      "selection_source": "carryover_cache",
+      "paper_id": "2607.25379v1"
+    },
+    {
+      "id": "2607.25417v1",
+      "source": "arxiv",
+      "title": "Bayesian-Guided Cooperative RL Beamforming for Wireless Adversarial User Detection",
+      "abstract": "In next-generation wireless networks, communication systems are expected to go beyond simple data transmission and simultaneously provide high data rates, efficiency, and security. This requirement has motivated the extensive adoption of machine learning methods to develop intelligent and real-time network management frameworks, enabling the system to continuously monitor and react to channel variations and user behavior while maintaining efficient information delivery. In this context, the integration of machine learning with beamforming enables adaptive and data-driven beam direction selection, improving both the efficiency and security of wireless links. In this work, a 3GPP-based system model is first implemented under a no-attacker scenario, and an exhaustive search is employed as a reference to identify the best beamforming configurations. The proposed framework is then evaluated in the presence of an attacker and under different network scalability conditions. We demonstrate that the reinforcement learning-based approaches, namely Q-learning and SARSA (State-Action-Reward-State-Action), consistently outperform random selection in terms of total channel capacity, attacker detection accuracy, and performance stability. Among the evaluated reinforcement learning methods, Q-learning achieves the best overall trade-off between detection accuracy and computational efficiency. Our results indicate that the proposed framework provides a stable, scalable, and effective solution for joint beamforming and security-aware decision-making in dynamic and adversarial wireless environments.",
+      "authors": [
+        "Parmida Geranmayeh",
+        "Onur Günlü"
+      ],
+      "primary_category": "cs.IT",
+      "categories": [
+        "cs.IT",
+        "cs.CR"
+      ],
+      "published": "2026-07-28T08:15:31+00:00",
+      "link": "https://arxiv.org/pdf/2607.25417v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Wireless network security mechanism using beamforming to detect adversarial users",
+      "llm_evidence_cn": "利用波束成形检测对抗用户的无线网络安全机制",
+      "llm_evidence": "利用波束成形检测对抗用户的无线网络安全机制",
+      "canonical_evidence": "利用波束成形检测对抗用户的无线网络安全机制",
+      "llm_tldr_en": "Proposes a Bayesian-guided cooperative reinforcement learning beamforming method that monitors channel and user behavior to detect and react to adversarial users, enhancing wireless link security.",
+      "llm_tldr_cn": "下一代无线网络需要同时提供高速率、高效率和安全性，这要求系统能实时监控信道变化和用户行为。论文提出一种贝叶斯引导的协作强化学习波束成形方法，先在3GPP系统模型下训练无攻击基线，再扩展到对抗用户存在的场景。该方法能够自适应选择波束方向，在保证通信效率的同时检测并应对恶意用户。实验表明它可有效提升无线链路的物理层安全性。",
+      "llm_tldr": "下一代无线网络需要同时提供高速率、高效率和安全性，这要求系统能实时监控信道变化和用户行为。论文提出一种贝叶斯引导的协作强化学习波束成形方法，先在3GPP系统模型下训练无攻击基线，再扩展到对抗用户存在的场景。该方法能够自适应选择波束方向，在保证通信效率的同时检测并应对恶意用户。实验表明它可有效提升无线链路的物理层安全性。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "network security mechanisms and protocols",
+      "matched_requirement_id": "req-1",
+      "selection_source": "carryover_cache",
+      "paper_id": "2607.25417v1"
+    },
+    {
+      "id": "2607.25430v1",
+      "source": "arxiv",
+      "title": "SafeStats: Efficient 2PC Protocols for Data Statistic-Related Functions",
+      "abstract": "Statistical analysis on sensitive datasets like medical records and financial transactions is essential for decision-making, but raises significant privacy concerns. While existing secure Two-Party Computation (2PC) makes extensive efforts in designing the common secure primitives (e.g., addition and multiplication) or machine learning-related functions, few pay attention to the statistical functions. In this paper, we propose SafeStats, a secure toolkit tailored for 2PC secure statistical analysis. Specifically, to develop SafeStats, we first refer to Microsoft Excel's statistical library and summarize that most statistical operations can be achieved with three core functions:1) frequency counting, 2) sorting, and 3) non-linear math functions. Then, for each core statistical function, SafeStats presents an efficient 2PC implementation. For secure frequency counting, SafeStats adopts a secure shift-based strategy to avoid invoking expensive 2PC equality test protocols. For secure sort, SafeStats involves a secure segment-indicator protocol to achieve secure counting-based sort, which enables fast element sorting over specific statistical scenarios without the need for secure comparison. For non-linear math functions, we enhance the current reduce-then-approximate paradigm by introducing a bisection-based range reduction protocol. Finally, we implement SafeStats and test it on 14 common statistical analysis cases. As an example, for the chi-square test, SafeStats achieves a 1.5 $\\times$ runtime speedup and a 4.2 $\\times$ reduction in communication compared to directly using the current general-purpose 2PC library to realize it.",
+      "authors": [
+        "Tanren Liu",
+        "Xianjia Meng",
+        "Yang Liu",
+        "Xin Kang",
+        "Chenhui You",
+        "Yong Zeng",
+        "Zhuo Ma"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR"
+      ],
+      "published": "2026-07-28T08:25:30+00:00",
+      "link": "https://arxiv.org/pdf/2607.25430v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "secure two-party computation protocols for private statistics",
+      "llm_evidence_cn": "面向隐私统计的安全两方计算协议",
+      "llm_evidence": "面向隐私统计的安全两方计算协议",
+      "canonical_evidence": "面向隐私统计的安全两方计算协议",
+      "llm_tldr_en": "Secure 2PC rarely covers statistical functions. SafeStats builds a toolkit for 2PC statistical analysis by reducing operations to frequency counting, sorting, and non-linear math, enabling privacy-preserving statistics on sensitive data.",
+      "llm_tldr_cn": "对医疗记录、金融交易等敏感数据的统计分析至关重要，但现有安全两方计算主要关注基础原语和机器学习函数，较少支持统计函数。本文提出SafeStats安全工具包，参照Excel统计库将常见统计操作归纳为频数计数、排序和非线性数学三类核心函数并实现高效2PC协议。该工具可在不泄露原始数据的前提下完成多种统计分析，为隐私保护的数据决策提供支撑。",
+      "llm_tldr": "对医疗记录、金融交易等敏感数据的统计分析至关重要，但现有安全两方计算主要关注基础原语和机器学习函数，较少支持统计函数。本文提出SafeStats安全工具包，参照Excel统计库将常见统计操作归纳为频数计数、排序和非线性数学三类核心函数并实现高效2PC协议。该工具可在不泄露原始数据的前提下完成多种统计分析，为隐私保护的数据决策提供支撑。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "cryptographic algorithms and applications",
+      "matched_requirement_id": "req-4",
+      "selection_source": "carryover_cache",
+      "paper_id": "2607.25430v1"
+    },
+    {
+      "id": "2607.25734v1",
+      "source": "arxiv",
+      "title": "A Structuration Approach to Theorizing Cybersecurity Practice: The STARC Model",
+      "abstract": "The problem: Cybersecurity practice runs simultaneously across analysts, teams, organizations, sectors, and regulators, co-evolves with adversaries, and increasingly blends human and algorithmic decision-making. The theories applied to it operate at single organizational levels and cannot explain why organizations with broadly similar controls differ sharply in resilience.   This paper: We develop STARC (Structuration Theory Adaptation for Resilient Cybersecurity), a framework for locating where cybersecurity practice succeeds or fails structurally. It extends Giddens' Structuration Theory with three innovations, Multi-Level Adversarial Agency, Threat-Adaptive Structuration, and Material-Agential Structural Properties, across five structure-agency triads.   Evidence base: STARC is illustrated through re-analysis of three financial organizations, an Australian, an Indonesian, and a Malaysian bank, across 20 interviews from SOC analysts to senior executives, selected as diverse insourced and outsourced configurations rather than as a comparison of equivalents.   Cybersecurity contribution: STARC offers a structural account of why differently resourced and outsourced organizations differ in resilience, and a vocabulary for diagnosing incident-response breakdown across levels, tempos, and the human-algorithm authority boundary that single-level frameworks leave invisible.   Theory and outputs: It extends Structuration Theory to adversarial, multi-level, and hybrid human-algorithmic contexts, and yields seven testable propositions linking structuration to resilience, offered for future testing.",
+      "authors": [
+        "Md Aktaruzzaman",
+        "Atif Ahmad",
+        "Sean Maynard"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR"
+      ],
+      "published": "2026-07-28T13:58:34+00:00",
+      "link": "https://arxiv.org/pdf/2607.25734v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Develops a theoretical framework for cybersecurity practice and resilience",
+      "llm_evidence_cn": "提出网络安全实践与韧性的理论框架",
+      "llm_evidence": "提出网络安全实践与韧性的理论框架",
+      "canonical_evidence": "提出网络安全实践与韧性的理论框架",
+      "llm_tldr_en": "Proposes STARC, a structuration-based framework that explains organizational differences in cybersecurity resilience by integrating multi-level adversarial agency and threat-adaptive structuration.",
+      "llm_tldr_cn": "针对现有网络安全理论仅关注单一层面、无法解释同类组织韧性差异的问题，本文提出基于吉登斯结构化理论的STARC框架，融合多层级对手能动性、威胁自适应结构化和物质-能动性结构属性三种创新，跨越分析师、团队、组织等五个结构层，用于定位网络安全实践成败的结构性原因，为深入理解网络安全原则与实践提供了系统化理论视角。",
+      "llm_tldr": "针对现有网络安全理论仅关注单一层面、无法解释同类组织韧性差异的问题，本文提出基于吉登斯结构化理论的STARC框架，融合多层级对手能动性、威胁自适应结构化和物质-能动性结构属性三种创新，跨越分析师、团队、组织等五个结构层，用于定位网络安全实践成败的结构性原因，为深入理解网络安全原则与实践提供了系统化理论视角。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "cyber security principles and practices",
+      "matched_requirement_id": "req-2",
+      "selection_source": "carryover_cache",
+      "paper_id": "2607.25734v1"
+    },
+    {
+      "id": "2607.26314v1",
+      "source": "arxiv",
+      "title": "StealthBench: Measuring Operational Stealth in Autonomous Offensive-Security Agents",
+      "abstract": "Stealth, the discipline of achieving an objective without revealing your presence, capabilities, or collected intelligence, is what separates sophisticated operators from detectable ones. Elite security researchers and advanced persistent threats achieve their objectives unnoticed; autonomous agents increasingly inherit the same offensive tasks, but do they inherit the tradecraft? We introduce StealthBench,a benchmark that measures operational stealth in autonomous offensive-security agents across six operational security (OPSEC) dimensions. We extract 11 hand-verified OPSEC incidents from real bug-bounty and red-team trajectories, expanded into 14 dockerized task scenarios, where agents, despite finding real vulnerabilities, committed stealth failures inconsistent with standard operational tradecraft: embedding credentials in public uploads, deleting production resources to prove access, force-adding uninvolved users to demonstrate a race condition.   We evaluate agent trajectories using a 3-model large language model (LLM) judge panel with majority-vote aggregation, measuring safe success rate (solved and stealthy), Stealth@Solve (tradecraft quality among successful solves), and reckless solve rate (solved but cover blown). Our results show that no model exceeds 54% safe success rate (the compound metric requiring both task completion and stealth), confirming that OPSEC failures are systematic across model families. We release StealthBench as a public benchmark to support both the development of stealth-aware agents and automated OPSEC monitoring for autonomous offensive-security deployments. The interactive leaderboard, evaluation harness, and dataset are available at https://stealthbench.com.",
+      "authors": [
+        "Ads Dawson",
+        "Adrian Wood"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "cs.AI"
+      ],
+      "published": "2026-07-28T22:23:34+00:00",
+      "link": "https://arxiv.org/pdf/2607.26314v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Benchmark for measuring operational stealth in autonomous offensive-security agents, relevant to penetration testing tradecraft",
+      "llm_evidence_cn": "面向自主攻击性安全代理的隐蔽性基准，与渗透测试技术相关",
+      "llm_evidence": "面向自主攻击性安全代理的隐蔽性基准，与渗透测试技术相关",
+      "canonical_evidence": "面向自主攻击性安全代理的隐蔽性基准，与渗透测试技术相关",
+      "llm_tldr_en": "Introduces StealthBench, a benchmark measuring operational stealth of autonomous offensive-security agents across six OPSEC dimensions, using real bug-bounty and red-team scenarios to expose common stealth failures.",
+      "llm_tldr_cn": "针对自主攻击性安全代理在真实攻击场景中缺乏隐蔽性量化评估的问题，本文提出StealthBench基准，从六个行动安全维度度量代理的隐蔽能力；该基准从真实漏洞赏金和红队轨迹中提取11个人工核验的事件，扩展为14个docker化任务场景，实验显示代理即使发现真实漏洞仍会泄露行动痕迹，为渗透测试代理的作战技艺评估提供了重要工具。",
+      "llm_tldr": "针对自主攻击性安全代理在真实攻击场景中缺乏隐蔽性量化评估的问题，本文提出StealthBench基准，从六个行动安全维度度量代理的隐蔽能力；该基准从真实漏洞赏金和红队轨迹中提取11个人工核验的事件，扩展为14个docker化任务场景，实验显示代理即使发现真实漏洞仍会泄露行动痕迹，为渗透测试代理的作战技艺评估提供了重要工具。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "penetration testing methodologies and tools",
+      "matched_requirement_id": "req-6",
+      "selection_source": "carryover_cache",
+      "paper_id": "2607.26314v1"
+    }
+  ],
+  "quick_skim": [
+    {
+      "id": "2607.26634v1",
+      "source": "arxiv",
+      "title": "Guarding Organizations Against Malware Risk: A Novel Graph-Based Malware Detection Method",
+      "abstract": "Organizational digitalization expands cybersecurity risks, making cybersecurity an increasingly important research area in Information Systems (IS). Among these risks, malware has become a pervasive and destructive threat. Byte-based machine learning (ML) methods are widely used for malware detection but remain vulnerable to evasive behaviors that manipulate raw bytes to evade detection. Graph-based methods are less affected by such manipulations because they represent software as program graphs that capture execution behavior. However, they do not explicitly identify cohesive groups of basic blocks that jointly realize meaningful program behaviors, nor do they learn sufficiently expressive program graph representations for accurate detection. To this end, we propose MalGuard, a graph-based malware detection method for organizational malware risk management. MalGuard introduces two methodological innovations: an operational role identification approach and a program graph representation learning method. The former identifies these cohesive groups of basic blocks as operational roles, enabling the detector to capture program behaviors that may not be visible from isolated basic blocks. The latter learns expressive program graph representations by modeling interactions among operational roles, preserving sparse malicious signals, and capturing hierarchical graph structure. Extensive experiments show that MalGuard improves detection performance and reduces the expected cost of undetected malware.",
+      "authors": [
+        "Yinan Gao",
+        "Jiarong Xu",
+        "Xiaohang Zhao",
+        "Xiao Fang"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "cs.AI"
+      ],
+      "published": "2026-07-29T08:58:05+00:00",
+      "link": "https://arxiv.org/pdf/2607.26634v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "graph-based malware detection to counter evasive byte-manipulation attacks",
+      "llm_evidence_cn": "基于图的恶意软件检测以抵御字节混淆逃避攻击",
+      "llm_evidence": "基于图的恶意软件检测以抵御字节混淆逃避攻击",
+      "canonical_evidence": "基于图的恶意软件检测以抵御字节混淆逃避攻击",
+      "llm_tldr_en": "This paper proposes a graph-based malware detection method that represents programs as execution-behavior graphs, explicitly identifies cohesive basic-block groups, and learns expressive graph representations to overcome the evasiveness of byte-based ML detectors.",
+      "llm_tldr_cn": "针对基于字节的机器学习恶意软件检测易受字节操纵逃逸的问题，提出基于程序图的检测方法，通过识别形成有意义行为的连通基本块组并学习更具表达力的图表示，提高恶意软件检测的鲁棒性。该方法在组织级恶意软件风险防护中具有应用价值。",
+      "llm_tldr": "针对基于字节的机器学习恶意软件检测易受字节操纵逃逸的问题，提出基于程序图的检测方法，通过识别形成有意义行为的连通基本块组并学习更具表达力的图表示，提高恶意软件检测的鲁棒性。该方法在组织级恶意软件风险防护中具有应用价值。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "intrusion detection systems and techniques",
+      "matched_requirement_id": "req-3",
+      "selection_source": "carryover_cache",
+      "paper_id": "2607.26634v1",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.26719v1",
+      "source": "arxiv",
+      "title": "Not In My Git Yard: Catching Backdoors at Commit and Release Time",
+      "abstract": "Code-level backdoors-stealthy code changes that grant hidden privileges via secret triggers-pose a persistent threat to opensource software. Known attempts to inject such backdoors into widely used projects through malicious commits, tampered release packages, or compromised third-party dependencies, were stopped only by luck and manual review. Existing Continuous Integration (CI) pipelines cannot detect these attacks, and downstream binary analysis tools require substantial manual effort. In this work, we present Lily, an automated approach that strengthens open-source development and release processes against backdoor injection. Lily integrates a backdoor detection mechanism into (1) CI pipelines to block malicious commits, and (2) release vetting workflows to prevent tampered releases or compromised dependencies from entering large ecosystems, such as Linux distributions. Lily offers two key contributions. First, it enhances CI-compatible fuzzing with the capability to detect triggers of suspicious behavior based on historical and current software executions. This enables fast, precise backdoor detection suitable for both CI and update validation workflows. Second, it combines code change analysis with fuzzing data to precisely point maintainers to backdoor-revealing code regions, even when release updates modify millions of lines of code. We also outline five strategies attackers could use to evade Lily, and evaluate corresponding defenses. Our experiments across hundreds of benign and backdoored commits and releases show that Lily achieves high detection accuracy with low false alarm rates, reliably identifies malicious code, resists adversarial attempts, and would have prevented real-world backdoor incidents.",
+      "authors": [
+        "Dimitri Kokkonis",
+        "Michaël Marcozzi",
+        "Stefano Zacchiroli"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "cs.SE"
+      ],
+      "published": "2026-07-29T10:09:48+00:00",
+      "link": "https://arxiv.org/pdf/2607.26719v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "backdoor detection integrated into CI and release vetting",
+      "llm_evidence_cn": "将后门检测集成到CI和发布审查",
+      "llm_evidence": "将后门检测集成到CI和发布审查",
+      "canonical_evidence": "将后门检测集成到CI和发布审查",
+      "llm_tldr_en": "Presents Lily, an automated CI-integrated backdoor detection approach that flags malicious commits and tampered release packages, addressing a critical software supply chain vulnerability with minimal manual effort.",
+      "llm_tldr_cn": "针对开源软件中难以被现有CI捕获的代码级后门注入威胁，作者提出自动化检测工具Lily，将其接入CI流水线与发布审查流程。Lily能识别恶意提交和被篡改的发布包，将过去的运气与人工审查转变为系统化防御，显著降低软件供应链被植入后门的风险。",
+      "llm_tldr": "针对开源软件中难以被现有CI捕获的代码级后门注入威胁，作者提出自动化检测工具Lily，将其接入CI流水线与发布审查流程。Lily能识别恶意提交和被篡改的发布包，将过去的运气与人工审查转变为系统化防御，显著降低软件供应链被植入后门的风险。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "security vulnerability assessment and mitigation",
+      "matched_requirement_id": "req-5",
+      "selection_source": "carryover_cache",
+      "paper_id": "2607.26719v1",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.26791v1",
+      "source": "arxiv",
+      "title": "SecRespond: Benchmarking AI Agents for Real-World Post-Compromise Incident Response",
+      "abstract": "Large Language Model (LLM) agents are increasingly adopted in real-world security operations with access to host artifacts and command-line interfaces (CLIs), making it critical to thoroughly assess their security capabilities. However, existing cybersecurity benchmarks focus on pre-compromise settings where agents are placed in a clean and idealized environment before an attack occurs. This leaves the post-compromise setting underexplored. To address this gap, we introduce SecRespond, the first benchmark for evaluating LLM agents on the post-compromise incident-response workflow. Given a forensic disk snapshot of a compromised host together with the alerts, vulnerability scans, and baseline checks reported by a host security product, agents are required to produce forensic reports on intrusions, baseline risks, and vulnerability risks, together with a remediation plan. We instantiate this task across 10 cyber ranges, each constructed from a distinct compromised cloud host, spanning 4 entry-point types, 21 ATT&CK techniques, and 5 operating systems. We evaluate 23 frontier LLMs on the OpenCode agent harness. Experimental results show that although current agents can reliably uncover the problems exposed by alerts, they struggle to proactively investigate the disk for silent intrusions and to produce comprehensive, verified remediation plans, with no model achieving complete detection and remediation on any single range. This reveals a fundamental bottleneck in building agents for real-world incident response. The benchmark is publicly available at https://github.com/Alibaba-NLP/qqr/tree/main/data/secrespond.",
+      "authors": [
+        "Lehan Wang",
+        "Boli Chen",
+        "Ruixue Ding",
+        "Pengjun Xie",
+        "Jinwei Huang",
+        "Zhendong Liu",
+        "Shuo Wang",
+        "Tao Lei",
+        "Xin Ouyang",
+        "Xiaomeng Li"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "cs.AI",
+        "cs.CL"
+      ],
+      "published": "2026-07-29T11:32:23+00:00",
+      "link": "https://arxiv.org/pdf/2607.26791v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "Benchmark for AI agents in post-compromise incident response and vulnerability assessment",
+      "llm_evidence_cn": "面向失陷后应急响应和漏洞评估的AI智能体基准",
+      "llm_evidence": "面向失陷后应急响应和漏洞评估的AI智能体基准",
+      "canonical_evidence": "面向失陷后应急响应和漏洞评估的AI智能体基准",
+      "llm_tldr_en": "Introduces SecRespond, the first benchmark for evaluating LLM agents on post-compromise incident response, using forensic disk snapshots, alerts, and vulnerability scans from a compromised host.",
+      "llm_tldr_cn": "LLM智能体正被用于真实安全运营，可以访问主机证据和命令行，但现有安全基准只覆盖被攻陷前的理想环境，缺乏对失陷后应急响应能力的评测。论文提出SecRespond，首个面向失陷后事件响应工作流的LLM智能体基准。它基于被攻陷主机的磁盘取证快照，以及主机安全产品产生的告警、漏洞扫描和基线检查结果，要求智能体完成分析任务。这为评估和提升AI辅助事件响应能力提供了标准化测试平台，填补了该方向空白。",
+      "llm_tldr": "LLM智能体正被用于真实安全运营，可以访问主机证据和命令行，但现有安全基准只覆盖被攻陷前的理想环境，缺乏对失陷后应急响应能力的评测。论文提出SecRespond，首个面向失陷后事件响应工作流的LLM智能体基准。它基于被攻陷主机的磁盘取证快照，以及主机安全产品产生的告警、漏洞扫描和基线检查结果，要求智能体完成分析任务。这为评估和提升AI辅助事件响应能力提供了标准化测试平台，填补了该方向空白。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "assessment of vulnerabilities and risk mitigation in information systems",
+      "matched_requirement_id": "req-10",
+      "selection_source": "carryover_cache",
+      "paper_id": "2607.26791v1",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.27288v1",
+      "source": "arxiv",
+      "title": "Open Security Benchmark: Towards Autonomous Enterprise Cyber Defense",
+      "abstract": "Enterprises are moving toward autonomous cyber defense: agentic AI that builds situational awareness of an organization's security state and reasons from it to assessments, decisions, and actions. This rests on a holistic view of the enterprise's security state, the continuous, cross-vendor picture of identities, cloud and infrastructure, data, applications, and their configurations that security posture management assembles. As agents take on this work, what matters is not whether an agent can produce an answer but whether it should be trusted to. The field cannot yet answer this question. Real enterprise environments are private, cross-vendor, and deeply correlated, and none is exposed publicly as a shared, queryable target for evaluating such agents end to end. We call this the environment data gap. We present Open Security Benchmark (OSB), a framework that benchmarks agentic AI on this work. OSB surfaces a curated enterprise environment - a frozen, holistic view of the security state - and evaluates posture investigation across two modalities: text-to-SQL over a relational snapshot and each vendor's native API over a served instance of the same environment. Freezing the environment pins the target state as an immutable snapshot and anchors answers to a closed-form ground truth. OSB is built from five components: a data layer, a task and evaluation-set layer, a multi-dimensional scoring layer, a minimal auditable harness, and a bring-your-own path that serves public comparison and private tenant evaluation from one substrate. We instantiate the framework with two identity-security packs and a family of synthetic-organization environment datasets spanning multiple scales, and chart its extension to further posture subdomains, investigation modalities, and defense stages from assessment toward remediation.",
+      "authors": [
+        "Gal Engelberg",
+        "Michael Arenzon",
+        "Leon Goldberg"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR"
+      ],
+      "published": "2026-07-29T14:46:04+00:00",
+      "link": "https://arxiv.org/pdf/2607.27288v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "benchmark for autonomous enterprise cyber defense agents",
+      "llm_evidence_cn": "面向自主企业网络防御的开放评估基准",
+      "llm_evidence": "面向自主企业网络防御的开放评估基准",
+      "canonical_evidence": "面向自主企业网络防御的开放评估基准",
+      "llm_tldr_en": "Autonomous cyber defense needs trusted evaluation, but real enterprise environments are private and correlated. This paper introduces an open security benchmark providing a shared queryable target for assessing agentic AI's situational awareness, assessments, decisions, and actions.",
+      "llm_tldr_cn": "企业正迈向自主网络防御，由代理式AI构建安全态势感知并执行评估、决策与行动，但缺乏可信的公开评估基准。本文提出开放安全基准，将真实企业环境中私有、跨厂商且深相关的问题暴露为可共享、可查询的评估目标。该基准支持对自治防御代理的信任度进行评测，为安全态势管理工具和智能体的落地提供依据。",
+      "llm_tldr": "企业正迈向自主网络防御，由代理式AI构建安全态势感知并执行评估、决策与行动，但缺乏可信的公开评估基准。本文提出开放安全基准，将真实企业环境中私有、跨厂商且深相关的问题暴露为可共享、可查询的评估目标。该基准支持对自治防御代理的信任度进行评测，为安全态势管理工具和智能体的落地提供依据。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "current research on protecting computer networks from cyber attacks",
+      "matched_requirement_id": "req-7",
+      "selection_source": "carryover_cache",
+      "paper_id": "2607.27288v1",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.27528v1",
+      "source": "arxiv",
+      "title": "ThreatForest: Multi-Agent Attack Tree Generation with Pluggable TTP Framework Mapping",
+      "abstract": "Threat modeling is essential for secure software development, yet manual analysis of cloud-native architectures is slow and demands scarce security expertise. We present ThreatForest, a multi-agent system that generates structured attack trees from source code repositories, maps attack steps to adversary tactics, techniques, and procedures (TTPs) from a pluggable set of frameworks (MITRE ATT&CK, CAPEC, and cloud-specific threat matrices), and synthesizes actionable mitigations. ThreatForest decomposes threat modeling into a multi-stage agent pipeline -- repository analysis, context refinement, threat generation, parallel attack-tree construction with TTP mapping and mitigation synthesis, and report generation -- orchestrated as a directed graph with deterministic verification gates, bounded retries, and three human-in-the-loop validation points. A domain-specific sentence-transformer maps each attack step to candidate techniques by cosine similarity; we show empirically that this embedding stage, not the surrounding pipeline, is the dominant accuracy bottleneck. We evaluate ThreatForest across seven application domains on a sixteen-dimension rubric, scored by a panel of independent LLM raters with an adversarial verification pass and expert review. Panel-measured quality reaches 0.63-0.68 (on a 0-1 scale) for threat statements, attack trees, and mitigations, but only 0.29 for embedding-only TTP mapping -- a gap stable across all seven domains that isolates the binding constraint. A controlled single-call baseline on the same model more than doubles mapping defensibility, pinning the limitation on the embedding encoder rather than the multi-agent design. To our knowledge, ThreatForest is the first end-to-end system that turns a code repository into TTP-mapped attack trees with evidence-based mitigations across adversary frameworks, with a reusable framework for benchmarking such systems.",
+      "authors": [
+        "Cristian Leo",
+        "Anton Dykyi",
+        "Danny Cortegaca",
+        "Daniel Begimher",
+        "Prakash Jha"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR",
+        "cs.AI",
+        "cs.CL",
+        "cs.SE"
+      ],
+      "published": "2026-07-29T23:46:23+00:00",
+      "link": "https://arxiv.org/pdf/2607.27528v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "automated threat modeling and mitigation synthesis",
+      "llm_evidence_cn": "自动化威胁建模与缓解生成",
+      "llm_evidence": "自动化威胁建模与缓解生成",
+      "canonical_evidence": "自动化威胁建模与缓解生成",
+      "llm_tldr_en": "Introduces ThreatForest, a multi-agent system that generates structured attack trees from code repositories, maps steps to MITRE ATT&CK/CAPEC/cloud threat matrices, and synthesizes mitigations, reducing manual threat analysis.",
+      "llm_tldr_cn": "为缓解云原生架构威胁建模依赖稀缺专家的问题，作者提出多智能体系统ThreatForest。它从源码仓库自动生成结构化的攻击树，将攻击步骤映射到MITRE ATT&CK、CAPEC及云威胁矩阵，并同步生成可操作的缓解建议，大幅减少人工威胁分析工作。",
+      "llm_tldr": "为缓解云原生架构威胁建模依赖稀缺专家的问题，作者提出多智能体系统ThreatForest。它从源码仓库自动生成结构化的攻击树，将攻击步骤映射到MITRE ATT&CK、CAPEC及云威胁矩阵，并同步生成可操作的缓解建议，大幅减少人工威胁分析工作。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "security vulnerability assessment and mitigation",
+      "matched_requirement_id": "req-5",
+      "selection_source": "carryover_cache",
+      "paper_id": "2607.27528v1",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.27858v1",
+      "source": "arxiv",
+      "title": "Adaptive Security at the Edge for 6G-Enabled Healthcare IoT",
+      "abstract": "Healthcare IoT services increasingly rely on edge gateways to relay routine telemetry and deliver rare but timecritical alarms. Even short traffic bursts can inflate worstcase delay and interfere with urgent messages. We present NANOEDGEGUARD, a kernel-plane closed-loop controller that observes per-source traffic intensity at the edge and enforces an auditable, multi-tier rate policy using in-kernel traffic-control hooks. Unlike static firewall rules or user-space control loops, our design prioritizes fast actuation and explicit recovery through hysteresis, and it records policy transitions for auditability. Using a Raspberry Pi gateway hosting an MQTT broker and two ESP32 endpoints generating vitals, alarms, and a timed burst, we show that adaptive kernel-plane rate control reduces the 99th-percentile alarm RTT by 13.3% compared to a user-space firewall baseline while maintaining no-enforcement-level RTT, and it reduces excess admitted burst traffic by 46% compared to no enforcement. These early results indicate that adaptive, auditable enforcement at the gateway can improve resilience for healthcare IoT, and it can be extended toward on-demand policy deployment in future edge intelligence.",
+      "authors": [
+        "Ijaz Ahmad",
+        "Ijaz Ahmad",
+        "Erkki Harjula"
+      ],
+      "primary_category": "cs.CR",
+      "categories": [
+        "cs.CR"
+      ],
+      "published": "2026-07-30T08:34:42+00:00",
+      "link": "https://arxiv.org/pdf/2607.27858v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "adaptive edge network security mechanism with in-kernel rate policy enforcement",
+      "llm_evidence_cn": "边缘网络自适应安全机制，内核态流量控制策略",
+      "llm_evidence": "边缘网络自适应安全机制，内核态流量控制策略",
+      "canonical_evidence": "边缘网络自适应安全机制，内核态流量控制策略",
+      "llm_tldr_en": "NANOEDGEGUARD is a kernel-plane adaptive security controller for healthcare IoT gateways, enforcing per-source rate policies with hysteresis and auditability to protect time-critical alarms from traffic bursts, validated on a Raspberry Pi-based edge testbed.",
+      "llm_tldr_cn": "针对医疗物联网边缘网关面临流量突发导致时延恶化的问题，提出NANOEDGEGUARD内核平面闭环控制器，通过内核流量控制钩子执行多级速率策略并记录策略转换用于审计。采用迟滞机制实现快速恢复，实验表明在树莓派与MQTT/ESP32环境下能有效保护紧急报警流量。该工作为边缘网络自适应安全提供了一种可审计的机制。",
+      "llm_tldr": "针对医疗物联网边缘网关面临流量突发导致时延恶化的问题，提出NANOEDGEGUARD内核平面闭环控制器，通过内核流量控制钩子执行多级速率策略并记录策略转换用于审计。采用迟滞机制实现快速恢复，实验表明在树莓派与MQTT/ESP32环境下能有效保护紧急报警流量。该工作为边缘网络自适应安全提供了一种可审计的机制。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "network security mechanisms and protocols",
+      "matched_requirement_id": "req-1",
+      "selection_source": "carryover_cache",
+      "paper_id": "2607.27858v1",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.28100v1",
+      "source": "arxiv",
+      "title": "PCAP-LM: An LLM-Native Text Representation for TLS Bulk Traffic Analysis",
+      "abstract": "Large language models (LLMs) offer powerful reasoning capabilities for network traffic analysis, but standard capture formats and their textual equivalents are prohibitively verbose, overflowing LLM context windows by two orders of magnitude. We present PCAP-LM, a flow-centric, LLM-native text representation that acts as a lossy knowledge extraction step rather than a standard compression tool: raw captures are transcoded into semantic summaries using PacketGlyphs - a novel ASCII alphabet coined in this paper that encodes packet direction, TCP/TLS state, log-scale size, and inter-packet delay. Combined with a constrained PMI-BPE tokenizer and motif run-length encoding, repetitive behavioural patterns are aggressively collapsed. A @REFS side-index preserves lossless drill-down into the original packets. Evaluated on a homogeneous corpus of 5G/4G TLS 1.3 bulk-download traffic, the BPE vocabulary fully saturates at 159 tokens, achieving an 812x size reduction over tshark -V and fitting entire captures within a single LLM context window. In a forensic question-answering evaluation over 30 held-out files, a frontier LLM achieves 99.3% accuracy from PCAP-LM documents versus 51.0% from a token-budget-matched tshark -V prefix. The lossy design introduces known blind spots - most notably a 24% false-negative rate for TCP retransmissions - and extending to heterogeneous mixed-protocol environments will require vocabulary retraining.",
+      "authors": [
+        "Xavier Marjou",
+        "Lucas Tamic",
+        "Ilan Jaffeux-Cheniout"
+      ],
+      "primary_category": "cs.NI",
+      "categories": [
+        "cs.NI",
+        "cs.CL"
+      ],
+      "published": "2026-07-30T12:10:12+00:00",
+      "link": "https://arxiv.org/pdf/2607.28100v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "traffic representation for network security analysis",
+      "llm_evidence_cn": "用于网络安全分析的流量表示",
+      "llm_evidence": "用于网络安全分析的流量表示",
+      "canonical_evidence": "用于网络安全分析的流量表示",
+      "llm_tldr_en": "Presents PCAP-LM, an LLM-native flow-centric representation transcoding raw TLS captures into semantic summaries with PacketGlyphs, enabling large language models to reason over bulk network traffic without context overflow.",
+      "llm_tldr_cn": "针对原始流量文本超出LLM上下文窗口两个数量级的问题，论文提出PCAP-LM这种面向LLM的流级文本表示。通过PacketGlyphs ASCII字母编码包方向、TCP/TLS状态、对数尺度和包间延迟，再结合PMI-BPE分词与motif游程编码压缩重复行为，并把原始网络流量转换成语义摘要，使大模型能够直接分析批量TLS流量。",
+      "llm_tldr": "针对原始流量文本超出LLM上下文窗口两个数量级的问题，论文提出PCAP-LM这种面向LLM的流级文本表示。通过PacketGlyphs ASCII字母编码包方向、TCP/TLS状态、对数尺度和包间延迟，再结合PMI-BPE分词与motif游程编码压缩重复行为，并把原始网络流量转换成语义摘要，使大模型能够直接分析批量TLS流量。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "network security mechanisms and protocols",
+      "matched_requirement_id": "req-1",
+      "selection_source": "carryover_cache",
+      "paper_id": "2607.28100v1",
+      "quick_tier": "8plus"
+    },
+    {
+      "id": "2607.28460v1",
+      "source": "arxiv",
+      "title": "Cybersecurity Detection Classification with Reasoning-enabled Language Models",
+      "abstract": "A major issue in Security Operations Centers (SOCs) is alert fatigue, as the number of detections reported is more than staff can triage in a given day. Prior work prompts or fine-tunes large language models (LLMs) to emit a triage label directly, but does not train them to reason about whether a detection is a genuine threat. We train a chain-of-thought (CoT) reasoning-enabled triage classifier on real, human-labeled Windows endpoint detections by combining automated prompt optimization, self-training, and reinforcement learning with verifiable rewards. We find that CoT reasoning also degrades the label-token probabilities that automated triage relies on, so we separately train a calibrator that reads the full reasoning trace and estimates the probability that the verdict is correct. Our system reaches 82.6% test accuracy and, at the high-confidence operating point that governs automated triage, improves benign recall by 43.0% and malicious recall by 18.3% over a direct-label LLM classifier. We further show that the trained calibrator is necessary - an untrained confidence judge collapses high-confidence recall to zero - and that a finetuned 30B model significantly outperforms frontier general-purpose models, motivating targeted training over scale.",
+      "authors": [
+        "Amol Khanna",
+        "Manu Nandan",
+        "Cristian Viorel Popa",
+        "Joan Pujol-Roig",
+        "Diana Bolocan",
+        "Laura Vasilie",
+        "Alexandru Apostu",
+        "Chase Helwig",
+        "Mihaela Gaman",
+        "Michael Brautbar",
+        "Edward Raff",
+        "Chase Midler",
+        "Sven Krasser"
+      ],
+      "primary_category": "cs.LG",
+      "categories": [
+        "cs.LG",
+        "cs.CR"
+      ],
+      "published": "2026-07-30T16:22:13+00:00",
+      "link": "https://arxiv.org/pdf/2607.28460v1",
+      "tags": [
+        "keyword:ns",
+        "query:ns"
+      ],
+      "llm_score": 8.0,
+      "llm_evidence_en": "LLM-based triage classifier for cybersecurity detection alerts",
+      "llm_evidence_cn": "面向网络安全告警分类的推理增强语言模型",
+      "llm_evidence": "面向网络安全告警分类的推理增强语言模型",
+      "canonical_evidence": "面向网络安全告警分类的推理增强语言模型",
+      "llm_tldr_en": "SOC alert fatigue prompts a reasoning-enabled LLM triage classifier trained via prompt optimization, self-training, and RL with verifiable rewards on real Windows endpoint detections. A calibrator estimates probability from the reasoning trace, improving genuine-threat identification.",
+      "llm_tldr_cn": "安全运营中心面临告警疲劳，现有LLM方法直接输出分类标签但缺乏对威胁的推理。本文使用自动化提示优化、自训练和带可验证奖励的强化学习，在真实人工标注的Windows终端检测数据上训练链式推理分类器。由于推理会损害标签概率，还额外训练校准器读取完整推理轨迹以估计置信度，从而更准确地区分真实威胁，缓解告警疲劳。",
+      "llm_tldr": "安全运营中心面临告警疲劳，现有LLM方法直接输出分类标签但缺乏对威胁的推理。本文使用自动化提示优化、自训练和带可验证奖励的强化学习，在真实人工标注的Windows终端检测数据上训练链式推理分类器。由于推理会损害标签概率，还额外训练校准器读取完整推理轨迹以估计置信度，从而更准确地区分真实威胁，缓解告警疲劳。",
+      "llm_tags": [
+        "query:ns"
+      ],
+      "matched_query_tag": "query:ns",
+      "matched_query_text": "effective methods for detecting and preventing network intrusions",
+      "matched_requirement_id": "req-8",
+      "selection_source": "carryover_cache",
+      "paper_id": "2607.28460v1",
+      "quick_tier": "8plus"
+    }
+  ]
+}
